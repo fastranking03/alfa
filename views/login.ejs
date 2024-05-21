@@ -51,9 +51,11 @@
                                         <div class="col-md-12">
                                             <div class="alfa-form-group">
                                                 <label for="Email">Email ID</label>
-                                                <input type="text" class="form-input" name="email" placeholder="Enter your Email ID">
+                                                <input type="email" class="form-input" name="email" id="emailInput" placeholder="Enter your Email ID">
+                                                <div id="emailError" class="error-message" style="display:none; color:red;">Please enter a valid email address.</div>
                                             </div>
                                         </div>
+                                        
                                         <div class="col-md-12">
                                             <div class="alfa-form-group position-relative">
                                                 <label for="Password">Password</label>
@@ -84,16 +86,40 @@
        </div>
      </div>
      <script>
-        var onEyeClick = document.getElementById("onEyeClick");
-        var  passwordView = document.getElementById("passwordView");
-        onEyeClick.addEventListener('click',function(){
-            if(passwordView.type == "text"){
-              passwordView.type = "password"
-            }
-           else{
-            passwordView.type = "text"
-           }
-        })
+        document.addEventListener("DOMContentLoaded", function() {
+            var onEyeClick = document.getElementById("onEyeClick");
+            var passwordView = document.getElementById("passwordView");
+            var form = document.querySelector("form");
+            var emailInput = document.getElementById("emailInput");
+            var emailError = document.getElementById("emailError");
+    
+            onEyeClick.addEventListener('click', function() {
+                if (passwordView.type == "text") {
+                    passwordView.type = "password";
+                } else {
+                    passwordView.type = "text";
+                }
+            });
+    
+            emailInput.addEventListener("input", function() {
+                var emailValue = emailInput.value;
+                var emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+                if (!emailPattern.test(emailValue)) {
+                    emailError.style.display = "block";
+                } else {
+                    emailError.style.display = "none";
+                }
+            });
+    
+            form.addEventListener("submit", function(event) {
+                var emailValue = emailInput.value;
+                if (emailError.style.display === "inline") {
+                    event.preventDefault();
+                    alert("Please enter a valid email address.");
+                }
+            });
+        });
     </script>
+    
     </body>
     </html>
