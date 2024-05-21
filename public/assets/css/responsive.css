@@ -1,0 +1,27 @@
+@media screen and (max-width:576px){
+    .user-container{
+        display: block;
+    }
+    .user-container .user-banner-wrapper{
+        display: none;
+    }
+    .user-container .user-main-wrapper {
+        margin: 0;
+        width: 100%;
+        padding: 15px;
+    }
+    .alfa-form-warpper{
+        width: 100%;
+    }
+    .alfa-user-wrap{
+        position: relative;
+        top: 15px;
+    }
+    .password-wrap{
+        width: 98%;
+        padding: 33px 26px 30px;
+    }
+    .user-password-steps {
+        padding: 16px;
+    }
+}
