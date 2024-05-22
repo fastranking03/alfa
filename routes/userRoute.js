@@ -23,8 +23,9 @@ router.get('/reset-password',(req,res) =>{
 // User Registration
 router.post("/signup", async (req, res) => {
     const { name, email, password } = req.body;
+
     try {
-        //if email already exists
+        // First check if email already exists
         const checkEmailQuery = 'SELECT email FROM user_registration WHERE email = ?';
         connect.query(checkEmailQuery, [email], async (err, result) => {
             if (err) {
@@ -39,7 +40,7 @@ router.post("/signup", async (req, res) => {
                 if (err) {
                     return res.status(500).send('Failed to register user');
                 }
-                 res.redirect('/login');
+                 res.render('login', { success: 'Registration successful' });
             });
         });
     } catch (e) {
