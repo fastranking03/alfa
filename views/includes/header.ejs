@@ -11,6 +11,13 @@
                     <li><a href="/">Blogs</a></li>
                     <li><a href="/">Shop</a></li>
                     <li><a href="/">Contact Us</a></li>
+                    <li>
+                        <% if (user) { %>
+                            <p>Welcome, <%= user.name %>!</p>
+                        <% } else { %>
+                            <p>Welcome, Guest!</p>
+                        <% } %>
+                    </li>
                 </ul>
             </div>
         </div>

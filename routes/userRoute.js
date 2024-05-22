@@ -23,7 +23,6 @@ router.get('/reset-password',(req,res) =>{
 // User Registration
 router.post("/signup", async (req, res) => {
     const { name, email, password } = req.body;
-
     try {
         // First check if email already exists
         const checkEmailQuery = 'SELECT email FROM user_registration WHERE email = ?';
@@ -47,6 +46,55 @@ router.post("/signup", async (req, res) => {
         console.log(e);
         res.render('signup', { error: 'Error in Code' });
     }
+});
+
+// User Login
+router.post('/login', async(req,res) =>{
+     try{
+        const {email,password} = req.body;
+        const alfa_query = "SELECT * FROM user_registration WHERE email = ?";
+        connect.query(alfa_query,[email], async(err,result) =>{
+            if (err) {
+                res.render('login', { error: 'Error in login' });
+                return;
+            }
+            if(result.length === 0){
+                res.render("login",{error:"Email is not register."})
+                return;
+             }
+             const passMatch = await bcrypt.compare(password, result[0].password);
+             if (!passMatch) {
+                res.render('login', { error: 'Invalid Email or Password' });
+            } else {
+                req.session.user = result[0]; // Storing user data in session
+                if (req.session.user.status === 1) {
+                     res.redirect('/admin/');
+                } else {
+                    res.redirect('/');
+                 }
+            }
+        })
+ 
+    }catch(e){
+        res.render('login', { error: 'Error in Code' }); 
+    }
+});
+
+// Session Display
+router.use((req, res, next) => {
+    if (req.session.user) {
+        res.locals.user = req.session.user;
+    }
+    next();
+});
+
+router.get('/logout', (req, res) => {
+    req.session.destroy((err) => {
+        if (err) {
+            return console.log(err);
+        }
+        res.redirect('/login');
+    });
 });
 
 export default router
