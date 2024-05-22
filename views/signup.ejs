@@ -3,12 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alfa | SignUp</title>
+    <title>Alfa Meanswear | SignUp</title>
     <%- include('includes/head') %>
 </head>
 <body>
  <div class="alfa-main-wraper">
-     <div class="mt-1000">
+    <%- include('includes/header') %>
+     <div class="mt-100">
         <div class="user-container">
             <div class="user-banner-wrapper">
                 <div class="t-banner">
@@ -17,9 +18,7 @@
             </div>
             <div class="user-main-wrapper">
                 <div class="alfa-user-wrap">
-                    <div class="user-back">
-                        <a onclick="window.history.back()"><img src="assets/images/back.png" alt=""></a>
-                    </div>
+                    
                     <div class="alfa-form-warpper">
                         <div class="alfa-user-title">
                             <h3>Create an Account</h3>
@@ -46,13 +45,25 @@
                                  <span>OR</span>
                              </div>
                         </div>
+                        <div>
+                            <div class="error-message" style="color: red;">
+                                <% if (typeof error !== 'undefined') { %>
+                                    <p><%= error %></p>
+                                <% } %>
+                            </div>
+                            <div class="success-message" style="color: green;">
+                                <% if (typeof success !== 'undefined') { %>
+                                    <p><%= success %></p>
+                                <% } %>
+                             </div>
+                        </div>
                         <div class="main-form">
-                            <form action="" method="post">
+                            <form action="/signup" method="post">
                                 <div class="row">
                                     <div class="col-md-12">
                                         <div class="alfa-form-group">
                                             <label for="Email">Enter Your Name</label>
-                                            <input type="text" class="form-input" name="name" placeholder="Enter your Name">
+                                            <input type="text" class="form-input" name="name" placeholder="Enter your Name" required>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
@@ -71,7 +82,7 @@
                                     </div>
                                      <div class="col-md-12">
                                         <div class="user-button">
-                                            <button class="user-btn">Register</button>
+                                            <button class="user-btn" type="submit">Register</button>
                                         </div>
                                     </div>
                                     <div class="col-md-12">

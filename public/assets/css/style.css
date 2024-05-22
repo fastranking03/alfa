@@ -35,7 +35,7 @@ a{
     justify-content: space-between;
     padding: 0 2rem;
     align-items: center;
-    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    /* box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px; */
     height: 80px;
 }
 .header-container .left-header-wrapper{
@@ -267,3 +267,166 @@ a{
     bottom: 12px;
     cursor: pointer;
   }
+  
+  /* Home Page Design */
+  .hero-sec-items{
+    padding: 60px 0 118px;
+  }
+  .alfa-banners{
+    position: relative;
+  }
+  .alfa-circle img{
+    width: 400px !important;
+    height: 400px;
+  }
+  .alfa-main-image{
+    position: absolute;
+    top: 25px;
+    left: 38px;
+  }
+  .alfa-main-image img{
+    height: 500px;
+    object-fit: contain;
+  }
+  .alfa-text h6{
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-size: 13px;
+  }
+  .alfa-text  span{
+    width: 50px;
+    display: inline-block;
+    background: #000;
+    height: 1px;
+  }
+  .alfa-main-title h3{
+    font-size: 75px;
+    font-weight: 400;
+  }
+  .alfa-discover-btn{
+    margin: 22px auto;
+  }
+  .alfa-btn{
+    background: #000000;
+    color: #fff;
+    width: 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 48px;
+  }
+  .alfa-btn:hover{
+    color: #fff;
+  }
+  .alfa-btn img{
+    width: 6px !important;
+    height: 10px;
+    margin-left: 10px;
+  }
+  .alfa-hero-left-wrapper{
+    padding: 45px 0;
+  }
+  .features-row{
+    display: grid;
+    grid-template-columns: auto auto auto auto;
+    gap: 50px;
+  }
+  .features-row .feature-box{
+    border: 1px solid #B3B3B3;
+    padding: 30px;
+    display: flex;
+    gap: 10px;
+    align-items: center;
+  }
+  .feature-icon img{
+    width: 50px;
+  }
+  .features-content h5,.features-content p{
+    margin: 0;
+  }
+  .features-content h5{
+    font-size: 17px;
+  }
+  .features-content p{
+    font-size: 13px;
+  }
+  .mt-50{
+    margin-top: 50px;
+  }
+  .mt-60{
+    margin-top: 60px;
+  }
+  .mt-70{
+    margin-top: 70px;
+  }
+  .mt-80{
+    margin-top: 80px;
+  }
+  .alfa-category-wrapper{
+    max-width: 1000px;
+    margin: auto;
+  }
+  .category-wrapper{
+    display: grid;
+    grid-template-columns:  auto auto auto;
+    gap: 50px;
+  }
+  .category-wrapper .category-box{
+    margin-bottom: 10px;
+    background: #F5F5F5;
+    text-align: center;
+    padding: 30px;
+  }
+  .category-img img{
+    width: 220px;
+    height: 230px;
+    object-fit: contain;
+  }
+  .alfa-title {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+ .category-text h4{
+    color: #000;
+    font-size: 18px;
+ }
+ .category-text{
+    margin: 10px auto;
+ }
+ .footer{
+    background: var(--blackColor);
+    margin: 100px auto 0;
+    padding: 30px 10px 30px;
+ }
+ .alfa-subscription{
+    text-align: center;
+ }
+ .alfa-subscription .subs-text h3{
+    color: var(--whiteColor);
+ }
+ .subs-form-input{
+    position: relative;
+ }
+ .subs-form-input span{
+    position: absolute;
+    top: 9px;
+    margin: 0 10px;
+ }
+ .subs-form-input img{
+    width: 20px;
+ }
+ .subs-form-input .subs-control{
+    width: 600px;
+    border: 1px solid #A4A4A4;
+    background: transparent;
+    color: #fff;
+    height: 45px;
+    padding: 0 60px;
+ }
+ .subs-form-input .subs-submit{
+    background: transparent;
+    border: none;
+    position: absolute;
+    top: 10px;
+    margin: 0px -30px;
+ }
