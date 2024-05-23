@@ -17,6 +17,10 @@
 a{
     text-decoration: none !important;
 }
+.comman-ul{
+  list-style: none;
+  padding-left: 0;
+}
 .header{
     position: fixed;
     width: 100%;
@@ -35,7 +39,6 @@ a{
     justify-content: space-between;
     padding: 0 2rem;
     align-items: center;
-    /* box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px; */
     height: 80px;
 }
 .header-container .left-header-wrapper{
@@ -93,7 +96,55 @@ a{
 .right-header-wrapper .header-icons ul .alfa-icon-flex span{
     font-size: 12px;
 }
-
+.user-profile-card{
+    display: none;
+    position: absolute;
+    background: #fff;
+    top: 64px;
+    left: -162px;
+    width: 320px;
+    box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+    transition: .2s ease-out;
+}
+/* .user-card-visible:hover .user-profile-card{
+  display: block !important;
+} */
+.user-pro-top{
+  border-bottom: 1px solid #cdbaba;
+}
+.user-pro-top .pro-title h5{
+ margin: 0;
+}
+.user-pro-top .pro-title p{
+    font-size: 15px;
+    color: #585858;
+ }
+.user-pro-top > div{
+  padding: 20px;
+}
+.user-pro-links ul{
+    display: flex;
+    padding: 0;
+    flex-direction: column;
+    gap: 10px !important;
+}
+.user-pro-links ul a{
+  color: var(--blackColor);
+}
+.user-pro-top .profile-login-signup{
+    border: 1px solid #CBCBCB;
+    padding: 10px 10px;
+    height: 45px;
+    width: 135px;
+    text-align: center;
+}
+.user-pro-top .profile-login-signup a{
+  color:var(--blackColor);
+  font-weight: 500;
+}
+.user-pro-links{
+  padding: 15px 24px 20px;
+}
 /* Login Css */
 .user-container{
     display: flex
@@ -269,8 +320,46 @@ a{
   }
   
   /* Home Page Design */
+  .hero-image-center{
+    display: flex;
+    justify-content: center;
+  }
+  #hero-carousel .owl-nav.disabled{
+    display: flex !important;
+    gap: 10px;
+  }
+  #hero-carousel{
+    position: relative;
+  }
+  #hero-carousel .owl-nav.disabled .owl-prev{
+     left: 80px;
+  }
+  #hero-carousel .owl-nav.disabled .owl-next{
+     right: 80px;
+  }
+  #hero-carousel .owl-nav.disabled .owl-prev, #hero-carousel .owl-nav.disabled .owl-next{
+    width: 40px;
+    height: 40px;
+    border: 1px solid #999090;
+    border-radius: 50%;
+    line-height: 13px;
+    position: absolute;
+    bottom: 270px;
+ }
   .hero-sec-items{
     padding: 60px 0 118px;
+  }
+  .hero-meanswear{
+    position: absolute;
+    bottom: -80px;
+    z-index: 1;
+  }
+  .hero-meanswear h2{
+    color: #F5EAD8;
+    font-size: 268px;
+    font-weight: 300;
+    letter-spacing: 21px;
+    text-transform: uppercase;
   }
   .alfa-banners{
     position: relative;
@@ -362,7 +451,7 @@ a{
   .mt-80{
     margin-top: 80px;
   }
-  .alfa-category-wrapper{
+  .alfa-category-wrapper ,.alfa-new-arrival{
     max-width: 1000px;
     margin: auto;
   }
@@ -395,11 +484,61 @@ a{
  }
  .footer{
     background: var(--blackColor);
-    margin: 100px auto 0;
     padding: 30px 10px 30px;
  }
  .alfa-subscription{
     text-align: center;
+ }
+ .main-footer{
+  margin: 55px 85px 25px; 
+ }
+ .main-footer .alfa-footer{
+  display: flex;
+ }
+ .main-footer .alfa-footer .footer-left-wrap{
+  width: 30%;
+ }
+ .main-footer .alfa-footer .footer-right-wrap{
+  width: 70%;
+ }
+ .footer-link-title{
+  margin: 0 0 15px;
+ }
+ .footer-link-title h3{
+    color: #fff;
+    font-size: 18px;
+ }
+ .footer-link-ul li{
+  margin-bottom: 5px;
+ }
+ .footer-link-ul a{
+  font-size: 15px;
+  color: var(--whiteColor);
+ }
+ .footer-link-ul a:hover{
+  color: var(--whiteColor);
+ }
+ .footer-title h3{
+  color: var(--whiteColor);
+ }
+ .footer-right-wrap .footer-links-wrapper{
+  display: flex;
+  justify-content: space-between;
+ }
+ .footer-about p{
+    font-size: 16px;
+    color: #fff;
+    font-weight: 300;
+ }
+ .footer-social-media ul {
+  display: flex;
+  gap: 10px;
+ }
+ .footer-social-media ul li .social-icon{
+  width: 25px;
+ }
+ .alfa-subscription .subs-text{
+  margin: 0 0 25px;
  }
  .alfa-subscription .subs-text h3{
     color: var(--whiteColor);
@@ -430,3 +569,225 @@ a{
     top: 10px;
     margin: 0px -30px;
  }
+ .offer-wrapper {
+  display: flex;
+  gap: 30px;
+  align-items: center;
+ }
+ .offer-wrapper .offer-wrap{
+  background: #E8F3FF;
+  width: 70%;
+  padding: 62px 25px 72px;
+  height: 530px;
+ }
+ .offer-left-wrap .offer-images {
+  position: relative;
+  left: 100px;
+ }
+ .offer-left-wrap{
+     display: flex;
+    justify-content: space-between;
+    align-items: end;
+ }
+ .offer-left-wrap .offer-images .offer-circle{
+     width: 400px;
+    height: 400px;
+ }
+ .offer-left-wrap .offer-images .offer-combo{
+    position: absolute;
+    top: -10px;
+    right: -110px;
+ }
+ .offer-combo .combo-img{
+    width: 475px;
+ }
+ .offer-content{
+    position: relative;
+    top: 68px;
+    right: 23px;
+ }
+ .offer-content p{
+  font-size: 20px;
+ }
+ .offer-item-name{
+    bottom: 165px;
+    transform: rotate(270deg);
+    position: absolute;
+    left: -117px;
+ }
+ .offer-item-name h2{
+  font-size: 95px;
+  letter-spacing: 16px;
+  color: #D6E9FF;
+  font-family: Marcellus;
+ }
+ .offer-wrap-right{
+    height: 530px;
+    background: #E8F3FF;
+    width: 30%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+ }
+ .offer-right-text a{
+    background:var(--blackColor);
+    color: var(--whiteColor);
+    width: 200px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 45px;
+    font-size: 22px;
+    letter-spacing: 3px;
+    font-family: Marcellus;
+ }
+ .offer-right-text a:hover{
+  color:var(--whiteColor)
+ }
+ .offer-percentage{
+  margin: 20px auto;
+ }
+ .offer-percentage h3, .offer-percentage p{
+  font-family: "Marcellus";
+ }
+ .offer-percentage h3{
+  font-size: 65px;
+  color: #56799F;
+  letter-spacing: 3px;
+  margin: 0;
+ }
+ .offer-percentage p{
+  letter-spacing: 4px;
+ }
+ .offer-shop-now a{
+    color: var(--blackColor);
+    font-size: 15px;
+    text-decoration: underline !important;
+ }
+ .offer-shop-now a:hover{
+  color: var(--blackColor);
+ }
+ .offer-shop-now img{
+  filter: brightness(0.1);
+ }
+ .product-item .produt-wrap{
+  background: #F5F5F5;
+  position: relative;
+  padding: 50px 0 45px;
+  }
+ .arrival-wrapper{
+  display: grid;
+  grid-template-columns: auto auto auto;
+  gap: 50px;
+ }
+ .product-item{
+  text-align: center;
+
+ }
+ .product-rating ul{
+  padding-left: 0;
+  list-style: none;
+ }
+ .product-rating ul .star-icon ,.testimonial-rating  .star-icon{
+     width: 15px !important;
+ }
+ .product-rating ul li{
+  display: flex;
+  justify-content: center;
+  gap: 3px;
+ }
+ .product-details{
+  margin: 18px auto;
+ }
+ .produt-wrap .product-btn .pro-whishlist{
+    position: absolute;
+    top: 12px;
+    right: 10px;
+ }
+ .produt-wrap .product-btn .pro-view{
+  position: absolute;
+  right: 12px;
+  bottom: 12px;
+ }
+ .produt-wrap .pro-img{
+    width: 230px;
+    height: 230px;
+    object-fit: contain;
+ }
+ .product-details h6{
+  color: #464646;
+  font-weight: 400;
+ }
+ .bestseller-wrapper .owl-nav.disabled{
+  display: flex !important;
+  position: absolute;
+  top: -40px;
+  right: 7px;
+  gap: 10px;
+ }
+ .bestseller-wrapper .owl-nav.disabled .owl-prev , .bestseller-wrapper .owl-nav.disabled .owl-next{
+    width: 30px;
+    height: 30px;
+    border: 1px solid #999090;
+    border-radius: 50%;
+    line-height: 13px;
+ }
+ .test-quotes{
+   display: flex;
+   justify-content: center;
+   margin-bottom: 15px;
+ }
+ .test-quotes .quotes-img{
+   width: 50px !important;
+ }
+ .testimonial-rating{
+  list-style: none;
+  padding-left: 0;
+ }
+ .test-image img{
+  width: 100px !important;
+ }
+ .testimonial-details{
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    justify-content: center;
+    margin: 25px auto 0;
+ }
+ .testimonial-rating li{
+  display: flex;
+  gap: 3px;
+ }
+ .test-d-wrap{
+  text-align: start;
+ }
+ .test-name .designation{
+  font-weight: 400;
+ }
+ .test-d-wrap .test-name h5{
+  margin: 0;
+ }
+ .testimonial-content{
+  text-align: center;
+ }
+ .partner-item .partner-img{
+  width: 85px !important;
+    height: 24px;
+    object-fit: contain;
+ }
+.partner-wrapper{
+  background: #F5F5F5;
+  padding: 66px;
+}
+.alfa-aminate-text{
+
+}
+.alfa-aminate-text h3{
+    background: linear-gradient(244deg, #F2E7D5 -161.44%, rgba(255, 255, 255, 0) 274.83%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    text-transform: uppercase;
+    font-size: 155px;
+    font-family: Marcellus;
+}

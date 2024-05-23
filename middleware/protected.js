@@ -10,4 +10,4 @@ function userLogIn(req,res,next){
        next()   
     }
    }
-   export { router,userLogIn };
+   export { router, userLogIn };

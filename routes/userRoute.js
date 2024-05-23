@@ -1,17 +1,19 @@
 import express from "express";
 import bcrypt from "bcrypt";
 import connect from "../db/connect.js";
+import {userLogIn} from "../middleware/protected.js";
 const router = express.Router();
 
-router.get('/login',(req,res) =>{
-    return res.render('login')
+router.get('/login',userLogIn,(req,res) =>{
+    const user = req.session.user;
+    return res.render('login',{user})
 })
-
 router.get('/signup',(req,res) =>{
-    return res.render('signup');
+    const user = req.session.user;
+    return res.render('signup',{user});
 })
 router.get('/forget-password',(req,res) =>{
-    return res.render('forget-password')
+    return res.render('forget-password');
 })
 router.get('/otp-verify',(req,res) =>{
     return res.render('otp-verification')

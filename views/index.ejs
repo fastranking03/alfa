@@ -13,11 +13,11 @@
         <%- include('includes/header') %>
             <div class="mt-100">
                 <!-- HERO SECTION -->
-                <section class="hero-section">
+                <section class="hero-section position-relative">
                     <div id="hero-carousel" class="owl-carousel comman-nav">
                         <div class="items hero-sec-items" style="background-color: #F8F2E8;">
                             <div class="container">
-                                <div class="row">
+                                <div class="row position-relative" style="z-index: 999;">
                                     <div class="col-md-6">
                                         <div class="alfa-hero-left-wrapper">
                                             <div class="alfa-text">
@@ -32,7 +32,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-6 hero-image-center">
                                         <div class="alfa-banners">
                                             <div class="alfa-circle">
                                                 <img src="assets/images/Ellipse1.png" alt="">
@@ -43,8 +43,11 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                             </div>
                         </div>
+                    </div>
+                    <div class="hero-meanswear d-none">
+                        <h2>Menswear</h2>
                     </div>
                 </section>
                 <!-- END -->
@@ -61,7 +64,7 @@
                                     <p>From all orders over $100</p>
                                 </div>
                             </div>
-                            <div class="feature-box">
+                             <div class="feature-box">
                                 <div class="feature-icon">
                                     <img src="assets/images/quality.png" alt="">
                                 </div>
@@ -99,64 +102,67 @@
                             <h2>Shop By categories</h2>
                         </div>
                         <div class="alfa-category-wrapper">
+                            <div class="alfa-aminate-text d-none">
+                                <h3>categories</h3>
+                            </div>
                             <div class="category-wrapper">
-                                 <div class="category-box">
-                                     <a href="">
+                                <div class="category-box">
+                                    <a href="">
                                         <div class="category-img">
                                             <img src="assets/images/cat1.png" alt="">
-                                         </div>
-                                         <div class="category-text">
+                                        </div>
+                                        <div class="category-text">
                                             <h4>Shirt</h4>
-                                         </div>
-                                     </a>
-                                 </div>
-                                 <div class="category-box">
-                                    <a href="">
-                                       <div class="category-img">
-                                           <img src="assets/images/cat2.png" alt="">
-                                        </div>
-                                        <div class="category-text">
-                                           <h4>Jeans</h4>
                                         </div>
                                     </a>
                                 </div>
                                 <div class="category-box">
                                     <a href="">
-                                       <div class="category-img">
-                                           <img src="assets/images/cat3.png" alt="">
+                                        <div class="category-img">
+                                            <img src="assets/images/cat2.png" alt="">
                                         </div>
                                         <div class="category-text">
-                                           <h4>Trouser</h4>
+                                            <h4>Jeans</h4>
                                         </div>
                                     </a>
                                 </div>
                                 <div class="category-box">
                                     <a href="">
-                                       <div class="category-img">
-                                           <img src="assets/images/cat4.png" alt="">
+                                        <div class="category-img">
+                                            <img src="assets/images/cat3.png" alt="">
                                         </div>
                                         <div class="category-text">
-                                           <h4>Suit</h4>
+                                            <h4>Trouser</h4>
                                         </div>
                                     </a>
                                 </div>
                                 <div class="category-box">
                                     <a href="">
-                                       <div class="category-img">
-                                           <img src="assets/images/cat4.png" alt="">
+                                        <div class="category-img">
+                                            <img src="assets/images/cat4.png" alt="">
                                         </div>
                                         <div class="category-text">
-                                           <h4>Suit</h4>
+                                            <h4>Suit</h4>
                                         </div>
                                     </a>
                                 </div>
                                 <div class="category-box">
                                     <a href="">
-                                       <div class="category-img">
-                                           <img src="assets/images/cat4.png" alt="">
+                                        <div class="category-img">
+                                            <img src="assets/images/cat4.png" alt="">
                                         </div>
                                         <div class="category-text">
-                                           <h4>Suit</h4>
+                                            <h4>Suit</h4>
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="category-box">
+                                    <a href="">
+                                        <div class="category-img">
+                                            <img src="assets/images/cat4.png" alt="">
+                                        </div>
+                                        <div class="category-text">
+                                            <h4>Suit</h4>
                                         </div>
                                     </a>
                                 </div>
@@ -165,28 +171,334 @@
                     </div>
                 </section>
                 <!-- END -->
+                <!-- SELLING SECTION -->
+                <section class="mt-80">
+                    <div class="offer-wrapper">
+                        <div class="offer-wrap">
+                            <div class="offer-left-wrap">
+                                <div class="offer-images">
+                                    <div><img src="assets/images/offer-circle.png" class="offer-circle" alt=""></div>
+                                    <div class="offer-combo">
+                                        <img src="assets/images/offer.png" class="combo-img" alt="">
+                                    </div>
+                                </div>
+                                <div class="offer-text-wrap position-relative">
+                                    <div class="offer-content">
+                                        <p>Alfa Menswear <br> Trouser</p>
+                                    </div>
+                                    <div class="offer-item-name">
+                                        <h2>Trouser</h2>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="offer-wrap-right">
+                            <div>
+                                <div class="offer-right-text">
+                                    <a href=""> Sale up to</a>
+                                </div>
+                                <div class="offer-percentage">
+                                    <h3>40%</h3>
+                                    <p>Off everything</p>
+                                </div>
+                                <div class="offer-shop-now">
+                                    <a href="">Shop Now <img src="assets/images/subs-arrow.png" alt=""></a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- END -->
+                <!-- NEW ARRIVAL -->
+                <section class="mt-80">
+                    <div class="container">
+                        <div class="alfa-new-arrival">
+                            <div class="alfa-title">
+                                <h3>New Arrivals</h3>
+                                <p>Preorder nor to receive exclusive deals & gifts</p>
+                            </div>
+                            <div class="arrival-wrapper">
+                                <div class="product-item">
+                                    <div class="produt-wrap">
+                                        <img src="assets/images/cat1.png" class="pro-img" alt="">
+                                        <div class="product-btn">
+                                            <div class="pro-whishlist">
+                                                <a href=""><img src="assets/images/heart.png" alt=""></a>
+                                            </div>
+                                            <div class="pro-view">
+                                                <a href=""><img src="assets/images/eye.png" alt=""></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="product-details">
+                                        <h6>Shirt/ menswear</h6>
+                                        <div class="product-price">
+                                            <h4>£42.00</h4>
+                                        </div>
+                                        <div class="product-rating">
+                                            <ul>
+                                                <li>
+                                                    <a href=""><img src="assets/images/star.png" alt=""></a>
+                                                    <a href=""><img src="assets/images/star.png" alt=""></a>
+                                                    <a href=""><img src="assets/images/star.png" alt=""></a>
+                                                    <a href=""><img src="assets/images/star.png" alt=""></a>
+                                                    <a href=""><img src="assets/images/star.png" alt=""></a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="product-item">
+                                    <div class="produt-wrap">
+                                        <img src="assets/images/cat2.png" class="pro-img" alt="">
+                                        <div class="product-btn">
+                                            <div class="pro-whishlist">
+                                                <a href=""><img src="assets/images/heart.png" alt=""></a>
+                                            </div>
+                                            <div class="pro-view">
+                                                <a href=""><img src="assets/images/eye.png" alt=""></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="product-details">
+                                        <h6>Shirt/ menswear</h6>
+                                        <div class="product-price">
+                                            <h4>£42.00</h4>
+                                        </div>
+                                        <div class="product-rating">
+                                            <ul>
+                                                <li>
+                                                    <a href=""><img src="assets/images/star.png" alt=""></a>
+                                                    <a href=""><img src="assets/images/star.png" alt=""></a>
+                                                    <a href=""><img src="assets/images/star.png" alt=""></a>
+                                                    <a href=""><img src="assets/images/star.png" alt=""></a>
+                                                    <a href=""><img src="assets/images/star.png" alt=""></a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="product-item">
+                                    <div class="produt-wrap">
+                                        <img src="assets/images/cat3.png" class="pro-img" alt="">
+                                        <div class="product-btn">
+                                            <div class="pro-whishlist">
+                                                <a href=""><img src="assets/images/heart.png" alt=""></a>
+                                            </div>
+                                            <div class="pro-view">
+                                                <a href=""><img src="assets/images/eye.png" alt=""></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="product-details">
+                                        <h6>Shirt/ menswear</h6>
+                                        <div class="product-price">
+                                            <h4>£42.00</h4>
+                                        </div>
+                                        <div class="product-rating">
+                                            <ul>
+                                                <li>
+                                                    <a href=""><img src="assets/images/star.png" alt=""></a>
+                                                    <a href=""><img src="assets/images/star.png" alt=""></a>
+                                                    <a href=""><img src="assets/images/star.png" alt=""></a>
+                                                    <a href=""><img src="assets/images/star.png" alt=""></a>
+                                                    <a href=""><img src="assets/images/star.png" alt=""></a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- END -->
+                <!-- BESTSELLER -->
+                <section class="mt-80">
+                    <div class="container-fluid">
+                        <div class="alfa-bestsellerl">
+                            <div class="alfa-title">
+                                <h3>Best Seller</h3>
+                                <p>Preorder nor to receive exclusive deals & gifts</p>
+                            </div>
+                            <div id="bestseller-carousel" class="bestseller-wrapper owl-carousel comman-nav">
+                                <div class="product-item">
+                                    <div class="produt-wrap">
+                                        <img src="assets/images/cat1.png" class="pro-img" alt="">
+                                        <div class="product-btn">
+                                            <div class="pro-whishlist">
+                                                <a href=""><img src="assets/images/heart.png" alt=""></a>
+                                            </div>
+                                            <div class="pro-view">
+                                                <a href=""><img src="assets/images/eye.png" alt=""></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="product-details">
+                                        <h6>Shirt/ menswear</h6>
+                                        <div class="product-price">
+                                            <h4>£42.00</h4>
+                                        </div>
+                                        <div class="product-rating">
+                                            <ul>
+                                                <li>
+                                                    <a href=""><img src="assets/images/star.png" class="star-icon"
+                                                            alt=""></a>
+                                                    <a href=""><img src="assets/images/star.png" class="star-icon"
+                                                            alt=""></a>
+                                                    <a href=""><img src="assets/images/star.png" class="star-icon"
+                                                            alt=""></a>
+                                                    <a href=""><img src="assets/images/star.png" class="star-icon"
+                                                            alt=""></a>
+                                                    <a href=""><img src="assets/images/star.png" class="star-icon"
+                                                            alt=""></a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="product-item">
+                                    <div class="produt-wrap">
+                                        <img src="assets/images/cat2.png" class="pro-img" alt="">
+                                        <div class="product-btn">
+                                            <div class="pro-whishlist">
+                                                <a href=""><img src="assets/images/heart.png" alt=""></a>
+                                            </div>
+                                            <div class="pro-view">
+                                                <a href=""><img src="assets/images/eye.png" alt=""></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="product-details">
+                                        <h6>Shirt/ menswear</h6>
+                                        <div class="product-price">
+                                            <h4>£42.00</h4>
+                                        </div>
+                                        <div class="product-rating">
+                                            <ul>
+                                                <li>
+                                                    <a href=""><img src="assets/images/star.png" class="star-icon"
+                                                            alt=""></a>
+                                                    <a href=""><img src="assets/images/star.png" class="star-icon"
+                                                            alt=""></a>
+                                                    <a href=""><img src="assets/images/star.png" class="star-icon"
+                                                            alt=""></a>
+                                                    <a href=""><img src="assets/images/star.png" class="star-icon"
+                                                            alt=""></a>
+                                                    <a href=""><img src="assets/images/star.png" class="star-icon"
+                                                            alt=""></a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="product-item">
+                                    <div class="produt-wrap">
+                                        <img src="assets/images/cat3.png" class="pro-img" alt="">
+                                        <div class="product-btn">
+                                            <div class="pro-whishlist">
+                                                <a href=""><img src="assets/images/heart.png" alt=""></a>
+                                            </div>
+                                            <div class="pro-view">
+                                                <a href=""><img src="assets/images/eye.png" alt=""></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="product-details">
+                                        <h6>Shirt/ menswear</h6>
+                                        <div class="product-price">
+                                            <h4>£42.00</h4>
+                                        </div>
+                                        <div class="product-rating">
+                                            <ul>
+                                                <li>
+                                                    <a href=""><img src="assets/images/star.png" class="star-icon"
+                                                            alt=""></a>
+                                                    <a href=""><img src="assets/images/star.png" class="star-icon"
+                                                            alt=""></a>
+                                                    <a href=""><img src="assets/images/star.png" class="star-icon"
+                                                            alt=""></a>
+                                                    <a href=""><img src="assets/images/star.png" class="star-icon"
+                                                            alt=""></a>
+                                                    <a href=""><img src="assets/images/star.png" class="star-icon"
+                                                            alt=""></a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- END -->
+                <!-- TESTIMONIAL -->
+                <section class="mt-80">
+                    <div class="container">
+                        <div id="testimonial-carousel" class="alfa-testimonila owl-carousel comman-nav">
+                            <div class="testimonial-warpper">
+                                <div class="test-quotes">
+                                    <img src="assets/images/quotes.png" class="quotes-img" alt="">
+                                </div>
+                                <div class="testimonial-content">
+                                    <h4>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam luctus sem ultrices
+                                        ipsum porta hendrerit. Praesent a pellentesque lorem. Etiam feugiat commodo
+                                        risus, vitae tincidunt neque faucibus sed</h4>
+                                    <div class="testimonial-details">
+                                        <div class="test-image">
+                                            <img src="assets/images/testimonial.png" alt="">
+                                        </div>
+                                        <div class="test-d-wrap">
+                                            <div class="test-name">
+                                                <h5 class="name">Jon battler</h5>
+                                                <h6 class="designation">Fashion designer</h6>
+                                            </div>
+                                            <ul class="testimonial-rating">
+                                                <li>
+                                                    <a href=""><img src="assets/images/star.png" class="star-icon"
+                                                            alt=""></a>
+                                                    <a href=""><img src="assets/images/star.png" class="star-icon"
+                                                            alt=""></a>
+                                                    <a href=""><img src="assets/images/star.png" class="star-icon"
+                                                            alt=""></a>
+                                                    <a href=""><img src="assets/images/star.png" class="star-icon"
+                                                            alt=""></a>
+                                                    <a href=""><img src="assets/images/star.png" class="star-icon"
+                                                            alt=""></a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- END -->
+                <!-- PARTNER -->
+                <section class="mt-80">
+                    <div class="partner-wrapper">
+                        <div class="container">
+                            <div id="partner-carousel" class="partner-wrap-grid owl-carousel comman-nav">
+                                <div class="partner-item">
+                                    <img src="assets/images/brand.png" class="partner-img" alt="">
+                                </div>
+                                <div class="partner-item">
+                                    <img src="assets/images/brand02.png" class="partner-img" alt="">
+                                </div>
+                                <div class="partner-item">
+                                    <img src="assets/images/brand03.png" class="partner-img" alt="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <!-- END -->
+                <!-- FOOTER -->
+                <%- include('includes/footer') %>
+                <!-- END -->
             </div>
 
-            <!-- FOOTER -->
-            <footer class="footer">
-                <div class="footer-wrapper">
-                    <div class="alfa-subscription">
-                         <div class="subs-text">
-                             <h3> Subscribe & get 20% Discount</h3>
-                         </div>
-                         <div class="subs-form">
-                            <form action="">
-                                <div class="subs-form-input">
-                                    <span><img src="assets/images/email.png" alt=""></span>
-                                    <input type="text" class="subs-control" placeholder="Email Address">
-                                    <button type="submit" class="subs-submit"><img src="assets/images/subs-arrow.png" alt=""></button>
-                                </div>
-                            </form>
-                         </div>
-                    </div>
-                </div>
-            </footer>
-            <!-- END -->
     </div>
     <%- include('includes/foot') %>
         <script>
@@ -206,6 +518,66 @@
                         },
                         1000: {
                             items: 1
+                        }
+                    }
+                });
+            });
+            $(document).ready(function () {
+                $('#bestseller-carousel').owlCarousel({
+                    loop: true,
+                    margin: 20,
+                    nav: true,
+                    autoplay: true,
+                    navText: ['<i class="fa-solid fa-angle-left"></i>', '<i class="fa-solid fa-angle-right"></i>'],
+                    responsive: {
+                        0: {
+                            items: 1
+                        },
+                        600: {
+                            items: 1
+                        },
+                        1000: {
+                            items: 6
+                        }
+                    }
+                });
+            });
+            $(document).ready(function () {
+                $('#testimonial-carousel').owlCarousel({
+                    loop: true,
+                    margin: 20,
+                    nav: true,
+                    autoplay: true,
+                    navText: ['<i class="fa-solid fa-angle-left"></i>', '<i class="fa-solid fa-angle-right"></i>'],
+                    responsive: {
+                        0: {
+                            items: 1
+                        },
+                        600: {
+                            items: 1
+                        },
+                        1000: {
+                            items: 1
+                        }
+                    }
+                });
+            });
+            $(document).ready(function () {
+                $('#partner-carousel').owlCarousel({
+                    loop: true,
+                    margin: 20,
+                    nav: true,
+                    autoplay: false,
+                    navText: ['<i class="fa-solid fa-angle-left"></i>', '<i class="fa-solid fa-angle-right"></i>'],
+                    responsive: {
+                        0: {
+                            items: 1
+                        },
+                        600: {
+                            items: 1
+                        },
+                        1000: {
+                            items: 7
                         }
                     }
                 });
