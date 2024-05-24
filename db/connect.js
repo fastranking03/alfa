@@ -5,7 +5,7 @@ const connect = mysql2.createConnection({
   host: '153.92.6.103',
   user: 'u923315908_alfamens_03',
   password: 'N&4/EWMs7a',
-  database: 'N&4/EWMs7a'
+  database: 'u923315908_alfamens_03'
 });
 
 
