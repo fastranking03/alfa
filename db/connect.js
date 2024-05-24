@@ -1,11 +1,13 @@
 import mysql2 from "mysql2"
 
+
 const connect = mysql2.createConnection({
-  host: 'localhost',
-  user: 'root',
-  password: '',
-  database: 'alfa_meanwear'
+  host: '153.92.6.103',
+  user: 'u923315908_alfamens_03',
+  password: 'N&4/EWMs7a',
+  database: 'N&4/EWMs7a'
 });
+
 
 connect.connect((err) => {
   if (err) {
