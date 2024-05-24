@@ -324,20 +324,20 @@ a{
     display: flex;
     justify-content: center;
   }
-  #hero-carousel .owl-nav.disabled{
+  #hero-carousel .owl-nav{
     display: flex !important;
     gap: 10px;
   }
   #hero-carousel{
     position: relative;
   }
-  #hero-carousel .owl-nav.disabled .owl-prev{
+  #hero-carousel .owl-nav .owl-prev{
      left: 80px;
   }
-  #hero-carousel .owl-nav.disabled .owl-next{
+  #hero-carousel .owl-nav .owl-next{
      right: 80px;
   }
-  #hero-carousel .owl-nav.disabled .owl-prev, #hero-carousel .owl-nav.disabled .owl-next{
+  #hero-carousel .owl-nav .owl-prev, #hero-carousel .owl-nav .owl-next{
     width: 40px;
     height: 40px;
     border: 1px solid #999090;
@@ -719,17 +719,17 @@ a{
   color: #464646;
   font-weight: 400;
  }
- .bestseller-wrapper .owl-nav.disabled{
+ .bestseller-wrapper .owl-nav{
   display: flex !important;
   position: absolute;
   top: -40px;
   right: 7px;
   gap: 10px;
  }
- .bestseller-wrapper .owl-nav.disabled .owl-prev , .bestseller-wrapper .owl-nav.disabled .owl-next{
+ .bestseller-wrapper .owl-nav .owl-prev , .bestseller-wrapper .owl-nav .owl-next{
     width: 30px;
     height: 30px;
-    border: 1px solid #999090;
+    border: 1px solid #999090 !important;
     border-radius: 50%;
     line-height: 13px;
  }
