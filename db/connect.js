@@ -3,9 +3,9 @@ import mysql2 from "mysql2"
 
 const connect = mysql2.createConnection({
   host: '153.92.6.103',
-  user: 'u923315908_alfamens_03',
-  password: 'N&4/EWMs7a',
-  database: 'N&4/EWMs7a'
+  user: 'u923315908_alfamen_03',
+  password: 'Alfamen_03',
+  database: 'u923315908_alfamen_03'
 });
 
 
@@ -14,6 +14,7 @@ connect.connect((err) => {
     console.error('Error connecting to database:', err);
     return;
   }
+  
   console.log('Connected to database');
 });
 

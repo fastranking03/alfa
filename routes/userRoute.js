@@ -19,9 +19,11 @@ router.get('/forget-password', (req, res) => {
 router.get('/otp-verify', (req, res) => {
     return res.render('otp-verification')
 })
+
 router.get('/reset-password', (req, res) => {
     return res.render('reset-password')
 })
+
 router.get('/otp-verification', (req, res) => {
     const user = req.session.user;
     return res.render('otp-verification',{user})
