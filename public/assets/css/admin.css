@@ -1,0 +1,126 @@
+*{
+    margin: 0;
+    padding: 0;
+    font-family: "Jost", sans-serif;
+    font-optical-sizing: auto;
+    font-weight:400 ;
+    font-style: 14px;
+}
+ .admin-header{
+    display: flex;
+    height: 100px;
+    border-bottom: 1px solid #eee;
+    align-items: center;
+    padding: 0px 30px 0 0;
+ }
+ .admin-header .admin-left{
+    display: flex;
+    align-items: center;
+    width: 250px;
+    justify-content: space-between;
+    padding: 0 10px;
+ }
+ .admin-search-form{
+    position:relative;
+ }
+ .admin-search-form .admin-search{
+    background: #F5F5F6;
+    border: none;
+    height: 44px;
+    width: 300px;
+    padding: 0 40px;
+    font-size: 15px;
+    outline: none;
+ }
+ .admin-right{
+    width: 100%;
+ }
+ .admin-search-form span{
+    position: absolute;
+    top: 8px;
+    left: 5px;
+ }
+ .admin-right-wrapper{
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+ }
+ .admin-alfa-right{
+    display: flex;
+    align-items: center;
+    gap: 24px;
+ }
+ .admin-user-icon{
+    display: flex;
+    align-items: center;
+    gap: 5px;
+ }
+ .admin-user-icon .admin-pro-name h5{
+    margin: 0;
+ }
+ .admin-user-icon .admin-pro-name p{
+    margin: 0;
+ }
+ .admin-sidnav-layout ul{
+    list-style: none;
+    margin: 0;
+    padding-left: 0;
+ }
+ .admin-sidnav-layout ul a{
+    text-decoration: none;
+    font-size: 17px;
+    color: #000;
+ }
+ .admin-side-nav{
+    display: flex;
+    gap: 10px;
+ }
+ .admin-navbar{
+    width: 250px;
+    height: 88vh;
+    border-right: 1px solid #eee; 
+ }
+ .admin-navbar .admin-sidnav-layout{
+    padding: 31px 20px;
+ }
+ .admin-navbar .admin-sidnav-layout ul li{
+    margin-bottom: 20px;
+ }
+ .admin-main-layout {
+    padding: 20px 20px;
+    width: calc(100% - 250px);
+}
+ .admin-brudcrumb-title h4{
+    font-size: 20px;
+ }
+ .admin-card{
+    box-shadow: rgba(81, 114, 100, 0.1) 0px 8px 24px;
+    padding: 30px 14px 20px; 
+ }
+ .admin-card-wrap{
+    display: flex;
+    justify-content: space-between;
+    margin: 0 0 20px;
+ }
+ .table-btn a{
+    text-decoration: none;
+    color: #fff;
+    background: #000;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+ }
+ .table-btn a:hover{
+    color: #fff;
+ }
+ .btn-submit{
+    text-decoration: none;
+    color: #fff;
+    background: #000;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    border: none;
+ }

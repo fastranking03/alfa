@@ -30,17 +30,19 @@
                             <div class="user-pro-top">
                                 <div>
                                     <div class="pro-title">
-                                        <h5>Welcome  </h5>
+                                        <% if (user) { %>
+                                        <h5>Welcome  <%= user.name %></h5>
+                                        <% } %>
                                         <p>To access account and manage orders</p>
                                     </div>
                                 
                                     <div class="profile-login-signup">
-                                     <% if (!user) { %>
-                                        <a href="/login">Login</a>
+                                     <% if (user) { %>
+                                        <a href="/logout">Logout</a>
+                                     <% } else { %>  
+                                         <a href="/login">Login</a>
                                         <span>/</span>
                                         <a href="/signup">Signup</a>
-                                     <% } else { %>  
-                                        <a href="/logout">Logout</a>
                                      <%  } %>  
                                     </div>
                                 </div>

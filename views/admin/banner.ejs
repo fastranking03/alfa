@@ -1,0 +1,63 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alfa Admin | Banner</title>
+    <%- include('includes/head') %>
+</head>
+
+<body>
+    <div class="main-admin-warpper">
+        <%- include('includes/header') %>
+        <div class="alfa-admin-wrapper">
+            <div class="admin-side-nav">
+                <%- include('includes/sidebar') %>
+                <div class="admin-main-layout">
+                    <div class="admin-bradcrumb">
+                        <div class="admin-brudcrumb-title">
+                            <h4>Banner List</h4>
+                        </div>
+                    </div>
+                    <div class="admin-card">
+                        <div class="admin-card-wrap">
+                            <div class="table-search">
+                                <input type="search" class="">
+                            </div>
+                            <div class="table-btn">
+                                <a href="/admin/add-banner">Add Banner</a>
+                            </div>
+                        </div>
+                        <div class="responsive-table">
+                            <table class="table table-border">
+                                <thead>
+                                    <tr>
+                                        <th>Sr No</th>
+                                        <th>Banner Name</th>
+                                        <th>Category Image</th>
+                                        <th>Created At</th>
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>1</td>
+                                        <td>Shirt</td>
+                                        <td></td>
+                                        <td>20-05-2024</td>
+                                        <td>
+                                            <a href="">Edit</a>
+                                            <a href="">Delete</a>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
