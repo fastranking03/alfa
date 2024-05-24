@@ -1,119 +1,120 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alfa Meanswear | SignUp</title>
-    <%- include('includes/head') %>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alfa Meanswear | SignUp</title>
+  <%- include('includes/head') %>
 </head>
+
 <body>
- <div class="alfa-main-wraper">
- 
-     <div class="mt-100">
-        <div class="user-container">
-            <div class="user-banner-wrapper">
-                <div class="t-banner">
-                    <img src="assets/images/loginImg.png" alt="">
-                </div>
-            </div>
-            <div class="user-main-wrapper">
-                <div class="alfa-user-wrap">
-                    
-                    <div class="alfa-form-warpper">
-                        <div class="alfa-user-title">
-                            <h3>Create an Account</h3>
-                            <p>Please complete the registration process to create an account</p>
-                        </div>
-                        <div class="user-login-option text-center">
-                             <div class="option-text">
-                                <span>Continue with</span>
-                             </div>
-                             <div class="option-ul">
-                                <ul>
-                                    <li>
-                                        <a href=""><img src="assets/images/google.png" alt=""></a>
-                                    </li>
-                                    <li>
-                                        <a href=""><img src="assets/images/fb.png" alt=""></a>
-                                    </li>
-                                    <li>
-                                        <a href=""><img src="assets/images/apple.png" alt=""></a>
-                                    </li>
-                                </ul>
-                             </div>
-                             <div class="user-else-option">
-                                 <span>OR</span>
-                             </div>
-                        </div>
-                        
-                        <div>
-                            <div class="error-message" style="color: red;">
-                                <% if (typeof error !== 'undefined') { %>
-                                    <p><%= error %></p>
-                                <% } %>
-                            </div>
-                            <div class="success-message" style="color: green;">
-                                <% if (typeof success !== 'undefined') { %>
-                                    <p><%= success %></p>
-                                <% } %>
-                             </div>
-                        </div>
+  <div class="alfa-main-wraper">
 
-                        <div class="main-form">
-                            <form action="/signup" method="post">
-                                <div class="row">
-                                    <div class="col-md-12">
-                                        <div class="alfa-form-group">
-                                            <label for="Email">Enter Your Name</label>
-                                            <input type="text" class="form-input" name="name" placeholder="Enter your Name" required>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="alfa-form-group">
-                                            <label for="Email">Email ID</label>
-                                            <input type="text" class="form-input" name="email" id="email" onclick="emailFunction()" placeholder="Enter your Email ID">
-                                            <span id="email_errror">Invaloa</span>
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-12">
-                                        <div class="alfa-form-group position-relative">
-                                            <label for="Password">Password</label>
-                                            <input type="text" class="form-input" name="password" id="passwordView" placeholder="Enter your Password">
-                                            <span id="onEyeClick"><img src="assets/images/eye.png" alt=""></span>
-                                        </div>
-                                    </div>
-                                     <div class="col-md-12">
-                                        <div class="user-button">
-                                            <button class="user-btn" type="submit">Register</button>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="user-about-account">
-                                            <p>Don’t have an account  <a href="/login">Login</a></p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
-            </div>
+    <div class="mt-100">
+      <div class="user-container">
+        <div class="user-banner-wrapper">
+          <div class="t-banner">
+            <img src="assets/images/loginImg.png" alt="">
+          </div>
         </div>
-   </div>
- </div>
- <script>
-   
+        <div class="user-main-wrapper">
+          <div class="alfa-user-wrap">
+
+            <div class="alfa-form-warpper">
+              <div class="alfa-user-title">
+                <h3>Create an Account</h3>
+                <p>Please complete the registration process to create an account</p>
+              </div>
+              <div class="user-login-option text-center">
+                <div class="option-text">
+                  <span>Continue with</span>
+                </div>
+                <div class="option-ul">
+                  <ul>
+                    <li>
+                      <a href=""><img src="assets/images/google.png" alt=""></a>
+                    </li>
+                    <li>
+                      <a href=""><img src="assets/images/fb.png" alt=""></a>
+                    </li>
+                    <li>
+                      <a href=""><img src="assets/images/apple.png" alt=""></a>
+                    </li>
+                  </ul>
+                </div>
+                <div class="user-else-option">
+                  <span>OR</span>
+                </div>
+              </div>
+
+              <div>
+                <div class="error-message" style="color: red;">
+                  <% if (typeof error !== 'undefined') { %>
+                  <p><%= error %></p>
+                  <% } %>
+                </div>
+                <div class="success-message" style="color: green;">
+                  <% if (typeof success !== 'undefined') { %>
+                  <p><%= success %></p>
+                  <% } %>
+                </div>
+              </div>
+
+              <div class="main-form">
+                <form action="/signup" method="post">
+                  <div class="row">
+                    <div class="col-md-12">
+                      <div class="alfa-form-group">
+                        <label for="Email">Enter Your Name</label>
+                        <input type="text" class="form-input" name="name" placeholder="Enter your Name" required>
+                      </div>
+                    </div>
+                    <div class="col-md-12">
+                      <div class="alfa-form-group">
+                        <label for="Email">Email ID</label>
+                        <input type="text" class="form-input" name="email" id="email" onclick="emailFunction()" placeholder="Enter your Email ID">
+                        <span id="email_errror">Invaloa</span>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="alfa-form-group position-relative">
+                        <label for="Password">Password</label>
+                        <input type="text" class="form-input" name="password" id="passwordView" placeholder="Enter your Password">
+                        <span id="onEyeClick"><img src="assets/images/eye.png" alt=""></span>
+                      </div>
+                    </div>
+                    <div class="col-md-12">
+                      <div class="user-button">
+                        <button class="user-btn" type="submit">Register</button>
+                      </div>
+                    </div>
+                    <div class="col-md-12">
+                      <div class="user-about-account">
+                        <p>Don’t have an account <a href="/login">Login</a></p>
+                      </div>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
     var onEyeClick = document.getElementById("onEyeClick");
-    var  passwordView = document.getElementById("passwordView");
-    onEyeClick.addEventListener('click',function(){
-        if(passwordView.type == "text"){
-          passwordView.type = "password"
-        }
-       else{
+    var passwordView = document.getElementById("passwordView");
+    onEyeClick.addEventListener('click', function() {
+      if (passwordView.type == "text") {
+        passwordView.type = "password"
+      } else {
         passwordView.type = "text"
-       }
+      }
     })
-</script>
+  </script>
 </body>
+
 </html>

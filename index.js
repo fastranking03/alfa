@@ -6,7 +6,16 @@ import adminRoute from "./routes/admin/adminRoute.js";
 import categoryRoute from "./routes/admin/categoryRoute.js";
 import bannerRoute from "./routes/admin/bannerRoute.js";
 import session from "express-session";
+import { fileURLToPath } from 'url'; 
+
 const app = express();
+
+
+app.use('/banner_images', express.static('banner_images'));
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+
 
 app.use(express.json());//For parsing application/json
 app.use(express.urlencoded({extended:true})) //For parsing application/x-www-form-urlencoded
@@ -22,6 +31,9 @@ app.use(session({
 app.set('view engine','ejs');
 app.set('views',path.resolve("./views"));
 app.use(express.static("public"))
+
+// Serve static files (like uploaded images)
+app.use('/banner_images', express.static('banner_images'));
 
 // Routes
 app.use('/',userRoute)
