@@ -21,14 +21,14 @@ app.use(session({
 //  Set Template Engine
 app.set('view engine','ejs');
 app.set('views',path.resolve("./views"));
-app.use(express.static("public"))
+app.use(express.static("public"));
 
 // Routes
-app.use('/',userRoute)
+app.use('/',userRoute);
 app.use('/',commanRoute);
-app.use('/admin/',adminRoute)
-app.use('/admin/',bannerRoute)
-app.use('/admin/',categoryRoute)
+app.use('/admin/',adminRoute);
+app.use('/admin/',bannerRoute);
+app.use('/admin/',categoryRoute);
 
 const PORT = 8081;
 app.listen(PORT,() =>{

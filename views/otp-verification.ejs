@@ -19,20 +19,25 @@
                 </div>
                 <div class="alfa-pass-container">
                     <div class="password-wrap">
+                        <% if (typeof message !== 'undefined') { %>
+                            <h5 class="text-danger"><%= message %></h5>
+                        <% } %>
                         <div class="pass-title text-center">
                             <h3>Enter Your Verification Code</h3>
-                            <p>We Sent a verification code to  </p>
+                            <p>We Sent a verification code to <%=email %> </p>
                         </div>
                         <form action="/otp-verification" method="post">
+                            <input type="hidden" name="email" value="<%= email %>" />
                             <div class="row">
                                 <div class="col-md-12">
                                     <div class="alfa-otp-form-group">
-                                        <input class="otp" type="text" name="otp1" oninput='digitValidate(this)' onkeyup='tabChange(1)' maxlength=1 >
+                                        <!-- <input class="otp" type="text" name="otp1" oninput='digitValidate(this)' onkeyup='tabChange(1)' maxlength=1 >
                                         <input class="otp" type="text" name="otp2" oninput='digitValidate(this)' onkeyup='tabChange(2)' maxlength=1 >
                                         <input class="otp" type="text" name="otp3" oninput='digitValidate(this)' onkeyup='tabChange(3)' maxlength=1 >
                                         <input class="otp" type="text" name="otp4" oninput='digitValidate(this)'onkeyup='tabChange(4)' maxlength=1 >
                                         <input class="otp" type="text" name="otp5" oninput='digitValidate(this)'onkeyup='tabChange(5)' maxlength=1 >
-                                        <input class="otp" type="text" name="otp6" oninput='digitValidate(this)'onkeyup='tabChange(6)' maxlength=1 >
+                                        <input class="otp" type="text" name="otp6" oninput='digitValidate(this)'onkeyup='tabChange(6)' maxlength=1 > -->
+                                        <input type="text" name="otp" class="form-control w-100" placeholder="Enter otp">
                                     </div>
                                 </div>
                                 <div class="col-md-12 mt-3">

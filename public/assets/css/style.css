@@ -791,3 +791,22 @@ a{
     font-size: 155px;
     font-family: Marcellus;
 }
+.pass-btn-success{
+  width: 100%;
+  height: 45px;
+  font-size: 18px;
+  background: #000;
+  color: #fff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.success-continue{
+  margin: 40px auto;
+}
+.password-success{
+  text-align: center;
+}
+.success-image{
+  margin: 38px auto;
+}

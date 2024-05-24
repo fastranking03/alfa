@@ -25,10 +25,11 @@ router.get('/reset-password', (req, res) => {
     return res.render('reset-password')
 })
 router.get('/otp-verification', (req, res) => {
-    const user = req.session.user;
-    return res.render('otp-verification',{user})
+     return res.render('otp-verification')
 })
-
+router.get('/password-success', (req, res) => {
+    return res.render('password-success')
+})
 // User Registration
 router.post("/signup", async (req, res) => {
     const { name, email, password } = req.body;
@@ -90,92 +91,101 @@ router.post('/login', async (req, res) => {
 });
 
 // Forget Password
-router.post('/forget-password', async (req, res) => {
-    try {
-        const { email } = req.body;
-        const sql_query = "SELECT * FROM user_registration WHERE email = ?";
+router.post('/forget-password',async (req,res) =>{
+    try{
+    const {email} = req.body;
+    const sql_query = "SELECT * FROM user_registration WHERE email = ?";
+    connect.query(sql_query, [email] , (err,result) =>{
         
-        connect.query(sql_query, [email], (err, result) => {
-            if (err) {
-                console.error('Database query error:', err); // Log the error
-                return res.render('forget-password', { error: 'Error in Query' });
+        if(err){
+            console.error('Error in Query:', err);
+            return res.render('forget-password',{message:'Error in Query'})
+        }if (result.length === 0) {
+            return res.render('forget-password', { message: 'Email is not registered' });
+        } 
+ 
+        // Genereate Otp
+        const otp = Math.floor(100000 + Math.random() * 900000).toString();
+
+        const transporter = nodemailer.createTransport({
+            host: 'smtp.gmail.com', // SMTP server address for Gmail
+            port: 587,
+            // server:'gmail',
+            auth:{
+                user:'jaydenmitchell0282@gmail.com',
+                pass:'rtcslwgbcgxkoibh'
             }
-            if (result.length === 0) {
-                return res.render('forget-password', { error: 'Email is not registered.' });
-            }
-
-            // Generate OTP
-            const otp = Math.floor(100000 + Math.random() * 900000).toString();
-
-            // Nodemailer configuration
-            const transporter = nodemailer.createTransport({
-                host: 'smtp.gmail.com', // SMTP server address for Gmail
-                port: 587,
-                // server:'gmail',
-                auth:{
-                    user:'jaydenmitchell0282@gmail.com',
-                    pass:'rtcslwgbcgxkoibh'
-                }
-            });
-
-            const mailOptions = {
-                from: 'jaydenmitchell0282@gmail.com',
-                to: email,
-                subject: 'Password Reset OTP',
-                text: `Your OTP for password reset is ${otp}`
-            };
-
-            transporter.sendMail(mailOptions, (err, info) => {
-                if (err) {
-                    console.error('Error sending OTP:', err); // Log the error
-                    return res.render('forget-password', { error: 'Error sending OTP' });
-                }
-                console.log('Email sent: ' + info.response);
-
-                const saveOtpQuery = 'UPDATE user_registration SET otp = ? WHERE email = ?';
-                connect.query(saveOtpQuery, [otp, email], (err, result) => {
-                    if (err) {
-                        console.error('Error saving OTP:', err); // Log the error
-                        return res.render('forget-password', { error: 'Error saving OTP' });
-                    }
-                     res.redirect('/otp-verification');
-                });
-            });
         });
-    } catch (e) {
-        console.error('An unexpected error occurred:', e); // Log the error
-        res.render('forget-password', { error: 'An error occurred' });
+
+        const mailOptions = {
+            from:'fastranking08@gmail.com',
+            to:email,
+            subject:'Password Reset Otp',
+            text:`Your Otp for password reset is ${otp}`
+        }
+
+        transporter.sendMail(mailOptions,(err,info) =>{
+            if(err){
+                console.error('Error sending email:', err);
+                return res.render('forget-password',{message:'Error sending OTP'})
+            }
+            console.log('Email sent: ' + info.response);
+
+            const saveOtpQuery = 'UPDATE user_registration SET otp = ? WHERE email = ?';
+            connect.query(saveOtpQuery,[otp,email],(err,result) =>{
+                if(err){
+
+                    return res.render('forget-password',{message:'Error saving OTP'});
+                }
+                res.render('otp-verification', {email: email });
+            })
+        })
+     })
+    }
+    catch(e){
+        res.render('forget-password', { message: 'An error occurred' });
+    }
+});
+ 
+router.post('/otp-verification',(req,res) =>{
+    try{
+      const {email,otp} = req.body;
+      const sql_query = "SELECT * FROM `user_registration` WHERE email = ? AND otp = ?";
+
+      connect.query(sql_query,[email,otp],(err,result) =>{
+        if(err){
+            return res.render('otp-verification',{message:'Error in Query'})
+        }
+        if(result.length === 0){
+            return res.render('otp-verification',{message:'Invalid OTP', email:email})
+        }
+        res.render('reset-password',{email:email})
+      })
+    }catch(e){
+        return res.render('otp-verification',{message:'Error in Code'})
     }
 });
 
-router.post('/otp-verification', async (req, res) => {
+router.post('/reset-password', async (req, res) => {
+    const { email, newPassword } = req.body;
     try {
-        const { email, otp } = req.body;
+         const saltRounds = 10;
+         // Hash the new password before storing it in the database
+        const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
 
-        const sql_query = "SELECT otp FROM user_registration WHERE email = ?";
-        
-        connect.query(sql_query, [email], (err, result) => {
+        const sql_query = "UPDATE `user_registration` SET password = ? WHERE email = ?";
+        connect.query(sql_query, [hashedPassword, email], (err, result) => {
             if (err) {
-                console.error('Database query error:', err);
-                return res.render('otp-verification', { error: 'Error in Query', email: email });
+                console.error('Error updating password:', err);
+                return res.render('reset-password', { email: email, message: 'Error updating password' });
             }
-            if (result.length === 0) {
-                return res.render('otp-verification', { error: 'Email is not registered.', email: email });
-            }
-
-            const storedOtp = result[0].otp;
-            if (storedOtp === otp) {
-                return res.render('reset-password', { email: email });
-            } else {
-                return res.render('otp-verification', { error: 'Invalid OTP. Please try again.', email: email });
-            }
+            res.redirect('/password-success');
         });
-    } catch (e) {
-        console.error('An unexpected error occurred:', e);
-        res.render('otp-verification', { error: 'An error occurred', email: email });
+    } catch (error) {
+        console.error('Error hashing password:', error);
+        res.render('reset-password', { email: email, message: 'An error occurred while resetting the password.' });
     }
 });
-
 
 // Session Display
 router.use((req, res, next) => {
