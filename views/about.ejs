@@ -9,10 +9,10 @@
     <header>
         <% if (user) { %>
             <p>Welcome, <%= user.name %>!</p>
-        <% } else { %>
-            <p>Welcome, Guest!</p>
+        <a href="/logout">Logout</a>
+         <% } else { %>
+            <p>Welcome, dd!</p>
         <% } %>
     </header>
-    <a href="/logout">Logout</a>
 </body>
 </html>

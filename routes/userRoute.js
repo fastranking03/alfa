@@ -10,14 +10,16 @@ router.get('/login', userLogIn, (req, res) => {
     return res.render('login', { user })
 })
 router.get('/signup', (req, res) => {
-    const user = req.session.user;
-    return res.render('signup', {email:user[0].email });
+     
+    return res.render('signup');
 })
 router.get('/forget-password', (req, res) => {
-    return res.render('forget-password');
+    const user = req.session.user;
+    return res.render('forget-password',{user});
 })
 router.get('/otp-verify', (req, res) => {
-    return res.render('otp-verification')
+    const user = req.session.user;
+    return res.render('otp-verification',{user})
 })
 router.get('/reset-password', (req, res) => {
     return res.render('reset-password')
@@ -32,7 +34,7 @@ router.post("/signup", async (req, res) => {
     const { name, email, password } = req.body;
     try {
         // First check if email already exists
-        const checkEmailQuery = 'SELECT email FROM user_registration WHERE email = ?';
+        const checkEmailQuery = 'SELECT email FROM `user_registration` WHERE email = ?';
         connect.query(checkEmailQuery, [email], async (err, result) => {
             if (err) {
                 return res.render('signup', { error: 'Error checking user' });
@@ -46,7 +48,7 @@ router.post("/signup", async (req, res) => {
                 if (err) {
                     return res.status(500).send('Failed to register user');
                 }
-                res.render('login', { success: 'Registration successful' });
+                res.redirect('/login');
             });
         });
     } catch (e) {
@@ -184,6 +186,7 @@ router.use((req, res, next) => {
 });
 
 router.get('/logout', (req, res) => {
+    
     req.session.destroy((err) => {
         if (err) {
             return console.log(err);

@@ -2,6 +2,7 @@ import express from "express";
 import path from "path";
 import userRoute from "./routes/userRoute.js";
 import commanRoute from "./routes/commanRoute.js";
+import adminRoute from "./routes/admin/adminRoute.js";
 import session from "express-session";
 const app = express();
 
@@ -23,6 +24,7 @@ app.use(express.static("public"))
 // Routes
 app.use('/',userRoute)
 app.use('/',commanRoute);
+app.use('/admin/',adminRoute)
 
 const PORT = 8081;
 app.listen(PORT,() =>{
