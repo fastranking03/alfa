@@ -10,4 +10,8 @@ function userLogIn(req,res,next){
        next()   
     }
    }
+<<<<<<< HEAD
+=======
+   
+>>>>>>> ff04db84541bb9c8db44fc0e4a770acb898a3bf7
    export { router, userLogIn };
