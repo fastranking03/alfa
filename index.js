@@ -41,6 +41,7 @@ app.use('/banner_images', express.static('banner_images'));
 
 // Routes
 app.use('/',userRoute);
+app.use('/',userRoute);
 app.use('/',commanRoute);
 app.use('/', shirtsRoute);
 app.use('/', productsRoute);
