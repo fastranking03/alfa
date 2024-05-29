@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+  <base href="http://localhost:8081" target="">
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Alfa Meanswear | Home</title>
@@ -50,6 +51,65 @@
           <h2>Menswear</h2>
         </div>
       </section>
+
+      <section class="mt-80">
+        <div class="container">
+          <div class="alfa-new-arrival">
+            <div class="alfa-title">
+              <h4> categories: <%= category.category_name %> </h4>
+
+              <p>Preorder nor to receive exclusive deals & gifts</p>
+            </div>
+            <div class="arrival-wrapper">
+              <% products.forEach(product => { %>
+              <div class="product-item">
+                <div class="produt-wrap">
+                  <img src="../product_images/<%= product.image %>" class="pro-img" alt="<%= product.name %>">
+                  <div class="product-btn">
+                    <div class="pro-whishlist">
+                      <a href=""><img src="assets/images/heart.png" alt="Wishlist"></a>
+                    </div>
+                    <div class="pro-view">
+                      <a href=""><img src="assets/images/eye.png" alt="View"></a>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="product-details">
+                  <h6><%= product.product_name %> </h6>
+                  <div class="product-price">
+                    <h4>£<%= product.product_price %></h4>
+                  </div>
+                  <div class="product-btn">
+                    <div class="pro-whishlist">
+                      <a href="/favorites/add/<%= product.id %>"><img src="assets/images/heart.png" alt="Add to Favorites"></a>
+                    </div>
+                    <div class="pro-view">
+                      <a href="/cart/add/<%= product.id %>"><img src="assets/images/cart.png" alt="Add to Cart"></a>
+                    </div>
+                  </div>
+
+                  <div class="product-rating">
+                    <ul>
+                      <li>
+                        <% for(let i = 0; i < 5; i++) { %>
+                        <% if (i < product.rating) { %>
+                        <a href=""><img src="assets/images/star.png" alt="Star"></a>
+                        <% } else { %>
+                        <a href=""><img src="assets/images/star-empty.png" alt="Star"></a>
+                        <% } %>
+                        <% } %>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+              <% }); %>
+
+            </div>
+          </div>
+        </div>
+      </section>
       <!-- END -->
       <!-- FEATURES START -->
       <section class="feature-section mt-80">
@@ -59,6 +119,7 @@
               <div class="feature-icon">
                 <img src="assets/images/shipping.png" alt="">
               </div>
+
               <div class="features-content">
                 <h5>Free Shipping</h5>
                 <p>From all orders over $100</p>
@@ -73,6 +134,7 @@
                 <p>24/7 online feedback</p>
               </div>
             </div>
+
             <div class="feature-box">
               <div class="feature-icon">
                 <img src="assets/images/return.png" alt="">
@@ -82,120 +144,26 @@
                 <p>Return money within 30 days</p>
               </div>
             </div>
+
+
             <div class="feature-box">
+
               <div class="feature-icon">
                 <img src="assets/images/gift-voucher.png" alt="">
               </div>
+
               <div class="features-content">
                 <h5>Gift Voucher</h5>
                 <p>20% off when you shop online</p>
               </div>
+
             </div>
           </div>
         </div>
       </section>
+
       <!-- END -->
-      <!-- CATEGORY SECTION -->
-      <section class="mt-80 category-section mb-5">
-        <div class="container">
-          <div class="alfa-title">
-            <h2>Shop By categories</h2>
-          </div>
-          <div class="alfa-category-wrapper">
-            <div class="alfa-aminate-text d-none">
-              <h3>categories</h3>
-            </div>
-            <div class="category-wrapper">
-              <div class="category-box">
-                <a href="/shirts">
-                  <div class="category-img">
-                    <img src="assets/images/cat1.png" alt="">
-                  </div>
-                  <div class="category-text">
-                    <h4>Shirt</h4>
-                  </div>
-                </a>
-              </div>
-              <div class="category-box">
-                <a href="">
-                  <div class="category-img">
-                    <img src="assets/images/cat2.png" alt="">
-                  </div>
-                  <div class="category-text">
-                    <h4>Jeans</h4>
-                  </div>
-                </a>
-              </div>
-              <div class="category-box">
-                <a href="">
-                  <div class="category-img">
-                    <img src="assets/images/cat3.png" alt="">
-                  </div>
-                  <div class="category-text">
-                    <h4>Trouser</h4>
-                  </div>
-                </a>
-              </div>
-              <div class="category-box">
-                <a href="">
-                  <div class="category-img">
-                    <img src="assets/images/cat4.png" alt="">
-                  </div>
-                  <div class="category-text">
-                    <h4>Suit</h4>
-                  </div>
-                </a>
-              </div>
-              <div class="category-box">
-                <a href="">
-                  <div class="category-img">
-                    <img src="assets/images/cat4.png" alt="">
-                  </div>
-                  <div class="category-text">
-                    <h4>Suit</h4>
-                  </div>
-                </a>
-              </div>
-              <div class="category-box">
-                <a href="">
-                  <div class="category-img">
-                    <img src="assets/images/cat4.png" alt="">
-                  </div>
-                  <div class="category-text">
-                    <h4>Suit</h4>
-                  </div>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
 
-        <div class="container">
-          <div class="alfa-category-wrapper">
-            <div class="alfa-aminate-text d-none">
-              <h3>categories</h3>
-            </div>
-            <div class="category-wrapper">
-              <% categories.forEach(category => { %>
-              <div class="category-box">
-                <a href="/category/<%= category.slug %>">
-                  <div class="category-img">
-                    <img src="../category_images/<%= category.category_image %>" alt="">
-                  </div>
-
-                  <div class="category-text">
-                    <h4><%= category.category_name %></h4>
-                  </div>
-                </a>
-              </div>
-              <% }); %>
-
-            </div>
-          </div>
-        </div>
-
-      </section>
-      <!-- END -->
       <!-- SELLING SECTION -->
       <section class="mt-80">
         <div class="offer-wrapper">
@@ -234,110 +202,7 @@
         </div>
       </section>
       <!-- END -->
-      <!-- NEW ARRIVAL -->
-      <section class="mt-80">
-        <div class="container">
-          <div class="alfa-new-arrival">
-            <div class="alfa-title">
-              <h3>New Arrivals</h3>
-              <p>Preorder nor to receive exclusive deals & gifts</p>
-            </div>
-            <div class="arrival-wrapper">
-              <div class="product-item">
-                <div class="produt-wrap">
-                  <img src="assets/images/cat1.png" class="pro-img" alt="">
-                  <div class="product-btn">
-                    <div class="pro-whishlist">
-                      <a href=""><img src="assets/images/heart.png" alt=""></a>
-                    </div>
-                    <div class="pro-view">
-                      <a href=""><img src="assets/images/eye.png" alt=""></a>
-                    </div>
-                  </div>
-                </div>
-                <div class="product-details">
-                  <h6>Shirt/ menswear</h6>
-                  <div class="product-price">
-                    <h4>£42.00</h4>
-                  </div>
-                  <div class="product-rating">
-                    <ul>
-                      <li>
-                        <a href=""><img src="assets/images/star.png" alt=""></a>
-                        <a href=""><img src="assets/images/star.png" alt=""></a>
-                        <a href=""><img src="assets/images/star.png" alt=""></a>
-                        <a href=""><img src="assets/images/star.png" alt=""></a>
-                        <a href=""><img src="assets/images/star.png" alt=""></a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-              <div class="product-item">
-                <div class="produt-wrap">
-                  <img src="assets/images/cat2.png" class="pro-img" alt="">
-                  <div class="product-btn">
-                    <div class="pro-whishlist">
-                      <a href=""><img src="assets/images/heart.png" alt=""></a>
-                    </div>
-                    <div class="pro-view">
-                      <a href=""><img src="assets/images/eye.png" alt=""></a>
-                    </div>
-                  </div>
-                </div>
-                <div class="product-details">
-                  <h6>Shirt/ menswear</h6>
-                  <div class="product-price">
-                    <h4>£42.00</h4>
-                  </div>
-                  <div class="product-rating">
-                    <ul>
-                      <li>
-                        <a href=""><img src="assets/images/star.png" alt=""></a>
-                        <a href=""><img src="assets/images/star.png" alt=""></a>
-                        <a href=""><img src="assets/images/star.png" alt=""></a>
-                        <a href=""><img src="assets/images/star.png" alt=""></a>
-                        <a href=""><img src="assets/images/star.png" alt=""></a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-              <div class="product-item">
-                <div class="produt-wrap">
-                  <img src="assets/images/cat3.png" class="pro-img" alt="">
-                  <div class="product-btn">
-                    <div class="pro-whishlist">
-                      <a href=""><img src="assets/images/heart.png" alt=""></a>
-                    </div>
-                    <div class="pro-view">
-                      <a href=""><img src="assets/images/eye.png" alt=""></a>
-                    </div>
-                  </div>
-                </div>
-                <div class="product-details">
-                  <h6>Shirt/ menswear</h6>
-                  <div class="product-price">
-                    <h4>£42.00</h4>
-                  </div>
-                  <div class="product-rating">
-                    <ul>
-                      <li>
-                        <a href=""><img src="assets/images/star.png" alt=""></a>
-                        <a href=""><img src="assets/images/star.png" alt=""></a>
-                        <a href=""><img src="assets/images/star.png" alt=""></a>
-                        <a href=""><img src="assets/images/star.png" alt=""></a>
-                        <a href=""><img src="assets/images/star.png" alt=""></a>
-                      </li>
-                    </ul>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-      <!-- END -->
+
       <!-- BESTSELLER -->
       <section class="mt-80">
         <div class="container-fluid">
@@ -359,6 +224,7 @@
                     </div>
                   </div>
                 </div>
+
                 <div class="product-details">
                   <h6>Shirt/ menswear</h6>
                   <div class="product-price">
@@ -377,6 +243,7 @@
                   </div>
                 </div>
               </div>
+
               <div class="product-item">
                 <div class="produt-wrap">
                   <img src="assets/images/cat2.png" class="pro-img" alt="">

@@ -20,31 +20,33 @@
             </div>
           </div>
           <div class="admin-card">
-            <form action="new-category-submit" method="post" enctype="multipart/form-data">
+            <form action="/admin/update-category-submit" method="post" enctype="multipart/form-data">
               <div class="admin-from">
                 <div class="row">
+                 <input type="hidden" name="id" value="<%= category.id%>">
+
                   <div class="col-md-12">
                     <div class="from-group">
                       <label for="Catename">Category Name</label>
-                      <input type="text" name="category_name" class="form-control" placeholder="Enter Category Name">
+                      <input type="text" name="category_name" class="form-control" value="<%=category.category_name%>" placeholder="Enter Category Name">
                     </div>
                   </div>
                   <div class="col-md-12 mt-4">
                     <div class="from-group">
                       <label for="Catename">Category Image</label>
-                      <input type="file" name="category_image" class="form-control" placeholder="Enter Category Name">
+                      <input type="file" name="category_image" value="<%= category.category_image%>"  class="form-control" placeholder="Enter Category Name">
                     </div>
-                  </div>
+                  </div> 
 
-                  <div class="col-md-12 mt-4">
-                    <div class="from-group">
-                      <label for="Catename">Status</label>
-                      <select name="status" class="form-control">
-                        <option value="active">Active</option>
-                        <option value="inactive">Inactive</option>
-                      </select>
-                    </div>
-                  </div>
+                   <div class="col-md-12 mt-4">
+                     <div class="from-group">
+                       <label for="status">Status</label>
+                       <select name="status" class="form-control">
+                         <option value="active" <%= category.status === 'active' ? 'selected' : '' %>>Active</option>
+                         <option value="inactive" <%= category.status === 'inactive' ? 'selected' : '' %>>Inactive</option>
+                       </select>
+                     </div>
+                   </div>
 
                 </div>
                 <div class="row mt-3">
