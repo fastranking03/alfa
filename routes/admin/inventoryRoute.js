@@ -6,14 +6,17 @@ router.get('/inventory/bottom-wear', async (req, res) => {
     try {
         // Fetch inventory data with product name from the database
         const query = `
-            SELECT 
-                p.id AS productid,
-                p.product_name AS productname,
-                bw.* 
-            FROM 
-                products p
-            LEFT JOIN 
-                bottom_wear_inventory_with_sizes bw ON p.id = bw.product_id`;
+        SELECT 
+            p.id AS productid,
+            p.product_name AS productname,
+            bw.* 
+        FROM 
+            products p
+        LEFT JOIN 
+            bottom_wear_inventory_with_sizes bw ON p.id = bw.product_id
+        WHERE 
+            p.wear_type_bottom_or_top = 'bottom'`;
+    
 
         const [rows, fields] = await connect.query(query);    
 
@@ -36,7 +39,9 @@ router.get('/inventory/top-wear', async (req, res) => {
             FROM 
                 products p
             LEFT JOIN 
-            topwear_inventory_with_sizes bw ON p.id = bw.product_id`;
+            topwear_inventory_with_sizes bw ON p.id = bw.product_id
+            WHERE 
+            p.wear_type_bottom_or_top = 'top'`; 
 
         const [rows, fields] = await connect.query(query);    
 
