@@ -1,9 +1,11 @@
+<!DOCTYPE html>
 <html lang="en">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Alfa Admin | Dashboard</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
   <%- include('includes/head') %>
 </head>
 
@@ -19,11 +21,12 @@
               <h3>Product List</h3>
             </div>
           </div>
-         <div class="product-list">
-    <% if (products && products.length > 0) { %>
-        <table>
-            <thead>
-                <tr>
+          <div class="product-list">
+            <% if (products && products.length > 0) { %>
+            <div class="table-responsive">
+              <table class="table table-striped table-bordered">
+                <thead class="table-dark">
+                  <tr>
                     <th>ID</th>
                     <th>Name</th>
                     <th>Price</th>
@@ -31,33 +34,43 @@
                     <th>Category</th>
                     <th>Subcategory</th>
                     <th>Created At</th>
+                    <th>Action</th>
                     <!-- Add more columns as needed -->
-                </tr>
-            </thead>
-            <tbody>
-                <% products.forEach(product => { %>
-                    <tr>
-                        <td><%= product.id %></td>
-                        <td><%= product.product_name %></td> 
-                        <td><%= product.product_price %></td>
-                        <td><%= product.discount_on_product %></td>
-                        <td><%= product.category_name %></td> <!-- Display category name -->
-                        <td><%= product.subcategory_name %></td> <!-- Display subcategory name -->
-                        <td><%= product.created_at %></td>
-                        <!-- Add more columns as needed -->
-                    </tr>
-                <% }); %>
-            </tbody>
-        </table>
-    <% } else { %>
-        <p>No products found.</p>
-    <% } %>
-</div>
-
+                  </tr>
+                </thead>
+                <tbody>
+                  <% products.forEach(product => { %>
+                  <tr>
+                    <td><%= product.id %></td>
+                    <td><%= product.product_name %></td>
+                    <td><%= product.product_price %></td>
+                    <td><%= product.discount_on_product %></td>
+                    <td><%= product.category_name %></td> <!-- Display category name -->
+                    <td><%= product.subcategory_name %></td> <!-- Display subcategory name -->
+                    <td><%= product.created_at.toLocaleString()  %></td>
+                    <td>
+                      <span><a href="admin/edit/<%= product.id %>">Edit</a></span>
+                       <!-- | 
+                      <span><a href="admin/delete/<%= product.id %>">Delete</a></span> -->
+                    </td>
+                     
+                    <!-- Add more columns as needed -->  
+                  </tr>
+                  <% }); %>
+                </tbody>
+              </table>
+            </div>
+            <% } else { %>
+            <p>No products found.</p>
+            <% } %>
+          </div>
         </div>
       </div>
     </div>
   </div>
+  
+  <!-- Bootstrap JS and dependencies -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>

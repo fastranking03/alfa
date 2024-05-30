@@ -9,6 +9,7 @@ import categoryRoute from "./routes/admin/categoryRoute.js";
 import bannerRoute from "./routes/admin/bannerRoute.js";
 import favoritesRoute from "./routes/favoritesRoute.js";
 import inventoryRoute from "./routes/admin/inventoryRoute.js";
+import adminProductsRoute from "./routes/admin/productRoute.js";
 import session from "express-session";
 import { fileURLToPath } from 'url'; 
 
@@ -48,9 +49,9 @@ app.use('/', favoritesRoute);
  
 app.use('/admin/',adminRoute);
 app.use('/admin/',bannerRoute);  
-app.use('/admin/',categoryRoute);
-
+app.use('/admin/',categoryRoute); 
 app.use('/admin/',inventoryRoute);
+app.use('/admin/',adminProductsRoute);
 
 
 const PORT = 8081;

@@ -224,6 +224,9 @@
 // });
 
 // export default router;
+   
+
+
 
 import express from "express";
 import bcrypt from "bcrypt";
@@ -265,15 +268,21 @@ router.get("/otp-verification", async (req, res) => {
 router.post("/signup", async (req, res) => {
   const { name, email, password } = req.body;
   try {
-    const checkEmailQuery = "SELECT email FROM `user_registration` WHERE email = ?";
-    const [existingUser] = await connect.promise().query(checkEmailQuery, [email]);
+    const checkEmailQuery =
+      "SELECT email FROM `user_registration` WHERE email = ?";
+    const [existingUser] = await connect
+      .promise()
+      .query(checkEmailQuery, [email]);
 
     if (existingUser.length > 0) {
-      return res.render("signup", { success: "Email already registered. Please use another email." });
+      return res.render("signup", {
+        success: "Email already registered. Please use another email.",
+      });
     }
 
     const hashPassword = await bcrypt.hash(password, 10);
-    const sql_query = "INSERT INTO user_registration (name, email, password, status) VALUES (?, ?, ?, ?)";
+    const sql_query =
+      "INSERT INTO user_registration (name, email, password, status) VALUES (?, ?, ?, ?)";
     await connect.promise().query(sql_query, [name, email, hashPassword, 0]);
     res.redirect("/login");
   } catch (error) {
@@ -302,7 +311,9 @@ router.post("/login", async (req, res) => {
     if (req.session.user.status === 1) {
       res.redirect("/admin/");
     } else {
-      const [categories] = await connect.promise().query("SELECT * FROM category");
+      const [categories] = await connect
+        .promise()
+        .query("SELECT * FROM category");
       res.render("index", { categories });
     }
   } catch (error) {
@@ -319,7 +330,9 @@ router.post("/forget-password", async (req, res) => {
     const [user] = await connect.promise().query(sql_query, [email]);
 
     if (user.length === 0) {
-      return res.render("forget-password", { error: "Email is not registered." });
+      return res.render("forget-password", {
+        error: "Email is not registered.",
+      });
     }
 
     // Generate OTP
@@ -343,13 +356,17 @@ router.post("/forget-password", async (req, res) => {
     };
 
     await transporter.sendMail(mailOptions);
-    await connect.promise().query("UPDATE user_registration SET otp = ? WHERE email = ?", [otp, email]);
+    await connect
+      .promise()
+      .query("UPDATE user_registration SET otp = ? WHERE email = ?", [
+        otp,
+        email,
+      ]);
     res.redirect("/otp-verification");
   } catch (error) {
     console.error("Error processing forget password request:", error);
     res.render("forget-password", { error: "An error occurred" });
   }
-
 });
 
 router.post("/otp-verification", async (req, res) => {
@@ -359,22 +376,26 @@ router.post("/otp-verification", async (req, res) => {
     const [user] = await connect.promise().query(sql_query, [email]);
 
     if (user.length === 0) {
-      return res.render("otp-verification", { error: "Email is not registered.", email });
+      return res.render("otp-verification", {
+        error: "Email is not registered.",
+        email,
+      });
     }
 
     const storedOtp = user[0].otp;
     if (storedOtp === otp) {
       return res.render("reset-password", { email });
     } else {
-      return res.render("otp-verification", { error: "Invalid OTP. Please try again.", email });
+      return res.render("otp-verification", {
+        error: "Invalid OTP. Please try again.",
+        email,
+      });
     }
   } catch (error) {
     console.error("Error processing OTP verification:", error);
     res.render("otp-verification", { error: "An error occurred", email });
   }
 });
-
-
 
 // Session Display
 router.use((req, res, next) => {
@@ -394,7 +415,3 @@ router.get("/logout", (req, res) => {
 });
 
 export default router;
-
-
-
-
