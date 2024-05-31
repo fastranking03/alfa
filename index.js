@@ -6,6 +6,7 @@ import adminRoute from "./routes/admin/adminRoute.js";
 import shirtsRoute from "./routes/shirtsRoutes.js";
 import productsRoute from "./routes/productsRoute.js";
 import categoryRoute from "./routes/admin/categoryRoute.js";
+import subcategoryRoute from "./routes/admin/subCategoryRoute.js";
 import bannerRoute from "./routes/admin/bannerRoute.js";
 import favoritesRoute from "./routes/favoritesRoute.js";
 import inventoryRoute from "./routes/admin/inventoryRoute.js";
@@ -52,6 +53,7 @@ app.use('/admin/',bannerRoute);
 app.use('/admin/',categoryRoute); 
 app.use('/admin/',inventoryRoute);
 app.use('/admin/',adminProductsRoute);
+app.use('/admin/', subcategoryRoute );
 
 
 const PORT = 8081;
