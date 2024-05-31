@@ -22,15 +22,18 @@ router.get('/cart/add/:productId', async (req, res) => {
         const userId = req.session.user.id;
         const productId = req.params.productId; 
 
-        // Assuming addToCart(productId) returns true if the product was added successfully
-        const productAdded = await addToCart(userId, productId);
-
-        if (productAdded) {
-            // Send a JSON response indicating success
-            res.json({ success: true });
+        const checkQuery = 'SELECT * FROM users_cart WHERE user_id = ? AND product_id = ?';
+        const [existingProduct] = await connect.query(checkQuery, [userId, productId]);
+        if (existingProduct.length > 0) {
+            // Send a JSON response indicating that the product already exists in the cart
+            res.json({ success: false, message: "Product already exists in cart" });
+            return;
+        }else if (!(await addToCart(userId, productId))) {
+            // If adding the product to favorites fails, send a failure response
+            res.json({ success: false, message: "Failed to add product to Cart" });
         } else {
-            // Send a JSON response indicating failure
-            res.json({ success: false });
+            // If the product is not in favorites and is successfully added, send a success response
+            res.json({ success: true, message: "Product added to Cart successfully" });
         }
     } catch (error) {
         // Handle errors

@@ -549,34 +549,7 @@
     </div>
     <%- include('includes/foot') %>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
-    <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        const addToCartButtons = document.querySelectorAll(".add-to-cart");
-
-        addToCartButtons.forEach((button) => {
-          button.addEventListener("click", addToCart);
-        });
-
-        async function addToCart(event) {
-          const productId = event.currentTarget.getAttribute("data-product-id");
-          try {
-            const response = await fetch(`/cart/add/${productId}`, {
-              method: "GET",
-            });
-            const result = await response.json();
-            if (result.success) {
-              alert("Product added to cart successfully!");
-            } else {
-              alert("Failed to add product to cart");
-            }
-          } catch (error) {
-            console.error("Error:", error);
-            alert("An error occurred while adding the product to cart");
-          }
-        }
-      });
-    </script>
+ 
 
     <script>
       // Add event listener to the "Add to Favorites" button
@@ -624,6 +597,35 @@
         });
       });
     </script>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+          const addToCartButtons = document.querySelectorAll(".add-to-cart");
+  
+          addToCartButtons.forEach((button) => {
+              button.addEventListener("click", addToCart);
+          });
+  
+          async function addToCart(event) {
+              const productId = event.currentTarget.getAttribute("data-product-id");
+              try {
+                  const response = await fetch(`/cart/add/${productId}`, {
+                      method: "GET",
+                  });
+                  const result = await response.json();
+                  if (result.success) {
+                      alert(result.message);
+                  } else {
+                      alert(result.message);
+                  }
+              } catch (error) {
+                  console.error("Error:", error);
+                  alert("An error occurred while adding the product to cart");
+              }
+          }
+      });
+  </script>
+  
     <script>
       $(document).ready(function () {
         $("#hero-carousel").owlCarousel({

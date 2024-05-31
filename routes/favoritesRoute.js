@@ -44,34 +44,5 @@ router.get('/favorites/add/:productId', async (req, res) => {
     }
 });
  
-
-// router.get('/favorites/add/:productId', async (req, res) => {
-//     try {
-//         const userId = req.session.user.id; // Assuming you have user session data
-//         const productId = req.params.productId;
-
-//         // Check if the product already exists in favorites
-//         const checkQuery = 'SELECT * FROM users_favorites WHERE user_id = ? AND product_id = ?';
-//         const [existingFavorite] = await connect.query(checkQuery, [userId, productId]);
-        
-//         // If the product already exists in favorites, send a response
-//         if (existingFavorite.length > 0) {
-//             console.log('Product already exists in favorites for this user.');
-//             res.json({ success: false, message: "Product already exists in favorites" });
-//         } else if(existingFavorite.length < 1) {
-//             // If adding the product to favorites fails, send a failure response
-//             const favoriteAdded = await addToFavorites(userId, productId);
-//             if (favoriteAdded) {
-//                 // If the product is not in favorites and is successfully added, send a success response
-//                 res.json({ success: true, message: "Product added to favorites successfully" });
-//             } else {
-//                 res.json({ success: false, message: "Failed to add product to favorites" });
-//             }
-//         }
-//     } catch (error) {
-//         console.error("Error adding product to favorites:", error);
-//         res.status(500).json({ success: false, error: "Error adding product to favorites" });
-//     }
-// });
-
+ 
 export default router
