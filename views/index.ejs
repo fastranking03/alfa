@@ -13,9 +13,10 @@
     <%- include('includes/header') %>
     <div class="mt-100">
       <!-- HERO SECTION -->
+
       <section class="hero-section position-relative">
         <div id="hero-carousel" class="owl-carousel comman-nav">
-          <div class="items hero-sec-items" style="background-color: #F8F2E8;">
+          <div class="items hero-sec-items" style="background-color: #F9CF2D1A;">
             <div class="container">
               <div class="row position-relative" style="z-index: 999;">
                 <div class="col-md-6">
@@ -169,31 +170,7 @@
             </div>
           </div>
         </div>
-
-        <div class="container">
-          <div class="alfa-category-wrapper">
-            <div class="alfa-aminate-text d-none">
-              <h3>categories</h3>
-            </div>
-            <div class="category-wrapper">
-              <% categories.forEach(category => { %>
-              <div class="category-box">
-                <a href="/category/<%= category.slug %>">
-                  <div class="category-img">
-                    <img src="../category_images/<%= category.category_image %>" alt="">
-                  </div>
-
-                  <div class="category-text">
-                    <h4><%= category.category_name %></h4>
-                  </div>
-                </a>
-              </div>
-              <% }); %>
-
-            </div>
-          </div>
-        </div>
-
+ 
       </section>
       <!-- END -->
       <!-- SELLING SECTION -->
@@ -506,97 +483,7 @@
 
   </div>
   <%- include('includes/foot') %>
-  <script>
-    $(document).ready(function() {
-      $('#hero-carousel').owlCarousel({
-        loop: true,
-        margin: 20,
-        nav: true,
-        autoplay: true,
-        navText: ['<i class="fa-solid fa-angle-left"></i>', '<i class="fa-solid fa-angle-right"></i>'],
-        responsive: {
-          0: {
-            items: 1
-          },
-          600: {
-            items: 1
-          },
-          1000: {
-            items: 1
-          }
-        }
-      });
-    });
-    $(document).ready(function() {
-      $('#bestseller-carousel').owlCarousel({
-        loop: true,
-        margin: 20,
-        nav: true,
-        autoplay: true,
-        navText: ['<i class="fa-solid fa-angle-left"></i>', '<i class="fa-solid fa-angle-right"></i>'],
-        responsive: {
-          0: {
-            items: 1
-          },
-          350: {
-            items: 2
-          },
-          400: {
-            items: 2
-          },
-          600: {
-            items: 3
-          },
-          1000: {
-            items: 6
-          }
-        }
-      });
-    });
-    $(document).ready(function() {
-      $('#testimonial-carousel').owlCarousel({
-        loop: true,
-        margin: 20,
-        nav: true,
-        autoplay: true,
-        navText: ['<i class="fa-solid fa-angle-left"></i>', '<i class="fa-solid fa-angle-right"></i>'],
-        responsive: {
-          0: {
-            items: 1
-          },
-          600: {
-            items: 1
-          },
-          1000: {
-            items: 1
-          }
-        }
-      });
-    });
-    $(document).ready(function() {
-      $('#partner-carousel').owlCarousel({
-        loop: true,
-        margin: 20,
-        nav: true,
-        autoplay: true,
-        navText: ['<i class="fa-solid fa-angle-left"></i>', '<i class="fa-solid fa-angle-right"></i>'],
-        responsive: {
-          0: {
-            items: 1
-          },
-          400: {
-            items: 3
-          },
-          600: {
-            items: 4
-          },
-          1000: {
-            items: 7
-          }
-        }
-      });
-    });
-  </script>
+ 
 </body>
 
 </html>

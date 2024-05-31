@@ -4,21 +4,7 @@ import slugify from 'slugify';
 
 const router = express.Router();
 
-<<<<<<< HEAD
-router.get('/',(req,res) =>{
-    const user = req.session.user;
-    return res.render('index',{user});
-})
-router.get('/about',(req,res) =>{
-    const user = req.session.user; 
-    res.render('about', { user });
-})
-router.get('/product',(req,res) =>{
-    const user = req.session.user; 
-    res.render('product', { user });
-})
-export default router
-=======
+// Route for the home page with categories and user data
 router.get('/', async (req, res) => {
   const user = req.session.user;
 
@@ -40,10 +26,21 @@ router.get('/', async (req, res) => {
   }
 });
 
+// Route for the about page
 router.get('/about', (req, res) => {
   const user = req.session.user;
   res.render('about', { user });
 });
 
+// Route for the product page
+router.get('/product', (req, res) => {
+  const user = req.session.user;
+  res.render('product', { user });
+});
+
+router.get('/product-detail', (req, res) => {
+  const user = req.session.user;
+  res.render('product-detail', { user });
+});
+
 export default router;
->>>>>>> ff04db84541bb9c8db44fc0e4a770acb898a3bf7

@@ -50,7 +50,6 @@ app.use('/', favoritesRoute);
 app.use('/admin/',adminRoute);
 app.use('/admin/',bannerRoute);  
 app.use('/admin/',categoryRoute);
-
 app.use('/admin/',inventoryRoute);
 
 

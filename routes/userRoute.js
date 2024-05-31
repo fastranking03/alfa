@@ -227,7 +227,7 @@
 
 import express from "express";
 import bcrypt from "bcrypt";
-import connect from "../db/connect.js";
+import pool from "../db/connect.js"; 
 import { userLogIn } from "../middleware/protected.js";
 import nodemailer from "nodemailer";
 
@@ -266,7 +266,7 @@ router.post("/signup", async (req, res) => {
   const { name, email, password } = req.body;
   try {
     const checkEmailQuery = "SELECT email FROM `user_registration` WHERE email = ?";
-    const [existingUser] = await connect.promise().query(checkEmailQuery, [email]);
+    const [existingUser] = await pool.query(checkEmailQuery, [email]);
 
     if (existingUser.length > 0) {
       return res.render("signup", { success: "Email already registered. Please use another email." });
@@ -274,7 +274,7 @@ router.post("/signup", async (req, res) => {
 
     const hashPassword = await bcrypt.hash(password, 10);
     const sql_query = "INSERT INTO user_registration (name, email, password, status) VALUES (?, ?, ?, ?)";
-    await connect.promise().query(sql_query, [name, email, hashPassword, 0]);
+    await pool.query(sql_query, [name, email, hashPassword, 0]);
     res.redirect("/login");
   } catch (error) {
     console.error("Error registering user:", error);
@@ -287,7 +287,7 @@ router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
     const alfa_query = "SELECT * FROM user_registration WHERE email = ?";
-    const [user] = await connect.promise().query(alfa_query, [email]);
+    const [user] = await pool.query(alfa_query, [email]);
 
     if (user.length === 0) {
       return res.render("login", { error: "Email is not registered." });
@@ -316,7 +316,7 @@ router.post("/forget-password", async (req, res) => {
   try {
     const { email } = req.body;
     const sql_query = "SELECT * FROM user_registration WHERE email = ?";
-    const [user] = await connect.promise().query(sql_query, [email]);
+    const [user] = await pool.query(sql_query, [email]);
 
     if (user.length === 0) {
       return res.render("forget-password", { error: "Email is not registered." });
@@ -343,7 +343,7 @@ router.post("/forget-password", async (req, res) => {
     };
 
     await transporter.sendMail(mailOptions);
-    await connect.promise().query("UPDATE user_registration SET otp = ? WHERE email = ?", [otp, email]);
+    await pool.query("UPDATE user_registration SET otp = ? WHERE email = ?", [otp, email]);
     res.redirect("/otp-verification");
   } catch (error) {
     console.error("Error processing forget password request:", error);
@@ -356,7 +356,7 @@ router.post("/otp-verification", async (req, res) => {
   try {
     const { email, otp } = req.body;
     const sql_query = "SELECT otp FROM user_registration WHERE email = ?";
-    const [user] = await connect.promise().query(sql_query, [email]);
+    const [user] = await pool.query(sql_query, [email]);
 
     if (user.length === 0) {
       return res.render("otp-verification", { error: "Email is not registered.", email });
