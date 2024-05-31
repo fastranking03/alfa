@@ -91,4 +91,15 @@ router.get('/', async (req, res) => {
     }
 });
   
+
+router.get('/users-list' , async(req,res)=>{
+
+    try {
+       const [users] = await connect.query('SELECT * FROM user_registration');
+       res.render('admin/users-list' ,{users});
+    } catch (error) {
+        
+    }
+});
+ 
 export default router;
