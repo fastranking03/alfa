@@ -42,7 +42,7 @@ router.get('/favorites/add/:productId', async (req, res) => {
         console.error("Error adding product to favorites:", error);
         res.status(500).json({ error: "Error adding product to favorites" });
     }
-});
+}); 
  
- 
+
 export default router

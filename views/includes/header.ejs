@@ -31,7 +31,8 @@
                                 <div>
                                     <div class="pro-title">
                                         <% if (user) { %>
-                                        <h5>Welcome  <%= user.name %>  <%= user.id %>  </h5>
+                                        <h5>Welcome  <%= user.name %>   <%= user.id %> <%= cartCount !== undefined ? cartCount : 'null' %> <%= wishlistCount !== undefined ? wishlistCount : 'null' %>
+                                        </h5>
                                         <% } %>
                                         <p>To access account and manage orders</p>
                                     </div>
@@ -57,20 +58,24 @@
                             </div>
                         </div>
                     </li>
+                   
+
                     <li>
                         <div class="alfa-icon-flex">
                             <img src="assets/images/heart.png" width="100%" alt="">
-                            <span>Wishlist</span>
+                            <span>Wishlist  <%= wishlistCount !== undefined ? wishlistCount : 'null' %>
+                            </span>
                         </div>
                     </li>
                     <li>
                         <div class="alfa-icon-flex">
                             <img src="assets/images/heart.png" width="100%" alt="">
-                            <span>Bag</span>
+                            <span>Bag  <%= cartCount !== undefined ? cartCount : 'null' %></span>
                         </div>
-                    </li>
+                    </li>  
                 </ul>
             </div>
         </div>
     </div>
 </header>
+

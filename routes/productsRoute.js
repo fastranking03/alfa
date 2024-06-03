@@ -15,8 +15,11 @@ router.get('/category/:id', async (req, res) => {
         if (category.length > 0) {
             const [products] = await connect.query("SELECT * FROM products WHERE category_id = ?", [categoryId]);
             
+            const cartCount = req.cartCount || 0;
+            const wishlistCount = req.wishlistCount || 0;
+        
             // Render the products-view template with products, category, and user
-            res.render('products-view', { products: products, category: category[0], user: user });
+            res.render('products-view', { products: products, category: category[0], user: user , cartCount, wishlistCount});
         } else {
             // Category not found, handle appropriately (redirect, render error page, etc.)
             console.error("Category not found");

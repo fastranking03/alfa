@@ -38,7 +38,8 @@ router.get("/otp-verification", async (req, res) => {
 router.post("/signup", async (req, res) => {
   const { name, email, password } = req.body;
   try {
-    const checkEmailQuery = "SELECT email FROM `user_registration` WHERE email = ?";
+    const checkEmailQuery =
+      "SELECT email FROM `user_registration` WHERE email = ?";
     const [existingUser] = await connect.query(checkEmailQuery, [email]);
 
     if (existingUser.length > 0) {
@@ -48,7 +49,8 @@ router.post("/signup", async (req, res) => {
     }
 
     const hashPassword = await bcrypt.hash(password, 10);
-    const sql_query = "INSERT INTO user_registration (name, email, password, status) VALUES (?, ?, ?, ?)";
+    const sql_query =
+      "INSERT INTO user_registration (name, email, password, status) VALUES (?, ?, ?, ?)";
     await connect.query(sql_query, [name, email, hashPassword, 0]);
     res.redirect("/login");
   } catch (error) {
@@ -73,8 +75,8 @@ router.post("/login", async (req, res) => {
       return res.render("login", { error: "Invalid Email or Password" });
     }
 
-    req.session.user = user[0]; 
-    // Storing user data in session 
+    req.session.user = user[0];
+    // Storing user data in session
     if (req.session.user.status === 1) {
       res.redirect("/admin/");
     } else {
@@ -121,7 +123,10 @@ router.post("/forget-password", async (req, res) => {
     };
 
     await transporter.sendMail(mailOptions);
-    await connect.query("UPDATE user_registration SET otp = ? WHERE email = ?", [otp, email]);
+    await connect.query(
+      "UPDATE user_registration SET otp = ? WHERE email = ?",
+      [otp, email]
+    );
     res.redirect("/otp-verification");
   } catch (error) {
     console.error("Error processing forget password request:", error);
