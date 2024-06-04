@@ -1,81 +1,94 @@
 <header class="header">
-    <div class="header-container">
-        <div class="left-header-wrapper">
-            <div class="alfa-logo">
-               <a href="/"> <img src="assets/images/logo.png" alt=""></a>
-            </div>
-            <div class="alfa-navbar">
-                <ul>
-                    <li><a href="/">Home</a></li>
-                    <li><a href="/about">About Us</a></li>
-                    <li><a href="/">Blogs</a></li>
-                    <li><a href="/">Shop</a></li>
-                    <li><a href="/">Contact Us</a></li>
-                </ul>
-            </div>
-        </div>
-        <div class="right-header-wrapper">
-            <div class="alfa-search">
-                <span><img src="assets/images/search.png" alt=""></span>
-                <input type="search" name="search" class="alfa-search-control" placeholder="Search for products" id="">
-            </div>
-            <div class="header-icons">
-                <ul>
-                    <li class="position-relative user-card-visible">
-                        <div class="alfa-icon-flex" id="onClickProfile">
-                            <img src="assets/images/profile.png" width="100%" alt="">
-                            <span>Profile</span>
-                        </div>
-                        <div class="user-profile-card" id="openProfileCard">
-                            <div class="user-pro-top">
-                                <div>
-                                    <div class="pro-title">
-                                        <% if (user) { %>
-                                        <h5>Welcome  <%= user.name %>   <%= user.id %> <%= cartCount !== undefined ? cartCount : 'null' %> <%= wishlistCount !== undefined ? wishlistCount : 'null' %>
-                                        </h5>
-                                        <% } %>
-                                        <p>To access account and manage orders</p>
-                                    </div>
-                                
-                                    <div class="profile-login-signup">
-                                     <% if (user) { %>
-                                        <a href="/logout">Logout</a>
-                                     <% } else { %>  
-                                         <a href="/login">Login</a>
-                                        <span>/</span>
-                                        <a href="/signup">Signup</a>
-                                     <%  } %>  
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="user-pro-links">
-                                <ul>
-                                    <li><a href="">Odrers</a></li>
-                                    <li><a href="">Wishlist</a></li>
-                                    <li><a href="">Gift Cards</a></li>
-                                    <li><a href="">Contact Us</a></li>
-                                </ul>
-                            </div>
-                        </div>
-                    </li>
-                   
-
-                    <li>
-                        <div class="alfa-icon-flex">
-                            <img src="assets/images/heart.png" width="100%" alt="">
-                            <span>Wishlist  <%= wishlistCount !== undefined ? wishlistCount : 'null' %>
-                            </span>
-                        </div>
-                    </li>
-                    <li>
-                        <div class="alfa-icon-flex">
-                            <img src="assets/images/heart.png" width="100%" alt="">
-                            <span>Bag  <%= cartCount !== undefined ? cartCount : 'null' %></span>
-                        </div>
-                    </li>  
-                </ul>
-            </div>
-        </div>
+  <div class="header-container">
+    <div class="left-header-wrapper">
+      <div class="alfa-logo">
+        <a href="/"> <img src="assets/images/logo.png" alt="" /></a>
+      </div>
+      <div class="alfa-navbar">
+        <ul>
+          <li><a href="/">Home</a></li>
+          <li><a href="/about">About Us</a></li>
+          <li><a href="/">Blogs</a></li>
+          <li><a href="/">Shop</a></li>
+          <li><a href="/">Contact Us</a></li>
+        </ul>
+      </div>
     </div>
-</header>
+    <div class="right-header-wrapper">
+      <div class="alfa-search">
+        <span><img src="assets/images/search.png" alt="" /></span>
+        <input
+          type="search"
+          name="search"
+          class="alfa-search-control"
+          placeholder="Search for products"
+          id=""
+        />
+      </div>
+      <div class="header-icons">
+        <ul>
+          <li class="position-relative user-card-visible">
+            <div class="alfa-icon-flex" id="onClickProfile">
+              <img src="assets/images/profile.png" width="100%" alt="" />
+              <span>Profile</span>
+            </div>
+            <div class="user-profile-card" id="openProfileCard">
+              <div class="user-pro-top">
+                <div>
+                  <div class="pro-title">
+                    <% if (user) { %>
+                    <h5>
+                      Welcome <%= user.name %> <%= user.id %> <%= cartCount !==
+                      undefined ? cartCount : 'null' %> <%= wishlistCount !==
+                      undefined ? wishlistCount : 'null' %>
+                    </h5>
+                    <% } %>
+                    <p>To access account and manage orders</p>
+                  </div>
 
+                  <div class="profile-login-signup">
+                    <% if (user) { %>
+                    <a href="/logout">Logout</a>
+                    <% } else { %>
+                    <a href="/login">Login</a>
+                    <span>/</span>
+                    <a href="/signup">Signup</a>
+                    <% } %>
+                  </div>
+                </div>
+              </div>
+              <div class="user-pro-links">
+                <ul>
+                  <li><a href="">Odrers</a></li>
+                  <li><a href="">Wishlist</a></li>
+                  <li><a href="">Gift Cards</a></li>
+                  <li><a href="">Contact Us</a></li>
+                </ul>
+              </div>
+            </div>
+          </li>
+
+          <li id="wishlist">
+            <div class="alfa-icon-flex">
+              <img src="assets/images/heart.png" width="100%" alt="" />
+              <span class="count-text"
+                >Wishlist <%= wishlistCount !== undefined ? wishlistCount :
+                'null' %></span
+              >
+            </div>
+          </li>
+
+          <li id="cart">
+            <div class="alfa-icon-flex">
+              <img src="assets/images/heart.png" width="100%" alt="" />
+              <span class="count-text"
+                >Cart <%= cartCount !== undefined ? cartCount : 'null' %></span
+              >
+            </div>
+          </li>
+
+        </ul>
+      </div>
+    </div>
+  </div>
+</header>

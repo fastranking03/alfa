@@ -32,8 +32,13 @@ router.get('/cart/add/:productId', async (req, res) => {
             // If adding the product to favorites fails, send a failure response
             res.json({ success: false, message: "Failed to add product to Cart" });
         } else {
+
+            const [[{ CartCount }]] = await connect.query(
+                "SELECT COUNT(*) AS CartCount FROM users_cart WHERE user_id = ?",
+                [userId]
+              );
             // If the product is not in favorites and is successfully added, send a success response
-            res.json({ success: true, message: "Product added to Cart successfully" });
+            res.json({ success: true, message: "Product added to Cart successfully"  , CartCount});
         }
     } catch (error) {
         // Handle errors

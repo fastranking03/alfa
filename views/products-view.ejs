@@ -548,7 +548,6 @@
       </div>
     </div>
     <%- include('includes/foot') %>
-    
 
     <script>
       // Add event listener to the "Add to Favorites" button
@@ -578,6 +577,17 @@
                 if (data.success) {
                   // Show popup alert
                   alert(data.message);
+
+                  // Update wishlist count in the span
+                  const wishlistLi = document.querySelector("#wishlist");
+                  if (wishlistLi) {
+                    const countTextSpan =
+                      wishlistLi.querySelector(".count-text");
+                    if (countTextSpan) {
+                      countTextSpan.textContent =
+                        "Wishlist " + data.favoritesCount;
+                    }
+                  }
                 } else {
                   alert(data.message);
                 }
@@ -599,32 +609,40 @@
 
     <script>
       document.addEventListener("DOMContentLoaded", () => {
-          const addToCartButtons = document.querySelectorAll(".add-to-cart");
-  
-          addToCartButtons.forEach((button) => {
-              button.addEventListener("click", addToCart);
-          });
-  
-          async function addToCart(event) {
-              const productId = event.currentTarget.getAttribute("data-product-id");
-              try {
-                  const response = await fetch(`/cart/add/${productId}`, {
-                      method: "GET",
-                  });
-                  const result = await response.json();
-                  if (result.success) {
-                      alert(result.message);
-                  } else {
-                      alert(result.message);
-                  }
-              } catch (error) {
-                  console.error("Error:", error);
-                  alert("An error occurred while adding the product to cart");
+        const addToCartButtons = document.querySelectorAll(".add-to-cart");
+
+        addToCartButtons.forEach((button) => {
+          button.addEventListener("click", addToCart);
+        });
+
+        async function addToCart(event) {
+          const productId = event.currentTarget.getAttribute("data-product-id");
+          try {
+            const response = await fetch(`/cart/add/${productId}`, {
+              method: "GET",
+            });
+            const result = await response.json();
+            if (result.success) {
+              alert(result.message);
+              // Update cart count in the span
+              const cartLi = document.querySelector("#cart");
+              if (cartLi) {
+                const countTextSpan = cartLi.querySelector(".count-text");
+                if (countTextSpan) {
+                  countTextSpan.textContent = "Cart " + result.CartCount;
+                }
               }
+            } else {
+              alert(result.message);
+            }
+          } catch (error) {
+            console.error("Error:", error);
+            alert("An error occurred while adding the product to cart");
           }
+        }
       });
-  </script>
-  
+    </script>
+
     <script>
       $(document).ready(function () {
         $("#hero-carousel").owlCarousel({

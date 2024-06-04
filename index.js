@@ -64,6 +64,7 @@ async function getUserCountsMiddleware(req, res, next) {
       req.cartCount = cartCount;
       req.wishlistCount = wishlistCount;
     }
+    
     next();
   } catch (error) {
     console.error("Error:", error);
