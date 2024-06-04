@@ -27,9 +27,9 @@ router.get('/', async (req, res) => {
 });
 
 // Route for the about page
-router.get('/about', (req, res) => {
+router.get('/about-us', (req, res) => {
   const user = req.session.user;
-  res.render('about', { user });
+  res.render('about-us', { user });
 });
 
 // Route for the product page
@@ -48,9 +48,9 @@ router.get('/checkout', (req, res) => {
   res.render('checkout', { user });
 });
 
-router.get('/cart', (req, res) => {
+router.get('/my-cart', (req, res) => {
   const user = req.session.user;
-  res.render('cart', { user });
+  res.render('my-cart', { user });
 });
 
 router.get('/add-address', (req, res) => {
@@ -58,4 +58,19 @@ router.get('/add-address', (req, res) => {
   res.render('add-address', { user });
 });
 
+router.get('/my-wishlist', (req, res) => {
+  const user = req.session.user;
+  res.render('my-wishlist', { user });
+});
+
+router.get('/order-confirm',(req,res) =>{
+  const user = req.session.user;
+  res.render('order-confirm',{user});
+})
+
+
+router.get('/contact-us',(req,res) =>{
+  const user = req.session.user;
+  res.render('contact-us',{user});
+})
 export default router;

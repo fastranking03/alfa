@@ -117,8 +117,10 @@
                                         <div class="product-grid">
                                             <div class="product-item">
                                                 <div class="produt-wrap">
-                                                   <a href="product-detail"><img src="assets/images/alfa_products/s.webp" class="pro-img" alt=""></a>
-                                                     <div class="product-btn">
+                                                    <a href="product-detail"><img
+                                                            src="assets/images/alfa_products/s.webp" class="pro-img"
+                                                            alt=""></a>
+                                                    <div class="product-btn">
                                                         <div class="pro-whishlist">
                                                             <a href=""><img src="assets/images/heart.png" alt=""></a>
                                                         </div>
@@ -131,7 +133,9 @@
                                                     <a href="" class="add-to-cart">Add to Cart</a>
                                                 </div>
                                                 <div class="product-details shop-content">
-                                                    <a href="/product-detail"><h6>Shirt/ menswear</h6></a>
+                                                    <a href="/product-detail">
+                                                        <h6>Shirt/ menswear</h6>
+                                                    </a>
                                                     <div class="product-price">
                                                         <h4>£42.00</h4>
                                                     </div>
@@ -147,7 +151,8 @@
                                             </div>
                                             <div class="product-item">
                                                 <div class="produt-wrap">
-                                                    <img src="assets/images/alfa_products/suit3.jpg" class="pro-img" alt="">
+                                                    <img src="assets/images/alfa_products/suit3.jpg" class="pro-img"
+                                                        alt="">
                                                     <div class="product-btn">
                                                         <div class="pro-whishlist">
                                                             <a href=""><img src="assets/images/heart.png" alt=""></a>
@@ -177,7 +182,8 @@
                                             </div>
                                             <div class="product-item">
                                                 <div class="produt-wrap">
-                                                    <img src="assets/images/alfa_products/jeans1.jpg" class="pro-img" alt="">
+                                                    <img src="assets/images/alfa_products/jeans1.jpg" class="pro-img"
+                                                        alt="">
                                                     <div class="product-btn">
                                                         <div class="pro-whishlist">
                                                             <a href=""><img src="assets/images/heart.png" alt=""></a>
@@ -207,7 +213,8 @@
                                             </div>
                                             <div class="product-item">
                                                 <div class="produt-wrap">
-                                                    <img src="assets/images/alfa_products/trouser1.jpg" class="pro-img" alt="">
+                                                    <img src="assets/images/alfa_products/trouser1.jpg" class="pro-img"
+                                                        alt="">
                                                     <div class="product-btn">
                                                         <div class="pro-whishlist">
                                                             <a href=""><img src="assets/images/heart.png" alt=""></a>
@@ -237,7 +244,8 @@
                                             </div>
                                             <div class="product-item">
                                                 <div class="produt-wrap">
-                                                    <img src="assets/images/alfa_products/suit1.jpg" class="pro-img" alt="">
+                                                    <img src="assets/images/alfa_products/suit1.jpg" class="pro-img"
+                                                        alt="">
                                                     <div class="product-btn">
                                                         <div class="pro-whishlist">
                                                             <a href=""><img src="assets/images/heart.png" alt=""></a>
@@ -267,7 +275,8 @@
                                             </div>
                                             <div class="product-item">
                                                 <div class="produt-wrap">
-                                                    <img src="assets/images/alfa_products/jacket.jpg" class="pro-img" alt="">
+                                                    <img src="assets/images/alfa_products/jacket.jpg" class="pro-img"
+                                                        alt="">
                                                     <div class="product-btn">
                                                         <div class="pro-whishlist">
                                                             <a href=""><img src="assets/images/heart.png" alt=""></a>
@@ -303,12 +312,89 @@
                     </div>
                 </section>
                 <!-- End -->
-                
+
+                <!-- Mobile Filter -->
+                <div class="mobile-filter-wrapper">
+                    <div class="m-filter-wrap">
+                        <div class="filter-icon">
+                            <button class="filter-btn" data-bs-toggle="offcanvas" data-bs-target="#filterOffCanVas"
+                                aria-controls="filterOffCanVas"><img src="assets/images/filter.png" alt="">
+                                Filter</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Filter Canvas -->
+            <div class="offcanvas offcanvas-bottom filter-offcanvas" tabindex="-1" id="filterOffCanVas"
+                aria-labelledby="offcanvasBottomLabel">
+                <div class="offcanvas-header">
+                    <h5 class="offcanvas-title" id="offcanvasBottomLabel">Filter</h5>
+                    <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"
+                        aria-label="Close"></button>
+                </div>
+                <div class="offcanvas-body small">
+                    <div class="mobile-filter-wrapper">
+                        <div class="mobile-alfa-search position-relative">
+                            <span><img src="assets/images/search.png" alt=""></span>
+                            <input type="search" name="search" class="mobile-search-control"
+                                placeholder="Search for products" id="">
+                        </div>
+                        <div class="product-category mt-4">
+                            <div class="cat-title">
+                                <h4 class="product-h4">Categories</h4>
+                            </div>
+                            <div class="product-category-list">
+                                <ul>
+                                    <li><a href="" class="c-items">Shirt (10)</a></li>
+                                    <li><a href="" class="c-items">Jeans (20)</a></li>
+                                    <li><a href="" class="c-items active">Trouser (10)</a></li>
+                                    <li><a href="" class="c-items">Polo Shirts (60)</a></li>
+                                    <li><a href="" class="c-items">Accessories (60)</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="product-color">
+                            <div class="color-title">
+                                <h4 class="product-h4">Color</h4>
+                            </div>
+                            <div class="product-color-list">
+                                <ul>
+                                    <li><a href="" class="product-color-item color1"></a></li>
+                                    <li><a href="" class="product-color-item color2"></a></li>
+                                    <li><a href="" class="product-color-item color3"></a></li>
+                                    <li><a href="" class="product-color-item color4"></a></li>
+                                    <li><a href="" class="product-color-item color5"></a></li>
+                                    <li><a href="" class="product-color-item color6"></a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="product-filter">
+                            <div class="filter-title">
+                                <h4 class="product-h4">Filter by price</h4>
+                            </div>
+                        </div>
+                        <div class="product-size">
+                            <div class="filter-title">
+                                <h4 class="product-h4">Size</h4>
+                            </div>
+                            <div class="product-size-list">
+                                <ul>
+                                    <li><a href="" class="size-item active">S</a></li>
+                                    <li><a href="" class="size-item">M</a></li>
+                                    <li><a href="" class="size-item">L</a></li>
+                                    <li><a href="" class="size-item">XL</a></li>
+                                    <li><a href="" class="size-item">XXL</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
             <!-- Footer -->
             <%- include('includes/footer') %>
                 <!-- End -->
     </div>
+    <%- include('includes/foot') %>
 </body>
 
 </html>
