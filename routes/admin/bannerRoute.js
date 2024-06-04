@@ -176,6 +176,8 @@ router.get("/edit-banner/:id", async (req, res) => {
   }
 });
 
+
+
 // Update banner
 router.post("/update-banner", upload.single("image"), async (req, res) => {
   const { id, short_title, main_title, color } = req.body;

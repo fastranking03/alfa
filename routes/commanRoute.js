@@ -41,23 +41,23 @@ router.get("/product", async (req, res) => {
   const wishlistCount = req.wishlistCount || 0;
   const user = req.session.user;
 
-  const query = `
-    SELECT *
-    FROM 
-        products p
-    JOIN 
-        category c ON p.category_id = c.id
-    JOIN 
-    sub_category sc ON p.subcategory_id = sc.id;
-  `;
+  const queryProduct = `
+  SELECT  * 
+  FROM products ; 
+`;
+
+  const querycategoryList = " SELECT * FROM category ";
 
   try {
-    const [results] = await connect.query(query);
+    const [results] = await connect.query(queryProduct);
+    const [categories] = await connect.query(querycategoryList);
+
     res.render("product", {
       user,
       cartCount,
       wishlistCount,
       products: results,
+      categories:categories,
     });
   } catch (error) {
     console.error("Database query error:", error);
@@ -65,32 +65,44 @@ router.get("/product", async (req, res) => {
   }
 });
 
-router.get("/product-detail", (req, res) => {
-  
-  const cartCount = req.cartCount || 0;
-  const wishlistCount = req.wishlistCount || 0;
-  const user = req.session.user;
-  res.render("product-detail", {  cartCount,
-    wishlistCount,user });
+router.get("/product-detail/:id", async (req, res) => {
+  try {
+    const cartCount = req.cartCount || 0;
+    const wishlistCount = req.wishlistCount || 0;
+    const user = req.session.user;
+    const productId = req.params.id;
+
+    const [rows] = await connect.query("SELECT * FROM products WHERE id = ?", [
+      productId,
+    ]);
+
+    if (rows.length === 0) {
+      return res.status(404).send("Product not found");
+    }
+
+    const product = rows[0];
+    res.render("product-detail", { cartCount, wishlistCount, user, product });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Internal Server Error");
+  }
 });
 
 router.get("/checkout", (req, res) => {
   const user = req.session.user;
-  
+
   const cartCount = req.cartCount || 0;
   const wishlistCount = req.wishlistCount || 0;
 
-  res.render("checkout", {cartCount,
-    wishlistCount, user });
+  res.render("checkout", { cartCount, wishlistCount, user });
 });
 
 router.get("/cart", (req, res) => {
   const user = req.session.user;
-  
+
   const cartCount = req.cartCount || 0;
   const wishlistCount = req.wishlistCount || 0;
-  res.render("cart", {cartCount,
-    wishlistCount, user });
+  res.render("cart", { cartCount, wishlistCount, user });
 });
 
 router.get("/add-address", (req, res) => {
