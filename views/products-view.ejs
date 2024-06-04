@@ -627,9 +627,9 @@
               // Update cart count in the span
               const cartLi = document.querySelector("#cart");
               if (cartLi) {
-                const countTextSpan = cartLi.querySelector(".count-text");
+                const countTextSpan = cartLi.querySelector(".product-count");
                 if (countTextSpan) {
-                  countTextSpan.textContent = "Cart " + result.CartCount;
+                  countTextSpan.textContent = result.CartCount;
                 }
               }
             } else {
