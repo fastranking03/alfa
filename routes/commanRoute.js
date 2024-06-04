@@ -30,4 +30,19 @@ router.get("/about", (req, res) => {
   res.render("about", { user });
 });
 
+// Route for the product page
+router.get('/product', (req, res) => {
+
+  const cartCount = req.cartCount || 0;
+  const wishlistCount = req.wishlistCount || 0;
+
+  const user = req.session.user;
+  res.render('product', { user , cartCount, wishlistCount });
+});
+
+router.get('/product-detail', (req, res) => {
+  const user = req.session.user;
+  res.render('product-detail', { user });
+});
+
 export default router;

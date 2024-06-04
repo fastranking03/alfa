@@ -1,94 +1,235 @@
 <header class="header">
-  <div class="header-container">
-    <div class="left-header-wrapper">
-      <div class="alfa-logo">
-        <a href="/"> <img src="assets/images/logo.png" alt="" /></a>
-      </div>
-      <div class="alfa-navbar">
-        <ul>
-          <li><a href="/">Home</a></li>
-          <li><a href="/about">About Us</a></li>
-          <li><a href="/">Blogs</a></li>
-          <li><a href="/">Shop</a></li>
-          <li><a href="/">Contact Us</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="right-header-wrapper">
-      <div class="alfa-search">
-        <span><img src="assets/images/search.png" alt="" /></span>
-        <input
-          type="search"
-          name="search"
-          class="alfa-search-control"
-          placeholder="Search for products"
-          id=""
-        />
-      </div>
-      <div class="header-icons">
-        <ul>
-          <li class="position-relative user-card-visible">
-            <div class="alfa-icon-flex" id="onClickProfile">
-              <img src="assets/images/profile.png" width="100%" alt="" />
-              <span>Profile</span>
+    <div class="header-container">
+        <div class="left-header-wrapper">
+            <div class="alfa-contact-number">
+                <h6><span><img src="assets/images/phone.png" style="width: 22px;" alt=""></span> (877) 834-1434</h6>
             </div>
-            <div class="user-profile-card" id="openProfileCard">
-              <div class="user-pro-top">
-                <div>
-                  <div class="pro-title">
-                    <% if (user) { %>
-                    <h5>
-                      Welcome <%= user.name %> <%= user.id %> <%= cartCount !==
-                      undefined ? cartCount : 'null' %> <%= wishlistCount !==
-                      undefined ? wishlistCount : 'null' %>
-                    </h5>
-                    <% } %>
-                    <p>To access account and manage orders</p>
-                  </div>
-
-                  <div class="profile-login-signup">
-                    <% if (user) { %>
-                    <a href="/logout">Logout</a>
-                    <% } else { %>
-                    <a href="/login">Login</a>
-                    <span>/</span>
-                    <a href="/signup">Signup</a>
-                    <% } %>
-                  </div>
-                </div>
-              </div>
-              <div class="user-pro-links">
+        </div>
+        <div class="middle-header-wrapper">
+            <div class="alfa-logo">
+                <a href="/"> <img src="assets/images/alfa-logo.png" alt="" /></a>
+            </div>
+        </div>
+        <div class="right-header-wrapper">
+            <div class="alfa-search">
+                <span><img src="assets/images/search.png" alt="" /></span>
+                <input type="search" name="search" class="alfa-search-control" placeholder="Search for products"
+                    id="" />
+            </div>
+            <div class="header-icons">
                 <ul>
-                  <li><a href="">Odrers</a></li>
-                  <li><a href="">Wishlist</a></li>
-                  <li><a href="">Gift Cards</a></li>
-                  <li><a href="">Contact Us</a></li>
+                    <li class="position-relative user-card-visible">
+                        <div class="alfa-icon-flex" id="onClickProfile">
+                            <img src="assets/images/profile.png" width="100%" alt="" />
+                            <span>Profile</span>
+                        </div>
+                        <div class="user-profile-card" id="openProfileCard">
+                            <div class="user-pro-top">
+                                <div>
+                                    <div class="pro-title">
+                                        <% if (user) { %>
+                                            <h5>Welcome <%= user.name %>
+                                            </h5>
+                                            <% } %>
+                                                <p>To access account and manage orders</p>
+                                    </div>
+
+                                    <div class="profile-login-signup">
+                                        <% if (user) { %>
+                                            <a href="/logout">Logout</a>
+                                            <% } else { %>
+                                                <a href="/login">Login</a>
+                                                <span>/</span>
+                                                <a href="/signup">Signup</a>
+                                                <% } %>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="user-pro-links">
+                                <ul>
+                                    <li><a href="">Odrers</a></li>
+                                    <li><a href="">Wishlist</a></li>
+                                    <li><a href="">Gift Cards</a></li>
+                                    <li><a href="">Contact Us</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </li>
+                    <li id="wishlist">
+                        <div class="alfa-icon-flex">
+                          <img src="assets/images/heart.png" width="100%" alt="" />
+                          <span class="count-text"
+                            >Wishlist <%= wishlistCount !== undefined ? wishlistCount :
+                            'null' %></span
+                          >
+                        </div>
+                      </li>
+            
+                      <li id="cart">
+                        <div class="alfa-icon-flex">
+                          <img src="assets/images/heart.png" width="100%" alt="" />
+                          <span class="count-text"
+                            >Cart <%= cartCount !== undefined ? cartCount : 'null' %></span
+                          >
+                        </div>
+                      </li>
+            
                 </ul>
-              </div>
             </div>
-          </li>
-
-          <li id="wishlist">
-            <div class="alfa-icon-flex">
-              <img src="assets/images/heart.png" width="100%" alt="" />
-              <span class="count-text"
-                >Wishlist <%= wishlistCount !== undefined ? wishlistCount :
-                'null' %></span
-              >
-            </div>
-          </li>
-
-          <li id="cart">
-            <div class="alfa-icon-flex">
-              <img src="assets/images/heart.png" width="100%" alt="" />
-              <span class="count-text"
-                >Cart <%= cartCount !== undefined ? cartCount : 'null' %></span
-              >
-            </div>
-          </li>
-
-        </ul>
-      </div>
+        </div>
     </div>
-  </div>
+    <div class="alfa-navbar-warapper">
+        <div class="alfa-navbar">
+            <ul>
+                <li><a href="/" class="nav-item">Home</a></li>
+                <li><a href="/about" class="nav-item">About Us</a></li>
+                <li><a href="/" class="nav-item">Blogs</a></li>
+                <li><a href="/product" class="nav-item active">Shop</a></li>
+                <li><a href="/" class="nav-item">Contact Us</a></li>
+            </ul>
+        </div>
+    </div>
 </header>
+
+<!-- Cart offcanvas -->
+<div class="alfa-offcanvas-wrapper" id="cartOffCanvase">
+    <div>
+        <div class="alfa-offcanvas-header">
+            <div class="header-left">
+                <h4>Shopping Cart</h4>
+            </div>
+            <div class="header-right">
+                <a style="cursor: pointer" id="closeOffcanvas"><img src="assets/images/close.png" alt="" /></a>
+            </div>
+        </div>
+        <div class="alfa-offcanvas-body">
+            <div class="alfa-cart-items">
+                <div class="cart-items">
+                    <div class="cart-items-left">
+                        <div class="cart-image">
+                            <img src="assets/images/cat3.png" class="cart-img" alt="" />
+                        </div>
+                        <div class="pro-cart-contents">
+                            <div class="pro-cart-title">
+                                <h3>Menswear Trouser</h3>
+                            </div>
+                            <div class="pro-cart-colorsize">
+                                <p>Size : XL</p>
+                                <p>Color : Grey</p>
+                            </div>
+                            <div class="pro-cart-price">
+                                <h3>£50.00</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cart-items-right">
+                        <div>
+                            <div class="cart-delete">
+                                <a href=""><img src="assets/images/delete.png" alt="" /></a>
+                            </div>
+                            <div class="cart-quantity-wrapper">
+                                <div class="left-input">
+                                    <span><img src="assets/images/minuse.png" alt="" /></span>
+                                </div>
+                                <div class="cart-quantity">
+                                    <input type="text" value="1" class="cart-value" />
+                                </div>
+                                <div class="right-input">
+                                    <span><img src="assets/images/plus.png" alt="" /></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cart-items">
+                    <div class="cart-items-left">
+                        <div class="cart-image">
+                            <img src="assets/images/cat3.png" class="cart-img" alt="" />
+                        </div>
+                        <div class="pro-cart-contents">
+                            <div class="pro-cart-title">
+                                <h3>Menswear Trouser</h3>
+                            </div>
+                            <div class="pro-cart-colorsize">
+                                <p>Size : XL</p>
+                                <p>Color : Grey</p>
+                            </div>
+                            <div class="pro-cart-price">
+                                <h3>£50.00</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cart-items-right">
+                        <div>
+                            <div class="cart-delete">
+                                <a href=""><img src="assets/images/delete.png" alt="" /></a>
+                            </div>
+                            <div class="cart-quantity-wrapper">
+                                <div class="left-input">
+                                    <span><img src="assets/images/minuse.png" alt="" /></span>
+                                </div>
+                                <div class="cart-quantity">
+                                    <input type="text" value="1" class="cart-value" />
+                                </div>
+                                <div class="right-input">
+                                    <span><img src="assets/images/plus.png" alt="" /></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="alfa-offcanvas-footer">
+                <div class="promo-code-wrap">
+                    <input type="text" class="promo-input" placeholder="Promo Code" />
+                    <button type="submit" class="apply-btn" name="submit">Apply</button>
+                </div>
+                <div class="alfa-cart-total">
+                    <ul>
+                        <li>
+                            <div class="alfa-text">Sub- Total</div>
+                            <div class="alfa-price">£456.00</div>
+                        </li>
+                        <li>
+                            <div class="alfa-text">GST</div>
+                            <div class="alfa-price">£91.00</div>
+                        </li>
+                        <li>
+                            <div class="alfa-text">Discount</div>
+                            <div class="alfa-price">-£30.00</div>
+                        </li>
+                        <li>
+                            <div class="alfa-text">Delivery Fee</div>
+                            <div class="alfa-price">£25.00</div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="alfa-cart-total">
+                    <ul>
+                        <li>
+                            <div class="alfa-text">Total Cost</div>
+                            <div class="alfa-price">£542.00</div>
+                        </li>
+                    </ul>
+                </div>
+                <div class="alfa-checkout-wrapper">
+                    <button type="button" class="checkout-btn">Proceed to Checkout</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- End -->
+
+<script>
+    var leftOffCanvas = document.getElementById("leftOffCanvas");
+    var closeOffcanvas = document.getElementById("closeOffcanvas");
+    var showCanvas = document.getElementById("cartOffCanvase");
+    leftOffCanvas.addEventListener("click", function () {
+        showCanvas.classList.add("show");
+    });
+
+    closeOffcanvas.addEventListener("click", function () {
+        showCanvas.classList.remove("show");
+    });
+</script>

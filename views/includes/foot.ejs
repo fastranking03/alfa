@@ -22,6 +22,150 @@
       openProfileCard.style.display = "none";
       isCardHidden = true;
     }
-  });
+    });
+    
+    $(document).ready(function() {
+      $('#hero-carousel').owlCarousel({
+        loop: true,
+        margin: 20,
+        nav: true,
+        autoplay: true,
+        navText: ['<i class="fa-solid fa-angle-left"></i>', '<i class="fa-solid fa-angle-right"></i>'],
+        responsive: {
+          0: {
+            items: 1
+          },
+          600: {
+            items: 1
+          },
+          1000: {
+            items: 1
+          }
+        }
+      });
+    });
+    $(document).ready(function() {
+      $('#bestseller-carousel').owlCarousel({
+        loop: true,
+        margin: 20,
+        nav: true,
+        autoplay: true,
+        navText: ['<i class="fa-solid fa-angle-left"></i>', '<i class="fa-solid fa-angle-right"></i>'],
+        responsive: {
+          0: {
+            items: 1
+          },
+          350: {
+            items: 2
+          },
+          400: {
+            items: 2
+          },
+          600: {
+            items: 3
+          },
+          1000: {
+            items: 6
+          }
+        }
+      });
+    });
+    $(document).ready(function() {
+      $('#testimonial-carousel').owlCarousel({
+        loop: true,
+        margin: 20,
+        nav: true,
+        autoplay: true,
+        navText: ['<i class="fa-solid fa-angle-left"></i>', '<i class="fa-solid fa-angle-right"></i>'],
+        responsive: {
+          0: {
+            items: 1
+          },
+          600: {
+            items: 1
+          },
+          1000: {
+            items: 1
+          }
+        }
+      });
+    });
 
+    $(document).ready(function() {
+      $('#maylike-carousel').owlCarousel({
+        loop: true,
+        margin: 20,
+        nav: false,
+        autoplay: true,
+        navText: ['<i class="fa-solid fa-angle-left"></i>', '<i class="fa-solid fa-angle-right"></i>'],
+        responsive: {
+          0: {
+            items: 1
+          },
+          350: {
+            items: 2
+          },
+          400: {
+            items: 2
+          },
+          600: {
+            items: 3
+          },
+          1000: {
+            items: 4
+          }
+        }
+      });
+    });
+    $(document).ready(function() {
+      $('#partner-carousel').owlCarousel({
+        loop: true,
+        margin: 20,
+        nav: true,
+        autoplay: true,
+        navText: ['<i class="fa-solid fa-angle-left"></i>', '<i class="fa-solid fa-angle-right"></i>'],
+        responsive: {
+          0: {
+            items: 1
+          },
+          400: {
+            items: 3
+          },
+          600: {
+            items: 4
+          },
+          1000: {
+            items: 7
+          }
+        }
+      });
+    });
+    $(document).ready(function() {
+     var $carousel = $('#product-detail-carousel').owlCarousel({
+        loop: true,
+        margin: 20,
+        nav: true,
+        autoplay: false,
+        navText: ['<i class="fa-solid fa-angle-left"></i>', '<i class="fa-solid fa-angle-right"></i>'],
+        responsive: {
+            0: {
+                items: 1
+            },
+            400: {
+                items: 1
+            },
+            600: {
+                items: 1
+            },
+            1000: {
+                items: 1
+            }
+        }
+    });
+
+    $('.image-item').on('click', function() {
+        var index = $(this).data('index');
+        $carousel.trigger('to.owl.carousel', [index, 300]);
+    });
+});
 </script>

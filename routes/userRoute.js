@@ -1,6 +1,6 @@
 import express from "express";
 import bcrypt from "bcrypt";
-import connect from "../db/connect.js";
+import connect from "../db/connect.js"; 
 import { userLogIn } from "../middleware/protected.js";
 import nodemailer from "nodemailer";
 
