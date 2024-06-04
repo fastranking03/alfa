@@ -1,25 +1,28 @@
 <script src="assets/js/jquery.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" ></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
 
 <script>
-    var onClickProfile = document.getElementById("onClickProfile");
-    var openProfileCard = document.getElementById("openProfileCard");
+    
+  var onClickProfile = document.getElementById("onClickProfile");
+  var openProfileCard = document.getElementById("openProfileCard");
 
-    // Initial state (assuming the card is hidden by default)
-    var isCardHidden = true;
+  // Initial state (assuming the card is hidden by default)
+  var isCardHidden = true;
 
-    onClickProfile.addEventListener('click', function() {
+  onClickProfile.addEventListener("click", function () {
     if (isCardHidden) {
-        // Open the card
-        openProfileCard.style.display = "block";
-        isCardHidden = false;
+      // Open the card
+      openProfileCard.style.display = "block";
+      isCardHidden = false;
     } else {
-        // Hide the card
-        openProfileCard.style.display = "none";
-        isCardHidden = true;
+      // Hide the card
+      openProfileCard.style.display = "none";
+      isCardHidden = true;
     }
     });
+    
     $(document).ready(function() {
       $('#hero-carousel').owlCarousel({
         loop: true,

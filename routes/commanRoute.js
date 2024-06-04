@@ -1,61 +1,98 @@
-import express from 'express';
-import pool from '../db/connect.js';  // Adjust the path as necessary
-import slugify from 'slugify';
+import express from "express";
+import connect from "../db/connect.js"; // Adjust the path as necessary
+import slugify from "slugify";
 
 const router = express.Router();
 
-// Route for the home page with categories and user data
-router.get('/', async (req, res) => {
+router.get("/", async (req, res) => {
   const user = req.session.user;
 
   try {
     // Query categories from the database
-    const [categories] = await pool.query('SELECT * FROM category');
+    const [categories] = await connect.query("SELECT * FROM category");
 
-    // Generate slugs for each category
-    categories.forEach((category) => {
-      category.slug = slugify(category.category_name, { lower: true });
-    });
+    // Retrieve cart and wishlist counts from the request object
+    const cartCount = req.cartCount || 0;
+    const wishlistCount = req.wishlistCount || 0;
 
     // Render the index view with user and categories data
-    res.render('index', { user: user, categories: categories });
+    res.render("index", {
+      user: user,
+      categories: categories,
+      cartCount,
+      wishlistCount,
+    });
   } catch (err) {
     // If there's an error fetching categories, log the error and redirect
-    console.error('Error fetching categories:', err);
-    res.redirect('/');
+    console.error("Error fetching categories:", err);
+    res.redirect("/");
   }
 });
 
 // Route for the about page
-router.get('/about-us', (req, res) => {
+router.get('/about', (req, res) => {
   const user = req.session.user;
-  res.render('about-us', { user });
+  res.render('about', { user });
 });
 
 // Route for the product page
-router.get('/product', (req, res) => {
+
+router.get("/product", async (req, res) => {
+  const cartCount = req.cartCount || 0;
+  const wishlistCount = req.wishlistCount || 0;
   const user = req.session.user;
-  res.render('product', { user });
+
+  const query = `
+    SELECT *
+    FROM 
+        products p
+    JOIN 
+        category c ON p.category_id = c.id
+    JOIN 
+    sub_category sc ON p.subcategory_id = sc.id;
+  `;
+
+  try {
+    const [results] = await connect.query(query);
+    res.render("product", {
+      user,
+      cartCount,
+      wishlistCount,
+      products: results,
+    });
+  } catch (error) {
+    console.error("Database query error:", error);
+    res.status(500).send("Internal Server Error");
+  }
 });
 
-router.get('/product-detail', (req, res) => {
+router.get("/product-detail", (req, res) => {
+  
+  const cartCount = req.cartCount || 0;
+  const wishlistCount = req.wishlistCount || 0;
   const user = req.session.user;
-  res.render('product-detail', { user });
+  res.render("product-detail", {  cartCount,
+    wishlistCount,user });
 });
 
-router.get('/checkout', (req, res) => {
+router.get("/checkout", (req, res) => {
   const user = req.session.user;
-  res.render('checkout', { user });
+  
+  const cartCount = req.cartCount || 0;
+  const wishlistCount = req.wishlistCount || 0;
+
+  res.render("checkout", {cartCount,
+    wishlistCount, user });
 });
 
-router.get('/my-cart', (req, res) => {
+router.get('/cart', (req, res) => {
   const user = req.session.user;
-  res.render('my-cart', { user });
+  res.render('cart', { user });
 });
 
-router.get('/add-address', (req, res) => {
+router.get("/add-address", (req, res) => {
   const user = req.session.user;
-  res.render('add-address', { user });
+  res.render("add-address", { user });
 });
 
 router.get('/my-wishlist', (req, res) => {
