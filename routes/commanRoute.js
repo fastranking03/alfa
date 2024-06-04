@@ -43,4 +43,19 @@ router.get('/product-detail', (req, res) => {
   res.render('product-detail', { user });
 });
 
+router.get('/checkout', (req, res) => {
+  const user = req.session.user;
+  res.render('checkout', { user });
+});
+
+router.get('/cart', (req, res) => {
+  const user = req.session.user;
+  res.render('cart', { user });
+});
+
+router.get('/add-address', (req, res) => {
+  const user = req.session.user;
+  res.render('add-address', { user });
+});
+
 export default router;

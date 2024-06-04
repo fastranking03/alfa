@@ -1,4 +1,10 @@
 @media screen and (max-width:576px){
+    .header{
+        display: none;
+    }
+    .mt-100{
+        top: 70px;
+    }
     .owl-dots{
         display: none;
     }
@@ -168,4 +174,112 @@
     .mt-80 {
         margin-top: 50px;
     }
+    .image-item .d-img {
+        width: 30px;
+    }
+    .address-wrapper{
+        border: none;
+    }
+    .add-address-button {
+        display: flex;
+        gap: 15px;
+    }
+    .address-btn {
+         width: 100%;
+     }
+     .product-md-3{
+        display: none;
+     }
+     .product-md-3{
+        width: 225px;
+        height: 225px;
+     }
+     .back-cercle{
+        width: 130px;
+        height: 130px;
+     }
+     .shop-images .shop-img {
+        width: 130px;
+    }
+    .product-md-9 {
+        width: 100%;
+    }
+    .cat-item {
+         padding: 0px 8px;
+         height: 30px;
+        font-size: 12px;
+        white-space: nowrap;
+     }
+     .product-cat-type{
+        overflow: scroll;
+     }
+     .product-grid {
+        grid-template-columns: auto auto;
+        gap: 25px;
+    }
+    .product-price h4{
+        font-size: 18px;
+    }
+    .product-details h6{
+        font-size: 14px;
+    }
+    .product-color-option ul .p-option-item {
+        width: 13px;
+        height: 13px;
+    }
+    .hero-product-row{
+        gap: 20px;
+    }
+    .product--button-wrapper {
+         display: flex;
+    }
+    .cart-btn{
+        width: 100%;
+    }
+
+    /* Mobile Header */
+    .alfa-mobile-wrapper{
+        display: flex;
+        justify-content: space-between;
+        height: 70px;
+        align-items: center;
+        padding: 0 10px;
+        position: fixed;
+        width: 100%;
+        z-index: 999;
+        background: #fff;
+    }
+    .mobile-logo img{
+        width: 50px;
+    }
+    .mobile-right-icons{
+        display: flex;
+        align-items: center;
+        gap: 20px;
+    }
+    .mobile-right-icons .mobile-ul ul{
+        list-style:none;
+        padding: 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 0;
+    }
+    .alfa-icon-flex{
+        display: flex;
+        flex-direction: column;
+       align-items: center;
+    }
+    .alfa-icon-flex img {
+        width: 28px;
+    }
+    .alfa-icon-flex span{
+        font-size: 13px;
+    }
+    .menu-icon img{
+        width: 30px;
+    }
+    .mobile-header{
+        display: block;
+      }
 }
