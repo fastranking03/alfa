@@ -58,7 +58,7 @@ router.get("/product", async (req, res) => {
       cartCount,
       wishlistCount,
       products: results,
-      categories:categories,
+      categories: categories,
     });
   } catch (error) {
     console.error("Database query error:", error);
@@ -73,16 +73,32 @@ router.get("/product-detail/:id", async (req, res) => {
     const user = req.session.user;
     const productId = req.params.id;
 
-    const [rows] = await connect.query("SELECT * FROM products WHERE id = ?", [
-      productId,
-    ]);
+    const [rows] = await connect.query(
+      `SELECT 
+          p.*,
+          c.id AS category_id,
+          c.category_name,
+          s.id AS subcategory_id,
+          s.sub_category_name
+       FROM products p
+       INNER JOIN category c ON p.category_id = c.id 
+       INNER JOIN sub_category s ON p.subcategory_id = s.id 
+       WHERE p.id = ?`,
+      [productId]
+    );
 
     if (rows.length === 0) {
       return res.status(404).send("Product not found");
     }
 
     const product = rows[0];
-    res.render("product-detail", { cartCount, wishlistCount, user, product });
+
+    const [product_images] = await connect.query(
+      "SELECT * FROM Product_Images WHERE product_id = ?",
+      [productId]
+    );
+
+    res.render("product-detail", { cartCount, wishlistCount, user, product ,product_images });
   } catch (error) {
     console.error(error);
     res.status(500).send("Internal Server Error");
