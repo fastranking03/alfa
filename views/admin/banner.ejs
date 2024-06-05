@@ -16,22 +16,33 @@
         <div class="admin-main-layout">
           <div class="admin-bradcrumb">
             <div class="admin-brudcrumb-title">
-              <h4>Banner List</h4>
+              <h3><span><i class="fa-solid fa-angle-left"></i></span>Banner List</h3>
             </div>
           </div>
-
-          <div class="admin-card">
-            <div class="admin-card-wrap">
-              <div class="table-search">
-                <input type="search" class="">
+           <div class="product-list">
+             <div class="table-list-head">
+              <div class="alfa-data-search">
+                <div class="search-wrapper position-relative">
+                  <span><i class="fa-solid fa-magnifying-glass"></i></span>
+                  <input type="search" name="search" class="table-search" placeholder="Search" id="search">
+                </div>
+                <div class="select-warpper">
+                  <div class="table-selects">
+                    <select name="" id="" class="table-select">
+                      <option value="all">All</option>
+                      <option value="">One</option>
+                    </select>
+                  </div>
+                </div>
               </div>
-              <div class="table-btn">
-                <a href="/admin/add-banner">Add Banner</a>
+              <div class="table-list-btn">
+                <div class="table-btn">
+                  <a href="/admin/add-banner">Add Banner</a>
+                </div>
               </div>
             </div>
-
             <div class="responsive-table">
-              <table class="table table-border">
+              <table class="alfa-table">
                 <thead>
                   <tr>
                     <th>Sr No</th>
@@ -50,12 +61,12 @@
                     <td><%= banner.id %></td>
                     <td><%= banner.short_title %></td>
                     <td><%= banner.main_title %></td>
-                    <td><img src="../../banner_images/<%= banner.image %>" alt="Banner Image" style="max-width: 100px;"></td>
+                    <td><img src="../../banner_images/<%= banner.image %>" alt="Banner Image" style="max-width:60px;"></td>
                     <td><%= banner.status %></td>
                     <td><%= banner.created_at %></td>
                     <td>
-                      <a href="/admin/edit-banner/<%= banner.id %>" class="btn btn-primary">Edit</a> |
-                      <a href="/admin/delete-banner/<%= banner.id %>" class="btn btn-danger">Delete</a>
+                      <a href="/admin/edit-banner/<%= banner.id %>" class="btn-item btn-edit"><span><i class="fa-solid fa-pen-to-square"></i></span></a> 
+                      <a href="/admin/delete-banner/<%= banner.id %>" class="btn-item btn-delete"><span><i class="fa-solid fa-trash"></i></span></a>
                     </td>
                   </tr>
                   <% }); %>
@@ -63,9 +74,15 @@
                 </tbody>
               </table>
             </div>  
- 
-
-          </div>
+            <div class="table-pagination-wrapper">
+              <div class="table-pagination">
+                <a href="#"><span><i class="fa-solid fa-angle-left"></i></span></a>
+                <a href="#" class="active page-items">1</a>
+                <a href="#" class="page-items">2</a>
+                <a href="#" style="color: #005D67;"><span><i class="fa-solid fa-angle-right"></i></span></a> 
+              </div>
+            </div>
+           </div>
         </div>
       </div>
     </div>
