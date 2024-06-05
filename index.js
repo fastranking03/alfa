@@ -50,7 +50,7 @@ async function getUserCounts(userId) {
   const cartCount = cartResult[0].cart_count;
   const wishlistCount = wishlistResult[0].wishlist_count;
 
-  // Close the connection connect 
+  // Close the connection connect
 
   return { cartCount, wishlistCount };
 }
@@ -58,13 +58,12 @@ async function getUserCounts(userId) {
 async function getUserCountsMiddleware(req, res, next) {
   try {
     if (req.session.user) {
-
       const userId = req.session.user.id;
       const { cartCount, wishlistCount } = await getUserCounts(userId);
       req.cartCount = cartCount;
       req.wishlistCount = wishlistCount;
     }
-    
+
     next();
   } catch (error) {
     console.error("Error:", error);
@@ -81,6 +80,9 @@ app.use(express.static("public"));
 
 // Serve static files (like uploaded images)
 app.use("/banner_images", express.static("banner_images"));
+app.use("/category_images", express.static("category_images"));
+
+app.use("/product_images", express.static("product_images"));
 
 // Routes
 app.use("/", userRoute);
@@ -96,8 +98,6 @@ app.use("/admin/", categoryRoute);
 app.use("/admin/", inventoryRoute);
 app.use("/admin/", adminProductsRoute);
 app.use("/admin/", subcategoryRoute);
-
-
 
 const PORT = 8081;
 app.listen(PORT, () => {
