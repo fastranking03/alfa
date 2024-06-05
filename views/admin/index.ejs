@@ -29,6 +29,7 @@
                   <tr>
                     <th>ID</th>
                     <th>Name</th>
+                    <th>Image</th>
                     <th>Price</th>
                     <th>Discount</th>
                     <th>Category</th>
@@ -43,10 +44,14 @@
                   <tr>
                     <td><%= product.id %></td>
                     <td><%= product.product_name %></td>
+                    <td>
+                      <img src="../../product_images/<%= product.product_main_image %>" alt="" style="width: 100px; height: 100px;">
+                  </td>
+                  
                     <td><%= product.product_price %></td>
                     <td><%= product.discount_on_product %></td>
                     <td><%= product.category_name %></td> <!-- Display category name -->
-                    <td><%= product.sub_category_name	 %></td> <!-- Display subcategory name -->
+                    <td><%= product.subcategory_name	 %></td> <!-- Display subcategory name -->
                     <td><%= product.created_at.toLocaleString()  %></td>
                     <td>
                       <span><a href="admin/edit/<%= product.id %>">Edit</a></span>

@@ -46,24 +46,35 @@
                 <div class="alfa-pro-detail-wrapper">
 
                   <div id="product-detail-carousel" class="p-detail-wrap owl-carousel comman-nav owl-nav-display">
-                    <% product_images.forEach(function(image, index) { %>
-                        <div class="d-item" data-index="<%= index %>">
-                            <img src="../product_images/<%= image.image_path %>" alt="">
-                        </div>
-                    <% }); %>
-                </div>
-                
-                
-
-                  <div class="image-grid-wrapper">
-                    <div class="images-grids">
+                    <% if (product_images.length > 0) { %>
                         <% product_images.forEach(function(image, index) { %>
-                            <div class="image-item" data-index="<%= index %>">
-                                <img src="../product_images/<%= image.image_path %>" class="d-img" alt="">
+                            <div class="d-item" data-index="<%= index %>">
+                                <img src="../product_images/<%= image.image_path %>" alt="">
                             </div>
                         <% }); %>
+                    <% } else { %>
+                        <div class="d-item" data-index="0">
+                            <img src="../product_images/<%= product.product_main_image %>" alt="">
+                        </div>
+                    <% } %>
+                </div>
+                
+                <div class="image-grid-wrapper">
+                    <div class="images-grids">
+                        <% if (product_images.length > 0) { %>
+                            <% product_images.forEach(function(image, index) { %>
+                                <div class="image-item" data-index="<%= index %>">
+                                    <img src="../product_images/<%= image.image_path %>" class="d-img" alt="">
+                                </div>
+                            <% }); %>
+                        <% } else { %>
+                            <div class="image-item" data-index="0">
+                                <img src="../product_images/<%= product.product_main_image %>" class="d-img" alt="">
+                            </div>
+                        <% } %>
                     </div>
                 </div>
+                
                 
                 </div>
               </div>
@@ -185,7 +196,16 @@
                     <a href="/checkout" class="cart-btn buy--now">Buy Now</a>
                   </div>
                 </form>
- 
+
+                <% if (sizes && Object.keys(sizes).length > 0) { %>
+                  <ul>
+                    <% for (const [size, value] of Object.entries(sizes)) { %>
+                      <li><%= size %> - <%= value %></li>
+                    <% } %>
+                  </ul>
+                <% } else { %>
+                  <p>No sizes available</p>
+                <% } %>
                 </div>
               </div>
             </div>

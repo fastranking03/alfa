@@ -38,8 +38,9 @@
               <table class="table">
                 <thead>
                   <tr>
-                    <th>Product ID</th>
+                    <th>S NO .</th>
                     <th>Product Name</th>
+                    <th>Product Image</th>
                     <th>Size 28</th>
                     <th>Size 30</th>
                     <th>Size 32</th>
@@ -50,15 +51,23 @@
                     <th>Size 42</th>
                     <th>Size 44</th>
                     <th>Size 46</th>
-                    <th>Created At</th>
+                    <th>Stocks Updated At</th>
                     <th>Update</th>
                   </tr>
                 </thead>
                 <tbody>
-                  <% inventory.forEach(item => { %>
+                  <% inventory.forEach( (item , index) => { %>
                   <tr>
-                    <td><%= item.productid %></td>
+                    <td><%= index + 1 %></td>
                     <td><%= item.productname %></td>
+                    <td>
+                      <img
+                        src="../../product_images/<%= item.product_image %>"
+                        alt=""
+                        style="max-width: 100px; max-height: 100px"
+                      />
+                    </td>
+
                     <td><%= item.size_28 || 'N/A' %></td>
                     <td><%= item.size_30 || 'N/A' %></td>
                     <td><%= item.size_32 || 'N/A' %></td>
@@ -76,7 +85,7 @@
                     <td>
                       <a
                         href="admin/inventory/update/<%= item.productid%>?type=bottom"
-                        >Update</a
+                        class="btn btn-primary">Update</a
                       >
                     </td>
                   </tr>
@@ -84,7 +93,7 @@
                 </tbody>
               </table>
               <% } else { %>
-              <p>No inventory available.</p>    
+              <p>No inventory available.</p>
               <% } %>
             </div>
           </div>
@@ -101,8 +110,9 @@
               <table class="table">
                 <thead>
                   <tr>
-                    <th>Product ID</th>
+                    <th>S NO.</th>
                     <th>Product Name</th>
+                    <th>Product Image</th>
                     <th>XS</th>
                     <th>S</th>
                     <th>M</th>
@@ -115,10 +125,17 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <% inventory.forEach(item => { %>
+                  <% inventory.forEach( (item , index)=> { %>
                   <tr>
-                    <td><%= item.productid %></td>
+                    <td><%= index + 1 %></td>
                     <td><%= item.productname %></td>
+                    <td>
+                      <img
+                        src="../../product_images/<%= item.product_image %>"
+                        alt=""
+                        style="max-width: 100px; max-height: 100px"
+                      />
+                    </td>
                     <td><%= item.xs || 'N/A' %></td>
                     <td><%= item.m || 'N/A' %></td>
                     <td><%= item.l || 'N/A' %></td>

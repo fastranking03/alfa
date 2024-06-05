@@ -55,7 +55,7 @@
       <!-- END --> 
       <!-- CATEGORY SECTION -->
       <section class="mt-80 category-section mb-5">
-        <div class="container">
+        <!-- <div class="container">
           <div class="alfa-title">
             <h2>Shop By categories</h2>
           </div>
@@ -126,9 +126,37 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
 
-       
+        <div class="container">
+          <div class="alfa-title">
+            <h2>Shop By categories</h2>
+          </div>
+          <div class="alfa-category-wrapper">
+            <div class="alfa-aminate-text d-none">
+              <h3>categories</h3>
+            </div>
+            <div class="category-wrapper">
+              <% categories.forEach(category => { %>
+              <div class="category-box">
+                <a href="/category/<%= category.id %>">
+                  <div class="category-img">
+                    <img
+                      src="../category_images/<%= category.category_image %>"
+                      alt=""
+                    />
+                  </div>
+
+                  <div class="category-text">
+                    <h4><%= category.category_name %></h4>
+                  </div>
+                </a>
+              </div>
+
+              <% }); %>
+            </div>
+          </div>
+        </div>
       </section> 
       <!-- END -->
       <!-- SELLING SECTION -->
@@ -540,18 +568,25 @@
       </div>
     </div>
     <%- include('includes/foot') %>
+
     <script>
+        var openProfileCard = document.getElementById("openProfileCard");
+
+        // Initial state (assuming the card is hidden by default)
+        var onClickProfile = document.getElementById("onClickProfile");
+        var isCardHidden = true;
+
         onClickProfile.addEventListener("click", function () {
-        if (isCardHidden) {
-          // Open the card
-          openProfileCard.style.display = "block";
-          isCardHidden = false;
-        } else {
-          // Hide the card
-          openProfileCard.style.display = "none";
-          isCardHidden = true;
-        }
-        });
+          if (isCardHidden) {
+            // Open the card
+            openProfileCard.style.display = "block";
+            isCardHidden = false;
+          } else {
+            // Hide the card
+            openProfileCard.style.display = "none";
+            isCardHidden = true;
+          }
+          });
     </script>
     <script>
       $(document).ready(function () {
