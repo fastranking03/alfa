@@ -17,7 +17,7 @@ router.post("/add-subcategory", async (req, res) => {
     const { category_id, subcategory_name ,status} = req.body;
 
     try {
-        const query = "INSERT INTO sub_category (category_id, sub_category_name , status) VALUES (?, ?)";
+        const query = "INSERT INTO sub_category (category_id, sub_category_name , status) VALUES (? ,?, ?)";
         await connect.query(query, [category_id, subcategory_name , status]);
         res.redirect("/admin/subcategory");
     } catch (error) {

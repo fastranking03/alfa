@@ -28,13 +28,12 @@
                 <a href="/admin/add-category">Add Category</a>
               </div>
             </div>
-
-            <img src="../../category_images/1716635060246.webp" style="max-width: 100px;">
+ 
             <div class="responsive-table">
               <table class="table table-border">
                 <thead>
                   <tr>
-                    <th>ID</th>
+                    <th>S . No</th>
                     <th>Category Name</th>
                     <th>Category Image</th>
                     <th>Created At</th>
@@ -43,18 +42,19 @@
                 </thead>
 
                 <tbody>
-                  <% categories.forEach( category  => { %>
-                  <tr>
-                    <td> <%= category.id %></td>
+                  <% categories.forEach((category, index) => { %>
+                    <tr>
+                      <td><%= index + 1 %></td>
              
                     <td><%= category.category_name %></td>
 
-                    <td><img src="../../category_images/<%=category.category_image %>" alt="Category Image" style="max-width: 100px;"></td>
+                    <td><img src="../../category_images/<%=category.category_image %>" alt="Category Image" style="max-width: 100px;  max-height: 100px;"></td>
 
-                    <td><%= category.created_at %></td>
+                    <td><%= category.created_at.toLocaleString('en-GB', { timeZone: 'Europe/London', dateStyle: 'medium', timeStyle: 'medium' }) %></td>
+
 
                     <td>
-                      <a href="/admin/edit-category/<%= category.id %>" class="btn btn-primary">Edit</a> |
+                      <a href="/admin/edit-category/<%= category.id %>" class="btn btn-primary" >Edit</a> |
                       <a href="/admin/delete-category/<%= category.id %>" class="btn btn-danger">Delete</a>
                   </tr>
                   <% }); %>

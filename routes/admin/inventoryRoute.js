@@ -9,6 +9,7 @@ router.get("/inventory/bottom-wear", async (req, res) => {
         SELECT 
             p.id AS productid,
             p.product_name AS productname,
+            p.product_main_image AS product_image,
             bw.* 
         FROM 
             products p
@@ -37,6 +38,7 @@ router.get("/inventory/top-wear", async (req, res) => {
             SELECT 
                 p.id AS productid,
                 p.product_name AS productname,
+                p.product_main_image AS product_image,
                 bw.* 
             FROM 
                 products p

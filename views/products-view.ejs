@@ -69,16 +69,24 @@
                 <% products.forEach(product => { %>
                 <div class="product-item">
                   <div class="produt-wrap">
-                    <img
-                      src="../product_images/<%= product.image %>"
-                      class="pro-img"
-                      alt="<%= product.name %>"
-                    />
+                    <a href="/product-detail/<%= product.id %>">
+                      <img
+                        src="../product_images/<%= product.product_main_image %>"
+                        class="pro-img"
+                        alt="<%= product.name %>"
+                      />
+                    </a>
                     <div class="product-btn">
                       <div class="pro-whishlist">
-                        <a href=""
-                          ><img src="assets/images/heart.png" alt="Wishlist"
-                        /></a>
+                        <a
+                          class="add-to-favorites"
+                          data-product-id="<%= product.id %>"
+                        >
+                          <img
+                            src="assets/images/heart.png"
+                            alt="Add to Favorites"
+                          />
+                        </a>
                       </div>
                       <div class="pro-view">
                         <a href=""
@@ -91,10 +99,20 @@
                   <div class="product-details">
                     <h6><%= product.product_name %></h6>
                     <div class="product-price">
-                      <h4>£<%= product.product_price %></h4>
+                      <h5>
+                        <span class="final-price"
+                          >£<%=(product.product_price * (1 -
+                          (product.discount_on_product / 100))).toFixed(2)
+                          %></span
+                        >
+                        <span class="mrp-price">
+                          £<%=product.product_price %></span
+                        >
+                        <span> (<%=product.discount_on_product %>% OFF )</span>
+                      </h5>
                     </div>
                     <div class="product-btn">
-                      <div class="pro-whishlist">
+                      <!-- <div class="pro-whishlist">
                         <button
                           class="add-to-favorites"
                           data-product-id="<%= product.id %>"
@@ -104,7 +122,7 @@
                             alt="Add to Favorites"
                           />
                         </button>
-                      </div>
+                      </div> -->
                       <div class="pro-view">
                         <button
                           class="add-to-cart"
@@ -117,12 +135,17 @@
                     <div class="product-rating">
                       <ul>
                         <li>
-                          <% for(let i = 0; i < 5; i++) { %> <% if (i <
-                          product.rating) { %>
-                          <img src="assets/images/star.png" alt="Star" />
-                          <% } else { %>
-                          <img src="assets/images/star-empty.png" alt="Star" />
-                          <% } %> <% } %>
+                          <% for (let i = 0; i < 5; i++) { %>
+                          <a href="">
+                            <img
+                              src="assets/images/star.png"
+                              alt="Star Rating"
+                            />
+                          </a>
+                          <% } %>
+                          <a href="">
+                            <span class="review-count">(120 Reviews)</span>
+                          </a>
                         </li>
                       </ul>
                     </div>
@@ -180,8 +203,7 @@
               </div>
             </div>
           </div>
-        </section>
-
+        </section> 
         <!-- END -->
 
         <!-- SELLING SECTION -->
