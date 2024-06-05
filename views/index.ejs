@@ -55,7 +55,7 @@
       <!-- END --> 
       <!-- CATEGORY SECTION -->
       <section class="mt-80 category-section mb-5">
-        <div class="container">
+        <!-- <div class="container">
           <div class="alfa-title">
             <h2>Shop By categories</h2>
           </div>
@@ -126,9 +126,12 @@
               </div>
             </div>
           </div>
-        </div>
+        </div> -->
 
         <div class="container">
+          <div class="alfa-title">
+            <h2>Shop By categories</h2>
+          </div>
           <div class="alfa-category-wrapper">
             <div class="alfa-aminate-text d-none">
               <h3>categories</h3>
@@ -565,6 +568,22 @@
       </div>
     </div>
     <%- include('includes/foot') %>
+    <script>
+       var onClickProfile = document.getElementById("onClickProfile");
+  var isCardHidden = true;
+
+  onClickProfile.addEventListener("click", function () {
+    if (isCardHidden) {
+      // Open the card
+      openProfileCard.style.display = "block";
+      isCardHidden = false;
+    } else {
+      // Hide the card
+      openProfileCard.style.display = "none";
+      isCardHidden = true;
+    }
+    });
+    </script>
     <script>
       $(document).ready(function () {
         $("#hero-carousel").owlCarousel({
