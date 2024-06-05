@@ -211,6 +211,7 @@ router.get("/product-detail/:id", async (req, res) => {
       [productId]
     );
 
+
     // Render product detail page
     res.render("product-detail", {
       cartCount,
