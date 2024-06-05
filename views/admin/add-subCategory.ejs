@@ -1,0 +1,119 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Alfa Admin | Dashboard</title>
+    <%- include('includes/head') %>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
+  </head>
+
+  <body>
+    <div class="main-admin-warpper">
+      <%- include('includes/header') %>
+      <div class="alfa-admin-wrapper">
+        <div class="admin-side-nav">
+          <%- include('includes/sidebar') %>
+          <div class="admin-main-layout">
+            <div class="admin-bradcrumb">
+              <div class="admin-brudcrumb-title">
+                <h4>Add Category</h4>
+              </div>
+            </div>
+            <div
+              class="admin-card my-3"
+              style="background-color: rgb(184, 182, 180)"
+            >
+              <form action="add-subcategory" method="POST">
+                <div class="row">
+                  <div class="col-md-3 mt-4">
+                    <div class="from-group">
+                      <label for="Catename">Choose Category </label>
+                      <select id="category_id" name="category_id" required>
+                        <% categories.forEach(category => { %>
+                        <option value="<%= category.id %>">
+                          <%= category.category_name %>
+                        </option>
+                        <% }) %>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div class="col-md-3 mt-4">
+                    <div class="from-group">
+                      <label for="Catename">Subcategory Name</label>
+                      <input
+                        type="text"
+                        id="subcategory_name"
+                        name="subcategory_name"
+                        required
+                      />
+                    </div>
+                  </div>
+
+                  <div class="col-md-3 mt-4">
+                    <div class="from-group">
+                      <label for="Catename">Status</label>
+                      <select name="status" class="form-control">
+                        <option value="active">Active</option>
+                        <option value="inactive">Inactive</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  
+                  <div class="col-md-3 mt-4">
+                    <div class="admin-submit-btn">
+                      <button class="btn-submit">Submit</button>
+                    </div>
+                  </div>
+ 
+                </div>
+
+              </form>
+            </div>
+
+            <!-- <button class="btn-submit">Add Sub Category</button> -->
+            <div class="product-list">
+              <div class="table-responsive">
+                <table class="table table-striped table-bordered">
+                  <thead class="table-dark">
+                    <tr>
+                      <th>ID</th>
+                      <th>Subcategory Name</th>
+                      <th>Status</th>
+                      <th>Created At</th>
+                      <th>Action</th>
+                      <!-- Add more columns as needed -->
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% subCategories.forEach(subcategory => { %>
+                    <tr>
+                      <td><%= subcategory.id %></td>
+                      <td><%= subcategory.sub_category_name %></td>
+                      <td><%= subcategory.status %></td>
+                      <td><%= subcategory.created_at.toLocaleString() %></td>
+                      <td>
+                        <!-- <span
+                          ><a href="admin/edit/<%= subcategory.id %>">Edit</a></span
+                        > -->
+                        <!-- | 
+                          <span><a href="admin/delete/<%= subcategory.id %>">Delete</a></span> -->
+                      </td>
+                      <!-- Add more columns as needed -->
+                    </tr>
+                    <% }); %>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+  </body>
+</html>

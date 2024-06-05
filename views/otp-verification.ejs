@@ -2,73 +2,78 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alfa | OTP Verification</title>
-    <%- include('includes/head') %>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alfa | OTP Verification</title>
+  <%- include('includes/head') %>
 </head>
 
 <body>
-    <div class="alfa-main-wraper">
-        <div class="mt-1000">
-             <div class="user-password-steps">
-                <div class="alfa-user-wrap">
-                    <div class="user-back">
-                        <a onclick="window.history.back()"><img src="assets/images/back.png" alt=""></a>
-                    </div>
-                </div>
-                <div class="alfa-pass-container">
-                    <div class="password-wrap">
-                        <div class="pass-title text-center">
-                            <h3>Enter Your Verification Code</h3>
-                            <p>We Sent a verification code tosimitsingh1030@gmail.com</p>
-                        </div>
-                        <form action="/forget-password" method="post">
-                            <div class="row">
-                                <div class="col-md-12">
-                                    <div class="alfa-otp-form-group">
-                                        <input class="otp" type="text" oninput='digitValidate(this)' onkeyup='tabChange(1)' maxlength=1 >
-                                        <input class="otp" type="text" oninput='digitValidate(this)' onkeyup='tabChange(2)' maxlength=1 >
-                                        <input class="otp" type="text" oninput='digitValidate(this)' onkeyup='tabChange(3)' maxlength=1 >
-                                        <input class="otp" type="text" oninput='digitValidate(this)'onkeyup='tabChange(4)' maxlength=1 >
-                                        <input class="otp" type="text" oninput='digitValidate(this)'onkeyup='tabChange(5)' maxlength=1 >
-                                        <input class="otp" type="text" oninput='digitValidate(this)'onkeyup='tabChange(6)' maxlength=1 >
-                                    </div>
-                                </div>
-                                <div class="col-md-12 mt-3">
-                                    <div class="user-buttons text-center">
-                                        <a href class="user-btns">Reset code</a>
-                                    </div>
-                                </div>
-                                <div class="col-md-12 mt-3">
-                                    <div class="user-button">
-                                        <button class="user-btn">Continue</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-             </div>
+  <div class="alfa-main-wraper">
+    <div class="mt-1000">
+      <div class="user-password-steps">
+        <div class="alfa-user-wrap">
+          <div class="user-back">
+            <a onclick="window.history.back()"><img src="assets/images/back.png" alt=""></a>
+          </div>
         </div>
+        <div class="alfa-pass-container">
+          <div class="password-wrap">
+            <div class="pass-title text-center">
+              <h3>Enter Your Verification Code</h3>
+              <p>We Sent a verification code to </p>
+            </div>
+            <form action="/otp-verification" method="post">
+              <div class="row">
+                <div class="col-md-12">
+                  <div class="alfa-otp-form-group">
+                    <input class="otp" type="text" name="otp1" oninput='digitValidate(this)' onkeyup='tabChange(1)' maxlength=1>
+                    <input class="otp" type="text" name="otp2" oninput='digitValidate(this)' onkeyup='tabChange(2)' maxlength=1>
+                    <input class="otp" type="text" name="otp3" oninput='digitValidate(this)' onkeyup='tabChange(3)' maxlength=1>
+                    <input class="otp" type="text" name="otp4" oninput='digitValidate(this)' onkeyup='tabChange(4)' maxlength=1>
+                    <input class="otp" type="text" name="otp5" oninput='digitValidate(this)' onkeyup='tabChange(5)' maxlength=1>
+                    <input class="otp" type="text" name="otp6" oninput='digitValidate(this)' onkeyup='tabChange(6)' maxlength=1>
+                  </div>
+                </div>
+
+                <div class="col-md-12 mt-3">
+                  <div class="user-buttons text-center">
+                    <a href class="user-btns">Reset code</a>
+                  </div>
+                </div>
+
+                <div class="col-md-12 mt-3">
+                  <div class="user-button">
+                    <button class="user-btn">Continue</button>
+                  </div>
+                </div> 
+              </div>
+
+            </form> 
+            
+          </div>
+        </div>
+      </div>
     </div>
-    </div>
-    <script>
-        let digitValidate = function(ele){
-        console.log(ele.value);
-        ele.value = ele.value.replace(/[^0-9]/g,'');
+  </div>
+  </div>
+  <script>
+    function digitValidate(ele) {
+      ele.value = ele.value.replace(/[^0-9]/g, '');
+    }
+
+    function tabChange(val) {
+      let otp = '';
+      for (let i = 1; i <= 6; i++) {
+        const otpDigit = document.querySelector(`input[name="otp${i}"]`).value;
+        otp += otpDigit;
+        if (otpDigit.length === 1) {
+          document.querySelector(`input[name="otp${val + 1}"]`)?.focus();
         }
-
-        let tabChange = function(val){
-            let ele = document.querySelectorAll('input');
-            if(ele[val-1].value != ''){
-            ele[val].focus()
-            }else if(ele[val-1].value == ''){
-            ele[val-2].focus()
-            }   
-        }
-
-
-    </script>
+      }
+      document.getElementById('otp').value = otp;
+    }
+  </script>
 </body>
- </html>
+
+</html>

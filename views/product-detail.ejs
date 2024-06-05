@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <base href="http://localhost:8081" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Alfa Meanswear | Product Details</title>
+    <%- include('includes/head') %>
+  </head>
+  <style>
+    .alfa-pro-detail-wrapper {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+    .image-grid-wrapper {
+      margin-top: 5px;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+    .images-grids {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .image-item {
+      flex: 1 1 calc(20% - 10px);
+      cursor: pointer;
+      cursor: pointer;
+      text-align: center;
+      align-items: center;
+      display: flex;
+      justify-content: center;
+    }
+    .image-item img {
+      width: 100%;
+    }
+  </style>
+  <body>
+    <div class="alfa-main-wraper">
+      <%- include('includes/header') %>
+      <div class="mt-100">
+        <div class="alfa-detail-sexction">
+          <div class="container">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="alfa-pro-detail-wrapper">
+                  <div
+                    id="product-detail-carousel"
+                    class="p-detail-wrap owl-carousel comman-nav owl-nav-display"
+                  >
+                    <div class="d-item" data-index="0">
+                      <img src="assets/images/alfa_products/s.webp" alt="" />
+                    </div>
+                    <div class="d-item" data-index="1">
+                      <img src="assets/images/alfa_products/s2.webp" alt="" />
+                    </div>
+                    <div class="d-item" data-index="2">
+                      <img src="assets/images/alfa_products/s1.webp" alt="" />
+                    </div>
+                    <div class="d-item" data-index="3">
+                      <img src="assets/images/alfa_products/s4.webp" alt="" />
+                    </div>
+                    <div class="d-item" data-index="4">
+                      <img src="assets/images/alfa_products/s5.webp" alt="" />
+                    </div>
+                  </div>
+
+                  <div class="image-grid-wrapper">
+                    <div class="images-grids">
+                      <div class="image-item" data-index="0">
+                        <img
+                          src="assets/images/alfa_products/s.webp"
+                          class="d-img"
+                          alt=""
+                        />
+                      </div>
+
+                      <div class="image-item" data-index="1">
+                        <img
+                          src="assets/images/alfa_products/s2.webp"
+                          class="d-img"
+                          alt=""
+                        />
+                      </div>
+
+                      <div class="image-item" data-index="2">
+                        <img
+                          src="assets/images/alfa_products/s1.webp"
+                          class="d-img"
+                          alt=""
+                        />
+                      </div>
+                      <div class="image-item" data-index="3">
+                        <img
+                          src="assets/images/alfa_products/s4.webp"
+                          class="d-img"
+                          alt=""
+                        />
+                      </div>
+                      <div class="image-item" data-index="4">
+                        <img
+                          src="assets/images/alfa_products/s5.webp"
+                          class="d-img"
+                          alt=""
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="pro-detail--wrapper">
+                  <div class="d-title">
+                    <h2><%=product.product_name %></h2>
+                    <p><%=product.product_description %></p>
+                  </div>
+                  <div class="price-review-warapper">
+                    <div class="product--price">
+                      <h5>
+                        <span class="final-price">£<%=(product.product_price * (1 - (product.discount_on_product / 100))).toFixed(2) %></span><span class="mrp-price">
+                          £<%=product.product_price %></span
+                        >
+                      </h5>
+                    </div>
+                    <div class="product-rating">
+                      <ul>
+                        <li>
+                          <a href=""
+                            ><img src="assets/images/star.png" alt=""
+                          /></a>
+                          <a href=""
+                            ><img src="assets/images/star.png" alt=""
+                          /></a>
+                          <a href=""
+                            ><img src="assets/images/star.png" alt=""
+                          /></a>
+                          <a href=""
+                            ><img src="assets/images/star.png" alt=""
+                          /></a>
+                          <a href=""
+                            ><img src="assets/images/star.png" alt=""
+                          /></a>
+                          <a href=""
+                            ><span class="review-count">(120 Reviews)</span>
+                          </a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                  <div class="product-color-list product--color">
+                    <div class="pro--text">
+                      <h6>Select Colors</h6>
+                    </div>
+                    <ul>
+                      <li><a href="" class="product-color-item color1"></a></li>
+                      <li><a href="" class="product-color-item color2"></a></li>
+                      <li><a href="" class="product-color-item color3"></a></li>
+                      <li><a href="" class="product-color-item color4"></a></li>
+                      <li><a href="" class="product-color-item color5"></a></li>
+                      <li><a href="" class="product-color-item color6"></a></li>
+                    </ul>
+                  </div>
+
+                  <div class="product-size-list">
+                    <div class="pro--text">
+                      <h6>Select Size</h6>
+                    </div>
+                    <ul>
+                      <li><a href="" class="size-item active">S</a></li>
+                      <li><a href="" class="size-item">M</a></li>
+                      <li><a href="" class="size-item">L</a></li>
+                      <li><a href="" class="size-item">XL</a></li>
+                      <li><a href="" class="size-item">XXL</a></li>
+                    </ul>
+                  </div>
+
+                  <div class="product--button-wrapper">
+                    <a href="" class="add--carrt cart-btn">Add to Cart</a>
+                    <a href="/checkout" class="cart-btn buy--now">Buy Now</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <section class="mt-3">
+            <div class="container">
+              <div class="alfa-bestsellerl">
+                <div class="alfa-title" style="text-align: left">
+                  <h3>You may also like</h3>
+                </div>
+                <div
+                  id="maylike-carousel"
+                  class="bestseller-wrapper owl-carousel comman-nav"
+                >
+                  <div class="product-item">
+                    <div class="produt-wrap">
+                      <img
+                        src="assets/images/cat1.png"
+                        class="pro-img"
+                        alt=""
+                      />
+                      <div class="product-btn">
+                        <div class="pro-whishlist">
+                          <a href=""
+                            ><img src="assets/images/heart.png" alt=""
+                          /></a>
+                        </div>
+                        <div class="pro-view">
+                          <a href=""
+                            ><img src="assets/images/eye.png" alt=""
+                          /></a>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="product-details">
+                      <h6>Shirt/ menswear</h6>
+                      <div class="product-price">
+                        <h4>£42.00</h4>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="product-item">
+                    <div class="produt-wrap">
+                      <img
+                        src="assets/images/cat3.png"
+                        class="pro-img"
+                        alt=""
+                      />
+                      <div class="product-btn">
+                        <div class="pro-whishlist">
+                          <a href=""
+                            ><img src="assets/images/heart.png" alt=""
+                          /></a>
+                        </div>
+                        <div class="pro-view">
+                          <a href=""
+                            ><img src="assets/images/eye.png" alt=""
+                          /></a>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="product-details">
+                      <h6>Shirt/ menswear</h6>
+                      <div class="product-price">
+                        <h4>£42.00</h4>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+      <!-- Footer -->
+      <%- include('includes/footer') %>
+      <!-- End -->
+    </div>
+    <%- include('includes/foot') %>
+  </body>
+</html>

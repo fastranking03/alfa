@@ -1,0 +1,74 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alfa Admin | Add Banner</title>
+    <%- include('includes/head') %>
+</head>
+
+<body>
+    <div class="main-admin-warpper">
+        <%- include('includes/header') %>
+        <div class="alfa-admin-wrapper">
+            <div class="admin-side-nav">
+                <%- include('includes/sidebar') %>
+                <div class="admin-main-layout">
+
+                    <div class="admin-bradcrumb">
+                        <div class="admin-brudcrumb-title">
+                            <h4>Add Banners</h4>
+                        </div>
+                    </div>
+
+                    <div class="admin-card">
+                        <form action="/admin/add-banner" method="post" enctype="multipart/form-data">
+                            <div class="admin-from">
+                                <div class="row">
+
+                                    <div class="col-md-12">
+                                        <div class="from-group">
+                                             <label for="Catename">Short Title</label>
+                                             <input type="text" name="short_title" class="form-control" placeholder="Enter Short Title">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12">
+                                        <div class="from-group">
+                                             <label for="Catename">Main Title</label>
+                                             <input type="text" name="main_title" class="form-control" placeholder="Enter Main Title">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12 mt-4">
+                                        <div class="from-group">
+                                             <label for="Catename">Category Image</label>
+                                             <input type="file" name="image" class="form-control" placeholder="Upload Image">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12 mt-4">
+                                        <div class="from-group">
+                                             <label for="Catename">Banner Backgroud Color</label>
+                                             <input type="color" name="color" class="form-control" placeholder="Enter Category Name">
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="row mt-3">
+                                    <div class="admin-submit-btn">
+                                        <button class="btn-submit">Submit</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

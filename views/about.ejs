@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>User Profile</title>
+    <%- include('includes/head') %>
+</head>
+<body>
+    <h1>User Profile</h1>
+    <header>
+        <% if (user) { %>
+            <p>Welcome, <%= user.name %>!</p>
+        <a href="/logout">Logout</a>
+         <% } else { %>
+            <p>Welcome, dd!</p>
+        <% } %>
+    </header>
+</body>
+</html>
