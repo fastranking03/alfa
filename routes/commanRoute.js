@@ -91,12 +91,11 @@ router.get("/product-detail/:id", async (req, res) => {
 
 router.get("/checkout", (req, res) => {
   const user = req.session.user;
-
   const cartCount = req.cartCount || 0;
   const wishlistCount = req.wishlistCount || 0;
-
   res.render("checkout", { cartCount, wishlistCount, user });
 });
+
 
 router.get('/cart', (req, res) => {
   const user = req.session.user;

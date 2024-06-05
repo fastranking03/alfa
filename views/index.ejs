@@ -566,6 +566,19 @@
     </div>
     <%- include('includes/foot') %>
     <script>
+        onClickProfile.addEventListener("click", function () {
+        if (isCardHidden) {
+          // Open the card
+          openProfileCard.style.display = "block";
+          isCardHidden = false;
+        } else {
+          // Hide the card
+          openProfileCard.style.display = "none";
+          isCardHidden = true;
+        }
+        });
+    </script>
+    <script>
       $(document).ready(function () {
         $("#hero-carousel").owlCarousel({
           loop: true,
