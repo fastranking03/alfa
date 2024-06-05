@@ -93,6 +93,48 @@
                     </div>
                 </div>
             </div>
+<<<<<<< HEAD
+       </div>
+     </div>
+     <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var onEyeClick = document.getElementById("onEyeClick");
+            var passwordView = document.getElementById("passwordView");
+            var form = document.querySelector("form");
+            var emailInput = document.getElementById("emailInput");
+            var emailError = document.getElementById("emailError");
+    
+            onEyeClick.addEventListener('click', function() {
+                if (passwordView.type == "text") {
+                    passwordView.type = "password";
+                } else {
+                    passwordView.type = "text";
+                }
+            });
+    
+            emailInput.addEventListener("input", function() {
+                var emailValue = emailInput.value;
+                var emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+                if (!emailPattern.test(emailValue)) {
+                    emailError.style.display = "block";
+                } else {
+                    emailError.style.display = "none";
+                }
+            });
+    
+            form.addEventListener("submit", function(event) {
+                var emailValue = emailInput.value;
+                if (emailError.style.display === "inline") {
+                    event.preventDefault();
+                    alert("Please enter a valid email address.");
+                }
+            });
+        });
+    </script>
+    
+    </body>
+    </html>
+=======
     </div>
     <script>
         var onEyeClick = document.getElementById("onEyeClick");
@@ -136,3 +178,4 @@
 </body>
 
 </html>
+>>>>>>> 10a4b3f988bdf70eb714cc82cd0fa4b9c28ffd4e

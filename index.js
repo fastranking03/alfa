@@ -20,6 +20,7 @@ import connect from "./db/connect.js";
 const app = express();
 
 app.use("/banner_images", express.static("banner_images"));
+app.use("/category_images", express.static("category_images"));
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 

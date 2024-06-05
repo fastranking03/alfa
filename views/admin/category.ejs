@@ -49,7 +49,8 @@
              
                     <td><%= category.category_name %></td>
 
-                    <td><img src="../../category_images/<%=category.category_image %>" alt="Category Image" style="max-width: 100px;"></td>
+                    <!-- <td><%= category.category_image %> <img src="../../category_images/<%=category.category_image %>" alt="Category Image" style="max-width: 100px;"></td> -->
+                    <td><img src="../../category_images/<%= category.category_image %>" alt="<%= category.category_image %>" style="max-width: 100px;"></td>
 
                     <td><%= category.created_at %></td>
 
