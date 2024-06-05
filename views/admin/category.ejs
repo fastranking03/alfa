@@ -28,8 +28,7 @@
                 <a href="/admin/add-category">Add Category</a>
               </div>
             </div>
-
-            <img src="../../category_images/1716635060246.webp" style="max-width: 100px;">
+ 
             <div class="responsive-table">
               <table class="table table-border">
                 <thead>
@@ -48,12 +47,8 @@
                     <td> <%= category.id %></td>
              
                     <td><%= category.category_name %></td>
-
-                    <!-- <td><%= category.category_image %> <img src="../../category_images/<%=category.category_image %>" alt="Category Image" style="max-width: 100px;"></td> -->
                     <td><img src="../../category_images/<%= category.category_image %>" alt="<%= category.category_image %>" style="max-width: 100px;"></td>
-
                     <td><%= category.created_at %></td>
-
                     <td>
                       <a href="/admin/edit-category/<%= category.id %>" class="btn btn-primary">Edit</a> |
                       <a href="/admin/delete-category/<%= category.id %>" class="btn btn-danger">Delete</a>

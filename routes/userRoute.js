@@ -1,12 +1,12 @@
 import express from "express";
 import bcrypt from "bcrypt";
 import connect from "../db/connect.js"; 
-import { userLogIn } from "../middleware/protected.js";
+// import { userLogIn } from "../middleware/protected.js";
 import nodemailer from "nodemailer";
 
 const router = express.Router();
 
-router.get("/login", userLogIn, async (req, res) => {
+router.get("/login", async (req, res) => {
   const user = req.session.user;
   res.render("login", { user });
 });

@@ -29,9 +29,10 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/about", (req, res) => {
+// Route for the about page
+router.get('/about', (req, res) => {
   const user = req.session.user;
-  res.render("about", { user });
+  res.render('about', { user });
 });
 
 // Route for the product page
@@ -90,14 +91,13 @@ router.get("/product-detail/:id", async (req, res) => {
 
 router.get("/checkout", (req, res) => {
   const user = req.session.user;
-
   const cartCount = req.cartCount || 0;
   const wishlistCount = req.wishlistCount || 0;
-
   res.render("checkout", { cartCount, wishlistCount, user });
 });
 
-router.get("/cart", (req, res) => {
+
+router.get('/cart', (req, res) => {
   const user = req.session.user;
 
   const cartCount = req.cartCount || 0;
@@ -110,4 +110,19 @@ router.get("/add-address", (req, res) => {
   res.render("add-address", { user });
 });
 
+router.get('/my-wishlist', (req, res) => {
+  const user = req.session.user;
+  res.render('my-wishlist', { user });
+});
+
+router.get('/order-confirm',(req,res) =>{
+  const user = req.session.user;
+  res.render('order-confirm',{user});
+})
+
+
+router.get('/contact-us',(req,res) =>{
+  const user = req.session.user;
+  res.render('contact-us',{user});
+})
 export default router;
