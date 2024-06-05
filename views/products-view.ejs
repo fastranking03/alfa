@@ -100,30 +100,15 @@
                     <h6><%= product.product_name %></h6>
                     <div class="product-price">
                       <h5>
-                        <span class="final-price"
-                          >£<%=(product.product_price * (1 -
-                          (product.discount_on_product / 100))).toFixed(2)
-                          %></span
-                        >
-                        <span class="mrp-price">
-                          £<%=product.product_price %></span
-                        >
-                        <span> (<%=product.discount_on_product %>% OFF )</span>
+                        <span class="mrp-price" style="font-size: 15px;">
+                          £<%=product.product_price %>
+                      </span>
+                        <span class="final-price">£<%=(product.product_price * (1 - (product.discount_on_product / 100))).toFixed(2) %></span>
+                         <!-- <span> (<%=product.discount_on_product %>% OFF )</span> -->
                       </h5>
                     </div>
                     <div class="product-btn">
-                      <!-- <div class="pro-whishlist">
-                        <button
-                          class="add-to-favorites"
-                          data-product-id="<%= product.id %>"
-                        >
-                          <img
-                            src="assets/images/heart.png"
-                            alt="Add to Favorites"
-                          />
-                        </button>
-                      </div> -->
-                      <div class="pro-view">
+                       <div class="pro-view">
                         <button
                           class="add-to-cart"
                           data-product-id="<%= product.id %>"
@@ -137,9 +122,7 @@
                         <li>
                           <% for (let i = 0; i < 5; i++) { %>
                           <a href="">
-                            <img
-                              src="assets/images/star.png"
-                              alt="Star Rating"
+                            <img  src="assets/images/star.png"  alt="Star Rating"
                             />
                           </a>
                           <% } %>
@@ -157,110 +140,8 @@
           </div>
         </section>
         <!-- END -->
-        <!-- FEATURES START -->
-        <section class="feature-section mt-80">
-          <div class="container">
-            <div class="features-row">
-              <div class="feature-box">
-                <div class="feature-icon">
-                  <img src="assets/images/shipping.png" alt="" />
-                </div>
-
-                <div class="features-content">
-                  <h5>Free Shipping</h5>
-                  <p>From all orders over $100</p>
-                </div>
-              </div>
-              <div class="feature-box">
-                <div class="feature-icon">
-                  <img src="assets/images/quality.png" alt="" />
-                </div>
-                <div class="features-content">
-                  <h5>Quality Support</h5>
-                  <p>24/7 online feedback</p>
-                </div>
-              </div>
-
-              <div class="feature-box">
-                <div class="feature-icon">
-                  <img src="assets/images/return.png" alt="" />
-                </div>
-                <div class="features-content">
-                  <h5>Return & Refund</h5>
-                  <p>Return money within 30 days</p>
-                </div>
-              </div>
-
-              <div class="feature-box">
-                <div class="feature-icon">
-                  <img src="assets/images/gift-voucher.png" alt="" />
-                </div>
-
-                <div class="features-content">
-                  <h5>Gift Voucher</h5>
-                  <p>20% off when you shop online</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section> 
-        <!-- END -->
-
-        <!-- SELLING SECTION -->
-        <section class="mt-80">
-          <div class="offer-wrapper">
-            <div class="offer-wrap">
-              <div class="offer-left-wrap">
-                <div class="offer-images">
-                  <div>
-                    <img
-                      src="assets/images/offer-circle.png"
-                      class="offer-circle"
-                      alt=""
-                    />
-                  </div>
-                  <div class="offer-combo">
-                    <img
-                      src="assets/images/offer.png"
-                      class="combo-img"
-                      alt=""
-                    />
-                  </div>
-                </div>
-                <div class="offer-text-wrap position-relative">
-                  <div class="offer-content">
-                    <p>
-                      Alfa Menswear <br />
-                      Trouser
-                    </p>
-                  </div>
-                  <div class="offer-item-name">
-                    <h2>Trouser</h2>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="offer-wrap-right">
-              <div>
-                <div class="offer-right-text">
-                  <a href=""> Sale up to</a>
-                </div>
-                <div class="offer-percentage">
-                  <h3>40%</h3>
-                  <p>Off everything</p>
-                </div>
-                <div class="offer-shop-now">
-                  <a href=""
-                    >Shop Now <img src="assets/images/subs-arrow.png" alt=""
-                  /></a>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-        <!-- END -->
-
-        <!-- BESTSELLER -->
+       
+         <!-- BESTSELLER -->
         <section class="mt-80">
           <div class="container-fluid">
             <div class="alfa-bestsellerl">
@@ -457,79 +338,7 @@
           </div>
         </section>
         <!-- END -->
-        <!-- TESTIMONIAL -->
-        <section class="mt-80">
-          <div class="container">
-            <div
-              id="testimonial-carousel"
-              class="alfa-testimonila owl-carousel comman-nav"
-            >
-              <div class="testimonial-warpper">
-                <div class="test-quotes">
-                  <img
-                    src="assets/images/quotes.png"
-                    class="quotes-img"
-                    alt=""
-                  />
-                </div>
-                <div class="testimonial-content">
-                  <h4>
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam
-                    luctus sem ultrices ipsum porta hendrerit. Praesent a
-                    pellentesque lorem. Etiam feugiat commodo risus, vitae
-                    tincidunt neque faucibus sed
-                  </h4>
-                  <div class="testimonial-details">
-                    <div class="test-image">
-                      <img src="assets/images/testimonial.png" alt="" />
-                    </div>
-                    <div class="test-d-wrap">
-                      <div class="test-name">
-                        <h5 class="name">Jon battler</h5>
-                        <h6 class="designation">Fashion designer</h6>
-                      </div>
-                      <ul class="testimonial-rating">
-                        <li>
-                          <a href=""
-                            ><img
-                              src="assets/images/star.png"
-                              class="star-icon"
-                              alt=""
-                          /></a>
-                          <a href=""
-                            ><img
-                              src="assets/images/star.png"
-                              class="star-icon"
-                              alt=""
-                          /></a>
-                          <a href=""
-                            ><img
-                              src="assets/images/star.png"
-                              class="star-icon"
-                              alt=""
-                          /></a>
-                          <a href=""
-                            ><img
-                              src="assets/images/star.png"
-                              class="star-icon"
-                              alt=""
-                          /></a>
-                          <a href=""
-                            ><img
-                              src="assets/images/star.png"
-                              class="star-icon"
-                              alt=""
-                          /></a>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-        <!-- END -->
+         
         <!-- PARTNER -->
         <section class="mt-80">
           <div class="partner-wrapper">

@@ -75,7 +75,7 @@
                                             </div>
                                             <div class="col-md-12">
                                                 <div class="user-button">
-                                                    <button class="user-btn">Login</button>
+                                                    <button class="user-btn" id="login">Login</button>
                                                 </div>
                                             </div>
                                             <div class="col-md-12">
@@ -111,11 +111,13 @@
             const loginForm = document.getElementById("loginForm");
 
             emailInput.addEventListener("input", function () {
-                const emailValue = emailInput.value;
+                 const emailValue = emailInput.value;
                 if (validateEmail(emailValue)) {
                     emailError.style.display = "none";
+                    document.getElementById("login").classList.add("user-btn-primary")
                 } else {
                     emailError.style.display = "block";
+                    document.getElementById("login").classList.remove("user-btn-primary")
                 }
             });
 

@@ -6,7 +6,7 @@ import path from "path";
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     let folder;
-    if (req.originalUrl.includes("/new-banner-submit")) {
+    if (req.originalUrl.includes("/add-banner")) {
       folder = "./banner_images/";
     } else if (req.originalUrl.includes("/new-category-submit")) {
       folder = "./category_images/";

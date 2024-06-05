@@ -16,21 +16,34 @@
         <div class="admin-main-layout">
           <div class="admin-bradcrumb">
             <div class="admin-brudcrumb-title">
-              <h4>Category List</h4>
+              <h3><span><i class="fa-solid fa-angle-left"></i></span> Category List</h3>
             </div>
           </div>
-          <div class="admin-card">
-            <div class="admin-card-wrap">
-              <div class="table-search">
-                <input type="search" class="">
+          <div class="product-list">
+             <div class="table-list-head">
+              <div class="alfa-data-search">
+                <div class="search-wrapper position-relative">
+                  <span><i class="fa-solid fa-magnifying-glass"></i></span>
+                  <input type="search" name="search" class="table-search" placeholder="Search" id="search">
+                </div>
+                <div class="select-warpper">
+                  <div class="table-selects">
+                    <select name="" id="" class="table-select">
+                      <option value="all">All</option>
+                      <option value="">One</option>
+                    </select>
+                  </div>
+                </div>
               </div>
-              <div class="table-btn">
-                <a href="/admin/add-category">Add Category</a>
+              <div class="table-list-btn">
+                <div class="table-btn">
+                  <a href="/admin/add-category">Add Category</a>
+                </div>
               </div>
             </div>
  
             <div class="responsive-table">
-              <table class="table table-border">
+              <table class="alfa-table">
                 <thead>
                   <tr>
                     <th>S . No</th>
@@ -60,6 +73,14 @@
                   <% }); %>
                 </tbody>
               </table>
+            </div>
+            <div class="table-pagination-wrapper">
+              <div class="table-pagination">
+                <a href="#"><span><i class="fa-solid fa-angle-left"></i></span></a>
+                <a href="#" class="active page-items">1</a>
+                <a href="#" class="page-items">2</a>
+                <a href="#" style="color: #005D67;"><span><i class="fa-solid fa-angle-right"></i></span></a> 
+              </div>
             </div>
           </div>
         </div>

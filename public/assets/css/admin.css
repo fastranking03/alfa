@@ -44,6 +44,7 @@
     display: flex;
     width: 100%;
     justify-content: space-between;
+    padding: 0 25px;
  }
  .admin-alfa-right{
     display: flex;
@@ -67,9 +68,16 @@
     padding-left: 0;
  }
  .admin-sidnav-layout ul a{
-    text-decoration: none;
+   text-decoration: none;
     font-size: 17px;
-    color: #000;
+    color: #322c2c;
+    display: inline-block;
+    width: 100%;
+    padding: 10px 20px;
+    transition: .2s ease-in-out;
+ }
+ .admin-sidnav-layout ul a:hover{
+   background: #F7F6F2;
  }
  .admin-side-nav{
     display: flex;
@@ -81,17 +89,18 @@
     border-right: 1px solid #eee; 
  }
  .admin-navbar .admin-sidnav-layout{
-    padding: 31px 20px;
+    padding: 31px 0px;
  }
- .admin-navbar .admin-sidnav-layout ul li{
-    margin-bottom: 20px;
- }
+ 
  .admin-main-layout {
     padding: 20px 20px;
     width: calc(100% - 250px);
 }
- .admin-brudcrumb-title h4{
-    font-size: 20px;
+ .admin-brudcrumb-title h3{
+   font-size: 28px;
+   display: flex;
+   align-items: center;
+   gap: 10px;
  }
  .admin-card{
     box-shadow: rgba(81, 114, 100, 0.1) 0px 8px 24px;
@@ -105,7 +114,7 @@
  .table-btn a{
     text-decoration: none;
     color: #fff;
-    background: #000;
+    background: #005d67;
     height: 40px;
     display: flex;
     align-items: center;
@@ -124,3 +133,79 @@
     padding: 0 20px;
     border: none;
  }
+ .product-list{
+    margin: 15px auto;
+    padding: 20px 20px 70px;
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+ }
+ .table-list-head{
+    display: flex;
+    justify-content: space-between;
+    margin: 0 0 20px;
+ }
+ .alfa-data-search{
+    display: flex;
+    gap: 20px;
+ }
+ .table-search ,.table-select{
+    height: 45px;
+    width: 250p;
+    padding: 0 28px;
+    border: 1px solid #F5F5F6;
+    outline: none;
+ }
+ .search-wrapper span{
+    position: absolute;
+    top: 13px;
+    left: 10px;
+    font-size: 14px;
+    color: #a6a7a6;
+ }
+ .alfa-table{
+   width: 100%;
+ }
+ .alfa-table thead{
+   height: 45px;
+   font-size: 18px;
+   color: #000;
+   position: relative;
+   left: 10px;
+ }
+ .alfa-table tr td{
+   padding: 12px;
+ }
+ .alfa-table tr:nth-child(even){
+   background: #fefaea;
+ }
+ .table-pagination a {
+   color: #000000;
+   float: left;
+   padding: 7px 15px;
+   width: 38px;
+   height: 38px;
+   border-radius: 50%;
+   margin: 0 4px;
+   text-decoration: none;
+   transition: background-color .3s;
+ }
+ .table-pagination .page-items{
+   background: #e2eced;
+ }
+ .table-pagination a.active {
+   background-color: #005d67;
+   color: #fff;
+ }
+ .table-pagination{
+   float: right;
+   margin: 15px auto;
+ }
+ .table-pagination a:hover:not(.active)
+  {
+   background-color: #ddd;
+}
+.btn-edit{
+   color: #005d67;
+}
+.btn-delete{
+   color:rgb(226, 17, 17);
+}

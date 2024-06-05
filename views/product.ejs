@@ -68,9 +68,8 @@
                         <ul>
                             <% categories.forEach(category => { %> 
                                 <li><a href="" class="c-items"><%= category.category_name %> (10)</a></li>
-                              <% }); %> 
- 
-                        </ul>
+                            <% }); %> 
+                         </ul>
                       </div>
                     </div>
                     <div class="product-color">
@@ -390,8 +389,7 @@
  
                           <div class="product-btn">
                             <div class="pro-whishlist">
-                             
-
+ 
                         <a  class="add-to-favorites" data-product-id="<%= product.id %>">
                           <img src="assets/images/heart.png" alt="Add to Favorites" />
                         </a>
@@ -555,5 +553,6 @@
     </script>
 
     </div>
+    <%- include('includes/foot') %>
   </body>
 </html>

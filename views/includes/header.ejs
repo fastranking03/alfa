@@ -2,8 +2,17 @@
     <header class="header">
         <div class="header-container">
             <div class="left-header-wrapper">
-                <div class="alfa-contact-number">
+                <!-- <div class="alfa-contact-number">
                     <h6><span><img src="assets/images/phone.png" style="width: 22px;" alt=""></span> +44 1202292895</h6>
+                </div> -->
+                <div class="alfa-navbar">
+                    <ul>
+                        <li><a href="/" class="nav-item active">Home</a></li>
+                        <li><a href="/about-us" class="nav-item">About Us</a></li>
+                        <li><a href="/" class="nav-item">Blogs</a></li>
+                        <li><a href="/product" class="nav-item">Shop</a></li>
+                        <li><a href="/contact-us" class="nav-item">Contact Us</a></li>
+                    </ul>
                 </div>
             </div>
             <div class="middle-header-wrapper">
@@ -57,38 +66,22 @@
                             </div>
                         </li> 
                     <li id="wishlist">
-                        <div class="alfa-icon-flex">
+                        <div class="alfa-icon-flex position-relative">
                           <img src="assets/images/heart.png" width="100%" alt="" />
-                          <span class="count-text"
-                            >Wishlist <%= wishlistCount !== undefined ? wishlistCount :
-                            'null' %></span
-                          >
+                          <span class="product-count count-text" style="right: 5px;"><%= wishlistCount !== undefined ? wishlistCount : 'null' %></span >
+                          <span>Wishlist</span>
                         </div>
                       </li>
             
                       <li id="cart"> 
                         <div class="alfa-icon-flex position-relative" id="leftOffCanvas"> 
                             <img src="assets/images/cart.png" width="100%" alt="" />
-                            <span class="product-count"
-                            > <%= cartCount !== undefined ? cartCount : 'null' %></span
-                          >
+                            <span class="product-count" > <%= cartCount !== undefined ? cartCount : 'null' %></span>
                           <span>Cart</span>
                         </div>
                       </li> 
                        
                 </div>
-            </div>
-        </div>
-        
-        <div class="alfa-navbar-warapper">
-            <div class="alfa-navbar">
-                <ul>
-                    <li><a href="/" class="nav-item">Home</a></li>
-                    <li><a href="/about" class="nav-item">About Us</a></li>
-                    <li><a href="/" class="nav-item">Blogs</a></li>
-                    <li><a href="/product" class="nav-item active">Shop</a></li>
-                    <li><a href="/" class="nav-item">Contact Us</a></li>
-                </ul>
             </div>
         </div>
     </header>
@@ -110,10 +103,12 @@
                             </div>
                         </li>
                         <li>
+                           <a href="my-wishlist">
                             <div class="alfa-icon-flex">
                                 <img src="assets/images/heart.png" width="100%" alt="">
                                 <span>Wishlist</span>
                             </div>
+                           </a>
                         </li>
                         <li>
                             <div class="alfa-icon-flex position-relative" id="leftOffCanvas">
@@ -125,14 +120,31 @@
                     </ul>
                 </div>
                 <div class="menu-icon">
-                    <a href=""><img src="assets/images/menu.png" alt=""></a>
+                    <a data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample"><img src="assets/images/menu.png" alt=""></a>
                 </div>
              </div>
         </div>     
      </header>
    </div>
 </div>
-
+<!-- Mobile Navbar -->
+<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+    <div class="offcanvas-header">
+      <h5 class="offcanvas-title" id="offcanvasExampleLabel"><img src="assets/images/alfa-logo.png" width="50px" alt=""></h5>
+      <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+    </div>
+    <div class="offcanvas-body">
+       <div class="mobile-navbar">
+          <ul class="m-nav">
+             <li><a href="/" class="m-item">Home</a></li>
+             <li><a href="/about-us" class="m-item">About Us</a></li>
+             <li><a href="blogs" class="m-item">Blogs</a></li>
+             <li><a href="/product" class="m-item">Shop</a></li>
+             <li><a href="/contact-us" class="m-item">Contact Us</a></li>
+          </ul>
+       </div>
+    </div>
+  </div>
 <!-- Cart offcanvas -->
 <div class="alfa-offcanvas-wrapper" id="cartOffCanvase">
     <div>
@@ -255,7 +267,7 @@
                     </ul>
                 </div>
                 <div class="alfa-checkout-wrapper">
-                    <button type="button" class="checkout-btn">Proceed to Checkout</button>
+                    <button type="button" class="checkout-btn" onclick='window.location.href="/checkout"'>Proceed to Checkout</button>
                 </div>
             </div>
         </div>

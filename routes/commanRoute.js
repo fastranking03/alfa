@@ -29,18 +29,12 @@ router.get("/", async (req, res) => {
   }
 });
 
-router.get("/about", (req, res) => {
-  const user = req.session.user;
-  res.render("about", { user });
-});
-
 // Route for the product page
 
 router.get("/product", async (req, res) => {
   const cartCount = req.cartCount || 0;
   const wishlistCount = req.wishlistCount || 0;
   const user = req.session.user;
-
   const queryProduct = `
   SELECT  * 
   FROM products ; 
@@ -229,16 +223,14 @@ router.get("/product-detail/:id", async (req, res) => {
 
 router.get("/checkout", (req, res) => {
   const user = req.session.user;
-
   const cartCount = req.cartCount || 0;
   const wishlistCount = req.wishlistCount || 0;
-
   res.render("checkout", { cartCount, wishlistCount, user });
 });
 
-router.get("/cart", (req, res) => {
-  const user = req.session.user;
 
+router.get('/cart', (req, res) => {
+  const user = req.session.user;
   const cartCount = req.cartCount || 0;
   const wishlistCount = req.wishlistCount || 0;
   res.render("cart", { cartCount, wishlistCount, user });
@@ -249,4 +241,27 @@ router.get("/add-address", (req, res) => {
   res.render("add-address", { user });
 });
 
+router.get('/my-wishlist', (req, res) => {
+  const user = req.session.user;
+  res.render('my-wishlist', { user });
+});
+
+router.get('/order-confirm',(req,res) =>{
+  const user = req.session.user;
+  res.render('order-confirm',{user});
+})
+
+router.get('/about-us', (req, res) => {
+  const cartCount = req.cartCount || 0;
+  const wishlistCount = req.wishlistCount || 0;
+  const user = req.session.user;
+  res.render('about-us', { user,cartCount,wishlistCount });
+});
+
+router.get('/contact-us',(req,res) =>{
+  const user = req.session.user;
+  const cartCount = req.cartCount || 0;
+  const wishlistCount = req.wishlistCount || 0;
+  res.render('contact-us',{user,cartCount,wishlistCount});
+})
 export default router;
