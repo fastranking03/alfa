@@ -181,7 +181,7 @@
                     </ul>
                   </div> -->
                   <!-- <pre><%= JSON.stringify(sizes, null, 2) %></pre> -->
-                  <form action="" method="post">
+                  <form method="post" id="productForm">
                     <div class="product-size-list">
                       <div class="pro--text">
                         <h6>Select Size</h6>
@@ -194,7 +194,7 @@
                               <!-- Extract numeric part -->
                               <% if (numericSize && numericSize.length > 0) { %>
                                 <li>
-                                  <input type="radio" id="size-<%= numericSize[0] %>" name="selectedSize" value="<%= numericSize[0] %>" <%= stock > 0 ? '' : 'disabled' %> />
+                                  <input type="radio" id="size-<%= numericSize[0] %>" name="selectedSize" value="<%= numericSize[0] %>" <%= stock > 0 ? '' : 'disabled' %> required  />
                                   <label for="size-<%= numericSize[0] %>" class="size-item <%= stock > 0 ? '' : 'disabled' %>">
                                     <span class="size"><%= numericSize[0] %></span>
                                   </label>
@@ -202,8 +202,8 @@
                                 </li>
                               <% } %>
                             <% } else { %>
-                              <li>
-                                <input type="radio" id="size-<%= size %>" name="selectedSize" value="<%= size.toUpperCase() %>" <%= stock > 0 ? '' : 'disabled' %> />
+                              <li> 
+                                <input type="radio" id="size-<%= size %>" name="selectedSize" value="<%= size.toUpperCase() %>" <%= stock > 0 ? '' : 'disabled' %> required />
                                 <label for="size-<%= size %>" class="size-item <%= stock > 0 ? '' : 'disabled' %>">
                                   <span class="size"><%= size.toUpperCase() %></span>
                                 </label>
@@ -225,11 +225,53 @@
                     <input type="text" name="category" value="<%= product.category_name %>" />
                     <input type="text" name="sub_category" value="<%= product.sub_category_name %>" />
                   
+                    
                     <div class="product--button-wrapper">
-                      <button type="submit" class="add--cart cart-btn">Add to Cart</button>
-                      <a href="/checkout" class="cart-btn buy--now">Buy Now</a>
+                      <button type="button" class="cart-btn add-to-cart" data-action="addToCart" data-url="/add-to-cart">Add to Cart</button>
+                      <button type="button" class="cart-btn buy-now" data-action="buyNow" data-url="/checkout">Buy Now</button>
                     </div>
                   </form>
+                  <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                      const productForm = document.getElementById('productForm');
+                      const actionButtons = productForm.querySelectorAll('.cart-btn');
+                  
+                      actionButtons.forEach(button => {
+                        button.addEventListener('click', function() {
+                          const action = button.getAttribute('data-action');
+                          const url = button.getAttribute('data-url');
+                  
+                          // Check if a size is selected
+                          const selectedSize = productForm.querySelector('input[name="selectedSize"]:checked');
+                          if (!selectedSize) {
+                            alert('Please select a size.');
+                            return; // Stop execution if no size is selected
+                          }
+                  
+                          // Update the form action and submit the form
+                          productForm.action = url;
+                          productForm.submit();
+                        });
+                      });
+                    });
+                  </script>
+                  
+                  <!-- <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                      const productForm = document.getElementById('productForm');
+                      const actionButtons = productForm.querySelectorAll('.cart-btn');
+                  
+                      actionButtons.forEach(button => {
+                        button.addEventListener('click', function() {
+                          const action = button.getAttribute('data-action');
+                          const url = button.getAttribute('data-url');
+                          // Update the form action and submit the form
+                          productForm.action = url;
+                          productForm.submit();
+                        });
+                      });
+                    });
+                  </script> -->
                   
                   <script>
                     document.addEventListener('DOMContentLoaded', function() {

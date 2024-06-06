@@ -234,6 +234,51 @@ router.get("/checkout", (req, res) => {
   res.render("checkout", { cartCount, wishlistCount, user });
 });
 
+router.post("/checkout", async (req, res) => {
+  try {
+    const user = req.session.user;
+    const cartCount = req.cartCount || 0;
+    const wishlistCount = req.wishlistCount || 0;
+
+    // Retrieve form inputs from req.body
+    const { product_id, product_name, category, sub_category, selectedSize } = req.body;
+
+    const [productRows] = await connect.query(
+      "SELECT product_price, discount_on_product , product_main_image FROM products WHERE id = ?",
+      [product_id]
+    );
+
+    if (productRows.length === 0) {
+      return res.status(404).json({ success: false, message: "Product not found" });
+    }
+
+    const { product_price, discount_on_product  , product_main_image} = productRows[0];
+
+    // Calculate the price after applying the discount
+    const finalPrice_after_discount = (product_price * (1 - (discount_on_product / 100))).toFixed(2);
+
+    // Now you can use these variables as needed, for example, to render the checkout page
+    res.render("checkout", {
+      cartCount,
+      wishlistCount,
+      user,
+      product_id,
+      product_name,
+      product_main_image,
+      finalPrice_after_discount,
+      discount_on_product,
+      product_price,
+      category,
+      sub_category,
+      selectedSize
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ success: false, message: "Internal Server Error" });
+  }
+});
+
+
 router.get("/cart", (req, res) => {
   const user = req.session.user;
   const cartCount = req.cartCount || 0;
