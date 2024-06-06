@@ -65,71 +65,67 @@
 
                 <p>Preorder nor to receive exclusive deals & gifts</p>
               </div>
-              <div class="arrival-wrapper">
+            
+              <div class="product-grid">
                 <% products.forEach(product => { %>
                 <div class="product-item">
                   <div class="produt-wrap">
-                    <a href="/product-detail/<%= product.id %>">
+                    <a href="/product-detail/<%= product.id %> ">
                       <img
-                        src="../product_images/<%= product.product_main_image %>"
+                        src="../product_images/<%= product.product_main_image%> %>"
                         class="pro-img"
-                        alt="<%= product.name %>"
+                        alt=""
                       />
                     </a>
+
                     <div class="product-btn">
                       <div class="pro-whishlist">
-                        <a
-                          class="add-to-favorites"
-                          data-product-id="<%= product.id %>"
-                        >
-                          <img
-                            src="assets/images/heart.png"
-                            alt="Add to Favorites"
-                          />
-                        </a>
+
+                  <a  class="add-to-favorites" data-product-id="<%= product.id %>">
+                    <img src="assets/images/heart.png" alt="Add to Favorites" />
+                  </a>
+
                       </div>
+
                       <div class="pro-view">
-                        <a href=""
-                          ><img src="assets/images/eye.png" alt="View"
+                        <a href="/product-detail/<%= product.id %>"
+                          ><img src="assets/images/eye.png" alt=""
                         /></a>
                       </div>
                     </div>
                   </div>
+                  <div class="product-add-to-card-wrap">
+                   
 
-                  <div class="product-details">
-                    <h6><%= product.product_name %></h6>
+                    <button class="add-to-cart" data-product-id="<%= product.id %>">
+                      Add to Cart
+                    </button>
+                     
+                  </button>
+                  </div>
+                  <div class="product-details shop-content">
+                    <a href="/product-detail/<%= product.id %>"
+                      ><h6><%= product.product_name %> </h6></a
+                    > <span>
+                      
+                    </span>
                     <div class="product-price">
                       <h5>
-                        <span class="mrp-price" style="font-size: 15px;">
-                          £<%=product.product_price %>
-                      </span>
-                        <span class="final-price">£<%=(product.product_price * (1 - (product.discount_on_product / 100))).toFixed(2) %></span>
-                         <!-- <span> (<%=product.discount_on_product %>% OFF )</span> -->
+                         <span class="mrp-price" style="font-size: 16px;"> £<%=product.product_price %></span>
+                         <span class="final-price" >£<%=(product.product_price * (1 - (product.discount_on_product / 100))).toFixed(2) %></span> 
+                         <span style="font-size: 15px;color:rgb(193, 196, 196)"> (<%=product.discount_on_product %>% OFF )</span>
                       </h5>
                     </div>
-                    <div class="product-btn">
-                       <div class="pro-view">
-                        <button
-                          class="add-to-cart"
-                          data-product-id="<%= product.id %>"
-                        >
-                          <img src="assets/images/cart.png" alt="Add to Cart" />
-                        </button>
-                      </div>
-                    </div>
-                    <div class="product-rating">
+                    
+
+                    <div class="product-color-option">
                       <ul>
                         <li>
-                          <% for (let i = 0; i < 5; i++) { %>
-                          <a href="">
-                            <img  src="assets/images/star.png"  alt="Star Rating"
-                            />
-                          </a>
-                          <% } %>
-                          <a href="">
-                            <span class="review-count">(120 Reviews)</span>
-                          </a>
+                          <a href="" class="p-option-item c1 active"></a>
                         </li>
+                        <li><a href="" class="p-option-item c2"></a></li>
+                        <li><a href="" class="p-option-item c3"></a></li>
+                        <li><a href="" style="color: #000">+More</a></li>
                       </ul>
                     </div>
                   </div>

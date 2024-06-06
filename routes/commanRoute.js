@@ -228,26 +228,32 @@ router.get("/checkout", (req, res) => {
 });
 
 
-router.get('/cart', (req, res) => {
+router.get('/my-cart', (req, res) => {
   const user = req.session.user;
   const cartCount = req.cartCount || 0;
   const wishlistCount = req.wishlistCount || 0;
-  res.render("cart", { cartCount, wishlistCount, user });
+  res.render("my-cart", { cartCount, wishlistCount, user });
 });
 
 router.get("/add-address", (req, res) => {
   const user = req.session.user;
-  res.render("add-address", { user });
+  const cartCount = req.cartCount || 0;
+  const wishlistCount = req.wishlistCount || 0;
+  res.render("add-address", { user ,cartCount,wishlistCount});
 });
 
 router.get('/my-wishlist', (req, res) => {
   const user = req.session.user;
-  res.render('my-wishlist', { user });
+  const cartCount = req.cartCount || 0;
+  const wishlistCount = req.wishlistCount || 0;
+  res.render('my-wishlist', { user,cartCount ,wishlistCount});
 });
 
 router.get('/order-confirm',(req,res) =>{
   const user = req.session.user;
-  res.render('order-confirm',{user});
+  const cartCount = req.cartCount || 0;
+  const wishlistCount = req.wishlistCount || 0;
+  res.render('order-confirm',{user,cartCount,wishlistCount});
 })
 
 router.get('/about-us', (req, res) => {
@@ -262,5 +268,18 @@ router.get('/contact-us',(req,res) =>{
   const cartCount = req.cartCount || 0;
   const wishlistCount = req.wishlistCount || 0;
   res.render('contact-us',{user,cartCount,wishlistCount});
+})
+
+router.get('/blogs',(req,res) =>{
+  const user = req.session.user;
+  const cartCount = req.cartCount || 0;
+  const wishlistCount = req.wishlistCount || 0;
+  res.render('blogs',{user,cartCount,wishlistCount});
+})
+router.get('/blog-detail',(req,res) =>{
+  const user = req.session.user;
+  const cartCount = req.cartCount || 0;
+  const wishlistCount = req.wishlistCount || 0;
+  res.render('blog-detail',{user,cartCount,wishlistCount});
 })
 export default router;

@@ -14,6 +14,7 @@ body {
   --whiteColor: #fff;
   --textGreyColor: #929292;
   --primaryColor: #005d67;
+  --boxShadow:rgba(149, 157, 165, 0.2) 0px 8px 24px;
 }
 
 a {
@@ -53,10 +54,10 @@ a {
   display: flex;
   gap: 2rem;
   align-items: center;
-  width: 33.33%;
+  width: 45%;
 }
 .middle-header-wrapper{
-  width: 33.33%;
+  width: 10%;
   text-align: center;
 }
  .alfa-logo img {
@@ -66,9 +67,9 @@ a {
 
  .alfa-navbar ul {
     display: flex;
-    gap: 70px;
+    gap: 45px;
     margin: 0;
-    padding-left: 35px;
+    padding-left: 0px;
     justify-content: center;
 }
 .alfa-navbar-warapper{
@@ -77,6 +78,7 @@ a {
  .alfa-navbar ul a {
   color: #005D6799;
   font-size: 16px;
+  white-space: nowrap;
 }
 .nav-item.active{
   color: var(--primaryColor);
@@ -86,8 +88,8 @@ a {
 }
 .header-container .right-header-wrapper {
   display: flex;
-  gap: 1rem;
-  width: 33.33%;
+  gap: 0rem;
+  width: 45%;
   justify-content: end;
   align-items: center;
 }
@@ -728,7 +730,7 @@ a {
   background: transparent;
   color: #fff;
   height: 45px;
-  padding: 0 60px;
+  padding: 0 40px;
   outline: none;
 }
 .subs-form-input .subs-control::placeholder {
@@ -945,7 +947,7 @@ a {
 }
 
 .produt-wrap .pro-img {
-  width: 230px;
+  width: 100%;
   height: 230px;
   object-fit: contain;
 }
@@ -1286,7 +1288,7 @@ a {
   height: 100%;
   max-width: 60%;
   width: 30%;
-  top: 128px;
+  top: 96px;
   padding: 10px 20px;
   transition: transform .3s ease-in-out;
 }
@@ -1577,7 +1579,7 @@ a {
   margin: 0 0 160px;
 }
 .margin-190{
-  margin: 0 0 190px;
+  margin: 55px 0 190px;
 }
 .shipping-address .add-address{
     display: flex;
@@ -1770,13 +1772,40 @@ a {
     align-items: center;
     justify-content: center;
  }
+ .contact-info{
+  color: #fff;
+  padding: 48px 42px;
+  height: 65vh;
+ }
  .contact-info .contact-ul{
   list-style: none;
   padding: 0;
   margin: 20px auto;
  }
  .contact-info  .contact-ul li{
-  margin-bottom: 20px;
+  margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+ }
+ .contact-ul .c-span{
+    box-shadow: var(--boxShadow);
+    background-color: #F9CF2D;
+    color: #000;
+    width: 40px;
+    display: flex;
+    height: 40px;
+    align-items: center;
+    justify-content: center;
+    padding: 18px;
+    border-radius: 50%;
+ }
+ .contact-media-ul {
+  gap: 20px !important;
+  margin: 60px auto;
+ }
+ .contact-media-ul .social-icon.contact-icon{
+  width: 30px;
  }
  .contact-form-control{
   height: 45px;
@@ -1811,3 +1840,75 @@ a {
 .product-count{
   color: #fff !important;
 }
+.brudcrumb{
+  padding: 100px;
+}
+.contact-us-wrapper{
+  box-shadow:var(--boxShadow);
+  padding: 35px 40px 40px;
+}
+.alfa-blog-wrapper{
+    background: #f0f1ea;
+    display: flex;
+    padding: 40px 35px; 
+    gap: 40px;
+    margin: 0 0 20px;
+}
+.blog-left-top{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0 0 25px;
+}
+.blog-left-top .blog-tag{
+    border: 1px solid #000000;
+    padding: 7px 20px;
+    border-radius: 20px;
+}
+.blog-read-more{
+  margin: 35px auto;
+}
+.read-more-btn{
+  background: var(--primaryColor);
+  color:var(--whiteColor);
+  padding: 12px 20px;
+}
+.read-more-btn:hover{
+  background: #327981;
+  color:var(--whiteColor);
+ }
+ .blog-detail-wrapper{
+  margin-top: -155px;
+ }
+ .blog-left-top.blod-d-2{
+    justify-content: start;
+    gap: 20px;
+ }
+ .blog-detail-pro{
+  display: flex;
+  justify-content: space-between;
+  margin: 20px auto;
+  align-items: center;
+ }
+ .blog-detail-pro .d-p-left{
+    display: flex;
+    gap: 20px;
+    align-items: center;
+ }
+ .d-p-right ul{
+    list-style: none;
+    padding: 0;
+    display: flex;
+    gap: 20px;
+ }
+ .d-p-right ul a{
+  color: #000;
+  font-size: 30px;
+ }
+ .blog-user-content h4{
+  margin: 0;
+  font-size: 22px;
+ }
+ .blog-user-content h6{
+  color: #555555;
+ }
