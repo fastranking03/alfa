@@ -8,7 +8,9 @@ const router = express.Router();
 
 router.get("/login", async (req, res) => {
   const user = req.session.user;
-  res.render("login", { user });
+  const cartCount = req.cartCount || 0;
+  const wishlistCount = req.wishlistCount || 0;
+  res.render("login", { user,cartCount,wishlistCount });
 });
 
 router.get("/signup", async (req, res) => {
@@ -74,7 +76,7 @@ router.post("/login", async (req, res) => {
     if (!passMatch) {
       return res.render("login", { error: "Invalid Email or Password" });
     }
-
+    
     req.session.user = user[0];
     // Storing user data in session
     if (req.session.user.status === 1) {
