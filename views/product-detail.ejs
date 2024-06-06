@@ -33,7 +33,16 @@
     }
     .image-item img {
       width: 100%;
+    } 
+
+    .size-item.selected {
+      background-color: green;
+      color: white;
     }
+
+    input[type="radio"] {
+    display: none;
+  }
   </style>
   <body>
     <div class="alfa-main-wraper">
@@ -171,75 +180,71 @@
                       <li><a href="" class="size-item">XXL</a></li>
                     </ul>
                   </div> -->
-                  <div class="product-size-list">
-                    <div class="pro--text">
-                      <h6>Select Size</h6>
-                    </div>
-                    <ul id="sizeList" class="size-list">
-                      <% if (sizes && Object.keys(sizes).length > 0) { %>
-                        <% for (const [size, stock] of Object.entries(sizes)) { %>
-                          <% if (size && stock) { %>
-                            <% const numericSize = size.match(/\d+/); %> <!-- Extract numeric part -->
-                            <% if (numericSize && numericSize.length > 0) { %>
+                  <!-- <pre><%= JSON.stringify(sizes, null, 2) %></pre> -->
+                  <form action="" method="post">
+                    <div class="product-size-list">
+                      <div class="pro--text">
+                        <h6>Select Size</h6>
+                      </div>
+                      <ul id="sizeList" class="size-list">
+                        <% if (sizes && Object.keys(sizes).length > 0) { %>
+                          <% for (const [size, stock] of Object.entries(sizes)) { %>
+                            <% if (wearType === 'bottom') { %>
+                              <% const numericSize = size.match(/\d+/); %>
+                              <!-- Extract numeric part -->
+                              <% if (numericSize && numericSize.length > 0) { %>
+                                <li>
+                                  <input type="radio" id="size-<%= numericSize[0] %>" name="selectedSize" value="<%= numericSize[0] %>" <%= stock > 0 ? '' : 'disabled' %> />
+                                  <label for="size-<%= numericSize[0] %>" class="size-item <%= stock > 0 ? '' : 'disabled' %>">
+                                    <span class="size"><%= numericSize[0] %></span>
+                                  </label>
+                                  <span class="stock">(<%= stock %>)</span>
+                                </li>
+                              <% } %>
+                            <% } else { %>
                               <li>
-                                <a href="#" class="size-item <%= stock > 0 ? '' : 'disabled' %>">
-                                  <span class="size"><%= numericSize[0] %></span> 
-                                </a>
+                                <input type="radio" id="size-<%= size %>" name="selectedSize" value="<%= size.toUpperCase() %>" <%= stock > 0 ? '' : 'disabled' %> />
+                                <label for="size-<%= size %>" class="size-item <%= stock > 0 ? '' : 'disabled' %>">
+                                  <span class="size"><%= size.toUpperCase() %></span>
+                                </label>
+                                <span class="stock">(<%= stock %>)</span>
                               </li>
                             <% } %>
                           <% } %>
+                        <% } else { %>
+                          <p>No sizes available</p>
                         <% } %>
-                      <% } else { %>
-                        <p>No sizes available</p>
-                      <% } %>
-                    </ul>
-                  </div>
+                      </ul>
+                    </div>
                   
-
-                  <form action="" method="post">
-                    <input
-                      type="hidden"
-                      name="product_id"
-                      value="<%= product.id %>"
-                    />
-                    <input
-                      type="hidden"
-                      name="product_name"
-                      value="<%= product.product_name %>"
-                    />
-
-                    <input
-                      type="hidden"
-                      name="finalPrice_after_discount"
-                      value="<%=(product.product_price * (1 - (product.discount_on_product / 100))).toFixed(2) %>"
-                    />
-                    <input
-                      type="hidden"
-                      name="discount_on_product"
-                      value="<%= product.discount_on_product %>"
-                    />
-                    <input
-                      type="hidden"
-                      name="actual_mrp_price"
-                      value="<%= product.product_price %>"
-                    />
-
-                    <input
-                      type="hidden"
-                      name="category"
-                      value="<%= product.category_name%>"
-                    />
-                    <input
-                      type="hidden"
-                      name="sub_category"
-                      value="<%= product.sub_category_name	%>"
-                    />
-
+                    <input type="text" name="product_id" value="<%= product.id %>" />
+                    <input type="text" name="product_name" value="<%= product.product_name %>" />
+                    <input type="text" name="finalPrice_after_discount" value="<%= (product.product_price * (1 - (product.discount_on_product / 100))).toFixed(2) %>" />
+                    <input type="text" name="discount_on_product" value="<%= product.discount_on_product %>" />
+                    <input type="text" name="actual_mrp_price" value="<%= product.product_price %>" />
+                    <input type="text" name="category" value="<%= product.category_name %>" />
+                    <input type="text" name="sub_category" value="<%= product.sub_category_name %>" />
+                  
                     <div class="product--button-wrapper">
-                      <a href="" class="add--carrt cart-btn">Add to Cart</a>
+                      <button type="submit" class="add--cart cart-btn">Add to Cart</button>
                       <a href="/checkout" class="cart-btn buy--now">Buy Now</a>
                     </div>
                   </form>
+                  
+                  <script>
+                    document.addEventListener('DOMContentLoaded', function() {
+                      const sizeItems = document.querySelectorAll('.size-item');
+                      sizeItems.forEach(item => {
+                        item.addEventListener('click', function() {
+                          sizeItems.forEach(i => i.classList.remove('selected'));
+                          item.classList.add('selected');
+                        });
+                      });
+                    });
+                  </script>
+                  
+                 
+                  
                 </div>
               </div>
             </div>

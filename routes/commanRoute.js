@@ -77,20 +77,20 @@ router.get("/product", async (req, res) => {
 //     let sizeQuery;
 //     if (wearType === "top") {
 //       sizeQuery = `
-//         SELECT 
+//         SELECT
 //           xs, s, m, l, xl, xxl, xxxl, xxxxl
-//         FROM 
-//           topwear_inventory 
-//         WHERE 
+//         FROM
+//           topwear_inventory
+//         WHERE
 //           product_id = ?`;
 //       [sizeRows] = await connection.query(sizeQuery, [productId]);
 //     } else if (wearType === "bottom") {
 //       sizeQuery = `
-//         SELECT 
+//         SELECT
 //           size_28, size_30, size_32, size_34, size_36, size_38, size_40, size_42, size_44, size_46
-//         FROM 
-//           bottomwear_inventory 
-//         WHERE 
+//         FROM
+//           bottomwear_inventory
+//         WHERE
 //           product_id = ?`;
 //       [sizeRows] = await connection.query(sizeQuery, [productId]);
 //     }
@@ -107,15 +107,15 @@ router.get("/product", async (req, res) => {
 //     }
 
 //     const [rows] = await connect.query(
-//       `SELECT 
+//       `SELECT
 //           p.*,
 //           c.id AS category_id,
 //           c.category_name,
 //           s.id AS subcategory_id,
 //           s.sub_category_name
 //        FROM products p
-//        INNER JOIN category c ON p.category_id = c.id 
-//        INNER JOIN sub_category s ON p.subcategory_id = s.id 
+//        INNER JOIN category c ON p.category_id = c.id
+//        INNER JOIN sub_category s ON p.subcategory_id = s.id
 //        WHERE p.id = ?`,
 //       [productId]
 //     );
@@ -143,7 +143,6 @@ router.get("/product", async (req, res) => {
 //     res.status(500).send("Internal Server Error");
 //   }
 // });
-
 router.get("/product-detail/:id", async (req, res) => {
   try {
     const cartCount = req.cartCount || 0;
@@ -176,6 +175,12 @@ router.get("/product-detail/:id", async (req, res) => {
       for (const [size, value] of Object.entries(sizeRows[0])) {
         if (value) {
           sizes[size.replace("_", " ")] = value;
+        } else {
+          if (wearType === "top" && !size.startsWith("size_")) {
+            sizes[size.replace("_", " ")] = value;
+          } else if (wearType === "bottom" && size.startsWith("size_")) {
+            sizes[size.replace("_", " ")] = value;
+          }
         }
       }
     }
@@ -205,7 +210,6 @@ router.get("/product-detail/:id", async (req, res) => {
       [productId]
     );
 
-
     // Render product detail page
     res.render("product-detail", {
       cartCount,
@@ -214,12 +218,14 @@ router.get("/product-detail/:id", async (req, res) => {
       product,
       product_images,
       sizes,
+      wearType,
     });
   } catch (error) {
     console.error(error);
     res.status(500).send("Internal Server Error");
   }
 });
+
 
 router.get("/checkout", (req, res) => {
   const user = req.session.user;
@@ -228,8 +234,7 @@ router.get("/checkout", (req, res) => {
   res.render("checkout", { cartCount, wishlistCount, user });
 });
 
-
-router.get('/cart', (req, res) => {
+router.get("/cart", (req, res) => {
   const user = req.session.user;
   const cartCount = req.cartCount || 0;
   const wishlistCount = req.wishlistCount || 0;
@@ -241,27 +246,27 @@ router.get("/add-address", (req, res) => {
   res.render("add-address", { user });
 });
 
-router.get('/my-wishlist', (req, res) => {
+router.get("/my-wishlist", (req, res) => {
   const user = req.session.user;
-  res.render('my-wishlist', { user });
+  res.render("my-wishlist", { user });
 });
 
-router.get('/order-confirm',(req,res) =>{
+router.get("/order-confirm", (req, res) => {
   const user = req.session.user;
-  res.render('order-confirm',{user});
-})
+  res.render("order-confirm", { user });
+});
 
-router.get('/about-us', (req, res) => {
+router.get("/about-us", (req, res) => {
   const cartCount = req.cartCount || 0;
   const wishlistCount = req.wishlistCount || 0;
   const user = req.session.user;
-  res.render('about-us', { user,cartCount,wishlistCount });
+  res.render("about-us", { user, cartCount, wishlistCount });
 });
 
-router.get('/contact-us',(req,res) =>{
+router.get("/contact-us", (req, res) => {
   const user = req.session.user;
   const cartCount = req.cartCount || 0;
   const wishlistCount = req.wishlistCount || 0;
-  res.render('contact-us',{user,cartCount,wishlistCount});
-})
+  res.render("contact-us", { user, cartCount, wishlistCount });
+});
 export default router;
