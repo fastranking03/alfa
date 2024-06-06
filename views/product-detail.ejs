@@ -212,18 +212,18 @@
                             <% } %>
                           <% } %>
                         <% } else { %>
-                          <p>No sizes available</p>
+                          <p>Currently Out Of Stock</p>
                         <% } %>
                       </ul>
                     </div>
                   
-                    <input type="text" name="product_id" value="<%= product.id %>" />
-                    <input type="text" name="product_name" value="<%= product.product_name %>" />
-                    <input type="text" name="finalPrice_after_discount" value="<%= (product.product_price * (1 - (product.discount_on_product / 100))).toFixed(2) %>" />
-                    <input type="text" name="discount_on_product" value="<%= product.discount_on_product %>" />
-                    <input type="text" name="actual_mrp_price" value="<%= product.product_price %>" />
-                    <input type="text" name="category" value="<%= product.category_name %>" />
-                    <input type="text" name="sub_category" value="<%= product.sub_category_name %>" />
+                    <input type="hidden" name="product_id" value="<%= product.id %>" />
+                    <input type="hidden" name="product_name" value="<%= product.product_name %>" />
+                    <input type="hidden" name="finalPrice_after_discount" value="<%= (product.product_price * (1 - (product.discount_on_product / 100))).toFixed(2) %>" />
+                    <input type="hidden" name="discount_on_product" value="<%= product.discount_on_product %>" />
+                    <input type="hidden" name="actual_mrp_price" value="<%= product.product_price %>" />
+                    <input type="hidden" name="category" value="<%= product.category_name %>" />
+                    <input type="hidden" name="sub_category" value="<%= product.sub_category_name %>" />
                   
                     
                     <div class="product--button-wrapper">

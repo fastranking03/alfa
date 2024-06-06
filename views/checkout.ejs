@@ -1,141 +1,266 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Alfa Meanswear | Product Details</title>
     <%- include('includes/head') %>
-</head>
- 
-<body>
+  </head>
+
+  <body>
     <div class="alfa-main-wraper">
-        <%- include('includes/header') %>
-            <div class="mt-100 mt-150">
-                <div class="checkout-wrapper margin-160">
-                    <div class="container">
-                        <div class="checkout-title text-center">
-                            <h3>Checkout</h3>
-                        </div>
-                        <div class="row">
-                            <div class="col-md-6">
-                                <div class="alfa-checkout-address">
-                                    <div class="shiping-title">
-                                        <h5>Shipping Address</h5>
-                                    </div>
-                                    <div class="shipping-address">
-                                        <a href="add-address" style="color: #000;">
-                                            <div  class="add-address">
-                                                <div class="shipping-text">
-                                                    <span><img src="assets/images/shiping.png" alt=""></span>
-                                                    Add Address
-                                                </div>
-                                                <img src="assets/images/back.png" class="arrow-right" alt=""> 
-                                            </div>
-                                        </a>
-                                        <div class="shipping-address-display" style="display: none;">
-                                            <div class="address-content">
-                                                <div class="shipper-name"> Jeremy John Lawson </div>
-                                                <div class="shipper-email">
-                                                    <p>sales@alfa-menswear.com</p>
-                                                    <p>+44 1202 292 895</p>
-                                                </div>
-                                                <div class="shipper-address">
-                                                    33 Westover Road, Bournemouth, Dorset, BH1 2BZ
-                                                </div>
-                                            </div>
-                                            <div>
-                                                <img src="assets/images/back.png" class="arrow-right" alt=""> 
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-    
-                            <div class="col-md-6">
-                                <div class="checkout-item-wrapper mt-5">
-                                    <div class="item-counts">
-                                        <div class="counts">
-                                            <h6>1 Items</h6>
-                                        </div>
-                                        <div class="items-timing">
-                                            <span>Arrives by April 3 to April 9th</span>
-                                        </div>
-                                    </div>
-                                    <div class="checkout-cart-wrapper">
-                                        <div class="checkout-wrapp">
-                                            <div class="check-item">
-                                                <div class="check-item-left">
-                                                     <div class="check-item-image">
-                                                        <img src="../product_images/<%=product_main_image  %>" class="check-image" alt="">
-                                                     </div>
-                                                     <div class="checkout-cont">
-                                                        <h4>Menswear Trouser</h4>
-                                                        <div class="checkout-rest-cont">
-                                                            <p>Color : Blue</p>
-                                                            <p>Size :<%=selectedSize %></p>
-                                                            <p>Qty :  1</p>
-                                                        </div>
-                                                     </div>
-                                                </div>
-                                                <div class="check-item-right">
-                                                    <div class="check-price">
-                                                        <h5>
-                                                            <span class="final-price"
-                                                              >£<%=finalPrice_after_discount%></span
-                                                            ><span class="mrp-price">
-                                                              £<%=product_price %></span
-                                                            >
-                                                          </h5>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            
-                                        </div>
-                                         <div class="alfa-cart-total">
-                                            <ul>
-                                                <li>
-                                                    <div class="alfa-text">Sub- Total</div>
-                                                    <div class="alfa-price">£456.00</div>
-                                                </li>
-                                                <li>
-                                                    <div class="alfa-text">GST</div>
-                                                    <div class="alfa-price">£91.00</div>
-                                                </li>
-                                                <li>
-                                                    <div class="alfa-text">Discount</div>
-                                                    <div class="alfa-price">-£30.00</div>
-                                                </li>
-                                                <li>
-                                                    <div class="alfa-text">Delivery Fee</div>
-                                                    <div class="alfa-price">£25.00</div>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div class="alfa-cart-total">
-                                            <ul>
-                                                <li>
-                                                    <div class="alfa-text">Total Cost</div>
-                                                    <div class="alfa-price">£542.00</div>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div class="alfa-checkout-wrapper">
-                                            <button type="button" class="checkout-btn" onclick='window.location.href="/order-confirm"'>Pay Now</button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+      <%- include('includes/header') %>
+      <div class="mt-100 mt-150">
+        <div class="checkout-wrapper margin-160">
+          <div class="container">
+            <div class="checkout-title text-center">
+              <h3>Checkout</h3>
+            </div>
+            <div class="row">
+              <div class="col-md-6">
+                <div class="alfa-checkout-address">
+                  <div class="shiping-title">
+                    <h5>Shipping Address</h5>
+                  </div>
+                  <div class="address-title text-center">
+                    <h3>Address</h3>
+                    <div id="addressDetails">
+                      <% addresses.forEach(address => { %>
+                      <div>
+                        <p>Name: <%= address.name %></p>
+                        <p>Phone Number: <%= address.phone %></p>
+                        <p>Email: <%= address.email %></p>
+                        <p>Address Title: <%= address.address_title %></p>
+                        <p>Address: <%= address.address %></p>
+                        <p>City: <%= address.city %></p>
+                        <p>Post Code: <%= address.postcode %></p>
+                        <p>Country: <%= address.country %></p>
+                      </div>
+                      <% }); %>
                     </div>
+                  </div>
+
+                  <div class="shipping-address">
+                    <a href="add-address" style="color: #000">
+                      <div class="add-address">
+                        <div class="shipping-text">
+                          <span
+                            ><img src="assets/images/shiping.png" alt=""
+                          /></span>
+                          Add Address
+                        </div>
+                        <img
+                          src="assets/images/back.png"
+                          class="arrow-right"
+                          alt=""
+                        />
+                      </div>
+                    </a>
+                    <div class="shipping-address-display" style="display: none">
+                      <div class="address-content">
+                        <div class="shipper-name">Jeremy John Lawson</div>
+                        <div class="shipper-email">
+                          <p>sales@alfa-menswear.com</p>
+                          <p>+44 1202 292 895</p>
+                        </div>
+                        <div class="shipper-address">
+                          33 Westover Road, Bournemouth, Dorset, BH1 2BZ
+                        </div>
+                      </div>
+                      <div>
+                        <img
+                          src="assets/images/back.png"
+                          class="arrow-right"
+                          alt=""
+                        />
+                      </div>
+                    </div>
+                  </div>
                 </div>
-             </div>
-            <!-- Footer -->
-            <%- include('includes/footer') %>
-            <!-- End -->
+              </div>
+
+              <div class="col-md-6">
+                <div class="checkout-item-wrapper mt-5">
+                  <div class="item-counts">
+                    <div class="counts">
+                      <h6>1 Items</h6>
+                    </div>
+                    <div class="items-timing">
+                      <span>Arrives by April 3 to April 9th</span>
+                    </div>
+                  </div>
+                  <div class="checkout-cart-wrapper">
+                    <div class="checkout-wrapp">
+                      <div class="check-item">
+                        <div class="check-item-left">
+                          <div class="check-item-image">
+                            <img
+                              src="../product_images/<%=product_main_image  %>"
+                              class="check-image"
+                              alt=""
+                            />
+                          </div>
+                          <div class="checkout-cont">
+                            <h4>Menswear Trouser</h4>
+                            <div class="checkout-rest-cont">
+                              <p>Color : Blue</p>
+                              <p>Size :<%=selectedSize %></p>
+                              <p>Qty : 1</p>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="check-item-right">
+                          <div class="check-price">
+                            <h5>
+                              <span class="final-price"
+                                >£<%=finalPrice_after_discount%></span
+                              ><span class="mrp-price">
+                                £<%=product_price %></span
+                              >
+                            </h5>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="alfa-cart-total">
+                      <ul>
+                        <li>
+                          <div class="alfa-text">Sub- Total</div>
+                          <div class="alfa-price">£<%=product_price %></div>
+                        </li>
+
+                        <li>
+                          <div class="alfa-text">
+                            Discount [ <%=discount_on_product %>% ]
+                          </div>
+                          <div class="alfa-price">- £<%=discountAmount %></div>
+                        </li>
+
+                        <li>
+                          <div class="alfa-text">Vat ( 20% )</div>
+
+                          <div class="alfa-price">£ <%=vatAmount %></div>
+                        </li>
+                        <li>
+                          <div class="alfa-text">Delivery Fee</div>
+
+                          <div class="alfa-price">£<%=delivery_charge %></div>
+                        </li>
+                      </ul>
+                    </div>
+                    <div class="alfa-cart-total">
+                      <ul>
+                        <li>
+                          <div class="alfa-text">Total Cost</div>
+                          <div class="alfa-price">
+                            £<%=finalPriceAfterVAT %>>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+
+                    <form
+                      id="checkoutForm"
+                      action="order-confirm"
+                      method="post"
+                    >
+                    <div class="address-title text-center">
+                        <h3>Address</h3>
+                        <div id="addressDetails">
+                          <label for="address_id">Select Address for Delivery:</label>
+                          <select name="address_id" id="address_id" required>
+                            <% addresses.forEach(address => { %>
+                              <option value="<%= address.id %>">
+                                <%= address.name %> - <%= address.address_title %> - <%= address.city %>
+                              </option>
+                            <% }); %>
+                          </select>
+                        </div>
+                      </div>
+                      
+                      <input
+                        type="hidden"
+                        name="product_id"
+                        value="<%=product_id %>"
+                      />
+                      <input
+                        type="hidden"
+                        name="product_name"
+                        value="<%=product_name %>"
+                      />
+
+                      <input
+                      type="hidden"
+                      name="selected_size"
+                      value="<%=selectedSize %>"
+                    />
+ 
+
+                      <input
+                        type="hidden"
+                        name="category"
+                        value="<%=category %>"
+                      />
+                      <input
+                        type="hidden"
+                        name="sub_category"
+                        value="<%=sub_category %>"
+                      />
+
+                      <input
+                        type="hidden"
+                        name="product_price"
+                        value="<%= product_price %>"
+                      />
+                      <input
+                        type="hidden"
+                        name="discount_on_product"
+                        value="<%=discount_on_product %>"
+                      />
+
+                      <input
+                        type="hidden"
+                        name="discount_amount"
+                        value="<%= discountAmount %>"
+                      />
+                      <input
+                        type="hidden"
+                        name="vat"
+                        value="<%= vatAmount %>"
+                      />
+                      <input
+                        type="hidden"
+                        name="delivery"
+                        value="<%= delivery_charge %>"
+                      />
+                      <input
+                        type="hidden"
+                        name="total_payable"
+                        value="<%= finalPriceAfterVAT %>"
+                      />
+
+                      <!-- Add other necessary fields here -->
+                      <!-- <button type="submit" class="checkout-btn">Pay Now</button> -->
+
+                      <div class="alfa-checkout-wrapper">
+                        <button type="submit" class="checkout-btn">
+                          Pay Now
+                        </button>
+                      </div>
+
+                    </form>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Footer -->
+      <%- include('includes/footer') %>
+      <!-- End -->
     </div>
     <%- include('includes/foot') %>
-
-</body>
-
+  </body>
 </html>

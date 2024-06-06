@@ -14,12 +14,12 @@
             <div class="mt-100 mt-150">
                 <div class="container margin-160">
                     <div class="row">
-                        <div class="address-title text-center">
-                            <h3>Address</h3>
-                        </div>
+                       
+                        
                         <div class="address-wrapper">
                              <div class="address-form">
-                                <form action="">
+                                <form action="submit-address" method="post">
+                                    <input type="hidden" name="userid" value="<%=user.id %>">
                                     <div class="row">
                                         <div class="address-form-title">
                                             <h4>Recipients Information</h4>
@@ -36,6 +36,16 @@
                                                 <input type="text" name="phone" class="address-input" placeholder="Enter Name">
                                             </div>
                                         </div>
+
+                                        <div class="col-md-12">
+                                            <div class="address-form-group">
+                                                <label for="Name" class="address-label"> Alt Phone Number </label>
+                                                <input type="text" name="alt_phone" class="address-input" placeholder="Enter Name">
+                                            </div>
+                                        </div>
+
+
+                                      
                                         <div class="col-md-12">
                                             <div class="address-form-group">
                                                 <label for="Name" class="address-label">Email Address*</label>
@@ -93,12 +103,12 @@
                                          </div>
                                          <div class="address-radio-flex">
                                              <div class="input-radio">
-                                                <input type="radio" name="radio1" checked>
+                                                <input type="radio" name="radio1" value="Personal" checked>
                                                 <label for="radio1">Personal</label>
                                              </div>
                                              <div class="input-radio">
-                                                <input type="radio" name="radio1">
-                                                <label for="radio1">Personal</label>
+                                                <input type="radio" name="radio1" value="Commercial">
+                                                <label for="radio1">Commercial</label>
                                              </div>
                                          </div>
                                     </div>
