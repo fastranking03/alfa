@@ -14,7 +14,6 @@ async function addToCart(userId, productId) {
     }
 }
 
-
 // Assuming you have Express router setup
 router.get('/cart/add/:productId', async (req, res) => { 
     try {
