@@ -61,6 +61,8 @@ router.post("/signup", async (req, res) => {
 
 // User Login
 router.post("/login", async (req, res) => {
+
+
   try {
     const { email, password } = req.body;
     const alfa_query = "SELECT * FROM user_registration WHERE email = ?";
@@ -76,6 +78,8 @@ router.post("/login", async (req, res) => {
     }
 
     req.session.user = user[0];
+
+    
     // Storing user data in session
     if (req.session.user.status === 1) {
       res.redirect("/admin/");

@@ -4,36 +4,99 @@ import slugify from "slugify";
 
 const router = express.Router();
 
-router.get("/", async (req, res) => {
-  const user = req.session.user;
+// router.get("/", async (req, res) => {
+//   const user = req.session.user;
+//   const userId = req.session.user.id;
+//   try {
+//     // Query categories from the database
+//     const [categories] = await connect.query("SELECT * FROM category");
 
+//     // Retrieve cart and wishlist counts from the request object
+//     // const cartCount = req.cartCount || 0;
+//     // const wishlistCount = req.wishlistCount || 0;
+
+//     const cartCountQuery =
+//       "SELECT COUNT(*) AS cart_count FROM users_cart WHERE user_id = ?";
+//     const wishlistCountQuery =
+//       "SELECT COUNT(*) AS wishlist_count FROM users_favorites WHERE user_id = ?";
+
+//     // Execute both queries asynchronously
+//     const [cartResult] = await connect.query(cartCountQuery, [userId]);
+//     const [wishlistResult] = await connect.query(wishlistCountQuery, [userId]);
+
+//     const cartCount = cartResult[0].cart_count;
+//     const wishlistCount = wishlistResult[0].wishlist_count;
+
+//     req.session.cartCount = cartCount;
+//     req.session.wishlistCount = wishlistCount;
+
+//     // Render the index view with user and categories data
+//     res.render("index", {
+//       user: user,
+//       categories: categories,
+//       cartCount,
+//       wishlistCount,
+//     });
+//   } catch (err) {
+//     // If there's an error fetching categories, log the error and redirect
+//     console.error("Error fetching categories:", err);
+//     res.redirect("/");
+//   }
+// });
+
+router.get("/", async (req, res) => {
   try {
     // Query categories from the database
     const [categories] = await connect.query("SELECT * FROM category");
 
-    // Retrieve cart and wishlist counts from the request object
-    const cartCount = req.cartCount || 0;
-    const wishlistCount = req.wishlistCount || 0;
+    if (req.session.user) {
+      // Check if the user is logged in
+      const user = req.session.user;
+      const userId = user ? user.id : null;
+
+      // Initialize cartCount and wishlistCount
+      let cartCount;
+      let wishlistCount;
+
+      // If the user is logged in, fetch cart and wishlist counts
+      if (userId) {
+        const [cartResult] = await connect.query(
+          "SELECT COUNT(*) AS cart_count FROM users_cart WHERE user_id = ?",
+          [userId]
+        );
+        const [wishlistResult] = await connect.query(
+          "SELECT COUNT(*) AS wishlist_count FROM users_favorites WHERE user_id = ?",
+          [userId]
+        );
+
+        cartCount = cartResult[0].cart_count;
+        wishlistCount = wishlistResult[0].wishlist_count;
+
+        // Update session variables
+        req.session.cartCount = cartCount;
+        req.session.wishlistCount = wishlistCount;
+      }
+      res.render("index", {
+        user: user,
+        categories: categories,
+      });
+    } else {
+      res.render("index", {
+        categories: categories,
+      });
+    }
 
     // Render the index view with user and categories data
-    res.render("index", {
-      user: user,
-      categories: categories,
-      cartCount,
-      wishlistCount,
-    });
   } catch (err) {
-    // If there's an error fetching categories, log the error and redirect
+    // Render an error page or send an error response
     console.error("Error fetching categories:", err);
-    res.redirect("/");
+    res.status(500).render("error", { message: "Internal Server Error" });
   }
 });
 
 // Route for the product page
 
 router.get("/product", async (req, res) => {
-  const cartCount = req.cartCount || 0;
-  const wishlistCount = req.wishlistCount || 0;
   const user = req.session.user;
   const queryProduct = `
   SELECT  * 
@@ -48,8 +111,6 @@ router.get("/product", async (req, res) => {
 
     res.render("product", {
       user,
-      cartCount,
-      wishlistCount,
       products: results,
       categories: categories,
     });
@@ -59,11 +120,9 @@ router.get("/product", async (req, res) => {
   }
 });
 
-router.get('/blogs',(req,res) =>{
+router.get("/blogs", (req, res) => {
   const user = req.session.user;
-  const cartCount = req.cartCount || 0;
-  const wishlistCount = req.wishlistCount || 0;
-  res.render('blogs',{user,cartCount,wishlistCount});
+  res.render("blogs", { user });
 });
 // router.get("/product-detail/:id", async (req, res) => {
 //   try {
@@ -151,8 +210,6 @@ router.get('/blogs',(req,res) =>{
 // });
 router.get("/product-detail/:id", async (req, res) => {
   try {
-    const cartCount = req.cartCount || 0;
-    const wishlistCount = req.wishlistCount || 0;
     const user = req.session.user;
     const productId = req.params.id;
 
@@ -218,8 +275,6 @@ router.get("/product-detail/:id", async (req, res) => {
 
     // Render product detail page
     res.render("product-detail", {
-      cartCount,
-      wishlistCount,
       user,
       product,
       product_images,
@@ -234,17 +289,15 @@ router.get("/product-detail/:id", async (req, res) => {
 
 router.get("/checkout", (req, res) => {
   const user = req.session.user;
-  const cartCount = req.cartCount || 0;
-  const wishlistCount = req.wishlistCount || 0;
-  res.render("checkout", { cartCount, wishlistCount, user });
+  res.render("checkout", { user });
 });
 
 //
 router.post("/checkout", async (req, res) => {
   try {
     const user = req.session.user;
-    const cartCount = req.cartCount || 0;
-    const wishlistCount = req.wishlistCount || 0;
+    // const cartCount = req.cartCount || 0;
+    // const wishlistCount = req.wishlistCount || 0;
     const userId = req.session.user.id;
 
     // Retrieve form inputs from req.body
@@ -293,8 +346,6 @@ router.post("/checkout", async (req, res) => {
     // Now you can use these variables as needed, for example, to render the checkout page
     res.render("checkout", {
       addresses,
-      cartCount,
-      wishlistCount,
       user,
       product_id,
       product_name,
@@ -316,24 +367,126 @@ router.post("/checkout", async (req, res) => {
   }
 });
 
-router.get("/cart", async (req, res) => { // Mark the route callback as async
+// router.get("/cart", async (req, res) => {
+//   // Mark the route callback as async
+//   const user = req.session.user;
+
+//   if (!user || !user.id) {
+//     // User is not logged in, retrieve cart items from the session
+//     const cartItems = req.session.cart || [];
+ 
+
+//     const promises = cartItems.map((cartItem) =>
+//       connect
+//         .query(`SELECT * FROM products WHERE id = ?`, [cartItem.product_id])
+//         .then(([product]) => ({
+//           ...cartItem, // Spread the cartItem to include selected_size
+//           product_name: product[0].product_name,
+//           product_main_image: product[0].product_main_image,
+//           product_price: product[0].product_price,
+//           discount_on_product: product[0].discount_on_product,
+//         }))
+//     );
+
+//     // Resolve all promises
+//     const resolvedCartItems = await Promise.all(promises);
+
+//     // Render the cart page with cart items including product details
+//     res.render("my-cart", { cartItems: resolvedCartItems });
+//   } else { 
+//       const user = req.session.user;
+//       const userId = user ? user.id : null;
+
+//       // Initialize cartCount and wishlistCount
+//       let cartCount;
+//       let wishlistCount;
+
+//       // If the user is logged in, fetch cart and wishlist counts
+//       if (userId) {
+//         const [cartResult] = await connect.query(
+//           "SELECT COUNT(*) AS cart_count FROM users_cart WHERE user_id = ?",
+//           [userId]
+//         );
+//         const [wishlistResult] = await connect.query(
+//           "SELECT COUNT(*) AS wishlist_count FROM users_favorites WHERE user_id = ?",
+//           [userId]
+//         );
+
+//         cartCount = cartResult[0].cart_count;
+//         wishlistCount = wishlistResult[0].wishlist_count;
+
+//         // Update session variables
+//         req.session.cartCount = cartCount;
+//         req.session.wishlistCount = wishlistCount;
+
+//       // Fetch cart items from the database
+//       const [cartItems] = await connect.query(
+//         `SELECT c.*, p.* 
+//       FROM users_cart c
+//       INNER JOIN products p ON c.product_id = p.id
+//       WHERE c.user_id = ?`,
+//         [userId]
+//       );
+
+//       res.render("my-cart", { user, cartItems }); // Pass cartItems to the view
+//     } catch (error) {
+//       console.error("Error fetching cart items:", error);
+//       res.status(500).send("Internal Server Error");
+//     }
+//   }
+// });
+
+router.get("/cart", async (req, res) => {
   try {
     const user = req.session.user;
-    const cartCount = req.cartCount || 0;
-    const wishlistCount = req.wishlistCount || 0;
 
-    const userId = user.id; // Assuming user ID is available in the session
+    if (!user || !user.id) {
+      // User is not logged in, retrieve cart items from the session
+      const cartItems = req.session.cart || [];
 
-    // Fetch cart items from the database
-    const [cartItems] = await connect.query(
-      `SELECT c.*, p.* 
-      FROM users_cart c
-      INNER JOIN products p ON c.product_id = p.id
-      WHERE c.user_id = ?`,
-      [userId]
-    );
+      const promises = cartItems.map((cartItem) =>
+        connect
+          .query(`SELECT * FROM products WHERE id = ?`, [cartItem.product_id])
+          .then(([product]) => ({
+            ...cartItem,
+            product_name: product[0].product_name,
+            product_main_image: product[0].product_main_image,
+            product_price: product[0].product_price,
+            discount_on_product: product[0].discount_on_product,
+          }))
+      );
 
-    res.render("my-cart", { cartCount, wishlistCount, user, cartItems }); // Pass cartItems to the view
+      const resolvedCartItems = await Promise.all(promises);
+
+      res.render("my-cart", { cartItems: resolvedCartItems });
+    } else {
+      const userId = user.id;
+
+      const [cartResult] = await connect.query(
+        "SELECT COUNT(*) AS cart_count FROM users_cart WHERE user_id = ?",
+        [userId]
+      );
+      const [wishlistResult] = await connect.query(
+        "SELECT COUNT(*) AS wishlist_count FROM users_favorites WHERE user_id = ?",
+        [userId]
+      );
+
+      const cartCount = cartResult[0].cart_count;
+      const wishlistCount = wishlistResult[0].wishlist_count;
+
+      req.session.cartCount = cartCount;
+      req.session.wishlistCount = wishlistCount;
+
+      const [cartItems] = await connect.query(
+        `SELECT c.*, p.* 
+        FROM users_cart c
+        INNER JOIN products p ON c.product_id = p.id
+        WHERE c.user_id = ?`,
+        [userId]
+      );
+
+      res.render("my-cart", { user, cartItems });
+    }
   } catch (error) {
     console.error("Error fetching cart items:", error);
     res.status(500).send("Internal Server Error");
@@ -389,10 +542,8 @@ router.post("/submit-address", async (req, res) => {
 });
 router.get("/add-address", (req, res) => {
   const user = req.session.user;
-  const cartCount = req.cartCount || 0;
-  const wishlistCount = req.wishlistCount || 0;
 
-  res.render("add-address", { user, cartCount, wishlistCount });
+  res.render("add-address", { user });
 });
 
 router.get("/my-wishlist", (req, res) => {
@@ -402,18 +553,13 @@ router.get("/my-wishlist", (req, res) => {
 
 router.get("/order-confirm", (req, res) => {
   const user = req.session.user;
-  const cartCount = req.cartCount || 0;
-  const wishlistCount = req.wishlistCount || 0;
-  res.render("order-confirm", { user, cartCount, wishlistCount });
+  res.render("order-confirm", { user });
 });
 // Route to handle the form submission and insert data into the orders table
 
 router.post("/order-confirm", async (req, res) => {
   try {
     const user = req.session.user;
-
-    const cartCount = req.cartCount || 0;
-    const wishlistCount = req.wishlistCount || 0;
 
     if (!user || !user.id) {
       return res.status(401).send("User not authenticated");
@@ -502,8 +648,6 @@ router.post("/order-confirm", async (req, res) => {
     // Redirect to the order confirmation page
     res.render("order-confirm", {
       user,
-      cartCount,
-      wishlistCount,
       email,
       address,
       product_id,
@@ -527,69 +671,75 @@ router.post("/order-confirm", async (req, res) => {
 router.post("/add-to-cart", async (req, res) => {
   const user = req.session.user;
 
-  const cartCount = req.cartCount || 0;
-  const wishlistCount = req.wishlistCount || 0;
+  const { product_id, selectedSize } = req.body;
+  var selected_size = selectedSize;
+  const cartItem = { product_id, selected_size };
 
   if (!user || !user.id) {
-    return res.status(401).send("User not authenticated");
-  }
+    // return res.status(401).send("User not authenticated");
 
-  const userId = user.id; // Access user ID from the session
-  const email = user.email;
+    req.session.cart = req.session.cart || [];
 
-  try {
-    const {
-      product_id,
-      product_name,
-      selectedSize,
-      finalPrice_after_discount,
-      discount_on_product,
-      actual_mrp_price,
-      category,
-      sub_category,
-    } = req.body;
+    req.session.cart.push(cartItem);
+    req.session.cartCount = req.session.cart.length;
 
-    const checkQuery =
-      "SELECT * FROM users_cart WHERE user_id = ? AND product_id = ?";
-    const [existingProduct] = await connect.query(checkQuery, [
-      userId,
-      product_id,
-    ]);
-    if (existingProduct.length > 0) {
-      // Send a JSON response indicating that the product already exists in the cart
-    } else {
-      const insertQuery =
-        "INSERT INTO users_cart (user_id, product_id , selected_size) VALUES (?, ? , ?)";
-      await connect.query(insertQuery, [userId, product_id, selectedSize]);
+    res.redirect("/cart");
+  } else {
+    const userId = user.id; // Access user ID from the session
+    const email = user.email;
+
+    try {
+      const {
+        product_id,
+        product_name,
+        selectedSize,
+        finalPrice_after_discount,
+        discount_on_product,
+        actual_mrp_price,
+        category,
+        sub_category,
+      } = req.body;
+
+      const checkQuery =
+        "SELECT * FROM users_cart WHERE user_id = ? AND product_id = ?";
+      const [existingProduct] = await connect.query(checkQuery, [
+        userId,
+        product_id,
+      ]);
+      if (existingProduct.length > 0) {
+        // Send a JSON response indicating that the product already exists in the cart
+      } else {
+        const insertQuery =
+          "INSERT INTO users_cart (user_id, product_id , selected_size) VALUES (?, ? , ?)";
+        await connect.query(insertQuery, [userId, product_id, selectedSize]);
+      }
+
+      res.redirect("/cart");
+      // Process the data, such as saving it to the cart database or session
+      // For demonstration purposes, we'll just log the data
+      console.log("Product ID:", product_id);
+      console.log("Product Name:", product_name);
+      console.log("Final Price after Discount:", finalPrice_after_discount);
+      console.log("Discount on Product:", discount_on_product);
+      console.log("Actual MRP Price:", actual_mrp_price);
+      console.log("Category:", category);
+      console.log("Sub Category:", sub_category);
+    } catch (error) {
+      console.error("Error adding product to cart:", error);
+      res.status(500).send("Error adding product to cart");
     }
- 
-    res.redirect('/cart' );
-    // Process the data, such as saving it to the cart database or session
-    // For demonstration purposes, we'll just log the data
-    console.log("Product ID:", product_id);
-    console.log("Product Name:", product_name);
-    console.log("Final Price after Discount:", finalPrice_after_discount);
-    console.log("Discount on Product:", discount_on_product);
-    console.log("Actual MRP Price:", actual_mrp_price);
-    console.log("Category:", category);
-    console.log("Sub Category:", sub_category);
-  } catch (error) {
-    console.error("Error adding product to cart:", error);
-    res.status(500).send("Error adding product to cart");
   }
 });
 
 router.get("/about-us", (req, res) => {
-  const cartCount = req.cartCount || 0;
-  const wishlistCount = req.wishlistCount || 0;
   const user = req.session.user;
-  res.render("about-us", { user, cartCount, wishlistCount });
+  res.render("about-us", { user });
 });
 
 router.get("/contact-us", (req, res) => {
   const user = req.session.user;
   const cartCount = req.cartCount || 0;
   const wishlistCount = req.wishlistCount || 0;
-  res.render("contact-us", { user, cartCount, wishlistCount });
+  res.render("contact-us", { user });
 });
 export default router;

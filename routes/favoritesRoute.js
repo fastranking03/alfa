@@ -38,7 +38,7 @@ router.get("/favorites/add/:productId", async (req, res) => {
       });
       return;
     } else if (!(await addToFavorites(userId, productId))) {
-      // If adding the product to favorites fails, send a failure response
+      // If adding the product to favorites fails, send a failure response 
       res.json({
         success: false,
         message: "Failed to add product to favorites",
