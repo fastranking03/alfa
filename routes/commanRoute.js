@@ -262,7 +262,7 @@ router.get("/my-wishlist", (req, res) => {
   const user = req.session.user;
   const cartCount = req.cartCount || 0;
   const wishlistCount = req.wishlistCount || 0;
-  res.render("add-address", { user ,cartCount,wishlistCount});
+  res.render("my-wishlist", { user ,cartCount,wishlistCount});
 });
 
 router.get("/order-confirm", (req, res) => {
@@ -304,5 +304,12 @@ router.get('/blog-detail',(req,res) =>{
   const cartCount = req.cartCount || 0;
   const wishlistCount = req.wishlistCount || 0;
   res.render('blog-detail',{user,cartCount,wishlistCount});
+})
+
+router.get('/cart',(req,res) =>{
+  const user = req.session.user;
+  const cartCount = req.cartCount || 0;
+  const wishlistCount = req.wishlistCount || 0;
+  res.render('cart',{user,cartCount,wishlistCount});
 })
 export default router;

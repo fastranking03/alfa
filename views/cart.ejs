@@ -19,15 +19,15 @@
                         </div>
                         <div class="container mt-3">
                             <div class="row">
-                                <div class="col-md-12">
+                                <div class="col-md-7">
                                     <div class="alfa-cart-items cart-right-wrap">
                                         <div class="cart-table">
                                             <div class="cart-head">
                                                 <div class="cart-tr">
-                                                    <div class="cart-th" style="width: 8%;">Products</div>
+                                                    <div class="cart-th" style="width: 27%;">Products</div>
                                                     <div class="cart-th">Price</div>
                                                     <div class="cart-th">Quantity</div>
-                                                    <div class="cart-th">Action</div>
+                                                    <div class="cart-th">Sub-Total</div>
                                                 </div>
                                             </div>
                                             <div class="cart-tbody">
@@ -68,8 +68,9 @@
                                                         </div>
                                                     </div>
                                                     <div class="cart-td">
-                                                        <button type="button" class="cart-btn add-to-cart" data-action="addToCart" data-url="/add-to-cart"><span><i class="fa-solid fa-cart-shopping"></i></span> Add to
-                                                            Cart</button>
+                                                        <div class="pro-cart-price">
+                                                            <h3>£100</h3>
+                                                        </div>
                                                     </div>
                                                 </div>
                                                 <div class="cart-tr cart-b-tr">
@@ -109,8 +110,9 @@
                                                         </div>
                                                     </div>
                                                     <div class="cart-td">
-                                                        <button type="button" class="cart-btn add-to-cart" data-action="addToCart" data-url="/add-to-cart"><span><i class="fa-solid fa-cart-shopping"></i></span> Add to
-                                                            Cart</button>
+                                                        <div class="pro-cart-price">
+                                                            <h3>£100</h3>
+                                                        </div>
                                                     </div>
                                                 </div>
                                             </div>
@@ -118,7 +120,60 @@
                                         
                                     </div>
                                 </div>
-                                
+                                <div class="col-md-5">
+                                    <div class="alfa-offcanvas-footer cart-left-wrap">
+                                        <div class="cart-left-top">
+                                            <div class="cart-left-title">
+                                                <h4>Coupon Code</h4>
+                                            </div>
+                                            <div class="cart-tag">
+                                                <span><i class="fa-solid fa-tag"></i></span>
+                                            </div>
+                                        </div>
+                                         <div class="promo-code-wrap">
+                                            <input type="text" class="promo-input" placeholder="Promo Code">
+                                            <button type="submit" class="apply-btn" name="submit">
+                                                Apply
+                                            </button>
+                                        </div>
+                                        <div class="alfa-cart-total">
+                                            <div class="checkout-title">
+                                                <h4>Card Totals</h4>
+                                            </div>
+                                            <ul>
+                                                <li>
+                                                    <div class="alfa-text">Sub- Total</div>
+                                                    <div class="alfa-price">£456.00</div>
+                                                </li>
+                                                <li>
+                                                    <div class="alfa-text">GST</div>
+                                                    <div class="alfa-price">£91.00</div>
+                                                </li>
+                                                <li>
+                                                    <div class="alfa-text">Discount</div>
+                                                    <div class="alfa-price">-£30.00</div>
+                                                </li>
+                                                <li>
+                                                    <div class="alfa-text">Delivery Fee</div>
+                                                    <div class="alfa-price">£25.00</div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="alfa-cart-total">
+                                            <ul>
+                                                <li>
+                                                    <div class="alfa-text">Total Cost</div>
+                                                    <div class="alfa-price">£542.00</div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                        <div class="alfa-checkout-wrapper">
+                                            <button type="button" class="checkout-btn">
+                                                Proceed to Checkout
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
