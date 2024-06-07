@@ -56,44 +56,7 @@ app.use((req, res, next) => {
   next();
 });
 
-
-// async function getUserCounts(userId) {
-//   // Define SQL queries
-//   const cartCountQuery =
-//     "SELECT COUNT(*) AS cart_count FROM users_cart WHERE user_id = ?";
-//   const wishlistCountQuery =
-//     "SELECT COUNT(*) AS wishlist_count FROM users_favorites WHERE user_id = ?";
-
-//   // Execute both queries asynchronously
-//   const [cartResult] = await connect.query(cartCountQuery, [userId]);
-//   const [wishlistResult] = await connect.query(wishlistCountQuery, [userId]);
-
-//   // Extract counts from results
-//   const cartCount = cartResult[0].cart_count;
-//   const wishlistCount = wishlistResult[0].wishlist_count;
-
-//   // Close the connection connect
-
-//   return { cartCount, wishlistCount };
-// }
-
-// async function getUserCountsMiddleware(req, res, next) {
-//   try {
-//     if (req.session.user) {
-//       const userId = req.session.user.id;
-//       const { cartCount, wishlistCount } = await getUserCounts(userId);
-//       req.cartCount = cartCount;
-//       req.wishlistCount = wishlistCount;
-//     }
-
-//     next();
-//   } catch (error) {
-//     console.error("Error:", error);
-//     res.status(500).send("Internal Server Error");
-//   }
-// }
-
-// app.use(getUserCountsMiddleware);
+ 
 
 app.get("/set-session", (req, res) => {
   req.session.a = 5;
