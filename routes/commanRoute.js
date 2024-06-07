@@ -77,20 +77,20 @@ router.get("/product", async (req, res) => {
 //     let sizeQuery;
 //     if (wearType === "top") {
 //       sizeQuery = `
-//         SELECT 
+//         SELECT
 //           xs, s, m, l, xl, xxl, xxxl, xxxxl
-//         FROM 
-//           topwear_inventory 
-//         WHERE 
+//         FROM
+//           topwear_inventory
+//         WHERE
 //           product_id = ?`;
 //       [sizeRows] = await connection.query(sizeQuery, [productId]);
 //     } else if (wearType === "bottom") {
 //       sizeQuery = `
-//         SELECT 
+//         SELECT
 //           size_28, size_30, size_32, size_34, size_36, size_38, size_40, size_42, size_44, size_46
-//         FROM 
-//           bottomwear_inventory 
-//         WHERE 
+//         FROM
+//           bottomwear_inventory
+//         WHERE
 //           product_id = ?`;
 //       [sizeRows] = await connection.query(sizeQuery, [productId]);
 //     }
@@ -107,15 +107,15 @@ router.get("/product", async (req, res) => {
 //     }
 
 //     const [rows] = await connect.query(
-//       `SELECT 
+//       `SELECT
 //           p.*,
 //           c.id AS category_id,
 //           c.category_name,
 //           s.id AS subcategory_id,
 //           s.sub_category_name
 //        FROM products p
-//        INNER JOIN category c ON p.category_id = c.id 
-//        INNER JOIN sub_category s ON p.subcategory_id = s.id 
+//        INNER JOIN category c ON p.category_id = c.id
+//        INNER JOIN sub_category s ON p.subcategory_id = s.id
 //        WHERE p.id = ?`,
 //       [productId]
 //     );
@@ -143,7 +143,6 @@ router.get("/product", async (req, res) => {
 //     res.status(500).send("Internal Server Error");
 //   }
 // });
-
 router.get("/product-detail/:id", async (req, res) => {
   try {
     const cartCount = req.cartCount || 0;
@@ -176,6 +175,12 @@ router.get("/product-detail/:id", async (req, res) => {
       for (const [size, value] of Object.entries(sizeRows[0])) {
         if (value) {
           sizes[size.replace("_", " ")] = value;
+        } else {
+          if (wearType === "top" && !size.startsWith("size_")) {
+            sizes[size.replace("_", " ")] = value;
+          } else if (wearType === "bottom" && size.startsWith("size_")) {
+            sizes[size.replace("_", " ")] = value;
+          }
         }
       }
     }
@@ -213,6 +218,7 @@ router.get("/product-detail/:id", async (req, res) => {
       product,
       product_images,
       sizes,
+      wearType,
     });
   } catch (error) {
     console.error(error);
@@ -228,21 +234,38 @@ router.get("/checkout", (req, res) => {
 });
 
 
-router.get('/my-cart', (req, res) => {
-  const user = req.session.user;
-  const cartCount = req.cartCount || 0;
-  const wishlistCount = req.wishlistCount || 0;
-  res.render("my-cart", { cartCount, wishlistCount, user });
+router.get("/my-cart", async (req, res) => { // Mark the route callback as async
+  try {
+    const user = req.session.user;
+    const cartCount = req.cartCount || 0;
+    const wishlistCount = req.wishlistCount || 0;
+
+    const userId = user.id; // Assuming user ID is available in the session
+
+    // Fetch cart items from the database
+    const [cartItems] = await connect.query(
+      `SELECT c.*, p.* 
+      FROM users_cart c
+      INNER JOIN products p ON c.product_id = p.id
+      WHERE c.user_id = ?`,
+      [userId]
+    );
+
+    res.render("my-cart", { cartCount, wishlistCount, user, cartItems }); // Pass cartItems to the view
+  } catch (error) {
+    console.error("Error fetching cart items:", error);
+    res.status(500).send("Internal Server Error");
+  }
 });
 
-router.get("/add-address", (req, res) => {
+router.get("/my-wishlist", (req, res) => {
   const user = req.session.user;
   const cartCount = req.cartCount || 0;
   const wishlistCount = req.wishlistCount || 0;
   res.render("add-address", { user ,cartCount,wishlistCount});
 });
 
-router.get('/my-wishlist', (req, res) => {
+router.get("/order-confirm", (req, res) => {
   const user = req.session.user;
   const cartCount = req.cartCount || 0;
   const wishlistCount = req.wishlistCount || 0;
@@ -260,10 +283,10 @@ router.get('/about-us', (req, res) => {
   const cartCount = req.cartCount || 0;
   const wishlistCount = req.wishlistCount || 0;
   const user = req.session.user;
-  res.render('about-us', { user,cartCount,wishlistCount });
+  res.render("about-us", { user, cartCount, wishlistCount });
 });
 
-router.get('/contact-us',(req,res) =>{
+router.get("/contact-us", (req, res) => {
   const user = req.session.user;
   const cartCount = req.cartCount || 0;
   const wishlistCount = req.wishlistCount || 0;
