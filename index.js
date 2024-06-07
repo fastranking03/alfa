@@ -14,7 +14,6 @@ import inventoryRoute from "./routes/admin/inventoryRoute.js";
 import adminProductsRoute from "./routes/admin/productRoute.js";
 import session from "express-session";
 import { fileURLToPath } from "url";
-
 import connect from "./db/connect.js";
 
 const app = express();
@@ -32,9 +31,17 @@ app.use(
     secret: "user",
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false }, //Cookie will false on development moood
+    cookie: { secure: false ,
+    maxAge: 12 * 60 * 60 * 1000
+    }, //Cookie will false on development moood
   })
 );
+
+app.use((req, res, next) => {
+  res.locals.session = req.session;
+  res.locals.user = req.session.user;
+  next();
+});
 
 async function getUserCounts(userId) {
   // Define SQL queries
@@ -56,6 +63,7 @@ async function getUserCounts(userId) {
   return { cartCount, wishlistCount };
 }
 
+
 async function getUserCountsMiddleware(req, res, next) {
   try {
     if (req.session.user) {
@@ -73,6 +81,26 @@ async function getUserCountsMiddleware(req, res, next) {
 }
 
 app.use(getUserCountsMiddleware);
+
+app.get("/set-session", (req, res) => {
+  req.session.a = 5;
+
+  res.redirect("/page1");
+});
+
+app.get("/page1", (req, res) => {
+  const cartCount = req.cartCount || 0;
+  const wishlistCount = req.wishlistCount || 0;
+  res.render("blogs", { cartCount, wishlistCount });
+});
+
+app.get("/page2", (req, res) => {
+  res.render("page2");
+});
+
+app.get("/page3", (req, res) => {
+  res.render("page3");
+});
 
 //  Set Template Engine
 app.set("view engine", "ejs");

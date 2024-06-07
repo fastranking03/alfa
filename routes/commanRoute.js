@@ -59,6 +59,12 @@ router.get("/product", async (req, res) => {
   }
 });
 
+router.get('/blogs',(req,res) =>{
+  const user = req.session.user;
+  const cartCount = req.cartCount || 0;
+  const wishlistCount = req.wishlistCount || 0;
+  res.render('blogs',{user,cartCount,wishlistCount});
+});
 // router.get("/product-detail/:id", async (req, res) => {
 //   try {
 //     const cartCount = req.cartCount || 0;
@@ -383,7 +389,6 @@ router.post("/submit-address", async (req, res) => {
 });
 router.get("/add-address", (req, res) => {
   const user = req.session.user;
-
   const cartCount = req.cartCount || 0;
   const wishlistCount = req.wishlistCount || 0;
 

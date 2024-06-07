@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Alfa Meanswear | Product</title>
+    <meta name="robots" content="noindex">
     <%- include('includes/head') %>
   </head>
 
@@ -39,7 +40,7 @@
         <!-- Start -->
         <section class="mt-80" style="margin-bottom: 145px">
           <div class="product-wrapper">
-            <div class="container">
+            <div class="custom-container">
               <div class="product-row">
                 <div class="product-md-3">
                   <div class="product-left-wrapper">
@@ -151,22 +152,13 @@
                         </a>
 
                             </div>
-
-                            <div class="pro-view">
-                              <a href="/product-detail/<%= product.id %>"
-                                ><img src="assets/images/eye.png" alt=""
-                              /></a>
-                            </div>
-                          </div>
+                           </div>
                         </div>
                         <div class="product-add-to-card-wrap">
-                         
-
-                          <button class="add-to-cart" data-product-id="<%= product.id %>">
-                            Add to Cart
-                          </button>
-                           
-                        </button>
+                           <button class="add-to-cart" data-product-id="<%= product.id %>">
+                             Add to Cart
+                           </button>
+                         </button>
                         </div>
                         <div class="product-details shop-content">
                           <a href="/product-detail/<%= product.id %>"
@@ -175,14 +167,10 @@
                             
                           </span>
                           <div class="product-price">
-                            <h5>
-                              <span class="final-price"
-                                >£<%=(product.product_price * (1 -
-                                (product.discount_on_product / 100))).toFixed(2)
-                                %></span
-                              >  <span class="mrp-price">
-                                £<%=product.product_price %></span
-                              >   <span> (<%=product.discount_on_product %>% OFF )</span>
+                            <h5> 
+                               <span class="mrp-price" style="font-size: 16px;"> £<%=product.product_price %></span>
+                               <span class="final-price" >£<%=(product.product_price * (1 - (product.discount_on_product / 100))).toFixed(2) %></span> 
+                               <span style="font-size: 15px;color:rgb(193, 196, 196)"> (<%=product.discount_on_product %>% OFF )</span>
                             </h5>
                           </div>
                           
