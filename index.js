@@ -85,14 +85,7 @@ app.use("/admin/", inventoryRoute);
 app.use("/admin/", adminProductsRoute);
 app.use("/admin/", subcategoryRoute);
 
-
-// Dummy Routes
-app.get('/order-history',(req,res) =>{
-  const user = req.session.user;
-  const cartCount = req.cartCount || 0;
-  const wishlistCount = req.wishlistCount || 0;
-   return res.render('order-history',{user,cartCount,wishlistCount});
-})
+ 
 
 const PORT = 8081;
 app.listen(PORT, () => {
