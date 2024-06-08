@@ -3,46 +3,7 @@ import connect from "../db/connect.js"; // Adjust the path as necessary
 import slugify from "slugify";
 
 const router = express.Router();
-
-// router.get("/", async (req, res) => {
-//   const user = req.session.user;
-//   const userId = req.session.user.id;
-//   try {
-//     // Query categories from the database
-//     const [categories] = await connect.query("SELECT * FROM category");
-
-//     // Retrieve cart and wishlist counts from the request object
-//     // const cartCount = req.cartCount || 0;
-//     // const wishlistCount = req.wishlistCount || 0;
-
-//     const cartCountQuery =
-//       "SELECT COUNT(*) AS cart_count FROM users_cart WHERE user_id = ?";
-//     const wishlistCountQuery =
-//       "SELECT COUNT(*) AS wishlist_count FROM users_favorites WHERE user_id = ?";
-
-//     // Execute both queries asynchronously
-//     const [cartResult] = await connect.query(cartCountQuery, [userId]);
-//     const [wishlistResult] = await connect.query(wishlistCountQuery, [userId]);
-
-//     const cartCount = cartResult[0].cart_count;
-//     const wishlistCount = wishlistResult[0].wishlist_count;
-
-//     req.session.cartCount = cartCount;
-//     req.session.wishlistCount = wishlistCount;
-
-//     // Render the index view with user and categories data
-//     res.render("index", {
-//       user: user,
-//       categories: categories,
-//       cartCount,
-//       wishlistCount,
-//     });
-//   } catch (err) {
-//     // If there's an error fetching categories, log the error and redirect
-//     console.error("Error fetching categories:", err);
-//     res.redirect("/");
-//   }
-// });
+ 
 
 router.get("/", async (req, res) => {
   try {
