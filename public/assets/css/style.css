@@ -1081,8 +1081,12 @@ a {
 }
 
 .product-banner {
-  background: #fefaea;
-  padding: 16px 42px 0;
+  background-image: url(/assets/images/brud-banner.jpg);
+  background-repeat: no-repeat;
+  width: 100%;
+  background-position: center;
+  background-size: cover;
+  height: 300px;
 }
 
 .hero-product-row {
@@ -2027,4 +2031,8 @@ a {
 }
 .cart-tag span{
   font-size: 30px;
+}
+.hero-product-rows{
+  padding: 200px 0;
+  text-align: center;
 }
