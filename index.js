@@ -14,6 +14,7 @@ import inventoryRoute from "./routes/admin/inventoryRoute.js";
 import adminProductsRoute from "./routes/admin/productRoute.js";
 import session from "express-session";
 import { fileURLToPath } from "url";
+
 import connect from "./db/connect.js";
 
 const app = express();
@@ -31,51 +32,47 @@ app.use(
     secret: "user",
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false, maxAge: 12 * 60 * 60 * 1000 }, //Cookie will false on development moood
+    cookie: { secure: false }, //Cookie will false on development moood
   })
 );
 
-app.use((req, res, next) => {
-  if (!req.session.user) {
-    if (!req.session.cart) {
-      req.session.cart = [];
-    }
-    if (!req.session.wishlist) {
-      req.session.wishlist = [];
+async function getUserCounts(userId) {
+  // Define SQL queries
+  const cartCountQuery =
+    "SELECT COUNT(*) AS cart_count FROM users_cart WHERE user_id = ?";
+  const wishlistCountQuery =
+    "SELECT COUNT(*) AS wishlist_count FROM users_favorites WHERE user_id = ?";
+
+  // Execute both queries asynchronously
+  const [cartResult] = await connect.query(cartCountQuery, [userId]);
+  const [wishlistResult] = await connect.query(wishlistCountQuery, [userId]);
+
+  // Extract counts from results
+  const cartCount = cartResult[0].cart_count;
+  const wishlistCount = wishlistResult[0].wishlist_count;
+
+  // Close the connection connect
+
+  return { cartCount, wishlistCount };
+}
+
+async function getUserCountsMiddleware(req, res, next) {
+  try {
+    if (req.session.user) {
+      const userId = req.session.user.id;
+      const { cartCount, wishlistCount } = await getUserCounts(userId);
+      req.cartCount = cartCount;
+      req.wishlistCount = wishlistCount;
     }
 
-    req.session.cartCount = req.session.cart.length;
-    req.session.wishlistCount = req.session.wishlist.length;
+    next();
+  } catch (error) {
+    console.error("Error:", error);
+    res.status(500).send("Internal Server Error");
   }
+}
 
-  // globally set (this is mandatory for using session variables globally)
-  res.locals.cartCount = req.session.cartCount || 0; // Default to 0 if not set
-  res.locals.wishlistCount = req.session.wishlistCount || 0; // Default to 0 if not set
-  res.locals.session = req.session;
-  res.locals.user = req.session.user;
-  next();
-});
-
- 
-
-app.get("/set-session", (req, res) => {
-  req.session.a = 5;
-  res.redirect("/page1");
-});
-
-app.get("/page1", (req, res) => {
-  const cartCount = req.cartCount || 0;
-  const wishlistCount = req.wishlistCount || 0;
-  res.render("blogs", { cartCount, wishlistCount });
-});
-
-app.get("/page2", (req, res) => {
-  res.render("page2");
-});
-
-app.get("/page3", (req, res) => {
-  res.render("page3");
-});
+app.use(getUserCountsMiddleware);
 
 //  Set Template Engine
 app.set("view engine", "ejs");

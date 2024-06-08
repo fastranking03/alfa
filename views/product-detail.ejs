@@ -1,100 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <base href="http://localhost:8081" />
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Alfa Meanswear | Product Details</title>
-    <%- include('includes/head') %>
-  </head>
-  <style>
-    .alfa-pro-detail-wrapper {
-      max-width: 600px;
-      margin: 0 auto;
-    }
-    .image-grid-wrapper {
-      margin-top: 5px;
-      overflow-x: auto;
-      white-space: nowrap;
-    }
-    .images-grids {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-    }
-    .image-item {
-      flex: 1 1 calc(20% - 10px);
-      cursor: pointer;
-      cursor: pointer;
-      text-align: center;
-      align-items: center;
-      display: flex;
-      justify-content: center;
-    }
-    .image-item img {
-      width: 100%;
-    } 
 
-    .size-item.selected {
-      background-color: green;
-      color: white;
-    }
+<head>
+  <base href="http://localhost:8081" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alfa Meanswear | Product Details</title>
+  <%- include('includes/head') %>
+</head>
+<style>
+  .alfa-pro-detail-wrapper {
+    max-width: 600px;
+    margin: 0 auto;
+  }
 
-    input[type="radio"] {
+  .image-grid-wrapper {
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .images-grids {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+  }
+
+  .image-item {
+    flex: 1 1 calc(20% - 10px);
+    cursor: pointer;
+    cursor: pointer;
+    text-align: center;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    transition: .3s ease-in-out;
+    border: 2px solid #fff;
+  }
+
+  .image-item:hover {
+    border: 2px solid #eee;
+  }
+
+  .image-item img {
+    width: 100%;
+  }
+
+  input[type="radio"] {
     display: none;
   }
-  </style>
-  <body>
-    <div class="alfa-main-wraper">
-      <%- include('includes/header') %>
+</style>
+
+<body>
+  <div class="alfa-main-wraper">
+    <%- include('includes/header') %>
       <div class="mt-100">
-        <div class="alfa-detail-sexction">
+        <div class="alfa-detail-sexction alfa-detail-wrapper">
           <div class="container">
             <div class="row">
               <div class="col-md-6">
-                <div class="alfa-pro-detail-wrapper">
-                  <div
-                    id="product-detail-carousel"
-                    class="p-detail-wrap owl-carousel comman-nav owl-nav-display"
-                  >
-                    <% if (product_images.length > 0) { %> <%
-                    product_images.forEach(function(image, index) { %>
-                    <div class="d-item" data-index="<%= index %>">
-                      <img
-                        src="../product_images/<%= image.image_path %>"
-                        alt=""
-                      />
+                <div class="row">
+                  <div class="col-md-2" style="padding-left: 0;">
+                    <div class="image-grid-wrapper">
+                      <div class="images-grids">
+                        <% if (product_images.length> 0) { %> <% product_images.forEach(function(image, index) { %>
+                            <div class="image-item" data-index="<%= index %>">
+                              <img
+                                src="https://rukminim2.flixcart.com/image/832/832/xif0q/shirt/t/b/x/s-ts-shirt1694-tanip-original-imagrf39hf7aywhg.jpeg?q=70&crop=false"
+                                class="d-img" alt="" />
+                            </div>
+                            <% }); %>
+                              <% } else { %>
+                                <div class="image-item" data-index="0">
+                                  <img src="../product_images/<%= product.product_main_image %>" class="d-img" alt="" />
+                                </div>
+                                <% } %>
+                      </div>
                     </div>
-                    <% }); %> <% } else { %>
-                    <div class="d-item" data-index="0">
-                      <img
-                        src="../product_images/<%= product.product_main_image %>"
-                        alt=""
-                      />
-                    </div>
-                    <% } %>
                   </div>
-
-                  <div class="image-grid-wrapper">
-                    <div class="images-grids">
-                      <% if (product_images.length > 0) { %> <%
-                      product_images.forEach(function(image, index) { %>
-                      <div class="image-item" data-index="<%= index %>">
-                        <img
-                          src="../product_images/<%= image.image_path %>"
-                          class="d-img"
-                          alt=""
-                        />
+                  <div class="col-md-10" style="padding-left: 0;">
+                    <div class="alfa-pro-detail-wrapper">
+                      <div id="product-detail-carousel" class="p-detail-wrap owl-carousel comman-nav owl-nav-display">
+                        <% if (product_images.length> 0) { %> <% product_images.forEach(function(image, index) { %>
+                            <div class="d-item" data-index="<%= index %>">
+                              <img
+                                src="https://rukminim2.flixcart.com/image/832/832/xif0q/shirt/t/b/x/s-ts-shirt1694-tanip-original-imagrf39hf7aywhg.jpeg?q=70&crop=false"
+                                class="pd-img" alt="" />
+                            </div>
+                            <% }); %>
+                              <% } else { %>
+                                <div class="d-item" data-index="0">
+                                  <img
+                                    src="https://rukminim2.flixcart.com/image/832/832/xif0q/shirt/t/b/x/s-ts-shirt1694-tanip-original-imagrf39hf7aywhg.jpeg?q=70&crop=false"
+                                    alt="" />
+                                </div>
+                                <% } %>
                       </div>
-                      <% }); %> <% } else { %>
-                      <div class="image-item" data-index="0">
-                        <img
-                          src="../product_images/<%= product.product_main_image %>"
-                          class="d-img"
-                          alt=""
-                        />
-                      </div>
-                      <% } %>
                     </div>
                   </div>
                 </div>
@@ -102,51 +102,43 @@
               <div class="col-md-6">
                 <div class="pro-detail--wrapper">
                   <div class="d-title">
-                    <h2><%=product.product_name %></h2>
-                    <p><%=product.product_description %></p>
+                    <h2>
+                      <%=product.product_name %>
+                    </h2>
+                    <p>
+                      <%=product.product_description %>
+                        Setting the bar as one of the loudest speakers in its class, the Kilburn is a compact,
+                        stout-hearted hero with a well-balanced audio which boasts a clear midrange and extended highs
+                        for a sound.
+                    </p>
                   </div>
                   <div class="price-review-warapper">
-                    <div class="product--price">
-                      <h5>
-                        <span class="final-price"
-                          >£<%=(product.product_price * (1 -
-                          (product.discount_on_product / 100))).toFixed(2)
-                          %></span
-                        ><span class="mrp-price">
-                          £<%=product.product_price %></span
-                        >
-                      </h5>
-                    </div>
                     <div class="product-rating">
                       <ul>
                         <li>
-                          <a href=""
-                            ><img src="assets/images/star.png" alt=""
-                          /></a>
-                          <a href=""
-                            ><img src="assets/images/star.png" alt=""
-                          /></a>
-                          <a href=""
-                            ><img src="assets/images/star.png" alt=""
-                          /></a>
-                          <a href=""
-                            ><img src="assets/images/star.png" alt=""
-                          /></a>
-                          <a href=""
-                            ><img src="assets/images/star.png" alt=""
-                          /></a>
-                          <a href=""
-                            ><span class="review-count">(120 Reviews)</span>
-                          </a>
+                          <a href=""><span class="alfa-start"><i class="fa-solid fa-star"></i></span></a>
+                          <a href=""><span class="alfa-start"><i class="fa-solid fa-star"></i></span></a>
+                          <a href=""><span class="alfa-start"><i class="fa-solid fa-star"></i></span></a>
+                          <a href=""><span class="alfa-start"><i class="fa-solid fa-star"></i></span></a>
+                          <a href=""><span class="alfa-start"><i class="fa-solid fa-star"></i></span></a>
+
+                          <span class="review-count">(120 Reviews)</span>
                         </li>
                       </ul>
+                    </div>
+                    <div class="product--price">
+                      <h5>
+                        <span class="final-prices">£<%=(product.product_price * (1 - (product.discount_on_product /
+                            100))).toFixed(2) %> </span><span class="mrp-price" style="font-size: 22px;">
+                          £<%=product.product_price %></span>
+                      </h5>
                     </div>
                   </div>
                   <div class="product-color-list product--color">
                     <div class="pro--text">
-                      <h6>Select Colors</h6>
+                      <h6 style="color:#9F9F9F;font-size: 13px;">Select Colors</h6>
                     </div>
-                    <ul>
+                    <ul class="detail-ul">
                       <li>
                         <a href="" class="product-color-item color1"></a>
                       </li>
@@ -167,191 +159,143 @@
                       </li>
                     </ul>
                   </div>
-
-                  <!-- <div class="product-size-list">
-                    <div class="pro--text">
-                      <h6>Select Size</h6>
-                    </div>
-                    <ul>
-                      <li><a href="" class="size-item active">S</a></li>
-                      <li><a href="" class="size-item">M</a></li>
-                      <li><a href="" class="size-item">L</a></li>
-                      <li><a href="" class="size-item">XL</a></li>
-                      <li><a href="" class="size-item">XXL</a></li>
-                    </ul>
-                  </div> -->
-                  <!-- <pre><%= JSON.stringify(sizes, null, 2) %></pre> -->
                   <form method="post" id="productForm">
                     <div class="product-size-list">
                       <div class="pro--text">
-                        <h6>Select Size</h6>
+                        <h6 style="color:#9F9F9F;font-size: 13px;">Select Size</h6>
                       </div>
                       <ul id="sizeList" class="size-list">
-                        <% if (sizes && Object.keys(sizes).length > 0) { %>
+                        <% if (sizes && Object.keys(sizes).length> 0) { %>
                           <% for (const [size, stock] of Object.entries(sizes)) { %>
-                            <% if (wearType === 'bottom') { %>
-                              <% const numericSize = size.match(/\d+/); %>
-                              <!-- Extract numeric part -->
-                              <% if (numericSize && numericSize.length > 0) { %>
-                                <li>
-                                  <input type="radio" id="size-<%= numericSize[0] %>" name="selectedSize" value="<%= numericSize[0] %>" <%= stock > 0 ? '' : 'disabled' %> required  />
-                                  <label for="size-<%= numericSize[0] %>" class="size-item <%= stock > 0 ? '' : 'disabled' %>">
-                                    <span class="size"><%= numericSize[0] %></span>
-                                  </label>
-                                  <span class="stock">(<%= stock %>)</span>
-                                </li>
-                              <% } %>
-                            <% } else { %>
-                              <li> 
-                                <input type="radio" id="size-<%= size %>" name="selectedSize" value="<%= size.toUpperCase() %>" <%= stock > 0 ? '' : 'disabled' %> required />
-                                <label for="size-<%= size %>" class="size-item <%= stock > 0 ? '' : 'disabled' %>">
-                                  <span class="size"><%= size.toUpperCase() %></span>
-                                </label>
-                                <span class="stock">(<%= stock %>)</span>
-                              </li>
-                            <% } %>
-                          <% } %>
-                        <% } else { %>
-                          <p>Currently Out Of Stock</p>
-                        <% } %>
+                            <% if (wearType==='bottom' ) { %>
+                              <% const numericSize=size.match(/\d+/); %>
+                                <!-- Extract numeric part -->
+                                <% if (numericSize && numericSize.length> 0) { %>
+                                  <li>
+                                    <input type="radio" id="size-<%= numericSize[0] %>" name="selectedSize"
+                                      value="<%= numericSize[0] %>" <%=stock> 0 ? '' : 'disabled' %> required />
+                                    <label style="width: 60px;height: 40px;" for="size-<%= numericSize[0] %>"
+                                      class="size-item <%= stock > 0 ? '' : 'disabled' %>">
+                                      <span class="size">
+                                        <%= numericSize[0] %>
+                                      </span>
+                                    </label>
+                                    <!-- <span class="stock">(<%= stock %>)</span> -->
+                                  </li>
+                                  <% } %>
+                                    <% } else { %>
+                                      <li>
+                                        <input type="radio" id="size-<%= size %>" name="selectedSize"
+                                          value="<%= size.toUpperCase() %>" <%=stock> 0 ? '' : 'disabled' %> required />
+                                        <label style="width: 60px;height: 40px;" for="size-<%= size %>"
+                                          class="size-item <%= stock > 0 ? '' : 'disabled' %>">
+                                          <span class="size">
+                                            <%= size.toUpperCase() %>
+                                          </span>
+                                        </label>
+                                        <!-- <span class="stock">(<%= stock %>)</span> -->
+                                      </li>
+                                      <% } %>
+                                        <% } %>
+                                          <% } else { %>
+                                            <p>Currently Out Of Stock</p>
+                                            <% } %>
                       </ul>
                     </div>
-                  
                     <input type="hidden" name="product_id" value="<%= product.id %>" />
                     <input type="hidden" name="product_name" value="<%= product.product_name %>" />
-                    <input type="hidden" name="finalPrice_after_discount" value="<%= (product.product_price * (1 - (product.discount_on_product / 100))).toFixed(2) %>" />
+                    <input type="hidden" name="finalPrice_after_discount"
+                      value="<%= (product.product_price * (1 - (product.discount_on_product / 100))).toFixed(2) %>" />
                     <input type="hidden" name="discount_on_product" value="<%= product.discount_on_product %>" />
                     <input type="hidden" name="actual_mrp_price" value="<%= product.product_price %>" />
                     <input type="hidden" name="category" value="<%= product.category_name %>" />
                     <input type="hidden" name="sub_category" value="<%= product.sub_category_name %>" />
-                  
-                    
                     <div class="product--button-wrapper">
-                      <button type="button" class="cart-btn add-to-cart" data-action="addToCart" data-url="/add-to-cart">Add to Cart</button>
-                      <button type="button" class="cart-btn buy-now" data-action="buyNow" data-url="/checkout">Buy Now</button>
+                      <div class="cart-quantity-wrapper">
+                        <div class="left-input">
+                          <span><i class="fa-solid fa-minus"></i></span>
+                        </div>
+                        <div class="cart-quantity">
+                          <input type="text" value="" class="cart-value">
+                        </div>
+                        <div class="right-input">
+                          <span><i class="fa-solid fa-plus"></i></span>
+                        </div>
+                      </div>
+                      <button type="button" class="cart-btn add-to-cart" data-action="addToCart"
+                        data-url="/add-to-cart"><span><i class="fa-solid fa-cart-shopping"></i></span> Add to
+                        Cart</button>
+                      <button type="button" class="cart-btn buy-now" data-action="buyNow" data-url="/checkout">Buy
+                        Now</button>
                     </div>
                   </form>
-                  <script>
-                    document.addEventListener('DOMContentLoaded', function() {
-                      const productForm = document.getElementById('productForm');
-                      const actionButtons = productForm.querySelectorAll('.cart-btn');
-                  
-                      actionButtons.forEach(button => {
-                        button.addEventListener('click', function() {
-                          const action = button.getAttribute('data-action');
-                          const url = button.getAttribute('data-url');
-                  
-                          // Check if a size is selected
-                          const selectedSize = productForm.querySelector('input[name="selectedSize"]:checked');
-                          if (!selectedSize) {
-                            alert('Please select a size.');
-                            return; // Stop execution if no size is selected
-                          }
-                  
-                          // Update the form action and submit the form
-                          productForm.action = url;
-                          productForm.submit();
-                        });
-                      });
-                    });
-                  </script>
-                  
-                  <!-- <script>
-                    document.addEventListener('DOMContentLoaded', function() {
-                      const productForm = document.getElementById('productForm');
-                      const actionButtons = productForm.querySelectorAll('.cart-btn');
-                  
-                      actionButtons.forEach(button => {
-                        button.addEventListener('click', function() {
-                          const action = button.getAttribute('data-action');
-                          const url = button.getAttribute('data-url');
-                          // Update the form action and submit the form
-                          productForm.action = url;
-                          productForm.submit();
-                        });
-                      });
-                    });
-                  </script> -->
-                  
-                  <script>
-                    document.addEventListener('DOMContentLoaded', function() {
-                      const sizeItems = document.querySelectorAll('.size-item');
-                      sizeItems.forEach(item => {
-                        item.addEventListener('click', function() {
-                          sizeItems.forEach(i => i.classList.remove('selected'));
-                          item.classList.add('selected');
-                        });
-                      });
-                    });
-                  </script>
-                  
-                 
-                  
+                  <hr>
                 </div>
               </div>
             </div>
           </div>
-          <section class="mt-3">
+          <section class="mt-5">
             <div class="container">
               <div class="alfa-bestsellerl">
                 <div class="alfa-title" style="text-align: left">
                   <h3>You may also like</h3>
                 </div>
-                <div
-                  id="maylike-carousel"
-                  class="bestseller-wrapper owl-carousel comman-nav"
-                >
+                <div id="maylike-carousel" class="bestseller-wrapper owl-carousel comman-nav">
                   <div class="product-item">
                     <div class="produt-wrap">
-                      <img
-                        src="assets/images/cat1.png"
-                        class="pro-img"
-                        alt=""
-                      />
-                      <div class="product-btn">
-                        <div class="pro-whishlist">
-                          <a href=""
-                            ><img src="assets/images/heart.png" alt=""
-                          /></a>
-                        </div>
-                        <div class="pro-view">
-                          <a href=""
-                            ><img src="assets/images/eye.png" alt=""
-                          /></a>
-                        </div>
-                      </div>
+                      <img src="assets/images/alfa_products/shirt2.png" class="pro-img" alt="">
                     </div>
                     <div class="product-details">
-                      <h6>Shirt/ menswear</h6>
-                      <div class="product-price">
-                        <h4>£42.00</h4>
+                      <div class="product-nameprice">
+                        <h6>Alfa Mens Shirt</h6>
+                        <div class="product-price">
+                          <h4>£42.00</h4>
+                        </div>
+                        <div class="product-rating">
+                          <ul>
+                            <li>
+                              <a href=""><img src="assets/images/star.png" class="star-icon" alt=""></a>
+                              <a href=""><img src="assets/images/star.png" class="star-icon" alt=""></a>
+                              <a href=""><img src="assets/images/star.png" class="star-icon" alt=""></a>
+                              <a href=""><img src="assets/images/star.png" class="star-icon" alt=""></a>
+                              <a href=""><img src="assets/images/star.png" class="star-icon" alt=""></a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                      <div class="product-btn">
+                        <div class="pro-whishlist">
+                          <a href=""><i class="fa-regular fa-heart"></i></a>
+                        </div>
                       </div>
                     </div>
                   </div>
                   <div class="product-item">
                     <div class="produt-wrap">
-                      <img
-                        src="assets/images/cat3.png"
-                        class="pro-img"
-                        alt=""
-                      />
-                      <div class="product-btn">
-                        <div class="pro-whishlist">
-                          <a href=""
-                            ><img src="assets/images/heart.png" alt=""
-                          /></a>
-                        </div>
-                        <div class="pro-view">
-                          <a href=""
-                            ><img src="assets/images/eye.png" alt=""
-                          /></a>
-                        </div>
-                      </div>
+                      <img src="assets/images/alfa_products/shirt2.png" class="pro-img" alt="">
                     </div>
                     <div class="product-details">
-                      <h6>Shirt/ menswear</h6>
-                      <div class="product-price">
-                        <h4>£42.00</h4>
+                      <div class="product-nameprice">
+                        <h6>Alfa Mens Shirt</h6>
+                        <div class="product-price">
+                          <h4>£42.00</h4>
+                        </div>
+                        <div class="product-rating">
+                          <ul>
+                            <li>
+                              <a href=""><img src="assets/images/star.png" class="star-icon" alt=""></a>
+                              <a href=""><img src="assets/images/star.png" class="star-icon" alt=""></a>
+                              <a href=""><img src="assets/images/star.png" class="star-icon" alt=""></a>
+                              <a href=""><img src="assets/images/star.png" class="star-icon" alt=""></a>
+                              <a href=""><img src="assets/images/star.png" class="star-icon" alt=""></a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                      <div class="product-btn">
+                        <div class="pro-whishlist">
+                          <a href=""><i class="fa-regular fa-heart"></i></a>
+                        </div>
                       </div>
                     </div>
                   </div>
@@ -363,8 +307,45 @@
       </div>
       <!-- Footer -->
       <%- include('includes/footer') %>
-      <!-- End -->
-    </div>
-    <%- include('includes/foot') %>
-  </body>
+        <!-- End -->
+  </div>
+  <%- include('includes/foot') %>
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const productForm = document.getElementById('productForm');
+        const actionButtons = productForm.querySelectorAll('.cart-btn');
+
+        actionButtons.forEach(button => {
+          button.addEventListener('click', function () {
+            const action = button.getAttribute('data-action');
+            const url = button.getAttribute('data-url');
+
+            // Check if a size is selected
+            const selectedSize = productForm.querySelector('input[name="selectedSize"]:checked');
+            if (!selectedSize) {
+              alert('Please select a size.');
+              return; // Stop execution if no size is selected
+            }
+
+            // Update the form action and submit the form
+            productForm.action = url;
+            productForm.submit();
+          });
+        });
+      });
+    </script>
+
+    <script>
+      document.addEventListener('DOMContentLoaded', function () {
+        const sizeItems = document.querySelectorAll('.size-item');
+        sizeItems.forEach(item => {
+          item.addEventListener('click', function () {
+            sizeItems.forEach(i => i.classList.remove('selected'));
+            item.classList.add('selected');
+          });
+        });
+      });
+    </script>
+</body>
+
 </html>
