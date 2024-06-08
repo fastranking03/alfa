@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Alfa Meanswear | Product</title>
-    <meta name="robots" content="noindex">
-    <%- include('includes/head') %>
-  </head>
 
-  <body>
-    <div class="alfa-main-wraper">
-      <%- include('includes/header') %>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alfa Meanswear | Product</title>
+  <meta name="robots" content="noindex">
+  <%- include('includes/head') %>
+</head>
+
+<body>
+  <div class="alfa-main-wraper">
+    <%- include('includes/header') %>
       <div class="mt-100">
         <div class="product-banner">
           <div class="container">
@@ -26,11 +27,7 @@
                     <span></span>
                   </div>
                   <div class="shop-images">
-                    <img
-                      src="assets/images/man-shirt.png"
-                      class="shop-img"
-                      alt=""
-                    />
+                    <img src="assets/images/man-shirt.png" class="shop-img" alt="" />
                   </div>
                 </div>
               </div>
@@ -49,16 +46,9 @@
                         <h4 class="product-h4">Search Products</h4>
                       </div>
                       <div class="product-search">
-                        <span class="p-s-icon"
-                          ><img src="assets/images/search.png" alt=""
-                        /></span>
-                        <input
-                          type="search"
-                          name="search"
-                          class="product-search-control"
-                          placeholder="Search for products"
-                          id=""
-                        />
+                        <span class="p-s-icon"><img src="assets/images/search.png" alt="" /></span>
+                        <input type="search" name="search" class="product-search-control"
+                          placeholder="Search for products" id="" />
                       </div>
                     </div>
                     <div class="product-category mt-4">
@@ -67,10 +57,17 @@
                       </div>
                       <div class="product-category-list">
                         <ul>
-                            <% categories.forEach(category => { %> 
-                                <li><a href="" class="c-items"><%= category.category_name %> (10)</a></li>
-                            <% }); %> 
-                         </ul>
+                          <% categories.forEach(category=> { %>
+                            <li>
+                              <div class="prouduct-checkout">
+                                <input type="checkbox" class="cat-checkbox" id="<%= category.category_name %>">
+                                <label for="<%= category.category_name %>" class="c-items">
+                                  <%= category.category_name %> (10)
+                                </label>
+                              </div>
+                            </li>
+                            <% }); %>
+                        </ul>
                       </div>
                     </div>
                     <div class="product-color">
@@ -80,32 +77,51 @@
                       <div class="product-color-list">
                         <ul>
                           <li>
-                            <a href="" class="product-color-item color1"></a>
+                            <div class="prouduct-checkout">
+                              <input type="checkbox" class="cat-checkbox" id="color1">
+                              <a href="" class="product-color-item color1"> </a>
+                              <label for="color1" class="c-items color-label"> Black</label>
+                            </div>
                           </li>
                           <li>
-                            <a href="" class="product-color-item color2"></a>
+                            <div class="prouduct-checkout">
+                              <input type="checkbox" class="cat-checkbox" id="color2">
+                              <a href="" class="product-color-item color2"> </a>
+                              <label for="color2" class="c-items color-label"> Light Purple</label>
+                            </div>
                           </li>
                           <li>
-                            <a href="" class="product-color-item color3"></a>
+                            <div class="prouduct-checkout">
+                              <input type="checkbox" class="cat-checkbox" id="color3">
+                              <a href="" class="product-color-item color3"> </a>
+                              <label for="color3" class="c-items color-label"> Light Purple</label>
+                            </div>
                           </li>
                           <li>
-                            <a href="" class="product-color-item color4"></a>
+                            <div class="prouduct-checkout">
+                              <input type="checkbox" class="cat-checkbox" id="color4">
+                              <a href="" class="product-color-item color4"> </a>
+                              <label for="color4" class="c-items color-label">Pink</label>
+                            </div>
                           </li>
                           <li>
-                            <a href="" class="product-color-item color5"></a>
+                            <div class="prouduct-checkout">
+                              <input type="checkbox" class="cat-checkbox" id="color5">
+                              <a href="" class="product-color-item color5"> </a>
+                              <label for="color5" class="c-items color-label"> Light Purple</label>
+                            </div>
                           </li>
                           <li>
-                            <a href="" class="product-color-item color6"></a>
+                            <div class="prouduct-checkout">
+                              <input type="checkbox" class="cat-checkbox" id="color6">
+                              <a href="" class="product-color-item color6"> </a>
+                              <label for="color6" class="c-items color-label"> Yellow</label>
+                            </div>
                           </li>
-                        </ul>
+                         </ul>
                       </div>
                     </div>
-                    <div class="product-filter">
-                      <div class="filter-title">
-                        <h4 class="product-h4">Filter by price</h4>
-                      </div>
-                    </div>
-                    <div class="product-size">
+                     <div class="product-size">
                       <div class="filter-title">
                         <h4 class="product-h4">Size</h4>
                       </div>
@@ -119,76 +135,78 @@
                         </ul>
                       </div>
                     </div>
+
+                    <div class="product-filter">
+                      <div class="filter-title">
+                        <h4 class="product-h4">Filter by price</h4>
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div class="product-md-9">
                   <div class="product-right-wrapper">
                     <div class="product-cat-type">
                       <ul class="product-cat-list">
-                        <% categories.forEach(category => { %>
-                            <li> <a href=""><button class="cat-item"><%= category.category_name %> </button></a> </li> 
-                          <% }); %> 
+                        <% categories.forEach(category=> { %>
+                          <li> <a href=""><button class="cat-item">
+                                <%= category.category_name %>
+                              </button></a> </li>
+                          <% }); %>
                       </ul>
                     </div>
                    
 <hr>
  
                     <div class="product-grid">
-                      <% products.forEach(product => { %>
-                      <div class="product-item">
-                        <div class="produt-wrap">
-                          <a href="/product-detail/<%= product.id %> ">
-                            <img
-                              src="../product_images/<%= product.product_main_image%> %>"
-                              class="pro-img"
-                              alt=""
-                            />
-                          </a>
- 
-                          <div class="product-btn">
-                            <div class="pro-whishlist">
- 
-                        <a  class="add-to-favorites" data-product-id="<%= product.id %>">
-                          <img src="assets/images/heart.png" alt="Add to Favorites" />
-                        </a>
-
-                            </div>
+                      <% products.forEach(product=> { %>
+                        <div class="product-item">
+                          <div class="produt-wrap">
+                            <a href="/product-detail/<%= product.id %> ">
+                              <img src="../product_images/<%= product.product_main_image%> %>" class="pro-img" alt="" />
+                            </a>
                            </div>
-                        </div>
-                        <div class="product-add-to-card-wrap">
-                           <button class="add-to-cart" data-product-id="<%= product.id %>">
-                             Add to Cart
-                           </button>
-                         </button>
-                        </div>
-                        <div class="product-details shop-content">
-                          <a href="/product-detail/<%= product.id %>"
-                            ><h6><%= product.product_name %> </h6></a
-                          > <span>
-                            
-                          </span>
-                          <div class="product-price">
-                            <h5> 
-                               <span class="mrp-price" style="font-size: 16px;"> £<%=product.product_price %></span>
-                               <span class="final-price" >£<%=(product.product_price * (1 - (product.discount_on_product / 100))).toFixed(2) %></span> 
-                               <span style="font-size: 15px;color:rgb(193, 196, 196)"> (<%=product.discount_on_product %>% OFF )</span>
-                            </h5>
+                          <div class="product-add-to-card-wrap">
+                              <button class="add-to-cart" data-product-id="<%= product.id %>">
+                                <span><i class="fa-solid fa-cart-shopping"></i></span> Add to Cart
+                            </button>
+                            </button>
                           </div>
-                          
-
-                          <div class="product-color-option">
-                            <ul>
-                              <li>
-                                <a href="" class="p-option-item c1 active"></a>
-                              </li>
-                              <li><a href="" class="p-option-item c2"></a></li>
-                              <li><a href="" class="p-option-item c3"></a></li>
-                              <li><a href="" style="color: #000">+More</a></li>
-                            </ul>
+                          <div class="product-details shop-content">
+                            <div class="product-nameprice"">
+                              <a href="/product-detail/<%= product.id %>">
+                                <h6>
+                                  <%= product.product_name %>
+                                </h6>
+                              </a>
+                              <div class="product-price">
+                                <h5>
+                                  <span class="mrp-price"> £<%=product.product_price %></span>
+                                  <span class="final-price">£<%=(product.product_price * (1 - (product.discount_on_product
+                                      / 100))).toFixed(2) %></span>
+                                  <span class="discount-text"> (<%=product.discount_on_product %>% OFF )</span>
+                                </h5>
+                                  <div class="product-color-option">
+                                    <ul>
+                                      <li>
+                                         <a href="" class="p-option-item c1 active"></a>
+                                      </li>
+                                      <li><a href="" class="p-option-item c2"></a></li>
+                                      <li><a href="" class="p-option-item c3"></a></li>
+                                      <li><a href="" style="color: #000; font-size: 13px;">+More</a></li>
+                                    </ul>
+                                  </div>
+                              </div>
+                            </div>
+                            <div class="product-btn">
+                              <div class="pro-whishlist">
+                                 <a class="add-to-favorites" data-product-id="<%= product.id %>">
+                                  <i class="fa-regular fa-heart"></i>
+                                </a>
+                               </div>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                      <% }); %>
+                        <% }); %>
                     </div>
                   </div>
                 </div>
@@ -200,103 +218,106 @@
       </div>
       <!-- Footer -->
       <%- include('includes/footer') %>
-      <!-- End -->
+        <!-- End -->
 
-      
-    <script>
-      // Add event listener to the "Add to Favorites" button
-      document.addEventListener("DOMContentLoaded", function () {
-        const addToFavoritesButtons =
-          document.querySelectorAll(".add-to-favorites");
 
-        addToFavoritesButtons.forEach((button) => {
-          button.addEventListener("click", function () {
-            const productId = button.getAttribute("data-product-id");
+        <script>
+          // Add event listener to the "Add to Favorites" button
+          document.addEventListener("DOMContentLoaded", function () {
+            const addToFavoritesButtons =
+              document.querySelectorAll(".add-to-favorites");
 
-            // Send AJAX request to the server
-            fetch(`/favorites/add/${productId}`, {
-              method: "GET",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              credentials: "same-origin", // include cookies
-            })
-              .then((response) => {
-                if (!response.ok) {
-                  throw new Error("Network response was not ok");
-                }
-                return response.json();
-              })
-              .then((data) => {
-                if (data.success) {
-                  // Show popup alert
-                  alert(data.message);
+            addToFavoritesButtons.forEach((button) => {
+              button.addEventListener("click", function () {
+                const productId = button.getAttribute("data-product-id");
 
-                  // Update wishlist count in the span
-                  const wishlistLi = document.querySelector("#wishlist");
-                  if (wishlistLi) {
-                    const countTextSpan =
-                      wishlistLi.querySelector(".count-text");
+                // Send AJAX request to the server
+                fetch(`/favorites/add/${productId}`, {
+                  method: "GET",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  credentials: "same-origin", // include cookies
+                })
+                  .then((response) => {
+                    if (!response.ok) {
+                      throw new Error("Network response was not ok");
+                    }
+                    return response.json();
+                  })
+                  .then((data) => {
+                    if (data.success) {
+                      // Show popup alert
+                      alert(data.message);
+
+                      // Update wishlist count in the span
+                      const wishlistLi = document.querySelector("#wishlist");
+                      if (wishlistLi) {
+                        const countTextSpan =
+                          wishlistLi.querySelector(".count-text");
+                        if (countTextSpan) {
+                          countTextSpan.textContent =
+                            "Wishlist " + data.favoritesCount;
+                        }
+                      }
+                    } else {
+                      alert(data.message);
+                    }
+                  })
+                  .catch((error) => {
+                    console.error(
+                      "There was a problem with the fetch operation:",
+                      error
+                    );
+                    // Handle error
+                    alert(
+                      "An error occurred while adding the product to favorites"
+                    );
+                  });
+              });
+            });
+          });
+        </script>
+
+        <script>
+          document.addEventListener("DOMContentLoaded", () => {
+            const addToCartButtons = document.querySelectorAll(".add-to-cart");
+
+            addToCartButtons.forEach((button) => {
+              button.addEventListener("click", addToCart);
+            });
+
+            async function addToCart(event) {
+              const productId = event.currentTarget.getAttribute("data-product-id");
+              try {
+                const response = await fetch(`/cart/add/${productId}`, {
+                  method: "GET",
+                });
+                const result = await response.json();
+                if (result.success) {
+                  alert(result.message);
+                  // Update cart count in the span
+                  const cartLi = document.querySelector("#cart");
+                  if (cartLi) {
+                    const countTextSpan = cartLi.querySelector(".product-count");
                     if (countTextSpan) {
-                      countTextSpan.textContent = data.favoritesCount;
+                      // countTextSpan.textContent = data.favoritesCount;
+                      countTextSpan.textContent = result.CartCount;
                     }
                   }
                 } else {
-                  alert(data.message);
+                  alert(result.message);
                 }
-              })
-              .catch((error) => {
-                console.error(
-                  "There was a problem with the fetch operation:",
-                  error
-                );
-                // Handle error
-                alert(
-                  "An error occurred while adding the product to favorites"
-                );
-              });
-          });
-        });
-      });
-    </script>
-
-    <script>
-      document.addEventListener("DOMContentLoaded", () => {
-        const addToCartButtons = document.querySelectorAll(".add-to-cart");
-
-        addToCartButtons.forEach((button) => {
-          button.addEventListener("click", addToCart);
-        });
-
-        async function addToCart(event) {
-          const productId = event.currentTarget.getAttribute("data-product-id");
-          try {
-            const response = await fetch(`/cart/add/${productId}`, {
-              method: "GET",
-            });
-            const result = await response.json();
-            if (result.success) {
-              alert(result.message);
-              // Update cart count in the span
-              const cartLi = document.querySelector("#cart");
-              if (cartLi) {
-                const countTextSpan = cartLi.querySelector(".product-count");
-                if (countTextSpan) {
-                  countTextSpan.textContent = result.CartCount;
-                }
+              } catch (error) {
+                console.error("Error:", error);
+                alert("An error occurred while adding the product to cart");
               }
-            } else {
-              alert(result.message);
             }
-          } catch (error) {
-            console.error("Error:", error);
-            alert("An error occurred while adding the product to cart");
-          }
-        }
-      });
-    </script>
+          });
+        </script>
 
-    </div>
-    <%- include('includes/foot') %>
-  </body>
+  </div>
+  <%- include('includes/foot') %>
+</body>
+
 </html>

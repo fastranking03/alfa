@@ -14,6 +14,7 @@ import inventoryRoute from "./routes/admin/inventoryRoute.js";
 import adminProductsRoute from "./routes/admin/productRoute.js";
 import session from "express-session";
 import { fileURLToPath } from "url";
+
 import connect from "./db/connect.js";
 
 const app = express();
@@ -57,25 +58,6 @@ app.use((req, res, next) => {
 });
 
  
-
-app.get("/set-session", (req, res) => {
-  req.session.a = 5;
-  res.redirect("/page1");
-});
-
-app.get("/page1", (req, res) => {
-  const cartCount = req.cartCount || 0;
-  const wishlistCount = req.wishlistCount || 0;
-  res.render("blogs", { cartCount, wishlistCount });
-});
-
-app.get("/page2", (req, res) => {
-  res.render("page2");
-});
-
-app.get("/page3", (req, res) => {
-  res.render("page3");
-});
 
 //  Set Template Engine
 app.set("view engine", "ejs");

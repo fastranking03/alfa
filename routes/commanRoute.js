@@ -697,6 +697,21 @@ router.get("/about-us", (req, res) => {
   res.render("about-us", { user });
 });
 
+// 
+router.get("/blog-detail", (req, res) => {
+  const user = req.session.user;
+  res.render("blog-detail", { user });
+});
+
+router.get("/order-history", (req, res) => {
+  const user = req.session.user;
+  res.render("order-history", { user });
+});
+router.get("/order-detail", (req, res) => {
+  const user = req.session.user;
+  res.render("order-detail", { user });
+});
+// 
 router.get("/contact-us", (req, res) => {
   const user = req.session.user;
   const cartCount = req.cartCount || 0;

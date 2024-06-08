@@ -36,6 +36,8 @@ router.get('/cart/add/:productId', async (req, res) => {
                 "SELECT COUNT(*) AS CartCount FROM users_cart WHERE user_id = ?",
                 [userId]
               );
+
+              req.session.cartCount = CartCount;
             // If the product is not in favorites and is successfully added, send a success response
             res.json({ success: true, message: "Product added to Cart successfully"  , CartCount});
         }
