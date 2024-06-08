@@ -2036,3 +2036,39 @@ a {
   padding: 200px 0;
   text-align: center;
 }
+.history-wrappper .history-item{
+  display: flex;
+  border: 1px solid #E6E6E6;
+  padding: 15px;
+  align-items: center;
+  justify-content: space-between;
+  margin: 0px 0 15px;
+}
+.history-wrappper .history-item .history-left-wrap{
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.history-left-wrap .history-image img{
+  width: 100px;
+}
+.history-content h6{
+    font-size: 13px;
+    color: #000000;
+    font-weight: 500;
+}
+.history-content h3{
+  font-size: 20px;
+}
+.history-content p{
+    font-size: 13px;
+    color: #000;
+    opacity: .5;
+    font-weight: 500;
+    margin: 0;
+}
+.history-links a{
+  color: #544BE6;
+  font-size: 15px;
+  font-weight: 500;
+}
