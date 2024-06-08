@@ -132,8 +132,7 @@
                     </div>
                    
 <hr>
-
-<%= session.cartCount %>
+ 
                     <div class="product-grid">
                       <% products.forEach(product => { %>
                       <div class="product-item">
@@ -239,8 +238,7 @@
                     const countTextSpan =
                       wishlistLi.querySelector(".count-text");
                     if (countTextSpan) {
-                      countTextSpan.textContent =
-                        "Wishlist " + data.favoritesCount;
+                      countTextSpan.textContent = data.favoritesCount;
                     }
                   }
                 } else {
