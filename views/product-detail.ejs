@@ -131,6 +131,7 @@
                         <span class="final-prices">£<%=(product.product_price * (1 - (product.discount_on_product /
                             100))).toFixed(2) %> </span><span class="mrp-price" style="font-size: 22px;">
                           £<%=product.product_price %></span>
+                          <span class="discount-text"> (<%=product.discount_on_product %>% OFF )</span>
                       </h5>
                     </div>
                   </div>

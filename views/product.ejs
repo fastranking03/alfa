@@ -154,6 +154,9 @@
                           <% }); %>
                       </ul>
                     </div>
+                   
+<hr>
+ 
                     <div class="product-grid">
                       <% products.forEach(product=> { %>
                         <div class="product-item">
@@ -169,7 +172,7 @@
                             </button>
                           </div>
                           <div class="product-details shop-content">
-                            <div class="product-nameprice"">
+                            <div class="product-nameprice">
                               <a href="/product-detail/<%= product.id %>">
                                 <h6>
                                   <%= product.product_name %>
@@ -298,6 +301,7 @@
                   if (cartLi) {
                     const countTextSpan = cartLi.querySelector(".product-count");
                     if (countTextSpan) {
+                      // countTextSpan.textContent = data.favoritesCount;
                       countTextSpan.textContent = result.CartCount;
                     }
                   }

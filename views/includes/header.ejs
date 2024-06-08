@@ -69,8 +69,8 @@
                             <a href="my-wishlist">
                                 <div class="alfa-icon-flex position-relative">
                                     <img src="assets/images/heart.png" width="100%" alt="" />
-                                    <span class="product-count count-text" style="right: 5px;">
-                                        <%= wishlistCount !==undefined ? wishlistCount : 'null' %>
+                                    <span class="product-count count-text" style="right: 5px;"> 
+                                        <%= session.wishlistCount  !== undefined ? session.wishlistCount  : 'null' %>
                                     </span>
                                     <span>Wishlist</span>
                                 </div>
@@ -78,17 +78,16 @@
                         </li>
 
                         <li id="cart">
-                            <a href="my-cart">
+                            <a href="cart">
                                 <div class="alfa-icon-flex position-relative" id="leftOffCanvass">
                                     <img src="assets/images/cart.png" width="100%" alt="" />
                                     <span class="product-count">
-                                        <%= cartCount !==undefined ? cartCount : 'null' %>
+                                        <%= session.cartCount !== undefined ? session.cartCount : 'null' %>
                                     </span>
                                     <span>Cart</span>
                                 </div>
                             </a>
-                        </li>
-
+                        </li> 
                 </div>
             </div>
         </div>

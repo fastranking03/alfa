@@ -32,47 +32,32 @@ app.use(
     secret: "user",
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false }, //Cookie will false on development moood
+    cookie: { secure: false, maxAge: 12 * 60 * 60 * 1000 }, //Cookie will false on development moood
   })
 );
 
-async function getUserCounts(userId) {
-  // Define SQL queries
-  const cartCountQuery =
-    "SELECT COUNT(*) AS cart_count FROM users_cart WHERE user_id = ?";
-  const wishlistCountQuery =
-    "SELECT COUNT(*) AS wishlist_count FROM users_favorites WHERE user_id = ?";
-
-  // Execute both queries asynchronously
-  const [cartResult] = await connect.query(cartCountQuery, [userId]);
-  const [wishlistResult] = await connect.query(wishlistCountQuery, [userId]);
-
-  // Extract counts from results
-  const cartCount = cartResult[0].cart_count;
-  const wishlistCount = wishlistResult[0].wishlist_count;
-
-  // Close the connection connect
-
-  return { cartCount, wishlistCount };
-}
-
-async function getUserCountsMiddleware(req, res, next) {
-  try {
-    if (req.session.user) {
-      const userId = req.session.user.id;
-      const { cartCount, wishlistCount } = await getUserCounts(userId);
-      req.cartCount = cartCount;
-      req.wishlistCount = wishlistCount;
+app.use((req, res, next) => {
+  if (!req.session.user) {
+    if (!req.session.cart) {
+      req.session.cart = [];
+    }
+    if (!req.session.wishlist) {
+      req.session.wishlist = [];
     }
 
-    next();
-  } catch (error) {
-    console.error("Error:", error);
-    res.status(500).send("Internal Server Error");
+    req.session.cartCount = req.session.cart.length;
+    req.session.wishlistCount = req.session.wishlist.length;
   }
-}
 
-app.use(getUserCountsMiddleware);
+  // globally set (this is mandatory for using session variables globally)
+  res.locals.cartCount = req.session.cartCount || 0; // Default to 0 if not set
+  res.locals.wishlistCount = req.session.wishlistCount || 0; // Default to 0 if not set
+  res.locals.session = req.session;
+  res.locals.user = req.session.user;
+  next();
+});
+
+ 
 
 //  Set Template Engine
 app.set("view engine", "ejs");

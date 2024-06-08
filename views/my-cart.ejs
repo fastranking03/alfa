@@ -39,7 +39,7 @@
                                                                 <a href=""><span><i class="fa-regular fa-circle-xmark"></i></span></a>
                                                             </div>
                                                             <div class="cart-image">
-                                                                <img src="https://rukminim2.flixcart.com/image/832/832/xif0q/shirt/t/b/x/s-ts-shirt1694-tanip-original-imagrf39hf7aywhg.jpeg?q=70&crop=false" class="cart-img"
+                                                                <img src="../product_images/<%=item.product_main_image  %>" class="cart-img"
                                                                     alt="">
                                                             </div>
                                                             <div class="pro-cart-contents">
@@ -81,6 +81,74 @@
                                     </div>
                                 </div>
                                 <div class="col-md-5">
+                                  <div class="alfa-offcanvas-footer cart-left-wrap">
+                                    <div class="checkout-title">
+                                      <h4>Order Summery</h4>
+                                    </div>
+                                    <div class="promo-code-wrap">
+                                      <input
+                                        type="text"
+                                        class="promo-input"
+                                        placeholder="Promo Code"
+                                      />
+                                      <button type="submit" class="apply-btn" name="submit">
+                                        Apply
+                                      </button>
+                                    </div>
+                
+                                    <%
+                                     let totalPrice = 0;
+                                    
+                                    cartItems.forEach(item => {
+                
+                                    totalPrice += (parseFloat(item.product_price) ) });
+                
+                                    const GST = totalPrice * 0.2; // 20% GST 
+                                     
+                                    // Assuming a discount of £30
+                
+                                    const deliveryFee = 25;   
+                                    const totalCost = totalPrice + GST  + deliveryFee;  
+                                    %>
+                
+                
+                                    <div class="alfa-cart-total">
+                                      <ul>
+                                        <li>
+                                          <div class="alfa-text">Sub- Total</div>
+                                          <div class="alfa-price">£ <%=totalPrice  %></div>
+                                        </li>
+                                        <li>
+                                          <div class="alfa-text">GST</div>
+                                          <div class="alfa-price">£ <%=GST  %></div>
+                                        </li>
+                                        <!-- <li>
+                                          <div class="alfa-text">Discount</div>
+                                          <div class="alfa-price">-£30.00</div>
+                                        </li> -->
+                
+                                        <li>
+                                          <div class="alfa-text">Delivery Fee</div>
+                                          <div class="alfa-price">£ <%=deliveryFee  %></div>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                    <div class="alfa-cart-total">
+                                      <ul>
+                                        <li>
+                                          <div class="alfa-text">Total Cost</div>
+                                          <div class="alfa-price">£ <%=totalCost  %></div>
+                                        </li>
+                                      </ul>
+                                    </div>
+                                    <div class="alfa-checkout-wrapper">
+                                      <button type="button" class="checkout-btn">
+                                        Proceed to Checkout
+                                      </button>
+                                    </div>
+                                  </div>
+                                </div>
+                                <!-- <div class="col-md-5">
                                     <div class="alfa-offcanvas-footer cart-left-wrap">
                                         <div class="cart-left-top">
                                             <div class="cart-left-title">
@@ -133,11 +201,13 @@
                                             </button>
                                         </div>
                                     </div>
-                                </div>
+                                </div> -->
                             </div>
                         </div>
                     </div>
                 </div>
+               
+              </div>
             </div>
             <!-- Footer -->
             <%- include('includes/footer') %>
