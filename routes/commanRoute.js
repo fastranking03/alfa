@@ -798,9 +798,7 @@ router.get("/order-detail", (req, res) => {
 });
 //
 router.get("/contact-us", (req, res) => {
-  const user = req.session.user;
-  const cartCount = req.cartCount || 0;
-  const wishlistCount = req.wishlistCount || 0;
-  res.render("contact-us", { user });
+  const user = req.session.user;  
+  res.render("contact-us", { user});
 });
 export default router;
