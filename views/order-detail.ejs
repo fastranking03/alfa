@@ -12,7 +12,7 @@
     <div class="alfa-main-wraper">
         <%- include('includes/header') %>
             <div class="mt-100 mt-150">
-                <div class="checkout-wrapper margin-160">
+                <div class="checkout-wrapper margin-180">
                     <div class="container">
                         <div class="checkout-title text-center">
                             <h3>Order Information</h3>
@@ -23,22 +23,32 @@
                                  <div class="alfa-checkout-address">
                                     <div class="order-proccess-wrapper">
                                         <div class="process-wrapper">
-                                            <div class="process-item">
-                                                <span><i class="fa-solid fa-cart-shopping"></i></span>
-                                                <h6>Order Placed</h6>
+                                            <div class="process-item process-active">
+                                               <div class="proccess-text-center">
+                                                  <div>
+                                                    <span><i class="fa-solid fa-file-invoice"></i></span>
+                                                    <h6>Order Placed</h6>
+                                                  </div>
+                                               </div>
+                                            </div>
+                                            <div class="process-item process-active">
+                                                <div class="proccess-text-center">
+                                                    <span><i class="fa-solid fa-cube"></i></span>
+                                                    <h6>Processing</h6>
+                                                </div>
                                             </div>
                                             <div class="process-item">
-                                                <span><i class="fa-solid fa-cart-shopping"></i></span>
-                                                <h6>Processing</h6>
+                                                <div class="proccess-text-center">
+                                                    <span><i class="fa-solid fa-truck"></i></span>
+                                                    <h6>On The Road</h6>
+                                                </div>
                                             </div>
                                             <div class="process-item">
-                                                <span><i class="fa-solid fa-cart-shopping"></i></span>
-                                                <h6>On The Road</h6>
-                                            </div>
-                                            <div class="process-item">
-                                                <span><i class="fa-solid fa-cart-shopping"></i></span>
-                                                <h6>Delivered</h6>
-                                            </div>
+                                                <div class="proccess-text-center">
+                                                    <span><i class="fa-regular fa-handshake"></i></span>
+                                                    <h6>Delivered</h6>
+                                                </div>
+                                             </div>
                                         </div>
                                      </div>
                                      <div class="shiping-title">
@@ -140,9 +150,9 @@
                                         <div class="alfa-checkout-wrapper">
                                             <a href="/product">
                                                 <button type="button" class="checkout-btn">Continue Shopping</button>
-                                              </a>
-                                              
-                                        </div>
+                                            </a>
+                                            <button type="button" class="checkout-btn cencle-order d-none">Continue Shopping</button>
+                                         </div>
                                     </div>
                                 </div>
                             </div>
