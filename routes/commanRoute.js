@@ -3,7 +3,6 @@ import connect from "../db/connect.js"; // Adjust the path as necessary
 import slugify from "slugify";
 
 const router = express.Router();
- 
 
 router.get("/", async (req, res) => {
   try {
@@ -58,11 +57,12 @@ router.get("/", async (req, res) => {
 // Route for the product page
 
 router.post("/place-order", async (req, res) => {
-  const { products, subtotal, gst, deliveryFee, totalCost , address_id } = req.body;
+  const { products, subtotal, gst, deliveryFee, totalCost, address_id } =
+    req.body;
   const user = req.session.user;
   const userId = user ? user.id : null;
- 
-  try { 
+
+  try {
     // Generate new order ID
     const [lastOrderRow] = await connect.query(
       "SELECT order_id FROM orders ORDER BY order_id DESC LIMIT 1"
@@ -78,7 +78,7 @@ router.post("/place-order", async (req, res) => {
     // Insert new order
     await connect.query(
       "INSERT INTO orders (order_id, user_id, total_payable, vat,  delivery_charges, amount_without_vat , address_id) VALUES (?, ?, ?, ?, ?, ? , ?)",
-      [newOrderId, userId, totalCost, gst, deliveryFee, subtotal , address_id ]
+      [newOrderId, userId, totalCost, gst, deliveryFee, subtotal, address_id]
     );
 
     // Insert order items
@@ -130,16 +130,13 @@ router.post("/place-order", async (req, res) => {
     res.render("order-confirm", {
       orderDetails: orderDetails[0],
       orderItems,
-      user
+      user,
     });
   } catch (error) {
     console.error(error);
     res.status(500).send("Failed to place order");
-  }  
+  }
 });
- 
-
-
 
 router.get("/product", async (req, res) => {
   const user = req.session.user;
@@ -419,7 +416,6 @@ router.post("/checkout", async (req, res) => {
 //   if (!user || !user.id) {
 //     // User is not logged in, retrieve cart items from the session
 //     const cartItems = req.session.cart || [];
- 
 
 //     const promises = cartItems.map((cartItem) =>
 //       connect
@@ -438,7 +434,7 @@ router.post("/checkout", async (req, res) => {
 
 //     // Render the cart page with cart items including product details
 //     res.render("my-cart", { cartItems: resolvedCartItems });
-//   } else { 
+//   } else {
 //       const user = req.session.user;
 //       const userId = user ? user.id : null;
 
@@ -466,7 +462,7 @@ router.post("/checkout", async (req, res) => {
 
 //       // Fetch cart items from the database
 //       const [cartItems] = await connect.query(
-//         `SELECT c.*, p.* 
+//         `SELECT c.*, p.*
 //       FROM users_cart c
 //       INNER JOIN products p ON c.product_id = p.id
 //       WHERE c.user_id = ?`,
@@ -535,7 +531,7 @@ router.get("/cart", async (req, res) => {
         [userId]
       );
 
-      res.render("my-cart", { user, cartItems , addresses});
+      res.render("my-cart", { user, cartItems, addresses });
     }
   } catch (error) {
     console.error("Error fetching cart items:", error);
@@ -786,7 +782,7 @@ router.get("/about-us", (req, res) => {
   res.render("about-us", { user });
 });
 
-// 
+//
 router.get("/blog-detail", (req, res) => {
   const user = req.session.user;
   res.render("blog-detail", { user });
@@ -800,7 +796,7 @@ router.get("/order-detail", (req, res) => {
   const user = req.session.user;
   res.render("order-detail", { user });
 });
-// 
+//
 router.get("/contact-us", (req, res) => {
   const user = req.session.user;
   const cartCount = req.cartCount || 0;
