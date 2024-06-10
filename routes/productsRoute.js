@@ -1,35 +1,59 @@
 import express from "express";
-const router = express.Router();  
 import connect from "../db/connect.js";
 
+const router = express.Router();
 
-router.get('/category/:id', async (req, res) => { 
-    const categoryId = req.params.id;
-    const user = "SHIVAM";
+router.post('/place-order', async (req, res) => {
+    const { products } = req.body; // Array of products { productId, quantity, price, size }
+    const userId = req.session.userId; // Assuming user ID is stored in the session
+    
+    if (!userId || !products || products.length === 0) {
+        return res.status(400).send('Invalid order data');
+    }
 
+    const connection = await connect(); // Use connect function to obtain connection
     try {
-        // Query the category information based on the provided categoryId
-        const [category] = await connect.query("SELECT * FROM category WHERE id = ?", [categoryId]);
-        
-        // If category found, proceed to query products related to this category
-        if (category.length > 0) {
-            const [products] = await connect.query("SELECT * FROM products WHERE category_id = ?", [categoryId]);
-            
-            const cartCount = req.cartCount || 0;
-            const wishlistCount = req.wishlistCount || 0;
-        
-            // Render the products-view template with products, category, and user
-            res.render('products-view', { products: products, category: category[0], user: user , cartCount, wishlistCount});
-        } else {
-            // Category not found, handle appropriately (redirect, render error page, etc.)
-            console.error("Category not found");
-            res.redirect("/"); // Redirect to homepage or render an error page
-        }
-    } catch (err) {
-        console.error("Error fetching category or products:", err);
-        res.redirect("/"); // Handle the error appropriately
+        // Calculate the total price
+        const totalPrice = products.reduce((sum, item) => sum + item.quantity * item.price, 0);
+
+        // Start transaction
+        await connection.beginTransaction();
+
+        // Insert new order
+        const [orderResult] = await connection.query('INSERT INTO orders (user_id, total) VALUES (?, ?)', [
+            userId,
+            totalPrice
+        ]);
+
+        const orderId = orderResult.insertId;
+
+        // Insert order items
+        const orderItemsPromises = products.map(product => 
+            connection.query('INSERT INTO order_items (order_id, product_id, quantity, price, size) VALUES (?, ?, ?, ?, ?)', [
+                orderId,
+                product.productId,
+                product.quantity,
+                product.price,
+                product.size
+            ])
+        );
+
+        // Execute all insert queries
+        await Promise.all(orderItemsPromises);
+
+        // Commit transaction
+        await connection.commit();
+
+        res.status(201).send({ orderId });
+    } catch (error) {
+        // Rollback transaction on error
+        await connection.rollback();
+        console.error(error);
+        res.status(500).send('Failed to place order');
+    } finally {
+        // Release connection
+        connection.release();
     }
 });
 
- 
-export default router
+export default router;

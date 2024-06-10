@@ -57,6 +57,90 @@ router.get("/", async (req, res) => {
 
 // Route for the product page
 
+router.post("/place-order", async (req, res) => {
+  const { products, subtotal, gst, deliveryFee, totalCost , address_id } = req.body;
+  const user = req.session.user;
+  const userId = user ? user.id : null;
+ 
+  try { 
+    // Generate new order ID
+    const [lastOrderRow] = await connect.query(
+      "SELECT order_id FROM orders ORDER BY order_id DESC LIMIT 1"
+    );
+    let newOrderId = "ALOI000001";
+    if (lastOrderRow.length > 0) {
+      const lastOrderId = lastOrderRow[0].order_id;
+      const lastOrderNumber = parseInt(lastOrderId.slice(4));
+      const nextOrderNumber = lastOrderNumber + 1;
+      newOrderId = "ALOI" + nextOrderNumber.toString().padStart(6, "0");
+    }
+
+    // Insert new order
+    await connect.query(
+      "INSERT INTO orders (order_id, user_id, total_payable, vat,  delivery_charges, amount_without_vat , address_id) VALUES (?, ?, ?, ?, ?, ? , ?)",
+      [newOrderId, userId, totalCost, gst, deliveryFee, subtotal , address_id ]
+    );
+
+    // Insert order items
+    for (const product of products) {
+      await connect.query(
+        "INSERT INTO order_items (order_id, product_id, quantity, price, size) VALUES (?, ?, ?, ?, ?)",
+        [
+          newOrderId,
+          product.productId,
+          product.quantity,
+          product.price,
+          product.size,
+        ]
+      );
+    }
+
+    // Fetch order details
+    // const [orderDetails] = await connect.query(
+    //   "SELECT * FROM orders WHERE order_id = ?",
+    //   [newOrderId]
+    // );
+    const [orderDetails] = await connect.query(
+      `SELECT o.*, a.name, a.email, a.phone, a.address_title , a.full_address 
+       FROM orders o
+       JOIN user_address a ON o.address_id = a.id
+       WHERE o.order_id = ?`,
+      [newOrderId]
+    );
+
+    // const [orderItems] = await connection.query(
+    //   "SELECT * FROM order_items WHERE order_id = ?",
+    //   [newOrderId]
+    // );
+
+    const [orderItems] = await connect.query(
+      `SELECT oi.*, p.product_name, p.product_title , p.product_description, p.product_main_image
+       FROM order_items oi 
+       JOIN products p ON oi.product_id = p.id 
+       WHERE oi.order_id = ?`,
+      [newOrderId]
+    );
+
+    const adresssql = "SELECT * FROM user_address WHERE user_id = ?";
+
+    // Execute the query with the user ID as a parameter
+    const [addresses] = await connect.query(adresssql, [userId]);
+
+    // Render the order confirmation page with order details
+    res.render("order-confirm", {
+      orderDetails: orderDetails[0],
+      orderItems,
+      user
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Failed to place order");
+  }  
+});
+ 
+
+
+
 router.get("/product", async (req, res) => {
   const user = req.session.user;
   const queryProduct = `
@@ -432,6 +516,11 @@ router.get("/cart", async (req, res) => {
         [userId]
       );
 
+      const sql = "SELECT * FROM user_address WHERE user_id = ?";
+
+      // Execute the query with the user ID as a parameter
+      const [addresses] = await connect.query(sql, [userId]);
+
       const cartCount = cartResult[0].cart_count;
       const wishlistCount = wishlistResult[0].wishlist_count;
 
@@ -446,7 +535,7 @@ router.get("/cart", async (req, res) => {
         [userId]
       );
 
-      res.render("my-cart", { user, cartItems });
+      res.render("my-cart", { user, cartItems , addresses});
     }
   } catch (error) {
     console.error("Error fetching cart items:", error);

@@ -12,6 +12,7 @@ import favoritesRoute from "./routes/favoritesRoute.js";
 import cartRoute from "./routes/cartRoute.js";
 import inventoryRoute from "./routes/admin/inventoryRoute.js";
 import adminProductsRoute from "./routes/admin/productRoute.js";
+import placeOrderRoute from './routes/placeOrderRoute.js';
 import session from "express-session";
 import { fileURLToPath } from "url";
 
@@ -77,6 +78,7 @@ app.use("/", shirtsRoute);
 app.use("/", productsRoute);
 app.use("/", favoritesRoute);
 app.use("/", cartRoute);
+app.use("/", placeOrderRoute);
 
 app.use("/admin/", adminRoute);
 app.use("/admin/", bannerRoute);

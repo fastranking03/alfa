@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Confirmation</title>
+</head>
+<body>
+  <h1>Order Confirmation</h1>
+  <p>Order ID: <%= orderDetails.order_id %></p>
+  <p>Total Payable: £<%= orderDetails.total_payable %></p>
+  <p>VAT: £<%= orderDetails.vat %></p>
+  <p>Delivery Charges: £<%= orderDetails.delivery_charges %></p>
+  <p>Amount Without VAT: £<%= orderDetails.amount_without_vat %></p>
+
+  <h2>Order Items</h2>
+  <ul>
+    <% orderItems.forEach(item => { %>
+      <li>
+        Product ID: <%= item.product_id %> <br>
+        Quantity: <%= item.quantity %> <br>
+        Price: £<%= item.price %> <br>
+        Size: <%= item.size %>
+      </li>
+    <% }); %>
+  </ul>
+</body>
+</html>

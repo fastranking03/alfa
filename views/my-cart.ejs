@@ -11,13 +11,14 @@
 <body>
     <div class="alfa-main-wraper">
         <%- include('includes/header') %>
-            <div class="mt-100 mt-150">
-                <div class="checkout-wrapper margin-160">
-                    <div class="container">
-                        <div class="checkout-title">
-                            <h3>Shoping Cart</h3>
-                        </div>
-                        <div class="container mt-3">
+        <div class="mt-100 mt-150">
+            <div class="checkout-wrapper margin-160">
+                <div class="container">
+                    <div class="checkout-title">
+                        <h3>Shopping Cart</h3>
+                    </div>
+                    <div class="container mt-3">
+                        <form id="orderForm" action="place-order" method="post"   >
                             <div class="row">
                                 <div class="col-md-7">
                                     <div class="alfa-cart-items cart-right-wrap">
@@ -27,11 +28,12 @@
                                                     <div class="cart-th" style="width: 27%;">Products</div>
                                                     <div class="cart-th">Price</div>
                                                     <div class="cart-th">Quantity</div>
+                                                    <div class="cart-th">Size</div>
                                                     <div class="cart-th">Sub-Total</div>
                                                 </div>
                                             </div>
                                             <div class="cart-tbody">
-                                                <% cartItems.forEach(item => { %>
+                                                <% cartItems.forEach((item, index) => { %>
                                                 <div class="cart-tr cart-b-tr">
                                                     <div class="cart-td">
                                                         <div class="cart-items-left">
@@ -39,8 +41,7 @@
                                                                 <a href=""><span><i class="fa-regular fa-circle-xmark"></i></span></a>
                                                             </div>
                                                             <div class="cart-image">
-                                                                <img src="../product_images/<%=item.product_main_image  %>" class="cart-img"
-                                                                    alt="">
+                                                                <img src="../product_images/<%=item.product_main_image %>" class="cart-img" alt="">
                                                             </div>
                                                             <div class="pro-cart-contents">
                                                                 <div class="pro-cart-title">
@@ -54,166 +55,118 @@
                                                             <h3>£<%= item.product_price %></h3>
                                                         </div>
                                                     </div>
-                                                   
                                                     <div class="cart-td">
                                                         <div class="cart-quantity-wrapper">
                                                             <div class="left-input">
                                                                 <span><i class="fa-solid fa-minus"></i></span>
                                                             </div>
                                                             <div class="cart-quantity">
-                                                                <input type="text" value="1" class="cart-value">
+                                                                <input type="number" name="products[<%=index%>][quantity]" value="1" class="cart-value" min="1">
                                                             </div>
                                                             <div class="right-input">
                                                                 <span><i class="fa-solid fa-plus"></i></span>
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    <div class="cart-td"> 
+                                                        <input type="text"  name="products[<%=index%>][size]" value="<%= item.selected_size ? item.selected_size : 'S' %>" class="cart-value"  > 
+                                                    </div>
                                                     <div class="cart-td">
                                                         <div class="pro-cart-price">
-                                                            <h3>£100</h3>
+                                                            <h3>£<span class="subtotal"><%= item.product_price %></span></h3>
                                                         </div>
                                                     </div>
+                                                    <input type="hidden" name="products[<%=index%>][productId]" value="<%= item.product_id %>">
+                                                    <input type="hidden" name="products[<%=index%>][price]" value="<%= item.product_price %>">
                                                 </div>
                                                 <% }); %>
-                                             </div>
+                                            </div>
                                         </div>
-                                        
                                     </div>
                                 </div>
                                 <div class="col-md-5">
-                                  <div class="alfa-offcanvas-footer cart-left-wrap">
-                                    <div class="checkout-title">
-                                      <h4>Order Summery</h4>
-                                    </div>
-                                    <div class="promo-code-wrap">
-                                      <input
-                                        type="text"
-                                        class="promo-input"
-                                        placeholder="Promo Code"
-                                      />
-                                      <button type="submit" class="apply-btn" name="submit">
-                                        Apply
-                                      </button>
-                                    </div>
-                
-                                    <%
-                                     let totalPrice = 0;
-                                    
-                                    cartItems.forEach(item => {
-                
-                                    totalPrice += (parseFloat(item.product_price) ) });
-                
-                                    const GST = totalPrice * 0.2; // 20% GST 
-                                     
-                                    // Assuming a discount of £30
-                
-                                    const deliveryFee = 25;   
-                                    const totalCost = totalPrice + GST  + deliveryFee;  
-                                    %>
-                
-                
-                                    <div class="alfa-cart-total">
-                                      <ul>
-                                        <li>
-                                          <div class="alfa-text">Sub- Total</div>
-                                          <div class="alfa-price">£ <%=totalPrice  %></div>
-                                        </li>
-                                        <li>
-                                          <div class="alfa-text">GST</div>
-                                          <div class="alfa-price">£ <%=GST  %></div>
-                                        </li>
-                                        <!-- <li>
-                                          <div class="alfa-text">Discount</div>
-                                          <div class="alfa-price">-£30.00</div>
-                                        </li> -->
-                
-                                        <li>
-                                          <div class="alfa-text">Delivery Fee</div>
-                                          <div class="alfa-price">£ <%=deliveryFee  %></div>
-                                        </li>
-                                      </ul>
-                                    </div>
-                                    <div class="alfa-cart-total">
-                                      <ul>
-                                        <li>
-                                          <div class="alfa-text">Total Cost</div>
-                                          <div class="alfa-price">£ <%=totalCost  %></div>
-                                        </li>
-                                      </ul>
-                                    </div>
-                                    <div class="alfa-checkout-wrapper">
-                                      <button type="button" class="checkout-btn">
-                                        Proceed to Checkout
-                                      </button>
-                                    </div>
-                                  </div>
-                                </div>
-                                <!-- <div class="col-md-5">
                                     <div class="alfa-offcanvas-footer cart-left-wrap">
-                                        <div class="cart-left-top">
-                                            <div class="cart-left-title">
-                                                <h4>Coupon Code</h4>
-                                            </div>
-                                            <div class="cart-tag">
-                                                <span><i class="fa-solid fa-tag"></i></span>
-                                            </div>
+                                        <div class="checkout-title">
+                                            <h4>Order Summary</h4>
                                         </div>
-                                         <div class="promo-code-wrap">
-                                            <input type="text" class="promo-input" placeholder="Promo Code">
-                                            <button type="submit" class="apply-btn" name="submit">
-                                                Apply
-                                            </button>
+                                        <div class="promo-code-wrap">
+                                            <input type="text" class="promo-input" placeholder="Promo Code" />
+                                            <button type="submit" class="apply-btn" name="submit">Apply</button>
                                         </div>
+                                        <%
+                                            let totalPrice = 0;
+                                            cartItems.forEach(item => {
+                                                totalPrice += parseFloat(item.product_price);
+                                            });
+                                            const GST = totalPrice * 0.2; // 20% GST
+                                            const deliveryFee = 25;
+                                            const totalCost = totalPrice + GST + deliveryFee;
+                                        %>
                                         <div class="alfa-cart-total">
-                                            <div class="checkout-title">
-                                                <h4>Card Totals</h4>
-                                            </div>
                                             <ul>
                                                 <li>
-                                                    <div class="alfa-text">Sub- Total</div>
-                                                    <div class="alfa-price">£456.00</div>
+                                                    <div class="alfa-text">Sub-Total</div>
+                                                    <div class="alfa-price">£ <%= totalPrice %></div>
                                                 </li>
                                                 <li>
                                                     <div class="alfa-text">GST</div>
-                                                    <div class="alfa-price">£91.00</div>
-                                                </li>
-                                                <li>
-                                                    <div class="alfa-text">Discount</div>
-                                                    <div class="alfa-price">-£30.00</div>
+                                                    <div class="alfa-price">£ <%= GST %></div>
                                                 </li>
                                                 <li>
                                                     <div class="alfa-text">Delivery Fee</div>
-                                                    <div class="alfa-price">£25.00</div>
+                                                    <div class="alfa-price">£ <%= deliveryFee %></div>
                                                 </li>
                                             </ul>
                                         </div>
+                                        
                                         <div class="alfa-cart-total">
                                             <ul>
                                                 <li>
                                                     <div class="alfa-text">Total Cost</div>
-                                                    <div class="alfa-price">£542.00</div>
+                                                    <div class="alfa-price">£ <%= totalCost %></div>
+ 
                                                 </li>
                                             </ul>
                                         </div>
+                                        <hr>
+                                        <div class="address-title text-center">
+                                          <h3>Address</h3>
+                                          <div id="addressDetails">
+                                            <label for="address_id">Select Address for Delivery:</label>
+                                            <select name="address_id" id="address_id" required>
+                                              <% addresses.forEach(address => { %>
+                                                <option value="<%= address.id %>">
+                                                  <%= address.name %> - <%= address.address_title %> - <%= address.city %>
+                                                </option>
+                                              <% }); %>
+                                            </select>
+                                          </div>
+                                        </div>
+                                        <br>
                                         <div class="alfa-checkout-wrapper">
-                                            <button type="button" class="checkout-btn">
-                                                Proceed to Checkout
-                                            </button>
+                                            <button type="submit" class="checkout-btn">Proceed to Checkout</button>
                                         </div>
                                     </div>
-                                </div> -->
+                                </div>
                             </div>
-                        </div>
+
+                            <input type="hidden" name="subtotal" value="<%= totalPrice %>">
+                            <input type="hidden" name="gst" value="<%= GST %>">
+                            <input type="hidden" name="deliveryFee" value="<%= deliveryFee %>">
+                            <input type="hidden" name="totalCost" value="<%= totalCost %>">
+
+                        </form>
                     </div>
                 </div>
-               
-              </div>
             </div>
-            <!-- Footer -->
-            <%- include('includes/footer') %>
-                <!-- End -->
+        </div>
+       <%=JSON.stringify(cartItems)  %> 
+        <!-- Footer -->
+        <%- include('includes/footer') %>
+        <!-- End -->
     </div>
     <%- include('includes/foot') %>
-</body>
+
+  </body>
 
 </html>
