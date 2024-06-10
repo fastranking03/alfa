@@ -57,10 +57,14 @@ router.get("/", async (req, res) => {
 // Route for the product page
 
 router.post("/place-order", async (req, res) => {
-  const { products, subtotal, gst, deliveryFee, totalCost, address_id } =
-    req.body;
+
   const user = req.session.user;
   const userId = user ? user.id : null;
+  if (!user) {
+    return res.redirect("/login"); // Redirect to the login page if the user is not logged in
+  }
+  const { products, subtotal, gst, deliveryFee, totalCost, address_id } =
+    req.body;
 
   try {
     // Generate new order ID
@@ -94,12 +98,7 @@ router.post("/place-order", async (req, res) => {
         ]
       );
     }
-
-    // Fetch order details
-    // const [orderDetails] = await connect.query(
-    //   "SELECT * FROM orders WHERE order_id = ?",
-    //   [newOrderId]
-    // );
+ 
     const [orderDetails] = await connect.query(
       `SELECT o.*, a.name, a.email, a.phone, a.address_title , a.full_address 
        FROM orders o
@@ -592,10 +591,22 @@ router.get("/add-address", (req, res) => {
   res.render("add-address", { user });
 });
 
+// router.get("/my-wishlist", (req, res) => {
+//   const user = req.session.user;
+//   res.render("my-wishlist", { user });
+// });
+
 router.get("/my-wishlist", (req, res) => {
   const user = req.session.user;
+  
+  if (!user) {
+    // Redirect to login page if user is not logged in
+    return res.redirect("/login");
+  }
+  
   res.render("my-wishlist", { user });
 });
+
 
 router.get("/order-confirm", (req, res) => {
   const user = req.session.user;

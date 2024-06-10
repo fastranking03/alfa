@@ -60,6 +60,80 @@ router.post("/signup", async (req, res) => {
 });
 
 // User Login
+// router.post("/login", async (req, res) => {
+//   try {
+//     const { email, password } = req.body;
+//     const alfa_query = "SELECT * FROM user_registration WHERE email = ?";
+//     const [user] = await connect.query(alfa_query, [email]);
+
+//     if (user.length === 0) {
+//       return res.render("login", { error: "Email is not registered." });
+//     }
+
+//     const passMatch = await bcrypt.compare(password, user[0].password);
+//     if (!passMatch) {
+//       return res.render("login", { error: "Invalid Email or Password" });
+//     }
+
+//     req.session.user = user[0];
+
+//     // Check if the user has items in the session cart
+//     if (req.session.cart && req.session.cart.length > 0) {
+//       for (const item of req.session.cart) {
+//         const { product_id, selected_size } = item;
+
+//         // Check if the cart item already exists in the database
+//         const checkCartItemQuery = `
+//           SELECT * FROM users_cart WHERE user_id = ? AND product_id = ? AND selected_size = ?
+//         `;
+//         const [existingCartItem] = await connect.query(checkCartItemQuery, [
+//           user[0].id,
+//           product_id,
+//           selected_size,
+//         ]);
+
+//         if (existingCartItem.length > 0) {
+//           // Update the existing cart item
+//           const updateCartItemQuery = `
+//             UPDATE users_cart SET selected_size = ? WHERE user_id = ? AND product_id = ? AND selected_size = ?
+//           `;
+//           await connect.query(updateCartItemQuery, [
+//             selected_size,
+//             user[0].id,
+//             product_id,
+//             selected_size,
+//           ]);
+//         } else {
+//           // Insert the new cart item into the database
+//           const insertCartItemQuery = `
+//             INSERT INTO users_cart (user_id, product_id, selected_size, created_at)
+//             VALUES (?, ?, ?, NOW())
+//           `;
+//           await connect.query(insertCartItemQuery, [
+//             user[0].id,
+//             product_id,
+//             selected_size,
+//           ]);
+//         }
+//       }
+
+//       // Clear the session cart after saving to database
+//       req.session.cart = [];
+//     }
+
+//     // Storing user data in session
+//     if (req.session.user.status === 1) {
+//       res.redirect("/admin/");
+//     } else {
+//       const [categories] = await connect.query("SELECT * FROM category");
+//       res.redirect("/cart");
+//     }
+//   } catch (error) {
+//     console.error("Error logging in:", error);
+//     res.render("login", { error: "Error in login" });
+//   }
+// });
+
 router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
@@ -77,12 +151,56 @@ router.post("/login", async (req, res) => {
 
     req.session.user = user[0];
 
+    // Check if the user has items in the session cart
+    if (req.session.cart && req.session.cart.length > 0) {
+      for (const item of req.session.cart) {
+        const { product_id, selected_size } = item;
+
+        // Check if the cart item already exists in the database
+        const checkCartItemQuery = `
+          SELECT * FROM users_cart WHERE user_id = ? AND product_id = ? AND selected_size = ?
+        `;
+        const [existingCartItem] = await connect.query(checkCartItemQuery, [
+          user[0].id,
+          product_id,
+          selected_size,
+        ]);
+
+        if (existingCartItem.length > 0) {
+          // Update the existing cart item
+          const updateCartItemQuery = `
+            UPDATE users_cart SET selected_size = ? WHERE user_id = ? AND product_id = ? AND selected_size = ?
+          `;
+          await connect.query(updateCartItemQuery, [
+            selected_size,
+            user[0].id,
+            product_id,
+            selected_size,
+          ]);
+        } else {
+          // Insert the new cart item into the database
+          const insertCartItemQuery = `
+            INSERT INTO users_cart (user_id, product_id, selected_size, created_at)
+            VALUES (?, ?, ?, NOW())
+          `;
+          await connect.query(insertCartItemQuery, [
+            user[0].id,
+            product_id,
+            selected_size,
+          ]);
+        }
+      }
+
+      // Clear the session cart after saving to database
+      req.session.cart = [];
+    }
+
     // Storing user data in session
     if (req.session.user.status === 1) {
       res.redirect("/admin/");
     } else {
       const [categories] = await connect.query("SELECT * FROM category");
-      res.redirect("/");
+      res.redirect("/cart");
     }
   } catch (error) {
     console.error("Error logging in:", error);
@@ -141,7 +259,7 @@ router.post("/login", async (req, res) => {
 //     res.render("forget-password", { error: "An error occurred" });
 //   }
 // });
-router.post('/forget-password', async (req, res) => {
+router.post("/forget-password", async (req, res) => {
   try {
     const { email } = req.body;
 
@@ -152,7 +270,9 @@ router.post('/forget-password', async (req, res) => {
     );
 
     if (user.length === 0) {
-      return res.render('forget-password', { message: 'Email is not registered' });
+      return res.render("forget-password", {
+        message: "Email is not registered",
+      });
     }
 
     // Generate OTP
@@ -160,36 +280,38 @@ router.post('/forget-password', async (req, res) => {
 
     // Nodemailer configuration
     const transporter = nodemailer.createTransport({
-      host: 'smtp.gmail.com', // SMTP server address for Gmail
+      host: "smtp.gmail.com", // SMTP server address for Gmail
       port: 587,
       auth: {
-        user: 'jaydenmitchell0282@gmail.com',
-        pass: 'rtcslwgbcgxkoibh'
-      }
+        user: "jaydenmitchell0282@gmail.com",
+        pass: "rtcslwgbcgxkoibh",
+      },
     });
 
     // Send email with OTP
     await transporter.sendMail({
-      from: 'fastranking08@gmail.com',
+      from: "fastranking08@gmail.com",
       to: email,
-      subject: 'Password Reset OTP',
-      text: `Your OTP for password reset is ${otp}`
+      subject: "Password Reset OTP",
+      text: `Your OTP for password reset is ${otp}`,
     });
 
     // Update OTP in the database
     await connect.query(
-      'UPDATE user_registration SET otp = ? WHERE email = ?',
+      "UPDATE user_registration SET otp = ? WHERE email = ?",
       [otp, email]
     );
 
     // Render the OTP verification page
-    res.render('otp-verification', { message: 'OTP sent to your email.', email: email });
+    res.render("otp-verification", {
+      message: "OTP sent to your email.",
+      email: email,
+    });
   } catch (error) {
-    console.error('Error processing forget password request:', error);
-    res.render('forget-password', { message: 'An error occurred' });
+    console.error("Error processing forget password request:", error);
+    res.render("forget-password", { message: "An error occurred" });
   }
 });
-
 
 // Route for OTP verification
 router.post("/otp-verification", async (req, res) => {
@@ -197,7 +319,7 @@ router.post("/otp-verification", async (req, res) => {
     const { email, otp } = req.body;
     const sql_query =
       "SELECT * FROM user_registration WHERE email = ? AND otp = ?";
-    
+
     const [result] = await connect.query(sql_query, [email, otp]);
 
     if (result.length === 0) {
@@ -215,26 +337,27 @@ router.post("/otp-verification", async (req, res) => {
 });
 
 // Reset Password
-router.post('/reset-password', async (req, res) => {
+router.post("/reset-password", async (req, res) => {
   try {
     const { newPassword, email } = req.body;
-    
+
     // Hash the password
     const hashPassword = await bcrypt.hash(newPassword, 10);
-    
+
     // Update password and clear OTP
-    const sql_query = 'UPDATE user_registration SET password = ?, otp = NULL WHERE email = ?';
-    
+    const sql_query =
+      "UPDATE user_registration SET password = ?, otp = NULL WHERE email = ?";
+
     await connect.query(sql_query, [hashPassword, email]);
-    
-    res.render('login', { message: 'Password reset successful. Please log in.' });
+
+    res.render("login", {
+      message: "Password reset successful. Please log in.",
+    });
   } catch (error) {
-    console.error('Error resetting password:', error);
-    return res.render('reset-password', { message: 'An error occurred' });
+    console.error("Error resetting password:", error);
+    return res.render("reset-password", { message: "An error occurred" });
   }
 });
-
-
 
 router.get("/logout", (req, res) => {
   req.session.destroy((err) => {

@@ -31,12 +31,27 @@ router.get("/favorites/add/:productId", async (req, res) => {
 
     // If the product already exists in favorites, send a failure response
     if (existingFavorite.length > 0) {
-      console.log("Product already exists in favorites for this user.");
+
+      const deleteQuery = "DELETE FROM users_favorites WHERE user_id = ? AND product_id = ?";
+      await connect.query(deleteQuery, [userId, productId]); 
+      console.log("Product removed from favorites for this user.");
+
+      const [[{ favoritesCount }]] = await connect.query(
+        "SELECT COUNT(*) AS favoritesCount FROM users_favorites WHERE user_id = ?",
+        [userId]
+      );
+
       res.json({
-        success: false,
-        message: "Product already exists in favorites",
+        success: true,
+        message: "Product removed from favorites",
+        favoritesCount,
       });
-      return;
+     
+      // res.json({
+      //   success: false,
+      //   message: "Product already exists in favorites",
+      // });
+      // return;
     } else if (!(await addToFavorites(userId, productId))) {
       // If adding the product to favorites fails, send a failure response
       res.json({
