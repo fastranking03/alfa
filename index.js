@@ -87,8 +87,6 @@ app.use("/admin/", inventoryRoute);
 app.use("/admin/", adminProductsRoute);
 app.use("/admin/", subcategoryRoute);
 
- 
-
 const PORT = 8081;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

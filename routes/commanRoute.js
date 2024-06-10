@@ -498,8 +498,8 @@ router.get("/cart", async (req, res) => {
       );
 
       const resolvedCartItems = await Promise.all(promises);
-
-      res.render("my-cart", { cartItems: resolvedCartItems });
+      let addresses;
+      res.render("my-cart", { user, cartItems: resolvedCartItems, addresses });
     } else {
       const userId = user.id;
 
@@ -763,13 +763,13 @@ router.post("/add-to-cart", async (req, res) => {
       res.redirect("/cart");
       // Process the data, such as saving it to the cart database or session
       // For demonstration purposes, we'll just log the data
-      console.log("Product ID:", product_id);
-      console.log("Product Name:", product_name);
-      console.log("Final Price after Discount:", finalPrice_after_discount);
-      console.log("Discount on Product:", discount_on_product);
-      console.log("Actual MRP Price:", actual_mrp_price);
-      console.log("Category:", category);
-      console.log("Sub Category:", sub_category);
+      // console.log("Product ID:", product_id);
+      // console.log("Product Name:", product_name);
+      // console.log("Final Price after Discount:", finalPrice_after_discount);
+      // console.log("Discount on Product:", discount_on_product);
+      // console.log("Actual MRP Price:", actual_mrp_price);
+      // console.log("Category:", category);
+      // console.log("Sub Category:", sub_category);
     } catch (error) {
       console.error("Error adding product to cart:", error);
       res.status(500).send("Error adding product to cart");
@@ -788,17 +788,49 @@ router.get("/blog-detail", (req, res) => {
   res.render("blog-detail", { user });
 });
 
-router.get("/order-history", (req, res) => {
+router.get("/my-orders", async (req, res) => {
   const user = req.session.user;
-  res.render("order-history", { user });
+
+  if (!user) {
+    return res.redirect("/login");
+  }
+
+  try {
+    // Fetch orders for the logged-in user in ascending order
+    const [orders] = await connect.query(
+      "SELECT * FROM orders WHERE user_id = ? ORDER BY order_id ASC",
+      [user.id]
+    );
+
+    // Fetch order items for each order
+    const orderDetailsPromises = orders.map(async (order) => {
+      const [orderItems] = await connect.query(
+        `SELECT oi.*, p.product_name, p.product_main_image
+         FROM order_items oi 
+         JOIN products p ON oi.product_id = p.id 
+         WHERE oi.order_id = ?`,
+        [order.order_id]
+      );
+      order.items = orderItems;
+      return order;
+    });
+
+    const ordersWithDetails = await Promise.all(orderDetailsPromises);
+
+    res.render("order-history", { user, orders: ordersWithDetails });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Failed to retrieve orders");
+  }
 });
+
 router.get("/order-detail", (req, res) => {
   const user = req.session.user;
   res.render("order-detail", { user });
 });
 //
 router.get("/contact-us", (req, res) => {
-  const user = req.session.user;  
-  res.render("contact-us", { user});
+  const user = req.session.user;
+  res.render("contact-us", { user });
 });
 export default router;

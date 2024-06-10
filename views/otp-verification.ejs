@@ -24,21 +24,15 @@
               <p>We Sent a verification code to </p>
             </div>
             <form action="/otp-verification" method="post">
+              <input type="text" name="email" value="<%= email  %>">
               <div class="row">
-                <div class="col-md-12">
-                  <div class="alfa-otp-form-group">
-                    <input class="otp" type="text" name="otp1" oninput='digitValidate(this)' onkeyup='tabChange(1)' maxlength=1>
-                    <input class="otp" type="text" name="otp2" oninput='digitValidate(this)' onkeyup='tabChange(2)' maxlength=1>
-                    <input class="otp" type="text" name="otp3" oninput='digitValidate(this)' onkeyup='tabChange(3)' maxlength=1>
-                    <input class="otp" type="text" name="otp4" oninput='digitValidate(this)' onkeyup='tabChange(4)' maxlength=1>
-                    <input class="otp" type="text" name="otp5" oninput='digitValidate(this)' onkeyup='tabChange(5)' maxlength=1>
-                    <input class="otp" type="text" name="otp6" oninput='digitValidate(this)' onkeyup='tabChange(6)' maxlength=1>
-                  </div>
+                <div class="col-md-12 mx-auto text-center"> 
+                    <input type="text" name="otp" class="form-control" placeholder="Enter Otp" required > 
                 </div>
 
                 <div class="col-md-12 mt-3">
                   <div class="user-buttons text-center">
-                    <a href class="user-btns">Reset code</a>
+                    <a href class="user-btns">Reset code </a>
                   </div>
                 </div>
 
@@ -46,11 +40,11 @@
                   <div class="user-button">
                     <button class="user-btn">Continue</button>
                   </div>
-                </div> 
-              </div>
+                </div>  
+                 
 
-            </form> 
-            
+              </div> 
+            </form>  
           </div>
         </div>
       </div>
