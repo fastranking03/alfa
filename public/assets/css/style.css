@@ -674,11 +674,12 @@ a {
 }
 
 .footer-link-ul li {
-  margin-bottom: 5px;
+  margin-bottom: 15px;
 }
 
 .footer-link-ul a {
-  font-size: 15px;
+  font-size: 16px;
+  font-weight: 300;
   color: var(--whiteColor);
 }
 
@@ -2309,4 +2310,15 @@ font-size: 14px;
     color: #000;
     opacity: .5;
     font-size: 12px;
+ }
+ .footer-copy-right{
+    background: #246f70;
+    text-align: center;
+    color: #fff;
+    padding: 10px;
+ }
+ .footer-copy-right p{
+  margin: 0;
+  font-weight: 300;
+  font-size: 15px;
  }
