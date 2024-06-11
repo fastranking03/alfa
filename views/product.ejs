@@ -16,13 +16,13 @@
       <div class="mt-100">
         <div class="product-banner">
           <div class="container">
-              <div class="hero-product-rows">
-                  <div class="product-col-6">
-                      <div class="breadcrubm-text">
-                          <h2>Shop</h2>
-                      </div>
-                  </div>
-               </div>
+            <div class="hero-product-rows">
+              <div class="product-col-6">
+                <div class="breadcrubm-text">
+                  <h2>Shop</h2>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
         <!-- Start -->
@@ -46,17 +46,12 @@
                       <div class="cat-title">
                         <h4 class="product-h4">Categories</h4>
                       </div>
-                      <div class="product-category-list">
-                        <ul>
+                      <div class="product-cat-type">
+                        <ul class="product-cat-list">
                           <% categories.forEach(category=> { %>
-                            <li>
-                              <div class="prouduct-checkout">
-                                <input type="checkbox" class="cat-checkbox" id="<%= category.category_name %>">
-                                <label for="<%= category.category_name %>" class="c-items">
-                                  <%= category.category_name %> (10)
-                                </label>
-                              </div>
-                            </li>
+                            <li> <a href="category/<%= category.category_name %>"><button class="cat-item">
+                                  <%= category.category_name %>
+                                </button></a> </li>
                             <% }); %>
                         </ul>
                       </div>
@@ -109,10 +104,10 @@
                               <label for="color6" class="c-items color-label"> Yellow</label>
                             </div>
                           </li>
-                         </ul>
+                        </ul>
                       </div>
                     </div>
-                     <div class="product-size">
+                    <div class="product-size">
                       <div class="filter-title">
                         <h4 class="product-h4">Size</h4>
                       </div>
@@ -136,18 +131,12 @@
                 </div>
                 <div class="product-md-9">
                   <div class="product-right-wrapper">
-                    <div class="product-cat-type">
-                      <ul class="product-cat-list">
-                        <% categories.forEach(category=> { %>
-                          <li> <a href="category/<%= category.category_name %>"><button class="cat-item">
-                                <%= category.category_name %>
-                              </button></a> </li>
-                          <% }); %>
-                      </ul>
-                    </div>
+
+                   
                    
 <hr>
  
+
                     <div class="product-grid">
                       <% products.forEach(product=> { %>
                         <div class="product-item">
@@ -155,10 +144,10 @@
                             <a href="/product-detail/<%= product.id %> ">
                               <img src="../product_images/<%= product.product_main_image%> %>" class="pro-img" alt="" />
                             </a>
-                           </div>
+                          </div>
                           <div class="product-add-to-card-wrap">
-                              <button class="add-to-cart" data-product-id="<%= product.id %>">
-                                <span><i class="fa-solid fa-cart-shopping"></i></span> Add to Cart
+                            <button class="add-to-cart" data-product-id="<%= product.id %>">
+                              <span><i class="fa-solid fa-cart-shopping"></i></span> Add to Cart
                             </button>
                             </button>
                           </div>
@@ -168,33 +157,24 @@
                                 <h6>
                                   <%= product.product_name %>
                                 </h6>
+                                <p class="product-short-desc">Lorem ipsum dolor sit...</p>
                               </a>
 
                               <div class="product-price">
                                 <h5>
-                                  <span class="mrp-price"> £<%=product.product_price %></span>
-                                  <span class="final-price">£<%=(product.product_price * (1 - (product.discount_on_product
-                                      / 100))).toFixed(2) %></span>
+                                   <span class="final-price">£<%=(product.product_price * (1 -
+                                      (product.discount_on_product / 100))).toFixed(2) %></span>
+                                      <span class="mrp-price"> £<%=product.product_price %></span>
                                   <span class="discount-text"> (<%=product.discount_on_product %>% OFF )</span>
                                 </h5>
-                                  <div class="product-color-option">
-                                    <ul>
-                                      <li>
-                                         <a href="" class="p-option-item c1 active"></a>
-                                      </li>
-                                      <li><a href="" class="p-option-item c2"></a></li>
-                                      <li><a href="" class="p-option-item c3"></a></li>
-                                      <li><a href="" style="color: #000; font-size: 13px;">+More</a></li>
-                                    </ul>
-                                  </div>
-                              </div>
+                               </div>
                             </div>
                             <div class="product-btn">
                               <div class="pro-whishlist">
-                                 <a class="add-to-favorites" data-product-id="<%= product.id %>">
+                                <a class="add-to-favorites" data-product-id="<%= product.id %>">
                                   <i class="fa-regular fa-heart"></i>
                                 </a>
-                               </div>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -211,8 +191,6 @@
       <!-- Footer -->
       <%- include('includes/footer') %>
         <!-- End -->
-
-
         <script>
           // Add event listener to the "Add to Favorites" button
           document.addEventListener("DOMContentLoaded", function () {

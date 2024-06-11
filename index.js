@@ -59,8 +59,6 @@ app.use((req, res, next) => {
   next();
 });
 
- 
-
 //  Set Template Engine
 app.set("view engine", "ejs");
 app.set("views", path.resolve("./views"));
@@ -88,6 +86,10 @@ app.use("/admin/", categoryRoute);
 app.use("/admin/", inventoryRoute);
 app.use("/admin/", adminProductsRoute);
 app.use("/admin/", subcategoryRoute);
+
+app.get('/accessories',(req,res) =>{
+  return res.render('accessories')
+})
 
 const PORT = 8081;
 app.listen(PORT, () => {

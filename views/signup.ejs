@@ -48,7 +48,6 @@
                   <span>OR</span>
                 </div>
               </div>
-
               <div>
                 <div class="error-message" style="color: red;">
                   <% if (typeof error !== 'undefined') { %>
@@ -61,7 +60,6 @@
                   <% } %>
                 </div>
               </div>
-
               <div class="main-form">
                 <form action="/signup" method="post">
                   <div class="row">
@@ -71,9 +69,6 @@
                         <input type="text" class="form-input" name="name" placeholder="Enter your Name" required>
                       </div>
                     </div>
-
-
-
                     <div class="col-md-12">
                       <div class="alfa-form-group">
                         <label for="Email">Email ID</label>
@@ -81,7 +76,6 @@
                         <span id="email_errror">Invaloa</span>
                       </div>
                     </div>
-
                     <div class="col-md-12">
                       <div class="alfa-form-group position-relative">
                         <label for="Password">Password</label>
@@ -118,6 +112,34 @@
         passwordView.type = "text"
       }
     })
+    document.addEventListener("DOMContentLoaded", function () {
+    const emailInput = document.getElementById("emailInput");
+    const emailError = document.getElementById("emailError");
+    const loginForm = document.getElementById("loginForm");
+
+    emailInput.addEventListener("input", function () {
+         const emailValue = emailInput.value;
+        if (validateEmail(emailValue)) {
+            emailError.style.display = "none";
+            document.getElementById("login").classList.add("user-btn-primary")
+        } else {
+            emailError.style.display = "block";
+            document.getElementById("login").classList.remove("user-btn-primary")
+        }
+    });
+
+    loginForm.addEventListener("submit", function (event) {
+        const emailValue = emailInput.value;
+        if (!validateEmail(emailValue)) {
+            emailError.style.display = "block";
+            event.preventDefault();
+        }
+    });
+    function validateEmail(email) {
+        const emailPattern = /^[A-Za-z0-9\._%+\-]+@[A-Za-z0-9\.\-]+\.[A-Za-z]{2,}$/;
+        return emailPattern.test(email);
+    }
+});
   </script>
 </body>
 

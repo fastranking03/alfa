@@ -64,7 +64,7 @@
                                             <div class="col-md-12">
                                                 <div class="alfa-form-group position-relative">
                                                     <label for="Password">Password</label>
-                                                    <input type="text" class="form-input" name="password"
+                                                    <input type="password" class="form-input" name="password"
                                                         id="passwordView" placeholder="Enter your Password">
                                                     <span id="onEyeClick"><img src="assets/images/eye.png"
                                                             alt=""></span>
@@ -120,7 +120,6 @@
                     document.getElementById("login").classList.remove("user-btn-primary")
                 }
             });
-
             loginForm.addEventListener("submit", function (event) {
                 const emailValue = emailInput.value;
                 if (!validateEmail(emailValue)) {
