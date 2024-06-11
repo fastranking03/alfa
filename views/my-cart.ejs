@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Alfa Meanswear | My Cart</title>
     <%- include('includes/head') %>
+
+    <script src="https://cdn.jsdelivr.net/npm/slugify@1.5.0/slugify.min.js"></script>
   </head>
 
   <body>
@@ -27,27 +29,16 @@
                           <div class="cart-tr cart-b-tr">
                             <div class="cart-td">
                               <div class="cart-items-left">
-                                <!-- <div
-                                  class="cart-delete"
-                                  data-product-id="<%= item.product_id %>"
-                                >
-                                  <a href="#" class="delete-product"
-                                    ><span
-                                      ><i
-                                        class="fa-regular fa-circle-xmark"
-                                      ></i></span
-                                  ></a>
-                                </div> -->
-
                                 <div class="cart-delete">
-                                  <form action="/delete-product" method="POST" class="delete-product-form">
-                                      <input type="hidden" name="product_id" value="<%= item.product_id %>" />
-                                      <button type="submit" class="delete-product-btn" style="border: none;">
-                                          <span><i class="fa-regular fa-circle-xmark"></i></span>
-                                      </button>
-                                  </form>
-                              </div>
-                              
+                                  <a
+                                    href="/delete-product/<%= item.product_id  %>"
+                                    class="delete-product"
+                                  >
+                                    <span
+                                      ><i class="fa-regular fa-circle-xmark"></i
+                                    ></span>
+                                  </a>
+                                </div>
 
                                 <div class="cart-image">
                                   <img
@@ -60,6 +51,7 @@
                                   <div class="pro-cart-title">
                                     <h3><%= item.product_name %></h3>
                                   </div>
+
                                   <div class="product-size-list">
                                     <span class="cart-short-text"
                                       >Select Size</span
@@ -186,10 +178,14 @@
                         </button>
                       </div>
 
-                      <% let totalPrice = 0; cartItems.forEach(item => {
-                      totalPrice += parseFloat(item.product_price); }); const
-                      GST = totalPrice * 0.2; const deliveryFee = 25; const
-                      totalCost = totalPrice + GST + deliveryFee; %>
+                      <% let totalPrice = 0; let totalDiscount = 0;
+                      cartItems.forEach(item => { const price =
+                      parseFloat(item.product_price); const discount =
+                      parseFloat(item.discount_on_product) || 0; totalPrice +=
+                      price; totalDiscount += (price * discount / 100); });
+                      const GST = totalPrice * 0.2; const deliveryFee = 25;
+                      const totalCost = totalPrice + GST + deliveryFee -
+                      totalDiscount; %>
 
                       <div class="alfa-cart-total">
                         <ul>
@@ -197,6 +193,13 @@
                             <div class="alfa-text">Sub-Total</div>
                             <div class="alfa-price">£ <%= totalPrice %></div>
                           </li>
+
+                          <li>
+                            <div class="alfa-text">Total Discount</div>
+                            <div class="alfa-price">- £ <%= totalDiscount %></div>
+                          </li>
+
+
                           <li>
                             <div class="alfa-text">GST</div>
                             <div class="alfa-price">£ <%= GST %></div>
@@ -275,7 +278,7 @@
           </div>
         </div>
       </div>
-     
+
       <!-- <%=JSON.stringify(cartItems) %> -->
       <!-- Footer -->
       <%- include('includes/footer') %>

@@ -18,7 +18,13 @@ const addToFavorites = async (userId, productId) => {
 
 router.get("/favorites/add/:productId", async (req, res) => {
   try {
+    let user = req.session.user; 
     const userId = req.session.user.id; // Assuming you have user session data
+
+    if (!user || !user.id) {
+      return res.redirect('/login');
+    }
+
     const productId = req.params.productId;
 
     // Check if the product already exists in favorites

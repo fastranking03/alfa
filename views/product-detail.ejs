@@ -108,7 +108,7 @@
                         <% if (product_images.length> 0) { %> <% product_images.forEach(function(image, index) { %>
                             <div class="image-item" data-index="<%= index %>">
                               <img
-                                src="https://rukminim2.flixcart.com/image/832/832/xif0q/shirt/t/b/x/s-ts-shirt1694-tanip-original-imagrf39hf7aywhg.jpeg?q=70&crop=false"
+                                src="../product_images/<%=image.image_path  %>"
                                 class="d-img" alt="" />
                             </div>
                             <% }); %>
@@ -126,14 +126,14 @@
                         <% if (product_images.length> 0) { %> <% product_images.forEach(function(image, index) { %>
                             <div class="d-item" data-index="<%= index %>">
                               <img
-                                src="https://rukminim2.flixcart.com/image/832/832/xif0q/shirt/t/b/x/s-ts-shirt1694-tanip-original-imagrf39hf7aywhg.jpeg?q=70&crop=false"
+                              src="../product_images/<%=image.image_path  %>"
                                 class="pd-img" alt="" />
                             </div>
                             <% }); %>
                               <% } else { %>
                                 <div class="d-item" data-index="0">
                                   <img
-                                    src="https://rukminim2.flixcart.com/image/832/832/xif0q/shirt/t/b/x/s-ts-shirt1694-tanip-original-imagrf39hf7aywhg.jpeg?q=70&crop=false"
+                                  src="../product_images/<%= product.product_main_image %>"
                                     alt="" />
                                 </div>
                                 <% } %>
