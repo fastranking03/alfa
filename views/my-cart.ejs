@@ -39,14 +39,19 @@
                           <div class="cart-tr cart-b-tr">
                             <div class="cart-td">
                               <div class="cart-items-left">
+                                <!-- Add an ID to the delete button for easier targeting -->
                                 <div class="cart-delete">
-                                  <a href=""
-                                    ><span
-                                      ><i
-                                        class="fa-regular fa-circle-xmark"
-                                      ></i></span
-                                  ></a>
+                                  <a
+                                    href="#"
+                                    class="delete-product"
+                                    data-product-id="<%= item.product_id %>"
+                                  >
+                                    <span
+                                      ><i class="fa-regular fa-circle-xmark"></i
+                                    ></span>
+                                  </a>
                                 </div>
+
                                 <div class="cart-image">
                                   <img
                                     src="../product_images/<%=item.product_main_image %>"
@@ -94,6 +99,7 @@
                                 class="cart-value"
                               />
                             </div>
+
                             <div class="cart-td">
                               <div class="pro-cart-price">
                                 <h3>
@@ -134,10 +140,12 @@
                           Apply
                         </button>
                       </div>
+
                       <% let totalPrice = 0; cartItems.forEach(item => {
                       totalPrice += parseFloat(item.product_price); }); const
                       GST = totalPrice * 0.2; const deliveryFee = 25; const
                       totalCost = totalPrice + GST + deliveryFee; %>
+
                       <div class="alfa-cart-total">
                         <ul>
                           <li>
@@ -188,7 +196,7 @@
                           proceed with your order.
                         </p>
                         <% } %>
-                      </div> 
+                      </div>
 
                       <br />
 
@@ -197,7 +205,6 @@
                           Proceed to Checkout
                         </button>
                       </div>
-                      
                     </div>
                   </div>
                 </div>
@@ -223,6 +230,59 @@
           </div>
         </div>
       </div>
+
+      <script>
+        document.addEventListener("DOMContentLoaded", function () {
+          const deleteButtons = document.querySelectorAll(".delete-product");
+
+          deleteButtons.forEach((button) => {
+            button.addEventListener("click", function (event) {
+              event.preventDefault();
+              const productId = this.getAttribute("data-product-id");
+
+              fetch(`/delete-product/${productId}`, {
+                method: "DELETE",
+              })
+                .then((response) => {
+                  if (response.ok) {
+                    const productRow = this.closest(".cart-tr");
+                    productRow.remove();
+
+                    // Update order summary after deleting the product
+                    let totalPrice = 0;
+                    document.querySelectorAll(".cart-tr").forEach((item) => {
+                      const priceElement =
+                        item.querySelector(".pro-cart-price h3");
+                      const price = parseFloat(
+                        priceElement.innerText.substring(1)
+                      ); // Extracting price without the '£' symbol
+                      totalPrice += price;
+                    });
+
+                    const GST = totalPrice * 0.2;
+                    const deliveryFee = 25;
+                    const totalCost = totalPrice + GST + deliveryFee;
+
+                    document.querySelector(".alfa-price.subtotal").innerText =
+                      "£" + totalPrice.toFixed(2);
+                    document.querySelector(".alfa-price.GST").innerText =
+                      "£" + GST.toFixed(2);
+                    document.querySelector(
+                      ".alfa-price.deliveryFee"
+                    ).innerText = "£" + deliveryFee.toFixed(2);
+                    document.querySelector(".alfa-price.totalCost").innerText =
+                      "£" + totalCost.toFixed(2);
+                  } else {
+                    console.error("Failed to delete product");
+                  }
+                })
+                .catch((error) => {
+                  console.error("Error:", error);
+                });
+            });
+          });
+        });
+      </script>
       <!-- <%=JSON.stringify(cartItems) %> -->
       <!-- Footer -->
       <%- include('includes/footer') %>

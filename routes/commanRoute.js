@@ -57,7 +57,6 @@ router.get("/", async (req, res) => {
 // Route for the product page
 
 router.post("/place-order", async (req, res) => {
-
   const user = req.session.user;
   const userId = user ? user.id : null;
   if (!user) {
@@ -98,7 +97,7 @@ router.post("/place-order", async (req, res) => {
         ]
       );
     }
- 
+
     const [orderDetails] = await connect.query(
       `SELECT o.*, a.name, a.email, a.phone, a.address_title , a.full_address 
        FROM orders o
@@ -596,17 +595,33 @@ router.get("/add-address", (req, res) => {
 //   res.render("my-wishlist", { user });
 // });
 
-router.get("/my-wishlist", (req, res) => {
+router.get("/my-wishlist", async (req, res) => {
   const user = req.session.user;
-  
+
   if (!user) {
     // Redirect to login page if user is not logged in
     return res.redirect("/login");
-  }
-  
-  res.render("my-wishlist", { user });
-});
+  } else {
+    try {
+      // Query to get the user's favorite products
+      const getUserFavoritesQuery = `
+        SELECT uf.*, p.*
+        FROM users_favorites uf
+        INNER JOIN products p ON uf.product_id = p.id
+        WHERE uf.user_id = ?
+      `;
+      const [wishlistItems] = await connect.query(getUserFavoritesQuery, [
+        user.id,
+      ]);
 
+      // Render the my-wishlist page with the user's favorite products
+      return res.render("my-wishlist", { user, wishlistItems });
+    } catch (error) {
+      console.error("Error fetching wishlist items:", error);
+      return res.render("error", { message: "Error fetching wishlist items" });
+    }
+  }
+});
 
 router.get("/order-confirm", (req, res) => {
   const user = req.session.user;
@@ -788,6 +803,30 @@ router.post("/add-to-cart", async (req, res) => {
   }
 });
 
+// DELETE route to handle product deletion from the cart
+router.delete("/delete-product/:productId", async (req, res) => {
+  try {
+    const productId = req.params.productId;
+    const userId = req.session.user.id; // Assuming you have the user's ID in the session
+
+    // Query to delete the product from the cart
+    const deleteProductQuery = `
+          DELETE FROM users_cart 
+          WHERE user_id = ? AND product_id = ?
+      `;
+
+    // Execute the query
+    await connect.query(deleteProductQuery, [userId, productId]);
+
+    // Send a success response
+    res.sendStatus(200);
+  } catch (error) {
+    console.error("Error deleting product:", error);
+    // Send an error response
+    res.sendStatus(500);
+  }
+});
+
 router.get("/about-us", (req, res) => {
   const user = req.session.user;
   res.render("about-us", { user });
@@ -844,4 +883,5 @@ router.get("/contact-us", (req, res) => {
   const user = req.session.user;
   res.render("contact-us", { user });
 });
+
 export default router;

@@ -189,6 +189,7 @@ router.post("/login", async (req, res) => {
             selected_size,
           ]);
         }
+        res.redirect("/cart");
       }
 
       // Clear the session cart after saving to database
@@ -200,7 +201,7 @@ router.post("/login", async (req, res) => {
       res.redirect("/admin/");
     } else {
       const [categories] = await connect.query("SELECT * FROM category");
-      res.redirect("/cart");
+      res.redirect("/");
     }
   } catch (error) {
     console.error("Error logging in:", error);
