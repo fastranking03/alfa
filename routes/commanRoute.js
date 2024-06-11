@@ -803,29 +803,30 @@ router.post("/add-to-cart", async (req, res) => {
   }
 });
 
-// DELETE route to handle product deletion from the cart
-router.delete("/delete-product/:productId", async (req, res) => {
+// Send a success response
+router.post("/delete-product", async (req, res) => {
   try {
-    const productId = req.params.productId;
+    const productId = req.body.product_id; // Accessing product ID from the request body
     const userId = req.session.user.id; // Assuming you have the user's ID in the session
 
     // Query to delete the product from the cart
     const deleteProductQuery = `
-          DELETE FROM users_cart 
-          WHERE user_id = ? AND product_id = ?
-      `;
+      DELETE FROM users_cart 
+      WHERE user_id = ? AND product_id = ?
+    `;
 
     // Execute the query
     await connect.query(deleteProductQuery, [userId, productId]);
 
-    // Send a success response
-    res.sendStatus(200);
+    // Redirect to the /cart route after successful deletion
+    res.redirect("/cart");
   } catch (error) {
     console.error("Error deleting product:", error);
     // Send an error response
     res.sendStatus(500);
   }
 });
+
 
 router.get("/about-us", (req, res) => {
   const user = req.session.user;

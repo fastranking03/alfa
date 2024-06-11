@@ -1441,6 +1441,7 @@ a {
   align-items: center;
   justify-content: center;
   display: flex;
+  text-align: center;
 }
  
 .alfa-cart-items {
@@ -1912,7 +1913,7 @@ a {
  }
  .contact-ul .c-span{
     box-shadow: var(--boxShadow);
-    background-color: #F9CF2D;
+    background-color: #00707c;
     color: #000;
     width: 40px;
     display: flex;
@@ -2242,4 +2243,15 @@ a {
   position: relative;
   right: 19px;
 }
+.address-t-wrapper{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+ .add-address{
+  
+ }
+ .add-address .shipping-text{
+  font-size: 14px; 
+ }
  

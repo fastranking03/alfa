@@ -22,39 +22,36 @@
                   <div class="col-md-7">
                     <div class="alfa-cart-items cart-right-wrap">
                       <div class="cart-table">
-                        <div class="cart-head">
-                          <div class="cart-tr">
-                            <div class="cart-th" style="width: 27%">
-                              Products
-                            </div>
-                            <div class="cart-th">Price</div>
-                            <div class="cart-th">Quantity</div>
-                            <div class="cart-th">Size</div>
-                            <div class="cart-th">Sub-Total</div>
-                          </div>
-                        </div>
-
                         <div class="cart-tbody">
                           <% cartItems.forEach((item, index) => { %>
                           <div class="cart-tr cart-b-tr">
                             <div class="cart-td">
                               <div class="cart-items-left">
-                                <!-- Add an ID to the delete button for easier targeting -->
+                                <!-- <div
+                                  class="cart-delete"
+                                  data-product-id="<%= item.product_id %>"
+                                >
+                                  <a href="#" class="delete-product"
+                                    ><span
+                                      ><i
+                                        class="fa-regular fa-circle-xmark"
+                                      ></i></span
+                                  ></a>
+                                </div> -->
+
                                 <div class="cart-delete">
-                                  <a
-                                    href="#"
-                                    class="delete-product"
-                                    data-product-id="<%= item.product_id %>"
-                                  >
-                                    <span
-                                      ><i class="fa-regular fa-circle-xmark"></i
-                                    ></span>
-                                  </a>
-                                </div>
+                                  <form action="/delete-product" method="POST" class="delete-product-form">
+                                      <input type="hidden" name="product_id" value="<%= item.product_id %>" />
+                                      <button type="submit" class="delete-product-btn" style="border: none;">
+                                          <span><i class="fa-regular fa-circle-xmark"></i></span>
+                                      </button>
+                                  </form>
+                              </div>
+                              
 
                                 <div class="cart-image">
                                   <img
-                                    src="../product_images/<%=item.product_main_image %>"
+                                    src="../product_images/<%=item.product_main_image  %>"
                                     class="cart-img"
                                     alt=""
                                   />
@@ -63,50 +60,72 @@
                                   <div class="pro-cart-title">
                                     <h3><%= item.product_name %></h3>
                                   </div>
+                                  <div class="product-size-list">
+                                    <span class="cart-short-text"
+                                      >Select Size</span
+                                    >
+                                    <ul>
+                                      <!-- <li><a href="" class="size-item cart-size active">S</a></li> -->
+                                      <li>
+                                        <input
+                                          type="text"
+                                          name="products[<%=index%>][size]"
+                                          value="<%= item.selected_size ? item.selected_size : 'S' %>"
+                                          class="cart-value"
+                                        />
+                                      </li>
+                                      <li>
+                                        <a href="" class="size-item cart-size"
+                                          >M</a
+                                        >
+                                      </li>
+                                      <li>
+                                        <a href="" class="size-item cart-size"
+                                          >L</a
+                                        >
+                                      </li>
+                                      <li>
+                                        <a href="" class="size-item cart-size"
+                                          >XL</a
+                                        >
+                                      </li>
+                                      <li>
+                                        <a href="" class="size-item cart-size"
+                                          >XXL</a
+                                        >
+                                      </li>
+                                    </ul>
+                                  </div>
+                                  <div class="new-cart-quantity">
+                                    <span class="cart-short-text"
+                                      >Quantity</span
+                                    >
+                                    <div
+                                      class="cart-quantity-wrapper cart-wrapper"
+                                    >
+                                      <div class="left-input">
+                                        <span
+                                          ><i class="fa-solid fa-minus"></i
+                                        ></span>
+                                      </div>
+                                      <div class="cart-quantity">
+                                        <input
+                                          type="text"
+                                          value="1"
+                                          class="cart-value"
+                                        />
+                                      </div>
+                                      <div class="right-input">
+                                        <span
+                                          ><i class="fa-solid fa-plus"></i
+                                        ></span>
+                                      </div>
+                                    </div>
+                                    <div class="product-limit-msg">
+                                      <span>Maximum quantity reached </span>
+                                    </div>
+                                  </div>
                                 </div>
-                              </div>
-                            </div>
-
-                            <div class="cart-td">
-                              <div class="pro-cart-price">
-                                <h3>£<%= item.product_price %></h3>
-                              </div>
-                            </div>
-                            <div class="cart-td">
-                              <div class="cart-quantity-wrapper">
-                                <div class="left-input">
-                                  <span><i class="fa-solid fa-minus"></i></span>
-                                </div>
-                                <div class="cart-quantity">
-                                  <input
-                                    type="number"
-                                    name="products[<%=index%>][quantity]"
-                                    value="1"
-                                    class="cart-value"
-                                    min="1"
-                                  />
-                                </div>
-                                <div class="right-input">
-                                  <span><i class="fa-solid fa-plus"></i></span>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="cart-td">
-                              <input
-                                type="text"
-                                name="products[<%=index%>][size]"
-                                value="<%= item.selected_size ? item.selected_size : 'S' %>"
-                                class="cart-value"
-                              />
-                            </div>
-
-                            <div class="cart-td">
-                              <div class="pro-cart-price">
-                                <h3>
-                                  £<span class="subtotal"
-                                    ><%= item.product_price %></span
-                                  >
-                                </h3>
                               </div>
                             </div>
                             <input
@@ -119,6 +138,32 @@
                               name="products[<%=index%>][price]"
                               value="<%= item.product_price %>"
                             />
+                            <div class="cart-td position-relative">
+                              <div class="pro-cart-price">
+                                <h5>
+                                  <span
+                                    class="mrp-price"
+                                    style="font-size: 22px"
+                                  >
+                                    £<%=item.product_price %></span
+                                  >
+                                  <span class="final-prices"
+                                    >£<%=(item.product_price * (1 -
+                                    (item.discount_on_product /
+                                    100))).toFixed(2) %>
+                                  </span>
+                                  <span
+                                    class="discount-text"
+                                    style="font-size: 19px"
+                                  >
+                                    (<%=item.discount_on_product %>% OFF )</span
+                                  >
+                                </h5>
+                              </div>
+                              <div class="move-to-wishlist">
+                                <a href="">Move To Wishlist</a>
+                              </div>
+                            </div>
                           </div>
                           <% }); %>
                         </div>
@@ -230,59 +275,7 @@
           </div>
         </div>
       </div>
-
-      <script>
-        document.addEventListener("DOMContentLoaded", function () {
-          const deleteButtons = document.querySelectorAll(".delete-product");
-
-          deleteButtons.forEach((button) => {
-            button.addEventListener("click", function (event) {
-              event.preventDefault();
-              const productId = this.getAttribute("data-product-id");
-
-              fetch(`/delete-product/${productId}`, {
-                method: "DELETE",
-              })
-                .then((response) => {
-                  if (response.ok) {
-                    const productRow = this.closest(".cart-tr");
-                    productRow.remove();
-
-                    // Update order summary after deleting the product
-                    let totalPrice = 0;
-                    document.querySelectorAll(".cart-tr").forEach((item) => {
-                      const priceElement =
-                        item.querySelector(".pro-cart-price h3");
-                      const price = parseFloat(
-                        priceElement.innerText.substring(1)
-                      ); // Extracting price without the '£' symbol
-                      totalPrice += price;
-                    });
-
-                    const GST = totalPrice * 0.2;
-                    const deliveryFee = 25;
-                    const totalCost = totalPrice + GST + deliveryFee;
-
-                    document.querySelector(".alfa-price.subtotal").innerText =
-                      "£" + totalPrice.toFixed(2);
-                    document.querySelector(".alfa-price.GST").innerText =
-                      "£" + GST.toFixed(2);
-                    document.querySelector(
-                      ".alfa-price.deliveryFee"
-                    ).innerText = "£" + deliveryFee.toFixed(2);
-                    document.querySelector(".alfa-price.totalCost").innerText =
-                      "£" + totalCost.toFixed(2);
-                  } else {
-                    console.error("Failed to delete product");
-                  }
-                })
-                .catch((error) => {
-                  console.error("Error:", error);
-                });
-            });
-          });
-        });
-      </script>
+     
       <!-- <%=JSON.stringify(cartItems) %> -->
       <!-- Footer -->
       <%- include('includes/footer') %>

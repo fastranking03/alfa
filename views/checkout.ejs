@@ -19,62 +19,35 @@
             <div class="row">
               <div class="col-md-6">
                 <div class="alfa-checkout-address">
-                  <div class="shiping-title">
-                    <h5>Shipping Address</h5>
-                  </div>
-                  <div class="address-title text-center">
-                    <h3>Address</h3>
-                    <div id="addressDetails">
-                      <% addresses.forEach(address => { %>
-                      <div>
-                        <p>Name: <%= address.name %></p>
-                        <p>Phone Number: <%= address.phone %></p>
-                        <p>Email: <%= address.email %></p>
-                        <p>Address Title: <%= address.address_title %></p>
-                        <p>Address: <%= address.address %></p>
-                        <p>City: <%= address.city %></p>
-                        <p>Post Code: <%= address.postcode %></p>
-                        <p>Country: <%= address.country %></p>
-                      </div>
-                      <% }); %>
+                    <div class="address-t-wrapper">
+                      <div class="shiping-title">
+                        <h5>Shipping Address</h5>
                     </div>
-                  </div>
-
-                  <div class="shipping-address">
-                    <a href="add-address" style="color: #000">
-                      <div class="add-address">
-                        <div class="shipping-text">
-                          <span
-                            ><img src="assets/images/shiping.png" alt=""
-                          /></span>
-                          Add Address
+                    <div class="address-add-wrapper">
+                     <a href="add-address" style="color: #000">
+                       <div class="add-address">
+                         <div class="shipping-text">
+                            Add Address
+                         </div>
                         </div>
-                        <img
-                          src="assets/images/back.png"
-                          class="arrow-right"
-                          alt=""
-                        />
-                      </div>
-                    </a>
-                    <div class="shipping-address-display" style="display: none">
+                     </a>
+                    </div>
+                    </div>
+                    <div class="shipping-address">
+                     <% addresses.forEach(address => { %>
+                    <div class="shipping-address-display" style="display: block">
                       <div class="address-content">
-                        <div class="shipper-name">Jeremy John Lawson</div>
+                        <div class="shipper-name"><%= address.name %></div>
                         <div class="shipper-email">
-                          <p>sales@alfa-menswear.com</p>
-                          <p>+44 1202 292 895</p>
+                          <p><%= address.email %></p>
+                          <p><%= address.phone %></p>
                         </div>
                         <div class="shipper-address">
-                          33 Westover Road, Bournemouth, Dorset, BH1 2BZ
+                          <%= address.address %> , <%= address.city %> , <%= address.postcode %> ,<%= address.country %>
                         </div>
                       </div>
-                      <div>
-                        <img
-                          src="assets/images/back.png"
-                          class="arrow-right"
-                          alt=""
-                        />
-                      </div>
-                    </div>
+                     </div>
+                     <% }); %>
                   </div>
                 </div>
               </div>
