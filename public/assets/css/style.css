@@ -968,13 +968,18 @@ a {
 }
 
 .product-details h6 {
-  color: #666666;
-  font-weight: 400;
-  font-size: 14px;
+  color: var(--blackColor);
+  font-weight: 500;
+  font-size: 16px;
   margin: 0px 0 2px;
 }
 .product-price h4{
   font-size: 20px;
+}
+.product-price h5{
+    display: flex;
+    align-items: center;
+    gap: 7px;
 }
 .bestseller-wrapper .owl-nav {
   display: flex !important;
@@ -1635,12 +1640,14 @@ a {
     font-weight: 400;
 }
 .final-price{
-  font-size: 17px;
+  font-size: 15px;
+  font-weight: 600;
 }
 .discount-text{
-    font-size: 11px;
-    color: #B3B796;
-    font-weight: 600;
+  font-size: 11px;
+  color: #f83a3a;
+  font-weight: 500;
+  opacity: .7;
 }
 .product--color ul {
   gap: 15px !important;
@@ -2296,4 +2303,10 @@ font-size: 14px;
     justify-content: center;
     font-size: 12px;
     align-items: center;
+ }
+ .product-short-desc {
+  margin: 0;
+    color: #000;
+    opacity: .5;
+    font-size: 12px;
  }
