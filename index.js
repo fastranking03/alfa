@@ -25,14 +25,13 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 app.use(express.json()); //For parsing application/json
-app.use(express.urlencoded({ extended: true })); //For parsing application/x-www-form-urlencoded
-
+app.use(express.urlencoded({ extended: true }));
 app.use(
   session({
     secret: "user",
     resave: false,
     saveUninitialized: true,
-    cookie: { secure: false, maxAge: 12 * 60 * 60 * 1000 }, //Cookie will false on development moood
+    cookie: { secure: false, maxAge: 12 * 60 * 60 * 1000 },
   })
 );
 

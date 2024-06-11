@@ -1,10 +1,10 @@
 <script src="assets/js/jquery.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" ></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
 <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
 
 <script>
-    
+
 
   var openProfileCard = document.getElementById("openProfileCard");
 
@@ -22,159 +22,174 @@
       openProfileCard.style.display = "none";
       isCardHidden = true;
     }
-    });
-    
-    $(document).ready(function() {
-      $('#hero-carousel').owlCarousel({
-        loop: true,
-        margin: 20,
-        nav: true,
-        autoplay: true,
-        navText: ['<i class="fa-solid fa-angle-left"></i>', '<i class="fa-solid fa-angle-right"></i>'],
-        responsive: {
-          0: {
-            items: 1
-          },
-          600: {
-            items: 1
-          },
-          1000: {
-            items: 1
-          }
+  });
+
+  $(document).ready(function () {
+    $('#hero-carousel').owlCarousel({
+      loop: true,
+      margin: 20,
+      nav: true,
+      autoplay: true,
+      navText: ['<i class="fa-solid fa-angle-left"></i>', '<i class="fa-solid fa-angle-right"></i>'],
+      responsive: {
+        0: {
+          items: 1
+        },
+        600: {
+          items: 1
+        },
+        1000: {
+          items: 1
         }
-      });
+      }
     });
-    $(document).ready(function() {
-      $('#bestseller-carousel').owlCarousel({
-        loop: true,
-        margin: 20,
-        nav: true,
-        autoplay: false,
-        navText: ['<i class="fa-solid fa-angle-left"></i>', '<i class="fa-solid fa-angle-right"></i>'],
-        responsive: {
-          0: {
-            items: 1
-          },
-          350: {
-            items: 2
-          },
-          400: {
-            items: 2
-          },
-          600: {
-            items: 3
-          },
-          1000: {
-            items: 5
-          },
-          1200: {
-            items: 5
-          },
-          1400: {
-            items: 5
-          },
-          1600: {
-            items: 6
-          },
-        }
-      });
+  });
+  $(document).ready(function () {
+    $('#bestseller-carousel').owlCarousel({
+      loop: true,
+      margin: 20,
+      nav: true,
+      autoplay: false,
+      navText: ['<i class="fa-solid fa-angle-left"></i>', '<i class="fa-solid fa-angle-right"></i>'],
+      responsive: {
+        0: {
+          items: 1
+        },
+        350: {
+          items: 2
+        },
+        400: {
+          items: 2
+        },
+        600: {
+          items: 3
+        },
+        1000: {
+          items: 5
+        },
+        1200: {
+          items: 5
+        },
+        1400: {
+          items: 5
+        },
+        1600: {
+          items: 6
+        },
+      }
     });
-    $(document).ready(function() {
-      $('#testimonial-carousel').owlCarousel({
-        loop: true,
-        margin: 20,
-        nav: true,
-        autoplay: true,
-        navText: ['<i class="fa-solid fa-angle-left"></i>', '<i class="fa-solid fa-angle-right"></i>'],
-        responsive: {
-          0: {
-            items: 1
-          },
-          600: {
-            items: 1
-          },
-          1000: {
-            items: 1
-          }
+  });
+  $(document).ready(function () {
+    $('#testimonial-carousel').owlCarousel({
+      loop: true,
+      margin: 20,
+      nav: true,
+      autoplay: true,
+      navText: ['<i class="fa-solid fa-angle-left"></i>', '<i class="fa-solid fa-angle-right"></i>'],
+      responsive: {
+        0: {
+          items: 1
+        },
+        600: {
+          items: 1
+        },
+        1000: {
+          items: 1
         }
-      });
+      }
+    });
+  });
+
+  $(document).ready(function () {
+    $('#maylike-carousel').owlCarousel({
+      loop: true,
+      margin: 20,
+      nav: false,
+      autoplay: true,
+      navText: ['<i class="fa-solid fa-angle-left"></i>', '<i class="fa-solid fa-angle-right"></i>'],
+      responsive: {
+        0: {
+          items: 1
+        },
+        350: {
+          items: 2
+        },
+        400: {
+          items: 2
+        },
+        600: {
+          items: 3
+        },
+        1000: {
+          items: 4
+        }
+      }
+    });
+  });
+  $(document).ready(function () {
+    $('#partner-carousel').owlCarousel({
+      loop: true,
+      margin: 20,
+      nav: true,
+      autoplay: true,
+      navText: ['<i class="fa-solid fa-angle-left"></i>', '<i class="fa-solid fa-angle-right"></i>'],
+      responsive: {
+        0: {
+          items: 1
+        },
+        400: {
+          items: 3
+        },
+        600: {
+          items: 4
+        },
+        1000: {
+          items: 7
+        }
+      }
+    });
+  });
+  $(document).ready(function () {
+    var $carousel = $('#product-detail-carousel').owlCarousel({
+      loop: true,
+      margin: 20,
+      nav: false,
+      autoplay: false,
+      navText: ['<i class="fa-solid fa-angle-left"></i>', '<i class="fa-solid fa-angle-right"></i>'],
+      responsive: {
+        0: {
+          items: 1
+        },
+        400: {
+          items: 1
+        },
+        600: {
+          items: 1
+        },
+        1000: {
+          items: 1
+        }
+      }
     });
 
-    $(document).ready(function() {
-      $('#maylike-carousel').owlCarousel({
-        loop: true,
-        margin: 20,
-        nav: false,
-        autoplay: true,
-        navText: ['<i class="fa-solid fa-angle-left"></i>', '<i class="fa-solid fa-angle-right"></i>'],
-        responsive: {
-          0: {
-            items: 1
-          },
-          350: {
-            items: 2
-          },
-          400: {
-            items: 2
-          },
-          600: {
-            items: 3
-          },
-          1000: {
-            items: 4
-          }
-        }
-      });
+    $('.image-item').on('click', function () {
+      var index = $(this).data('index');
+      $carousel.trigger('to.owl.carousel', [index, 300]);
     });
-    $(document).ready(function() {
-      $('#partner-carousel').owlCarousel({
-        loop: true,
-        margin: 20,
-        nav: true,
-        autoplay: true,
-        navText: ['<i class="fa-solid fa-angle-left"></i>', '<i class="fa-solid fa-angle-right"></i>'],
-        responsive: {
-          0: {
-            items: 1
-          },
-          400: {
-            items: 3
-          },
-          600: {
-            items: 4
-          },
-          1000: {
-            items: 7
-          }
-        }
-      });
-    });
-    $(document).ready(function() {
-     var $carousel = $('#product-detail-carousel').owlCarousel({
-        loop: true,
-        margin: 20,
-        nav: false,
-        autoplay: false,
-        navText: ['<i class="fa-solid fa-angle-left"></i>', '<i class="fa-solid fa-angle-right"></i>'],
-        responsive: {
-            0: {
-                items: 1
-            },
-            400: {
-                items: 1
-            },
-            600: {
-                items: 1
-            },
-            1000: {
-                items: 1
-            }
-        }
-    });
+  });
 
-    $('.image-item').on('click', function() {
-        var index = $(this).data('index');
-        $carousel.trigger('to.owl.carousel', [index, 300]);
+  const accordionItemHeaders = document.querySelectorAll(".accordion-item-header");
+  accordionItemHeaders.forEach(accordionItemHeader => {
+    accordionItemHeader.addEventListener("click", event => {
+      accordionItemHeader.classList.toggle("active");
+      const accordionItemBody = accordionItemHeader.nextElementSibling;
+      if (accordionItemHeader.classList.contains("active")) {
+        accordionItemBody.style.maxHeight = accordionItemBody.scrollHeight + "px";
+      }
+      else {
+        accordionItemBody.style.maxHeight = 0;
+      }
+
     });
-});
+  });
 </script>

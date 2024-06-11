@@ -177,7 +177,7 @@
     }
 
     .mt-100 {
-        top: 70px;
+        top: 85px;
     }
 
     .owl-dots {
@@ -656,5 +656,11 @@
     }
     .alfa-blog-wrapper{
         display: block;
+    }
+    .history-wrappper .history-item{
+        display: block;
+    }
+    .history-content h3 {
+        font-size: 17px;
     }
 }
