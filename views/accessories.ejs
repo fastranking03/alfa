@@ -117,10 +117,73 @@
                         </ul>
                       </div>
                     </div>
-
+<style>
+ 
+ .slider{
+    
+     border-radius: 3px;
+      
+    
+}
+ .range-slider {
+     width: 300px;
+     text-align: left;
+     position: relative;
+     padding-bottom: 12px;
+     top: 28px;
+}
+ 
+ .range-slider .rangeValues {
+    font-size: 14px;
+    font-weight: 500;  
+}
+ input[type=range] {
+     -webkit-appearance: none;
+     border: 1px solid white;
+     width: 90%;
+     position: absolute;
+     left: 0;
+     top: -22px;
+}
+ input[type=range]::-webkit-slider-runnable-track {
+     width: 95%;
+     height: 5px;
+     background: #005D67;
+     border: none;
+     border-radius: 3px;
+}
+ input[type=range]::-webkit-slider-thumb {
+     -webkit-appearance: none;
+     border: none;
+     height: 15px;
+     width: 15px;
+     border-radius: 50%;
+     background: #005D67;
+     margin-top: -6px;
+     cursor: pointer;
+     position: relative;
+     z-index: 1;
+}
+ input[type=range]:focus {
+     outline: none;
+}
+ input[type=range]:focus::-webkit-slider-runnable-track {
+     background: #ccc;
+}
+</style>
                     <div class="product-filter">
                       <div class="filter-title">
-                        <h4 class="product-h4">Filter by price</h4>
+                         <h4 class="product-h4">Filter by price</h4>
+                      </div>
+                      <div class="price-range-wrapper">
+                        <div class="slider">
+                             <div class="range-slider">
+                                Price:
+                                   <span class="rangeValues"> </span>
+                                   <input value="10" min="10" max="50000" step="500" type="range">
+                                   <input value="50000" min="10" max="50000" step="500" type="range">
+                             </div>
+                         </div>
                       </div>
                     </div>
                   </div>

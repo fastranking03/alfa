@@ -2322,3 +2322,9 @@ font-size: 14px;
   font-weight: 300;
   font-size: 15px;
  }
+ .pro-detail-img{
+    width: 80px;
+    height: 105px;
+    object-fit: fill;
+    object-position: top;
+ }
