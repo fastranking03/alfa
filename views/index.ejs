@@ -505,23 +505,7 @@
   <%- include('includes/foot') %>
 
     <script>
-      var openProfileCard = document.getElementById("openProfileCard");
-
-      // Initial state (assuming the card is hidden by default)
-      var onClickProfile = document.getElementById("onClickProfile");
-      var isCardHidden = true;
-
-      onClickProfile.addEventListener("click", function () {
-        if (isCardHidden) {
-          // Open the card
-          openProfileCard.style.display = "block";
-          isCardHidden = false;
-        } else {
-          // Hide the card
-          openProfileCard.style.display = "none";
-          isCardHidden = true;
-        }
-      });
+ 
     </script>
     <script>
       $(document).ready(function () {
