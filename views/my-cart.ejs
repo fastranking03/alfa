@@ -22,98 +22,72 @@
                   <div class="col-md-7">
                     <div class="alfa-cart-items cart-right-wrap">
                       <div class="cart-table">
-                        <div class="cart-head">
-                          <div class="cart-tr">
-                            <div class="cart-th" style="width: 27%">
-                              Products
-                            </div>
-                            <div class="cart-th">Price</div>
-                            <div class="cart-th">Quantity</div>
-                            <div class="cart-th">Size</div>
-                            <div class="cart-th">Sub-Total</div>
-                          </div>
-                        </div>
-
-                        <div class="cart-tbody">
+                         <div class="cart-tbody">
                           <% cartItems.forEach((item, index) => { %>
-                          <div class="cart-tr cart-b-tr">
-                            <div class="cart-td">
-                              <div class="cart-items-left">
-                                <div class="cart-delete">
-                                  <a href=""
-                                    ><span
-                                      ><i
-                                        class="fa-regular fa-circle-xmark"
-                                      ></i></span
-                                  ></a>
+                            <div class="cart-tr cart-b-tr">
+                                <div class="cart-td">
+                                    <div class="cart-items-left">
+                                        <div class="cart-delete">
+                                            <a href=""><span><i class="fa-regular fa-circle-xmark"></i></span></a>
+                                        </div>
+                                        <div class="cart-image">
+                                            <img src="../product_images/<%=item.product_main_image  %>"
+                                                class="cart-img" alt="">
+                                        </div>
+                                        <div class="pro-cart-contents">
+                                            <div class="pro-cart-title">
+                                                <h3>
+                                                    <%= item.product_name %>
+                                                </h3>
+                                             </div>
+                                            <div class="product-size-list">
+                                                <span class="cart-short-text">Select Size</span>
+                                                <ul>
+                                                  <!-- <li><a href="" class="size-item cart-size active">S</a></li> -->
+                                                  <li><input  type="text"  name="products[<%=index%>][size]" value="<%= item.selected_size ? item.selected_size : 'S' %>" class="cart-value" /></li>
+                                                  <li><a href="" class="size-item cart-size">M</a></li>
+                                                  <li><a href="" class="size-item cart-size">L</a></li>
+                                                  <li><a href="" class="size-item cart-size">XL</a></li>
+                                                  <li><a href="" class="size-item cart-size">XXL</a></li>
+                                                </ul>
+                                              </div>
+                                            <div class="new-cart-quantity">
+                                                <span class="cart-short-text">Quantity</span>
+                                                <div class="cart-quantity-wrapper cart-wrapper">
+                                                    <div class="left-input">
+                                                        <span><i class="fa-solid fa-minus"></i></span>
+                                                    </div>
+                                                    <div class="cart-quantity">
+                                                        <input type="text" value="1" class="cart-value">
+                                                    </div>
+                                                    <div class="right-input">
+                                                        <span><i class="fa-solid fa-plus"></i></span>
+                                                    </div>
+                                                </div>
+                                                <div class="product-limit-msg">
+                                                    <span>Maximum quantity reached </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="cart-image">
-                                  <img
-                                    src="../product_images/<%=item.product_main_image %>"
-                                    class="cart-img"
-                                    alt=""
-                                  />
+                                <input type="hidden" name="products[<%=index%>][productId]" value="<%= item.product_id %>"  />
+                                <input type="hidden" name="products[<%=index%>][price]"  value="<%= item.product_price %>" />
+                                <div class="cart-td position-relative">
+                                    <div class="pro-cart-price">
+                                        <h5>
+                                            <span class="mrp-price" style="font-size: 22px;">
+                                              £<%=item.product_price %></span>
+                                            <span class="final-prices">£<%=(item.product_price * (1 - (item.discount_on_product /
+                                                100))).toFixed(2) %> </span>
+                                               <span class="discount-text" style="font-size: 19px;"> (<%=item.discount_on_product %>% OFF )</span>
+                                          </h5>
+                                     </div>
+                                     <div class="move-to-wishlist">
+                                        <a href="">Move To Wishlist</a>
+                                     </div>
                                 </div>
-                                <div class="pro-cart-contents">
-                                  <div class="pro-cart-title">
-                                    <h3><%= item.product_name %></h3>
-                                  </div>
-                                </div>
-                              </div>
                             </div>
-
-                            <div class="cart-td">
-                              <div class="pro-cart-price">
-                                <h3>£<%= item.product_price %></h3>
-                              </div>
-                            </div>
-                            <div class="cart-td">
-                              <div class="cart-quantity-wrapper">
-                                <div class="left-input">
-                                  <span><i class="fa-solid fa-minus"></i></span>
-                                </div>
-                                <div class="cart-quantity">
-                                  <input
-                                    type="number"
-                                    name="products[<%=index%>][quantity]"
-                                    value="1"
-                                    class="cart-value"
-                                    min="1"
-                                  />
-                                </div>
-                                <div class="right-input">
-                                  <span><i class="fa-solid fa-plus"></i></span>
-                                </div>
-                              </div>
-                            </div>
-                            <div class="cart-td">
-                              <input
-                                type="text"
-                                name="products[<%=index%>][size]"
-                                value="<%= item.selected_size ? item.selected_size : 'S' %>"
-                                class="cart-value"
-                              />
-                            </div>
-                            <div class="cart-td">
-                              <div class="pro-cart-price">
-                                <h3>
-                                  £<span class="subtotal"
-                                    ><%= item.product_price %></span
-                                  >
-                                </h3>
-                              </div>
-                            </div>
-                            <input
-                              type="hidden"
-                              name="products[<%=index%>][productId]"
-                              value="<%= item.product_id %>"
-                            />
-                            <input
-                              type="hidden"
-                              name="products[<%=index%>][price]"
-                              value="<%= item.product_price %>"
-                            />
-                          </div>
                           <% }); %>
                         </div>
                       </div>
@@ -202,22 +176,10 @@
                   </div>
                 </div>
 
-                <input
-                  type="hidden"
-                  name="subtotal"
-                  value="<%= totalPrice %>"
-                />
+                <input type="hidden" name="subtotal" value="<%= totalPrice %>" />
                 <input type="hidden" name="gst" value="<%= GST %>" />
-                <input
-                  type="hidden"
-                  name="deliveryFee"
-                  value="<%= deliveryFee %>"
-                />
-                <input
-                  type="hidden"
-                  name="totalCost"
-                  value="<%= totalCost %>"
-                />
+                <input type="hidden" name="deliveryFee"  value="<%= deliveryFee %>" />
+                <input  type="hidden"  name="totalCost"  value="<%= totalCost %>" />
               </form>
             </div>
           </div>
