@@ -1,101 +1,100 @@
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <base href="http://localhost:8081" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Alfa Meanswear | Product Details</title>
+    <%- include('includes/head') %>
+  </head>
+  <style>
+    .alfa-pro-detail-wrapper {
+      max-width: 600px;
+      margin: 0 auto;
+    }
 
-<head>
-  <base href="http://localhost:8081" />
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Alfa Meanswear | Product Details</title>
-  <%- include('includes/head') %>
-</head>
-<style>
-  .alfa-pro-detail-wrapper {
-    max-width: 600px;
-    margin: 0 auto;
-  }
+    .image-grid-wrapper {
+      overflow-x: auto;
+      white-space: nowrap;
+    }
 
-  .image-grid-wrapper {
-    overflow-x: auto;
-    white-space: nowrap;
-  }
+    .images-grids {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
 
-  .images-grids {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-  }
+    .image-item {
+      flex: 1 1 calc(20% - 10px);
+      cursor: pointer;
+      cursor: pointer;
+      text-align: center;
+      align-items: center;
+      display: flex;
+      justify-content: center;
+      transition: 0.3s ease-in-out;
+      border: 2px solid #fff;
+    }
 
-  .image-item {
-    flex: 1 1 calc(20% - 10px);
-    cursor: pointer;
-    cursor: pointer;
-    text-align: center;
-    align-items: center;
-    display: flex;
-    justify-content: center;
-    transition: .3s ease-in-out;
-    border: 2px solid #fff;
-  }
+    .image-item:hover {
+      border: 2px solid #eee;
+    }
 
-  .image-item:hover {
-    border: 2px solid #eee;
-  }
+    .image-item img {
+      width: 100%;
+    }
 
-  .image-item img {
-    width: 100%;
-  }
+    input[type="radio"] {
+      display: none;
+    }
+    .accordion-items {
+      background-color: #fff;
+      color: #111;
+      margin: 1rem 0;
+      border-radius: 0.5rem;
+      border: 1px solid #eee;
+    }
 
-  input[type="radio"] {
-    display: none;
-  }
-.accordion-items {
-  background-color: #fff;
-  color: #111;
-  margin: 1rem 0;
-  border-radius: 0.5rem;
-  border: 1px solid #eee;
-}
+    .accordion-item-header {
+      padding: 0.5rem 3rem 0.5rem 1rem;
+      min-height: 3.5rem;
+      line-height: 1.25rem;
+      display: flex;
+      align-items: center;
+      position: relative;
+      cursor: pointer;
+      font-size: 20px;
+    }
 
-.accordion-item-header {
-  padding: 0.5rem 3rem 0.5rem 1rem;
-  min-height: 3.5rem;
-  line-height: 1.25rem;
-  display: flex;
-  align-items: center;
-  position: relative;
-  cursor: pointer;
-  font-size: 20px;
-}
+    .accordion-item-header::after {
+      content: "\002B";
+      font-size: 2rem;
+      position: absolute;
+      right: 1rem;
+    }
 
-.accordion-item-header::after {
-  content: "\002B";
-  font-size: 2rem;
-  position: absolute;
-  right: 1rem;
-}
+    .accordion-item-header.active::after {
+      content: "\2212";
+    }
 
-.accordion-item-header.active::after {
-  content: "\2212";
-}
+    .accordion-item-body {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.2s ease-out;
+    }
 
-.accordion-item-body {
-  max-height: 0;
-  overflow: hidden;
-  transition: max-height 0.2s ease-out;
-}
+    .accordion-item-body-content {
+      padding: 1rem;
+      line-height: 1.5rem;
+      border-top: 1px solid;
+      border-image: linear-gradient(to right, transparent, #34495e, transparent)
+        1;
+    }
+  </style>
 
-.accordion-item-body-content {
-  padding: 1rem;
-  line-height: 1.5rem;
-  border-top: 1px solid;
-  border-image: linear-gradient(to right, transparent, #34495e, transparent) 1;
-}
-
-</style>
-
-<body>
-  <div class="alfa-main-wraper">
-    <%- include('includes/header') %>
+  <body>
+    <div class="alfa-main-wraper">
+      <%- include('includes/header') %>
       <div class="mt-100">
         <div class="alfa-detail-sexction alfa-detail-wrapper">
           <div class="container">
@@ -105,38 +104,50 @@
                   <div class="col-md-2 paddingleft">
                     <div class="image-grid-wrapper">
                       <div class="images-grids">
-                        <% if (product_images.length> 0) { %> <% product_images.forEach(function(image, index) { %>
-                            <div class="image-item" data-index="<%= index %>">
-                              <img
-                                src="../product_images/<%=image.image_path  %>"
-                                class="d-img" alt="" />
-                            </div>
-                            <% }); %>
-                              <% } else { %>
-                                <div class="image-item" data-index="0">
-                                  <img src="../product_images/<%= product.product_main_image %>" class="d-img" alt="" />
-                                </div>
-                                <% } %>
+                        <% if (product_images.length> 0) { %> <%
+                        product_images.forEach(function(image, index) { %>
+                        <div class="image-item" data-index="<%= index %>">
+                          <img
+                            src="../product_images/<%=image.image_path  %>"
+                            class="d-img"
+                            alt=""
+                          />
+                        </div>
+                        <% }); %> <% } else { %>
+                        <div class="image-item" data-index="0">
+                          <img
+                            src="../product_images/<%= product.product_main_image %>"
+                            class="d-img"
+                            alt=""
+                          />
+                        </div>
+                        <% } %>
                       </div>
                     </div>
                   </div>
                   <div class="col-md-10 paddingleft">
                     <div class="alfa-pro-detail-wrapper">
-                      <div id="product-detail-carousel" class="p-detail-wrap owl-carousel comman-nav owl-nav-display">
-                        <% if (product_images.length> 0) { %> <% product_images.forEach(function(image, index) { %>
-                            <div class="d-item" data-index="<%= index %>">
-                              <img
-                              src="../product_images/<%=image.image_path  %>"
-                                class="pd-img" alt="" />
-                            </div>
-                            <% }); %>
-                              <% } else { %>
-                                <div class="d-item" data-index="0">
-                                  <img
-                                  src="../product_images/<%= product.product_main_image %>"
-                                    alt="" />
-                                </div>
-                                <% } %>
+                      <div
+                        id="product-detail-carousel"
+                        class="p-detail-wrap owl-carousel comman-nav owl-nav-display"
+                      >
+                        <% if (product_images.length> 0) { %> <%
+                        product_images.forEach(function(image, index) { %>
+                        <div class="d-item" data-index="<%= index %>">
+                          <img
+                            src="../product_images/<%=image.image_path  %>"
+                            class="pd-img"
+                            alt=""
+                          />
+                        </div>
+                        <% }); %> <% } else { %>
+                        <div class="d-item" data-index="0">
+                          <img
+                            src="../product_images/<%= product.product_main_image %>"
+                            alt=""
+                          />
+                        </div>
+                        <% } %>
                       </div>
                     </div>
                   </div>
@@ -145,30 +156,29 @@
               <div class="col-md-6">
                 <div class="pro-detail--wrapper">
                   <div class="d-title">
-                    <h2>
-                      <%=product.product_name %>
-                    </h2>
+                    <h2><%=product.product_name %></h2>
                     <p>
-                      <%=product.product_description %>
-                        Setting the bar as one of the loudest speakers in its class, the Kilburn is a compact,
-                        stout-hearted hero with a well-balanced audio which boasts a clear midrange and extended highs
-                        for a sound.
+                      <%=product.product_description %> Setting the bar as one
+                      of the loudest speakers in its class, the Kilburn is a
+                      compact, stout-hearted hero with a well-balanced audio
+                      which boasts a clear midrange and extended highs for a
+                      sound.
                     </p>
                   </div>
                   <div class="product-detail-feat">
                     <ul>
                       <li>
                         <div class="product-feat-point">
-                           <h6 class="feat-sku">SKU</h6>
-                           <span>:</span>
-                           <h6>14456</h6>
+                          <h6 class="feat-sku">SKU</h6>
+                          <span>:</span>
+                          <h6>14456</h6>
                         </div>
                       </li>
                       <li>
                         <div class="product-feat-point">
-                           <h6 class="feat-sku">Category</h6>
-                           <span>:</span>
-                           <h6>Trouser</h6>
+                          <h6 class="feat-sku">Category</h6>
+                          <span>:</span>
+                          <h6>Trouser</h6>
                         </div>
                       </li>
                     </ul>
@@ -177,11 +187,26 @@
                     <div class="product-rating">
                       <ul>
                         <li>
-                          <a href=""><span class="alfa-start"><i class="fa-solid fa-star"></i></span></a>
-                          <a href=""><span class="alfa-start"><i class="fa-solid fa-star"></i></span></a>
-                          <a href=""><span class="alfa-start"><i class="fa-solid fa-star"></i></span></a>
-                          <a href=""><span class="alfa-start"><i class="fa-solid fa-star"></i></span></a>
-                          <a href=""><span class="alfa-start"><i class="fa-solid fa-star"></i></span></a>
+                          <a href=""
+                            ><span class="alfa-start"
+                              ><i class="fa-solid fa-star"></i></span
+                          ></a>
+                          <a href=""
+                            ><span class="alfa-start"
+                              ><i class="fa-solid fa-star"></i></span
+                          ></a>
+                          <a href=""
+                            ><span class="alfa-start"
+                              ><i class="fa-solid fa-star"></i></span
+                          ></a>
+                          <a href=""
+                            ><span class="alfa-start"
+                              ><i class="fa-solid fa-star"></i></span
+                          ></a>
+                          <a href=""
+                            ><span class="alfa-start"
+                              ><i class="fa-solid fa-star"></i></span
+                          ></a>
                           <div class="border-width"></div>
                           <span class="review-count"> 10 Customer Review</span>
                         </li>
@@ -189,16 +214,23 @@
                     </div>
                     <div class="product--price">
                       <h5>
-                        <span class="final-prices">£<%=(product.product_price * (1 - (product.discount_on_product /
-                            100))).toFixed(2) %> </span><span class="mrp-price" style="font-size: 22px;">
-                          £<%=product.product_price %></span>
-                          <span class="discount-text"> (<%=product.discount_on_product %>% OFF )</span>
+                        <span class="final-prices"
+                          >£<%=(product.product_price * (1 -
+                          (product.discount_on_product / 100))).toFixed(2) %> </span
+                        ><span class="mrp-price" style="font-size: 22px">
+                          £<%=product.product_price %></span
+                        >
+                        <span class="discount-text">
+                          (<%=product.discount_on_product %>% OFF )</span
+                        >
                       </h5>
                     </div>
                   </div>
                   <div class="product-color-list product--color">
                     <div class="pro--text">
-                      <h6 style="color:#9F9F9F;font-size: 13px;">Select Colors</h6>
+                      <h6 style="color: #9f9f9f; font-size: 13px">
+                        Select Colors
+                      </h6>
                     </div>
                     <ul class="detail-ul">
                       <li>
@@ -224,125 +256,163 @@
                   <form method="post" id="productForm">
                     <div class="product-size-list">
                       <div class="pro--text">
-                        <h6 style="color:#9F9F9F;font-size: 13px;">Select Size</h6>
+                        <h6 style="color: #9f9f9f; font-size: 13px">
+                          Select Size
+                        </h6>
                       </div>
                       <ul id="sizeList" class="size-list">
-                        <% if (sizes && Object.keys(sizes).length> 0) { %>
-                          <% for (const [size, stock] of Object.entries(sizes)) { %>
-                            <% if (wearType==='bottom' ) { %>
-                              <% const numericSize=size.match(/\d+/); %>
-                                <!-- Extract numeric part -->
-                                <% if (numericSize && numericSize.length> 0) { %>
-                                  <li>
-                                    <input type="radio" id="size-<%= numericSize[0] %>" name="selectedSize"
-                                      value="<%= numericSize[0] %>" <%=stock> 0 ? '' : 'disabled' %> required />
-                                    <label style="width: 60px;height: 40px;" for="size-<%= numericSize[0] %>"
-                                      class="size-item <%= stock > 0 ? '' : 'disabled' %>">
-                                      <span class="size">
-                                        <%= numericSize[0] %>
-                                      </span>
-                                    </label>
-                                    <!-- <span class="stock">(<%= stock %>)</span> -->
-                                  </li>
-                                  <% } %>
-                                    <% } else { %>
-                                      <li>
-                                        <input type="radio" id="size-<%= size %>" name="selectedSize"
-                                          value="<%= size.toUpperCase() %>" <%=stock> 0 ? '' : 'disabled' %> required />
-                                        <label style="width: 60px;height: 40px;" for="size-<%= size %>"
-                                          class="size-item <%= stock > 0 ? '' : 'disabled' %>">
-                                          <span class="size">
-                                            <%= size.toUpperCase() %>
-                                          </span>
+                        <% if (sizes && Object.keys(sizes).length > 0) { %>
+                            <% const sizeEntries = Object.entries(sizes).slice(0, 5); %>
+                            <% for (const [size, stock] of sizeEntries) { %>
+                                <% if (wearType === 'bottom') { %>
+                                    <% const numericSize = size.match(/\d+/); %>
+                                    <% if (numericSize && numericSize.length > 0) { %>
+                                        <li>
+                                            <input type="radio" id="size-<%= numericSize[0] %>" name="selectedSize" value="<%= numericSize[0] %>" <%= stock > 0 ? '' : 'disabled' %> required />
+                                            <label style="width: 60px; height: 40px" for="size-<%= numericSize[0] %>" class="size-item <%= stock > 0 ? '' : 'disabled' %>">
+                                                <span class="size"> <%= numericSize[0] %> </span>
+                                            </label>
+                                        </li>
+                                    <% } %>
+                                <% } else { %>
+                                    <li>
+                                        <input type="radio" id="size-<%= size %>" name="selectedSize" value="<%= size.toUpperCase() %>" <%= stock > 0 ? '' : 'disabled' %> required />
+                                        <label style="width: 60px; height: 40px" for="size-<%= size %>" class="size-item <%= stock > 0 ? '' : 'disabled' %>">
+                                            <span class="size"> <%= size.toUpperCase() %> </span>
                                         </label>
-                                        <!-- <span class="stock">(<%= stock %>)</span> -->
-                                      </li>
-                                      <% } %>
-                                        <% } %>
-                                          <% } else { %>
-                                            <p>Currently Out Of Stock</p>
-                                            <% } %>
-                      </ul>
+                                    </li>
+                                <% } %>
+                            <% } %>
+                        <% } else { %>
+                            <p>Currently Out Of Stock</p>
+                        <% } %>
+                    </ul>
+                    
                     </div>
-                    <input type="hidden" name="product_id" value="<%= product.id %>" />
-                    <input type="hidden" name="product_name" value="<%= product.product_name %>" />
-                    <input type="hidden" name="finalPrice_after_discount"
-                      value="<%= (product.product_price * (1 - (product.discount_on_product / 100))).toFixed(2) %>" />
-                    <input type="hidden" name="discount_on_product" value="<%= product.discount_on_product %>" />
-                    <input type="hidden" name="actual_mrp_price" value="<%= product.product_price %>" />
-                    <input type="hidden" name="category" value="<%= product.category_name %>" />
-                    <input type="hidden" name="sub_category" value="<%= product.sub_category_name %>" />
+                    <input
+                      type="hidden"
+                      name="product_id"
+                      value="<%= product.id %>"
+                    />
+                    <input
+                      type="hidden"
+                      name="product_name"
+                      value="<%= product.product_name %>"
+                    />
+                    <input
+                      type="hidden"
+                      name="finalPrice_after_discount"
+                      value="<%= (product.product_price * (1 - (product.discount_on_product / 100))).toFixed(2) %>"
+                    />
+                    <input
+                      type="hidden"
+                      name="discount_on_product"
+                      value="<%= product.discount_on_product %>"
+                    />
+                    <input
+                      type="hidden"
+                      name="actual_mrp_price"
+                      value="<%= product.product_price %>"
+                    />
+                    <input
+                      type="hidden"
+                      name="category"
+                      value="<%= product.category_name %>"
+                    />
+                    <input
+                      type="hidden"
+                      name="sub_category"
+                      value="<%= product.sub_category_name %>"
+                    />
                     <div class="product--button-wrapper">
                       <div class="cart-quantity-wrapper">
                         <div class="left-input">
                           <span><i class="fa-solid fa-minus"></i></span>
                         </div>
                         <div class="cart-quantity">
-                          <input type="text" value="1" class="cart-value">
+                          <input type="text" value="1" class="cart-value" />
                         </div>
                         <div class="right-input">
                           <span><i class="fa-solid fa-plus"></i></span>
                         </div>
                       </div>
-                      <button type="button" class="cart-btn add-to-cart" data-action="addToCart"
-                        data-url="/add-to-cart"><span><i class="fa-solid fa-cart-shopping"></i></span> Add to
-                        Cart</button>
-                      <button type="button" class="cart-btn buy-now" data-action="buyNow" data-url="/checkout">Buy
-                        Now</button>
+                      <button
+                        type="button"
+                        class="cart-btn add-to-cart"
+                        data-action="addToCart"
+                        data-url="/add-to-cart"
+                      >
+                        <span><i class="fa-solid fa-cart-shopping"></i></span>
+                        Add to Cart
+                      </button>
+                      <button
+                        type="button"
+                        class="cart-btn buy-now"
+                        data-action="buyNow"
+                        data-url="/checkout"
+                      >
+                        Buy Now
+                      </button>
                     </div>
                   </form>
-                 
                 </div>
               </div>
             </div>
           </div>
 
           <!-- Accordion -->
-            <div class="container mt-5">
-              <div class="accordion">
-                <div class="accordion-items">
-                  <div class="accordion-item-header">
-                    Product Information
-                  </div> 
-                  <div class="accordion-item-body">
-                    <div class="accordion-item-body-content">
-                        content Pending
-                    </div>
-                  </div> 
-                </div> 
-                <div class="accordion-items">
-                  <div class="accordion-item-header">
-                    Shipping Information
-                  </div> 
-                  <div class="accordion-item-body">
-                    <div class="accordion-item-body-content">
-                      Web Development broadly refers to the tasks associated with developing functional websites and applications for the Internet. The web development process includes web design, web content development, client-side/server-side scripting and network security configuration, among other tasks.
-                    </div>
-                  </div> 
-                </div> 
-                <div class="accordion-items">
-                  <div class="accordion-item-header">
-                    Return Policy
-                  </div> 
-                  <div class="accordion-item-body">
-                    <div class="accordion-item-body-content">
-                      Web Development broadly refers to the tasks associated with developing functional websites and applications for the Internet. The web development process includes web design, web content development, client-side/server-side scripting and network security configuration, among other tasks.
-                    </div>
-                  </div> 
-                </div> 
+          <div class="container mt-5">
+            <div class="accordion">
+              <div class="accordion-items">
+                <div class="accordion-item-header">Product Information</div>
+                <div class="accordion-item-body">
+                  <div class="accordion-item-body-content">content Pending</div>
+                </div>
+              </div>
+              <div class="accordion-items">
+                <div class="accordion-item-header">Shipping Information</div>
+                <div class="accordion-item-body">
+                  <div class="accordion-item-body-content">
+                    Web Development broadly refers to the tasks associated with
+                    developing functional websites and applications for the
+                    Internet. The web development process includes web design,
+                    web content development, client-side/server-side scripting
+                    and network security configuration, among other tasks.
+                  </div>
+                </div>
+              </div>
+              <div class="accordion-items">
+                <div class="accordion-item-header">Return Policy</div>
+                <div class="accordion-item-body">
+                  <div class="accordion-item-body-content">
+                    Web Development broadly refers to the tasks associated with
+                    developing functional websites and applications for the
+                    Internet. The web development process includes web design,
+                    web content development, client-side/server-side scripting
+                    and network security configuration, among other tasks.
+                  </div>
+                </div>
               </div>
             </div>
-           <!-- End -->
+          </div>
+          <!-- End -->
           <section class="mt-5">
             <div class="container">
               <div class="alfa-bestsellerl">
                 <div class="alfa-title" style="text-align: left">
                   <h3>You may also like</h3>
                 </div>
-                <div id="maylike-carousel" class="bestseller-wrapper owl-carousel comman-nav">
+                <div
+                  id="maylike-carousel"
+                  class="bestseller-wrapper owl-carousel comman-nav"
+                >
                   <div class="product-item">
                     <div class="produt-wrap">
-                      <img src="assets/images/alfa_products/shirt2.png" class="pro-img" alt="">
+                      <img
+                        src="assets/images/alfa_products/shirt2.png"
+                        class="pro-img"
+                        alt=""
+                      />
                     </div>
                     <div class="product-details">
                       <div class="product-nameprice">
@@ -353,11 +423,36 @@
                         <div class="product-rating">
                           <ul>
                             <li>
-                              <a href=""><img src="assets/images/star.png" class="star-icon" alt=""></a>
-                              <a href=""><img src="assets/images/star.png" class="star-icon" alt=""></a>
-                              <a href=""><img src="assets/images/star.png" class="star-icon" alt=""></a>
-                              <a href=""><img src="assets/images/star.png" class="star-icon" alt=""></a>
-                              <a href=""><img src="assets/images/star.png" class="star-icon" alt=""></a>
+                              <a href=""
+                                ><img
+                                  src="assets/images/star.png"
+                                  class="star-icon"
+                                  alt=""
+                              /></a>
+                              <a href=""
+                                ><img
+                                  src="assets/images/star.png"
+                                  class="star-icon"
+                                  alt=""
+                              /></a>
+                              <a href=""
+                                ><img
+                                  src="assets/images/star.png"
+                                  class="star-icon"
+                                  alt=""
+                              /></a>
+                              <a href=""
+                                ><img
+                                  src="assets/images/star.png"
+                                  class="star-icon"
+                                  alt=""
+                              /></a>
+                              <a href=""
+                                ><img
+                                  src="assets/images/star.png"
+                                  class="star-icon"
+                                  alt=""
+                              /></a>
                             </li>
                           </ul>
                         </div>
@@ -371,7 +466,11 @@
                   </div>
                   <div class="product-item">
                     <div class="produt-wrap">
-                      <img src="assets/images/alfa_products/shirt2.png" class="pro-img" alt="">
+                      <img
+                        src="assets/images/alfa_products/shirt2.png"
+                        class="pro-img"
+                        alt=""
+                      />
                     </div>
                     <div class="product-details">
                       <div class="product-nameprice">
@@ -382,11 +481,36 @@
                         <div class="product-rating">
                           <ul>
                             <li>
-                              <a href=""><img src="assets/images/star.png" class="star-icon" alt=""></a>
-                              <a href=""><img src="assets/images/star.png" class="star-icon" alt=""></a>
-                              <a href=""><img src="assets/images/star.png" class="star-icon" alt=""></a>
-                              <a href=""><img src="assets/images/star.png" class="star-icon" alt=""></a>
-                              <a href=""><img src="assets/images/star.png" class="star-icon" alt=""></a>
+                              <a href=""
+                                ><img
+                                  src="assets/images/star.png"
+                                  class="star-icon"
+                                  alt=""
+                              /></a>
+                              <a href=""
+                                ><img
+                                  src="assets/images/star.png"
+                                  class="star-icon"
+                                  alt=""
+                              /></a>
+                              <a href=""
+                                ><img
+                                  src="assets/images/star.png"
+                                  class="star-icon"
+                                  alt=""
+                              /></a>
+                              <a href=""
+                                ><img
+                                  src="assets/images/star.png"
+                                  class="star-icon"
+                                  alt=""
+                              /></a>
+                              <a href=""
+                                ><img
+                                  src="assets/images/star.png"
+                                  class="star-icon"
+                                  alt=""
+                              /></a>
                             </li>
                           </ul>
                         </div>
@@ -406,23 +530,25 @@
       </div>
       <!-- Footer -->
       <%- include('includes/footer') %>
-        <!-- End -->
-  </div>
-  <%- include('includes/foot') %>
+      <!-- End -->
+    </div>
+    <%- include('includes/foot') %>
     <script>
-      document.addEventListener('DOMContentLoaded', function () {
-        const productForm = document.getElementById('productForm');
-        const actionButtons = productForm.querySelectorAll('.cart-btn');
+      document.addEventListener("DOMContentLoaded", function () {
+        const productForm = document.getElementById("productForm");
+        const actionButtons = productForm.querySelectorAll(".cart-btn");
 
-        actionButtons.forEach(button => {
-          button.addEventListener('click', function () {
-            const action = button.getAttribute('data-action');
-            const url = button.getAttribute('data-url');
+        actionButtons.forEach((button) => {
+          button.addEventListener("click", function () {
+            const action = button.getAttribute("data-action");
+            const url = button.getAttribute("data-url");
 
             // Check if a size is selected
-            const selectedSize = productForm.querySelector('input[name="selectedSize"]:checked');
+            const selectedSize = productForm.querySelector(
+              'input[name="selectedSize"]:checked'
+            );
             if (!selectedSize) {
-              alert('Please select a size.');
+              alert("Please select a size.");
               return; // Stop execution if no size is selected
             }
 
@@ -435,16 +561,15 @@
     </script>
 
     <script>
-      document.addEventListener('DOMContentLoaded', function () {
-        const sizeItems = document.querySelectorAll('.size-item');
-        sizeItems.forEach(item => {
-          item.addEventListener('click', function () {
-            sizeItems.forEach(i => i.classList.remove('selected'));
-            item.classList.add('selected');
+      document.addEventListener("DOMContentLoaded", function () {
+        const sizeItems = document.querySelectorAll(".size-item");
+        sizeItems.forEach((item) => {
+          item.addEventListener("click", function () {
+            sizeItems.forEach((i) => i.classList.remove("selected"));
+            item.classList.add("selected");
           });
         });
       });
     </script>
-</body>
-
+  </body>
 </html>
