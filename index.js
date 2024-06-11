@@ -57,8 +57,6 @@ app.use((req, res, next) => {
   next();
 });
 
- 
-
 //  Set Template Engine
 app.set("view engine", "ejs");
 app.set("views", path.resolve("./views"));
