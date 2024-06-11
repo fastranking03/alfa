@@ -224,42 +224,32 @@
                         <h6 style="color:#9F9F9F;font-size: 13px;">Select Size</h6>
                       </div>
                       <ul id="sizeList" class="size-list">
-                        <% if (sizes && Object.keys(sizes).length> 0) { %>
-                          <% for (const [size, stock] of Object.entries(sizes)) { %>
-                            <% if (wearType==='bottom' ) { %>
-                              <% const numericSize=size.match(/\d+/); %>
-                                <!-- Extract numeric part -->
-                                <% if (numericSize && numericSize.length> 0) { %>
-                                  <li>
-                                    <input type="radio" id="size-<%= numericSize[0] %>" name="selectedSize"
-                                      value="<%= numericSize[0] %>" <%=stock> 0 ? '' : 'disabled' %> required />
-                                    <label style="width: 60px;height: 40px;" for="size-<%= numericSize[0] %>"
-                                      class="size-item <%= stock > 0 ? '' : 'disabled' %>">
-                                      <span class="size">
-                                        <%= numericSize[0] %>
-                                      </span>
-                                    </label>
-                                    <!-- <span class="stock">(<%= stock %>)</span> -->
-                                  </li>
-                                  <% } %>
-                                    <% } else { %>
-                                      <li>
-                                        <input type="radio" id="size-<%= size %>" name="selectedSize"
-                                          value="<%= size.toUpperCase() %>" <%=stock> 0 ? '' : 'disabled' %> required />
-                                        <label style="width: 60px;height: 40px;" for="size-<%= size %>"
-                                          class="size-item <%= stock > 0 ? '' : 'disabled' %>">
-                                          <span class="size">
-                                            <%= size.toUpperCase() %>
-                                          </span>
+                        <% if (sizes && Object.keys(sizes).length > 0) { %>
+                            <% const sizeEntries = Object.entries(sizes).slice(0, 5); %>
+                            <% for (const [size, stock] of sizeEntries) { %>
+                                <% if (wearType === 'bottom') { %>
+                                    <% const numericSize = size.match(/\d+/); %>
+                                    <% if (numericSize && numericSize.length > 0) { %>
+                                        <li>
+                                            <input type="radio" id="size-<%= numericSize[0] %>" name="selectedSize" value="<%= numericSize[0] %>" <%= stock > 0 ? '' : 'disabled' %> required />
+                                            <label style="width: 60px; height: 40px" for="size-<%= numericSize[0] %>" class="size-item <%= stock > 0 ? '' : 'disabled' %>">
+                                                <span class="size"> <%= numericSize[0] %> </span>
+                                            </label>
+                                        </li>
+                                    <% } %>
+                                <% } else { %>
+                                    <li>
+                                        <input type="radio" id="size-<%= size %>" name="selectedSize" value="<%= size.toUpperCase() %>" <%= stock > 0 ? '' : 'disabled' %> required />
+                                        <label style="width: 60px; height: 40px" for="size-<%= size %>" class="size-item <%= stock > 0 ? '' : 'disabled' %>">
+                                            <span class="size"> <%= size.toUpperCase() %> </span>
                                         </label>
-                                        <!-- <span class="stock">(<%= stock %>)</span> -->
-                                      </li>
-                                      <% } %>
-                                        <% } %>
-                                          <% } else { %>
-                                            <p>Currently Out Of Stock</p>
-                                            <% } %>
-                      </ul>
+                                    </li>
+                                <% } %>
+                            <% } %>
+                        <% } else { %>
+                            <p>Currently Out Of Stock</p>
+                        <% } %>
+                    </ul>
                     </div>
                     <input type="hidden" name="product_id" value="<%= product.id %>" />
                     <input type="hidden" name="product_name" value="<%= product.product_name %>" />
