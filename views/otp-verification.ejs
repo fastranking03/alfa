@@ -21,13 +21,13 @@
           <div class="password-wrap">
             <div class="pass-title text-center">
               <h3>Enter Your Verification Code</h3>
-              <p>We Sent a verification code to </p>
+              <p>We Sent a verification code to <%= email  %> </p>
             </div>
             <form action="/otp-verification" method="post">
-              <input type="text" name="email" value="<%= email  %>">
+              <input type="hidden" name="email" value="<%= email  %>">
               <div class="row">
                 <div class="col-md-12 mx-auto text-center"> 
-                    <input type="text" name="otp" class="form-control" placeholder="Enter Otp" required > 
+                    <input type="text" name="otp" class="form-input" id="otp" maxlength="6" placeholder="Enter Otp" required > 
                 </div>
 
                 <div class="col-md-12 mt-3">
@@ -38,11 +38,9 @@
 
                 <div class="col-md-12 mt-3">
                   <div class="user-button">
-                    <button class="user-btn">Continue</button>
+                    <button class="user-btn" id="otp-primary">Continue</button>
                   </div>
                 </div>  
-                 
-
               </div> 
             </form>  
           </div>
@@ -67,6 +65,18 @@
       }
       document.getElementById('otp').value = otp;
     }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      const otp = document.getElementById("otp");
+      otp.addEventListener("input", function () {
+         if (otp.value.length === 6) {
+             document.getElementById("otp-primary").classList.add("user-btn-primary")
+        } else {
+             document.getElementById("otp-primary").classList.remove("user-btn-primary")
+        }
+    });
+
+    })
   </script>
 </body>
 
