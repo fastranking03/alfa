@@ -567,8 +567,11 @@
 
     .product--button-wrapper {
         display: flex;
+        flex-wrap: wrap;
     }
-
+    .pro-detail--wrapper {
+        padding: 0 0px;
+    }
     .cart-btn {
         width: 100%;
     }
@@ -656,5 +659,8 @@
     }
     .alfa-blog-wrapper{
         display: block;
+    }
+    .product--button-wrapper{
+        margin: 12px auto;
     }
 }

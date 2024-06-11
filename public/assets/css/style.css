@@ -1443,11 +1443,6 @@ a {
   display: flex;
   text-align: center;
 }
- 
-.alfa-cart-items {
-  margin: 30px auto;
-}
-
 .cart-items-left {
   display: flex;
   align-items: center;
@@ -1563,7 +1558,6 @@ a {
    margin: 0 auto 15px;
  }
  .alfa-pro-detail-wrapper .d-item .pd-img{
-  height: 600px;
   object-fit: contain;
   object-position: top;
  }
@@ -1866,7 +1860,6 @@ a {
  .cart-left-wrap{
       background: #F6F6F8;
       padding: 20px;
-      margin: 0px 30px;
  }
  .cart-left-top{
     display: flex;
@@ -1874,9 +1867,7 @@ a {
     align-items: center;
     margin: 0 0 15px;
  }
- .cart-right-wrap{
-  margin: 0px 25px 0 0;
- }
+ 
  .order-content-wrap p{
   display: flex;
   align-items: center;
