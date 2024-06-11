@@ -1130,22 +1130,36 @@ a {
   gap: 10px;
   flex-wrap: wrap;
   padding-left: 0;
+  flex-direction: column;
 }
 
 .product-row {
   display: flex;
   gap: 30px;
 }
-
 .cat-item {
-  border: 1px solid var(--primaryColor);
-  background-color: #fff;
-  padding: 0px 23px;
-  height: 37px;
-  font-size: 15px;
-  font-weight: 500;
+   border: 1px solid #cad2d3;
+    background-color: #fff;
+    padding: 0px 10px;
+    height: 37px;
+    width: 124px;
+    font-size: 15px;
+    font-weight: 500;
+    display: flex;
+    color: #000;
+    text-align: center;
+    opacity: .9;
+    justify-content: center;
+    align-items: center;
 }
-
+.cat-item:hover{
+  opacity: 1;
+  color: #000;
+}
+.cat-span{
+  font-size: 13px;
+  margin: 0 5px;
+}
 .cat-item.active {
   background: var(--primaryColor);
   color: #fff;

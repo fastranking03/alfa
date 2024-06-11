@@ -45,17 +45,10 @@
                       <div class="cat-title">
                         <h4 class="product-h4">Categories</h4>
                       </div>
-                      <div class="product-category-list">
-                        <ul>
+                      <div class="product-cat-type">
+                        <ul class="product-cat-list">
                           <% categories.forEach(category=> { %>
-                            <li>
-                              <div class="prouduct-checkout">
-                                <input type="checkbox" class="cat-checkbox" id="<%= category.category_name %>">
-                                <label for="<%= category.category_name %>" class="c-items">
-                                  <%= category.category_name %> (10)
-                                </label>
-                              </div>
-                            </li>
+                            <li> <a href="" class="cat-item"><%= category.category_name %> <span class="cat-span">(10)</span></a> </li>
                             <% }); %>
                         </ul>
                       </div>
@@ -135,18 +128,7 @@
                 </div>
                 <div class="product-md-9">
                   <div class="product-right-wrapper">
-                    <div class="product-cat-type">
-                      <ul class="product-cat-list">
-                        <% categories.forEach(category=> { %>
-                          <li> <a href=""><button class="cat-item">
-                                <%= category.category_name %>
-                              </button></a> </li>
-                          <% }); %>
-                      </ul>
-                    </div>
-                   
-<hr>
- 
+                     
                     <div class="product-grid">
                       <% products.forEach(product=> { %>
                         <div class="product-item">
