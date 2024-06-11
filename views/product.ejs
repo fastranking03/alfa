@@ -50,11 +50,12 @@
                         <ul class="product-cat-list">
                           <% categories.forEach(category=> { %>
                             <li> <a href="category/<%= category.category_name %>"><button class="cat-item">
-                                  <%= category.category_name %>
+                                  <%= category.category_name %>  <span class="cat-span">( <%=category.product_count  %> )</span>
                                 </button></a> </li>
                             <% }); %>
                         </ul>
                       </div>
+             
                     </div>
                     <div class="product-color">
                       <div class="color-title">
@@ -130,13 +131,10 @@
                   </div>
                 </div>
                 <div class="product-md-9">
-                  <div class="product-right-wrapper">
-
-                   
+                  <div class="product-right-wrapper"> 
                    
 <hr>
- 
-
+  
                     <div class="product-grid">
                       <% products.forEach(product=> { %>
                         <div class="product-item">

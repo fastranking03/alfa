@@ -7,7 +7,12 @@ const router = express.Router();
 router.get("/:categoryName", async (req, res) => {
   const user = req.session.user;
   const categoryName = req.params.categoryName;
-  const querycategoryList = " SELECT * FROM category ";
+  const querycategoryList = `
+  SELECT c.*, COUNT(p.id) AS product_count
+  FROM category c
+  LEFT JOIN products p ON c.id = p.category_id 
+  GROUP BY c.id;
+`;
   try {
     const [categories] = await connect.query(querycategoryList);
     // First, find the category ID based on the category name
@@ -27,6 +32,8 @@ router.get("/:categoryName", async (req, res) => {
       [categoryId]
     );
 
+    let total_product_count = productRows.length;
+
     if (productRows.length === 0) {
       return res
         .status(404)
@@ -39,6 +46,7 @@ router.get("/:categoryName", async (req, res) => {
       user,
       products: productRows,
       categories: categories,
+      product_count : total_product_count,
     });
   } catch (err) {
     res.status(500).json({ message: err.message });
