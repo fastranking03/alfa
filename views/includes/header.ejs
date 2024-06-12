@@ -10,7 +10,7 @@
                         <li><a href="/" class="nav-item active">Home</a></li>
                         <li><a href="/about-us" class="nav-item">About Us</a></li>
                         <li><a href="/blogs" class="nav-item">Blogs</a></li>
-                        <li class="position-relative alfa-menu-li">
+                        <!-- <li class="position-relative alfa-menu-li">
                             <a href="/product" class="nav-item">Shop <span class="icon-rotate"><i class="fa-solid fa-angle-down"></i></span></a>
                             <div class="dropdown-menu-wrapper">
                                 <ul>
@@ -20,7 +20,18 @@
                                     <li><a href=""  class="menu-item">Formal Shirt</a></li>
                                 </ul>
                             </div>
-                        </li>
+                        </li> -->
+
+                        <li class="position-relative alfa-menu-li">
+                            <a href="/product" class="nav-item">Shop <span class="icon-rotate"><i class="fa-solid fa-angle-down"></i></span></a>
+                            <div class="dropdown-menu-wrapper">
+                                <ul>
+                                    <% categories.forEach(category => { %>
+                                        <li><a href="/category/<%= category.category_name %>" class="menu-item"><%= category.category_name %></a></li>
+                                    <% }); %>
+                                </ul>
+                            </div>
+                          </li>
                         <li class="position-relative alfa-menu-li">
                             <a href="/accessories" class="nav-item">Accessories <span class="icon-rotate"><i class="fa-solid fa-angle-down"></i></span></a>
                             <div class="dropdown-menu-wrapper">
