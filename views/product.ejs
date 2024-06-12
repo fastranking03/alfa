@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+  <base href="http://localhost:8081"/>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Alfa Meanswear | Product</title>
@@ -48,12 +49,13 @@
                       <div class="product-cat-type">
                         <ul class="product-cat-list">
                           <% categories.forEach(category=> { %>
-                            <li> <a href="" class="cat-item">
-                                <%= category.category_name %> <span class="cat-span">(10)</span>
-                              </a> </li>
+                            <li> <a href="category/<%= category.category_name %>"><button class="cat-item">
+                                  <%= category.category_name %>  <span class="cat-span">( <%=category.product_count  %> )</span>
+                                </button></a> </li>
                             <% }); %>
                         </ul>
                       </div>
+             
                     </div>
                     <div class="product-color">
                       <div class="color-title">
@@ -129,8 +131,10 @@
                   </div>
                 </div>
                 <div class="product-md-9">
-                  <div class="product-right-wrapper">
-
+                  <div class="product-right-wrapper"> 
+                   
+<hr>
+  
                     <div class="product-grid">
                       <% products.forEach(product=> { %>
                         <div class="product-item">
@@ -153,6 +157,7 @@
                                 </h6>
                                 <p class="product-short-desc">Lorem ipsum dolor sit...</p>
                               </a>
+
                               <div class="product-price">
                                 <h5>
                                    <span class="final-price">£<%=(product.product_price * (1 -

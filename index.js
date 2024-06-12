@@ -10,10 +10,12 @@ import subcategoryRoute from "./routes/admin/subCategoryRoute.js";
 import bannerRoute from "./routes/admin/bannerRoute.js";
 import favoritesRoute from "./routes/favoritesRoute.js";
 import cartRoute from "./routes/cartRoute.js";
+import CategoryRoutes from './routes/categoryRoute.js'
 import inventoryRoute from "./routes/admin/inventoryRoute.js";
 import adminProductsRoute from "./routes/admin/productRoute.js";
 import placeOrderRoute from './routes/placeOrderRoute.js';
 import session from "express-session";
+import slugify from "slugify";
 import { fileURLToPath } from "url";
 
 import connect from "./db/connect.js";
@@ -76,6 +78,7 @@ app.use("/", productsRoute);
 app.use("/", favoritesRoute);
 app.use("/", cartRoute);
 app.use("/", placeOrderRoute);
+app.use("/category/" , CategoryRoutes);
 
 app.use("/admin/", adminRoute);
 app.use("/admin/", bannerRoute);
