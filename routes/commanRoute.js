@@ -259,13 +259,24 @@ router.get("/product-detail/:id", async (req, res) => {
 
     // Fetch wear type of the product
     const [productRows] = await connect.query(
-      "SELECT wear_type_bottom_or_top FROM products WHERE id = ?",
+      "SELECT * FROM products WHERE id = ?",
       [productId]
     );
     if (productRows.length === 0) {
       return res.status(404).send("Product not found");
     }
     const wearType = productRows[0].wear_type_bottom_or_top;
+    const product_varient_name = productRows[0].varient_name;
+
+    const queryVariantProducts = `
+    SELECT * 
+    FROM products 
+    WHERE varient_name = ?;
+`;
+
+    const [variantProducts] = await connect.query(queryVariantProducts, [
+      product_varient_name,
+    ]);
 
     // Fetch sizes based on wear type
     let sizeQuery, sizeRows;
@@ -324,6 +335,7 @@ router.get("/product-detail/:id", async (req, res) => {
       product_images,
       sizes,
       wearType,
+      variantProducts,
     });
   } catch (error) {
     console.error(error);

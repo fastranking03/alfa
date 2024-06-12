@@ -229,29 +229,24 @@
                   <div class="product-color-list product--color">
                     <div class="pro--text">
                       <h6 style="color: #9f9f9f; font-size: 13px">
-                        Select Colors
+                         
                       </h6>
                     </div>
+                     
+
                     <ul class="detail-ul">
-                      <li>
-                        <a href="" class="product-color-item color1"></a>
-                      </li>
-                      <li>
-                        <a href="" class="product-color-item color2"></a>
-                      </li>
-                      <li>
-                        <a href="" class="product-color-item color3"></a>
-                      </li>
-                      <li>
-                        <a href="" class="product-color-item color4"></a>
-                      </li>
-                      <li>
-                        <a href="" class="product-color-item color5"></a>
-                      </li>
-                      <li>
-                        <a href="" class="product-color-item color6"></a>
-                      </li>
-                    </ul>
+                      <% variantProducts.forEach(variantProduct => { %>
+                          <li> <a href="/product-detail/<%= variantProduct.id %>"> 
+                            <p><%=variantProduct.colour  %></p> 
+                            <img src="../product_images/<%=variantProduct.product_main_image %>" alt="" style="width: 100px; height: 140px;">
+<br>
+                             
+                                  <%= variantProduct.product_name %>  
+                              </a>
+ 
+                          </li>
+                      <% }) %>
+                  </ul>
                   </div>
                   <form method="post" id="productForm">
                     <div class="product-size-list">
@@ -287,7 +282,6 @@
                             <p>Currently Out Of Stock</p>
                         <% } %>
                     </ul>
-                    
                     </div>
                     <input
                       type="hidden"
