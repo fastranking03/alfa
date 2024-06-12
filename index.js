@@ -38,25 +38,34 @@ app.use(
   })
 );
 
-app.use((req, res, next) => {
-  if (!req.session.user) {
-    if (!req.session.cart) {
-      req.session.cart = [];
-    }
-    if (!req.session.wishlist) {
-      req.session.wishlist = [];
-    }
+app.use(async (req, res, next) => {
+  try {
+    // Fetch categories from the database
+    const [categories] = await connect.query("SELECT * FROM category");
+    
+    if (!req.session.user) {
+      if (!req.session.cart) {
+        req.session.cart = [];
+      }
+      if (!req.session.wishlist) {
+        req.session.wishlist = [];
+      }
 
-    req.session.cartCount = req.session.cart.length;
-    req.session.wishlistCount = req.session.wishlist.length;
+      req.session.cartCount = req.session.cart.length;
+      req.session.wishlistCount = req.session.wishlist.length;
+    }
+ 
+    res.locals.cartCount = req.session.cartCount || 0;
+    res.locals.wishlistCount = req.session.wishlistCount || 0;
+    res.locals.session = req.session;
+    res.locals.user = req.session.user;
+    res.locals.categories = categories; // Make categories available globally
+    next();
+  } catch (error) {
+    // Handle error appropriately
+    console.error("Error fetching categories:", error);
+    next(error);
   }
-
-  // globally set (this is mandatory for using session variables globally)
-  res.locals.cartCount = req.session.cartCount || 0; // Default to 0 if not set
-  res.locals.wishlistCount = req.session.wishlistCount || 0; // Default to 0 if not set
-  res.locals.session = req.session;
-  res.locals.user = req.session.user;
-  next();
 });
 
 //  Set Template Engine

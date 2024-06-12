@@ -31,20 +31,24 @@
                         <div class="alfa-defaul-wrapper">
                             <h6>Default Address</h6>
                             <div class="alfa-action-warapper">
-                                <a href="">Remove</a>
-                                <a href="">Edit</a>
+                                <a href="" class="add-action-btn">Remove</a>
+                                <a href="" class="add-action-btn">Edit</a>
                             </div>
                         </div>
                         <div class="address-content">
                           <div class="shipper-name">
                             <%= address.name %>
                           </div>
+                          <div class="address-type">
+                            <input type="radio" name="radio" class="radio-input" checked>
+                            <label for="homme">Home</label>
+                          </div>
                           <div class="shipper-email">
                             <p>
-                              <%= address.email %>
+                             Email: <%= address.email %>
                             </p>
                             <p>
-                              <%= address.phone %>
+                             Mobile: <%= address.phone %>
                             </p>
                           </div>
                           <div class="shipper-address">
@@ -54,6 +58,16 @@
                         </div>
                       </div>
                       <% }); %>
+                  </div>
+                  <div class="new-adderss-wrapper">
+                    <a href="add-address" style="color: #000;">
+                      <div  class="add-address">
+                          <div class="shipping-text">
+                              <span><i class="fa-solid fa-plus"></i></span>
+                              Add New Address
+                          </div>
+                       </div>
+                  </a>
                   </div>
                 </div>
               </div>
@@ -137,20 +151,7 @@
                     </div>
 
                     <form id="checkoutForm" action="order-confirm" method="post">
-                      <div class="address-title text-center">
-                        <h3>Address</h3>
-                        <div id="addressDetails">
-                          <label for="address_id">Select Address for Delivery:</label>
-                          <select name="address_id" id="address_id" required>
-                            <% addresses.forEach(address=> { %>
-                              <option value="<%= address.id %>">
-                                <%= address.name %> - <%= address.address_title %> - <%= address.city %>
-                              </option>
-                              <% }); %>
-                          </select>
-                        </div>
-                      </div>
-
+                  
                       <input type="hidden" name="product_id" value="<%=product_id %>" />
                       <input type="hidden" name="product_name" value="<%=product_name %>" />
 

@@ -349,6 +349,7 @@
     .arrival-wrapper {
         grid-template-columns: auto auto;
         gap: 10px;
+        display: grid
     }
 
     .alfa-category-wrapper,
@@ -429,7 +430,7 @@
 
     .offer-item-name {
         bottom: 58px;
-        left: -7px;
+        left: -30px;
     }
 
     .offer-content {
@@ -669,5 +670,23 @@
     .cart-items-left {
         display: block;
     }
-
+    .product-banner{
+        height: 125px;
+    }
+    .hero-product-rows {
+        padding: 80px 0;
+        text-align: center;
+    }
+    .alfa-pro-detail-wrapper .d-item img {
+        height: 420px;
+        object-fit: fill;
+        object-position: top;
+     }
+     .detail-ul .variant-img {
+        width: 65px;
+        height: 65px;
+     }
+     .testimonial-content{
+        margin: 0;
+     }
 }
