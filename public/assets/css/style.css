@@ -1583,6 +1583,10 @@ a {
 .alfa-pro-detail-wrapper .d-item {
    margin: 0 auto 15px;
  }
+ .alfa-pro-detail-wrapper .d-item img{
+  height: 650px;
+  object-fit: contain;
+ }
  .alfa-pro-detail-wrapper .d-item .pd-img{
   object-fit: contain;
   object-position: top;
@@ -2074,6 +2078,11 @@ a {
  .detail-ul{
   flex-direction:row !important;
  }
+ .detail-ul .variant-img{
+    width: 100px;
+    height: 140px;
+    object-fit: contain;
+ }
  .detail-ul .product-color-item{
     width: 35px !important;
     height: 35px !important;
@@ -2275,9 +2284,7 @@ font-size: 14px;
     justify-content: space-between;
     align-items: center;
 }
- .add-address{
-  
- }
+ 
  .add-address .shipping-text{
   font-size: 14px; 
  }
@@ -2380,4 +2387,10 @@ font-size: 14px;
 
 .price-range-input::-webkit-slider-runnable-track {
  background: #005D67;
+}
+.unavailableSize{
+    font-size: 14px;
+    font-weight: 500;
+    color: #a74a4a;
+    margin: 0;
 }
