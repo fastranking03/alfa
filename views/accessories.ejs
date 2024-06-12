@@ -907,8 +907,7 @@
           document.addEventListener("DOMContentLoaded", function() {
             const productGrid = document.querySelector(".product-grid");
             const productItems = document.querySelectorAll(".product-item");
-            console.log(productItems.length - 4)
-            if (productItems.length < 5) {
+             if (productItems.length < 5) {
                 productGrid.style.justifyContent = "start";
             } else {
                 productGrid.style.justifyContent = "space-between";

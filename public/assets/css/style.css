@@ -225,6 +225,9 @@ a {
 .mt-150{
   top: 150px;
 }
+.mt-50{
+  margin-top: 50px;
+}
 .user-container .user-banner-wrapper {
   width: 50%;
 }
@@ -1188,9 +1191,10 @@ a {
 
 .product-grid {
   display: flex;
-  justify-content: space-between;
+  justify-content: start;
   flex-wrap: wrap;
   align-content: stretch;
+  gap: 20px;
   width: 100%;
   -webkit-box-pack: justify;
   -webkit-box-orient: horizontal;
@@ -1316,10 +1320,10 @@ a {
 }
 
 .product-size-list ul .size-item {
-  width: 31px;
-  height: 31px;
-  display: flex;
+  padding: 3px 2px;
+  width: 35px;
   align-items: center;
+  text-align: center;
   justify-content: center;
   border: 1px solid var(--primaryColor);
   color: #000;
