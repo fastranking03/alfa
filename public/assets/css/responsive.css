@@ -783,6 +783,13 @@
         left: auto;
         right: 0;
      }
+     .payment-wrapper {
+        display: block;
+    }
+    .payment-wrapper .payment-left-item , .payment-wrapper .payment-right-item{
+        width: 100%;
+    }
+   
 }
 
 @media screen and (max-width:376px) {

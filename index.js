@@ -88,7 +88,7 @@ app.use("/", favoritesRoute);
 app.use("/", cartRoute);
 app.use("/", placeOrderRoute);
 app.use("/category/" , CategoryRoutes);
-
+  
 app.use("/admin/", adminRoute);
 app.use("/admin/", bannerRoute);
 app.use("/admin/", categoryRoute);

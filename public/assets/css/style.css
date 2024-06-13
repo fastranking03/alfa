@@ -2536,5 +2536,72 @@ font-size: 14px;
 }
 .payment-wrapper{
   display: flex;
+}
+.payment-wrapper .payment-left-item{
+  width: 40%;
+}
+.payment-wrapper .payment-right-item{
+  width: 60%;
+}
+.payment-text{
+  height: 60px;
+  padding: 20px 24px;
+  background: #fefaea;
+}
+.payment-text.paymant2-text{
+  background: #fff;
+}
+.payment-by-wrapper ul ,.recommanded-option ul{
+  padding: 0;
+    list-style: none;
+}
+.payment-by-wrapper ul  li{
+  border-bottom: 1px solid #eee;
+  padding: 18px;
+}
+.payment-by-wrapper ul a{
+    color: #000;
+    font-size: 15px;
+    font-weight: 500;
+    margin: 0px 13px;
+}
+.payment-img{
+  width: 30px;
+}
+.pay-left-wrap{
+  background: #F8F8F8;
+}
+.recom-wrapper{
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px;
+    align-items: center;
+}
+.recom-check-img{
+  width: 58px;
+  border: 1px solid #eee;
+  text-align: center;
+  height: 31px;
+  padding: 2px 0;
+}
+.recom-check-img img{
+  width: 35px;
+}
+.recommanded-option ul li{
+    border-bottom: 1px solid #eee;
+    margin: 11px 0 10px;
+    padding: 6px 0 9px;
+}
+.recom-checkbox{
+  display: flex;
   align-items: center;
+}
+.recom-checkbox label{
+    margin: 0 7px;
+    font-size: 15px;
+    font-weight: 500;
+}
+.recom-checkbox input{
+  width: 16px;
+  height: 16px;
 }
