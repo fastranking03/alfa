@@ -192,7 +192,9 @@
     .mt-100 {
         top: 90px;
     }
-
+    .mt-700{
+        top: 70px !important;
+    }
     .owl-dots {
         display: none;
     }
@@ -323,7 +325,7 @@
         bottom: 292px;
     }
     .alfa-hero-left-wrapper{
-        padding: 40px 10px;
+        padding: 24px 10px;
     }
     .alfa-form-warpper {
         width: 100%;
@@ -345,9 +347,13 @@
 
     /* HOME PAGE */
     .alfa-main-title h3 {
-        font-size: 33px;
+        font-size: 24px;
     }
-
+    .alfa-btn{
+        width: 135px;
+        height: 36px;
+       font-size: 14px;
+    }
     .hero-sec-items {
         padding: 5px 0 49px;
     }
@@ -675,6 +681,9 @@
         flex-direction: row;
         align-items: center;
      }
+     .product-size-list.mobile-product-sl ul{
+        column-gap: 12px;
+     }
     .final-prices {
         font-size: 18px;
     }
@@ -758,8 +767,7 @@
         text-align: center;
     }
     .alfa-pro-detail-wrapper .d-item img {
-        height: 420px;
-        object-fit: fill;
+        height: 500px;
         object-position: top;
      }
      .detail-ul .variant-img {
