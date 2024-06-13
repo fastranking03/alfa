@@ -1234,7 +1234,7 @@ a {
 .color-label{
   font-size: 14px;
 }
-.prouduct-checkout input[type=checkbox] {
+.prouduct-checkout input[type=checkbox] ,.address-form-group input[type=checkbox] {
   position: relative;
 	border: 2px solid var(--primaryColor);
 	border-radius: 2px;
@@ -1249,15 +1249,19 @@ a {
 	-webkit-appearance: none;
   opacity: .8;
 }
-.prouduct-checkout input[type=checkbox]:hover {
+.address-form-group input[type=checkbox]{
+  height: 19px;
+	width: 19px;
+}
+.prouduct-checkout input[type=checkbox]:hover ,.address-form-group input[type=checkbox]:hover {
   opacity: 1;
 }
 
-.prouduct-checkout input[type=checkbox]:checked {
+.prouduct-checkout input[type=checkbox]:checked, .address-form-group input[type=checkbox]:checked{
   background-color: var(--primaryColor);
   opacity: 1;
 }
-.prouduct-checkout input[type=checkbox]:before {
+.prouduct-checkout input[type=checkbox]:before ,.address-form-group input[type=checkbox]::before {
   content: '';
   position: absolute;
   right: 50%;
@@ -1811,7 +1815,7 @@ a {
 }
 .address-form-group .address-input{
     width: 100%;
-    border: 1px solid #E1E1E1;
+    border: 1px solid var(--primaryColor);
     height: 68px;
     padding: 13px 20px 0;
     outline: none;
@@ -1857,18 +1861,20 @@ a {
   transition: .2s ease-in-out;
 }
 .address-btn.address-black{
-  background: var(--blackColor);
+  background: var(--primaryColor);
   color: var(--whiteColor);
-  border: 1px solid var(--blackColor);
+  border: 1px solid var(--primaryColor);
 }
 .address-btn:hover{
-  background: var(--blackColor);
+  background: var(--primaryColor);
   color: var(--whiteColor);
 }
 .address-checkbox-label{
-    position: relative;
-    bottom: 4px;
-    margin: 0 4px;
+  position: relative;
+  bottom: 2px;
+  margin: 0 4px;
+  font-size: 14px;
+  font-weight: 500;
 }
 .mobile-header{
   display: none;
@@ -2437,7 +2443,7 @@ font-size: 14px;
   padding-left: 26px;
   cursor: pointer;
   line-height: 20px;
-  font-size: 14px;
+  font-size: 15px;
   font-weight: 500;
   display: inline-block;
 }
@@ -2505,4 +2511,30 @@ font-size: 14px;
     width: 85px;
     height: 85px;
     object-fit: fill;
+}
+.addres-row{
+  display: flex;
+  gap: 20px;
+}
+.addres-row .ad-md-3{
+  width: 16%;
+}
+.addres-row .ad-md-9{
+  width: 84%;
+}
+.address-form-group .alfa-uk-flag{
+  position: absolute;
+  top: 20px;
+  left: 21px;
+}
+.address-form-group .mobile-input{
+  text-align: right;
+    padding: 0px 23px;
+}
+.payment-section{
+  border: 1px solid #eee;
+}
+.payment-wrapper{
+  display: flex;
+  align-items: center;
 }

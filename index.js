@@ -102,6 +102,9 @@ app.get('/accessories',(req,res) =>{
 app.get('/my-profile',(req,res) =>{
   return res.render('my-profile')
 })
+app.get('/payment',(req,res) =>{
+  return res.render('payment')
+})
 const PORT = 8081;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

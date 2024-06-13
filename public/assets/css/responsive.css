@@ -159,7 +159,6 @@
         list-style: none;
         padding: 0;
         display: flex;
-        align-items: center;
         gap: 10px;
         margin: 0;
     }
@@ -190,7 +189,7 @@
     }
 
     .mt-100 {
-        top: 90px;
+        top: 70px;
     }
     .mt-700{
         top: 70px !important;
@@ -780,4 +779,23 @@
      .produt-wrap .pro-img{
         height: 245px;
      }
+     .user-profile-card{
+        left: auto;
+        right: 0;
+     }
+}
+
+@media screen and (max-width:376px) {
+        .final-price {
+            font-size: 14px;
+        }
+            .mrp-price{
+          font-size: 10px;
+        }
+        .discount-text{
+            font-size: 9px;
+        }
+        .shop-content {
+             padding: 0 3px;
+        }
 }

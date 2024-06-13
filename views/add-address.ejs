@@ -22,7 +22,7 @@
                                     <input type="hidden" name="userid" value="<%=user.id %>">
                                     <div class="row">
                                         <div class="address-form-title">
-                                            <h4>Recipients Information</h4>
+                                            <h4>Contact Details</h4>
                                          </div>
                                         <div class="col-md-12">
                                             <div class="address-form-group">
@@ -31,21 +31,21 @@
                                             </div>
                                         </div>
                                         <div class="col-md-12">
-                                            <div class="address-form-group">
-                                                <label for="Name" class="address-label">Phone Number*</label>
-                                                <input type="text" name="phone" class="address-input" placeholder="Enter Name">
-                                            </div>
+                                             <div class="addres-row">
+                                                <div class="ad-md-3">
+                                                    <div class="address-form-group position-relative">
+                                                        <span class="alfa-uk-flag"><img src="assets/images/ukflag.png" alt=""></span>
+                                                        <input type="text" value="+44" readonly class="address-input mobile-input">
+                                                    </div>  
+                                                </div>
+                                                <div class="ad-md-9">
+                                                    <div class="address-form-group">
+                                                        <label for="Name" class="address-label">Phone Number*</label>
+                                                        <input type="text" name="phone" class="address-input" placeholder="Enter Phone">
+                                                    </div>  
+                                                </div>
+                                             </div>
                                         </div>
-
-                                        <div class="col-md-12">
-                                            <div class="address-form-group">
-                                                <label for="Name" class="address-label"> Alt Phone Number </label>
-                                                <input type="text" name="alt_phone" class="address-input" placeholder="Enter Name">
-                                            </div>
-                                        </div>
-
-
-                                      
                                         <div class="col-md-12">
                                             <div class="address-form-group">
                                                 <label for="Name" class="address-label">Email Address*</label>
@@ -55,62 +55,75 @@
                                     </div>
                                     <div class="row">
                                         <div class="address-form-title">
-                                            <h4>Shipping Address</h4>
+                                            <h4>Address</h4>
                                          </div>
                                         <div class="col-md-12">
                                             <div class="address-form-group">
-                                                <label for="Name" class="address-label">Address Title (Optional)*</label>
+                                                <label for="Name" class="address-label">Pin Code*</label>
                                                 <input type="text" name="address_title" class="address-input" placeholder="Address Title ">
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="address-form-group">
-                                                <label for="Name" class="address-label">Address*</label>
+                                                <label for="Name" class="address-label">Address (House No, Building, Street, Aera)*</label>
                                                 <input type="text" name="address" class="address-input" placeholder="Enter Full Address">
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="address-form-group">
-                                                <label for="Name" class="address-label">City*</label>
+                                                <label for="Name" class="address-label">Locality*</label>
                                                 <input type="text" name="city" class="address-input" placeholder="Enter City">
                                             </div>
                                         </div>
                                         <div class="col-md-12">
-                                            <div class="address-form-group">
-                                                <label for="Name" class="address-label">Post Code*</label>
-                                                <input type="text" name="postcode" class="address-input" placeholder="Enter Post Code">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="address-form-group">
+                                                        <label for="Name" class="address-label">City*</label>
+                                                         <select name="city" id="" class="address-input" required>
+                                                            <option value="">-Select-</option>
+                                                            <option value="London">London</option>
+                                                            <option value="Birmingham">Birmingham</option>
+                                                            <option value="Bristol">Bristol</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="address-form-group">
+                                                        <label for="Name" class="address-label">State*</label>
+                                                         <select name="state" id="" class="address-input" required>
+                                                            <option value="">-Select-</option>
+                                                            <option value="London">London</option>
+                                                            <option value="Birmingham">Birmingham</option>
+                                                            <option value="Bristol">Bristol</option>
+                                                        </select>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-12">
-                                            <div class="address-form-group">
-                                                <label for="Name" class="address-label">Country*</label>
-                                                <input type="text" name="country" class="address-input" placeholder="Enter Country">
-                                            </div>
-                                        </div>
+                                         
                                     </div>
-                                    <div class="address-form-title">
-                                        <h4>Billing Information</h4>
-                                     </div>
-                                    <div class="col-md-12">
-                                        <div class="address-form-group">
-                                             <input type="checkbox" name="checkbox" class="checkbox-inputs">
-                                             <label for="Name" class="address-checkbox-label" style="color: #000;">Same as delivery address</label>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
+                                    
+                                     <div class="col-md-12">
                                          <div class="billing-type">
-                                            <h4>Billing Type*</h4>
+                                            <h5>Save Address as</h5>
                                          </div>
                                          <div class="address-radio-flex">
                                              <div class="input-radio">
-                                                <input type="radio" name="radio1" value="Personal" checked>
+                                                <input type="radio" class="radio-input" name="radio1" value="Personal" checked>
                                                 <label for="radio1">Personal</label>
                                              </div>
                                              <div class="input-radio">
-                                                <input type="radio" name="radio1" value="Commercial">
-                                                <label for="radio1">Commercial</label>
+                                                <input type="radio" class="radio-input" name="radio2" value="Commercial">
+                                                <label for="radio2">Commercial</label>
                                              </div>
                                          </div>
+                                    </div>
+                                    <div class="col-md-12 mt-4">
+                                        <div class="address-form-group">
+                                             <input type="checkbox" name="checkbox" class="checkbox-inputs">
+                                             <label for="Name" class="address-checkbox-label" style="color: #000;">Make this my default address</label>
+                                        </div>
                                     </div>
                                     <div class="col-md-12 mt-5">
                                         <div class="add-address-button">

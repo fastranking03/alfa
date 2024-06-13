@@ -120,9 +120,40 @@
                     <div class="mobile-ul">
                         <ul>
                             <li>
-                                <div class="alfa-icon-flex">
+                                <div class="alfa-icon-flex" id="onClickProfiles">
                                     <img src="assets/images/profile.png" width="100%" alt="">
                                     <span>Profile</span>
+                                </div>
+                                <div class="user-profile-card" id="openProfileCards">
+                                    <div class="user-pro-top">
+                                        <div>
+                                            <div class="pro-title">
+                                                <% if (user) { %>
+                                                    <h5>Welcome <%= user.name %>
+                                                    </h5>
+                                                    <% } %>
+                                                        <p>To access account and manage orders</p>
+                                            </div>
+    
+                                            <div class="profile-login-signup">
+                                                <% if (user) { %>
+                                                    <a href="/logout">Logout</a>
+                                                    <% } else { %>
+                                                        <a href="/login">Login</a>
+                                                        <span>/</span>
+                                                        <a href="/signup">Signup</a>
+                                                        <% } %>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="user-pro-links">
+                                        <ul>
+                                            <li><a href="/my-orders">Orders</a></li> 
+                                            <li><a href="/my-wishlist">Wishlist</a></li>
+                                            <li><a href="/my-profile">My Profile</a></li>
+                                            <li><a href="">Contact Us</a></li>
+                                        </ul>
+                                    </div>
                                 </div>
                             </li>
                             <li>
@@ -174,4 +205,21 @@
 </div>
  
 
+
+<script>
+    var onClickProfile = document.getElementById("onClickProfiles");
+    var openProfileCards = document.getElementById("openProfileCards");
+    var cardOpen = true
+    onClickProfile.addEventListener("click",function(){
+        if(cardOpen){
+            openProfileCards.style.display = "block";
+            cardOpen = false
+        }
+        else{
+            cardOpen = true
+            openProfileCards.style.display = "none";
+            
+        }
+    })
+</script>
  
