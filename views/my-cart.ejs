@@ -24,8 +24,15 @@
                   <div class="col-md-7">
                     <div class="alfa-cart-items cart-right-wrap">
                       <div class="cart-table">
-                        <div class="cart-tbody">
-                          <% cartItems.forEach((item, index) => { %>
+                        <div class="cart-tbody" id="cart-pricing">
+                          <% let totalPrice = 0; let totalDiscount = 0;
+                          cartItems.forEach((item, index) => { const price =
+                          parseFloat(item.product_price); const discount =
+                          parseFloat(item.discount_on_product) || 0; const
+                          quantity = parseInt(item.quantity); totalPrice +=
+                          price * quantity; totalDiscount += (price * discount /
+                          100); %>
+
                           <div class="cart-tr cart-b-tr">
                             <div class="cart-td">
                               <div class="cart-items-left">
@@ -54,8 +61,11 @@
 
                                   <div class="product-size-list">
                                     <span class="cart-short-text"
-                                      >Select Size</span
+                                      >Select Size :
+                                      <%=item.selected_size%></span
                                     >
+
+                                    <!-- <span>  <h3 id="productid"><%= item.id %></h3></span> -->
                                     <ul>
                                       <!-- <li><a href="" class="size-item cart-size active">S</a></li> -->
                                       <li>
@@ -90,29 +100,31 @@
                                   </div>
                                   <div class="new-cart-quantity">
                                     <span class="cart-short-text"
-                                      >Quantity</span
+                                      >Quantity : <span id="quantity-display-<%= item.id %>"><%=item.quantity %></span></span
                                     >
-                                    <div
-                                      class="cart-quantity-wrapper cart-wrapper"
-                                    >
+                                    <div class="cart-quantity-wrapper">
                                       <div class="left-input">
-                                        <span
-                                          ><i class="fa-solid fa-minus"></i
-                                        ></span>
+                                        <span class="decrement" id="minus">
+                                          <i class="fa-solid fa-minus"></i>
+                                        </span>
                                       </div>
                                       <div class="cart-quantity">
                                         <input
                                           type="text"
-                                          value="1"
+                                          name="product_quantity"
+                                          value="<%=item.quantity %>"
                                           class="cart-value"
+                                          data-product-id="<%= item.id %>"
+                                          id="quantity-js"
                                         />
                                       </div>
                                       <div class="right-input">
-                                        <span
-                                          ><i class="fa-solid fa-plus"></i
-                                        ></span>
+                                        <span class="increment">
+                                          <i class="fa-solid fa-plus"></i>
+                                        </span>
                                       </div>
                                     </div>
+
                                     <div class="product-limit-msg">
                                       <span>Maximum quantity reached </span>
                                     </div>
@@ -135,7 +147,7 @@
                                 <h5>
                                   <span
                                     class="mrp-price"
-                                    style="font-size:18px"
+                                    style="font-size: 18px"
                                   >
                                     £<%=item.product_price %></span
                                   >
@@ -157,7 +169,9 @@
                               </div>
                             </div>
                           </div>
-                          <% }); %>
+                          <% }); const GST = totalPrice * 0.2; const deliveryFee
+                          = 25; const totalCost = totalPrice + GST + deliveryFee
+                          - totalDiscount; %>
                         </div>
                       </div>
                     </div>
@@ -178,35 +192,40 @@
                         </button>
                       </div>
 
-                      <% let totalPrice = 0; let totalDiscount = 0;
-                      cartItems.forEach(item => { const price =
-                      parseFloat(item.product_price); const discount =
-                      parseFloat(item.discount_on_product) || 0; totalPrice +=
-                      price; totalDiscount += (price * discount / 100); });
-                      const GST = totalPrice * 0.2; const deliveryFee = 25;
-                      const totalCost = totalPrice + GST + deliveryFee -
-                      totalDiscount; %>
-
                       <div class="alfa-cart-total">
                         <ul>
                           <li>
                             <div class="alfa-text">Sub-Total</div>
-                            <div class="alfa-price">£ <%= totalPrice %></div>
+                            <div class="alfa-price">
+                              £
+                              <span id="totalPrice-ajax"
+                                ><%= totalPrice %></span
+                              >
+                            </div>
                           </li>
 
                           <li>
                             <div class="alfa-text">Total Discount</div>
-                            <div class="alfa-price">- £ <%= totalDiscount %></div>
+                            <div class="alfa-price">
+                              - £
+                              <span id="totalDiscount-ajax"
+                                ><%= totalDiscount %></span
+                              >
+                            </div>
                           </li>
-
 
                           <li>
                             <div class="alfa-text">GST</div>
-                            <div class="alfa-price">£ <%= GST %></div>
+                            <div class="alfa-price">
+                              £ <span id="GST-ajax"><%= GST %></span>
+                            </div>
                           </li>
                           <li>
                             <div class="alfa-text">Delivery Fee</div>
-                            <div class="alfa-price">£ <%= deliveryFee %></div>
+                            <div class="alfa-price">
+                              £
+                              <span id="Delivery-ajax"><%= deliveryFee %></span>
+                            </div>
                           </li>
                         </ul>
                       </div>
@@ -215,7 +234,10 @@
                         <ul>
                           <li>
                             <div class="alfa-text">Total Cost</div>
-                            <div class="alfa-price">£ <%= totalCost %></div>
+                            <div class="alfa-price">
+                              £
+                              <span id="totalCost-ajax"><%= totalCost %></span>
+                            </div>
                           </li>
                         </ul>
                       </div>
