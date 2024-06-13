@@ -2,27 +2,12 @@
     <header class="header">
         <div class="header-container">
             <div class="left-header-wrapper">
-                <!-- <div class="alfa-contact-number">
-                    <h6><span><img src="assets/images/phone.png" style="width: 22px;" alt=""></span> +44 1202292895</h6>
-                </div> -->
-                <div class="alfa-navbar">
+                 <div class="alfa-navbar">
                     <ul>
                         <li><a href="/" class="nav-item active">Home</a></li>
                         <li><a href="/about-us" class="nav-item">About Us</a></li>
                         <li><a href="/blogs" class="nav-item">Blogs</a></li>
-                        <!-- <li class="position-relative alfa-menu-li">
-                            <a href="/product" class="nav-item">Shop <span class="icon-rotate"><i class="fa-solid fa-angle-down"></i></span></a>
-                            <div class="dropdown-menu-wrapper">
-                                <ul>
-                                    <li><a href="" class="menu-item">Casual Shirt</a></li>
-                                    <li><a href=""  class="menu-item">Formal Shirt</a></li>
-                                    <li><a href="" class="menu-item">Casual Shirt</a></li>
-                                    <li><a href=""  class="menu-item">Formal Shirt</a></li>
-                                </ul>
-                            </div>
-                        </li> -->
-
-                        <li class="position-relative alfa-menu-li">
+                         <li class="position-relative alfa-menu-li">
                             <a href="/product" class="nav-item">Shop <span class="icon-rotate"><i class="fa-solid fa-angle-down"></i></span></a>
                             <div class="dropdown-menu-wrapper">
                                 <ul>
@@ -89,8 +74,8 @@
                                 <div class="user-pro-links">
                                     <ul>
                                         <li><a href="/my-orders">Orders</a></li> 
-                                        <li><a href="">Wishlist</a></li>
-                                        <li><a href="">Gift Cards</a></li>
+                                        <li><a href="/my-wishlist">Wishlist</a></li>
+                                        <li><a href="/my-profile">My Profile</a></li>
                                         <li><a href="">Contact Us</a></li>
                                     </ul>
                                 </div>
@@ -110,7 +95,7 @@
 
                         <li id="cart">
                             <a href="cart">
-                                <div class="alfa-icon-flex position-relative" id="leftOffCanvass">
+                                <div class="alfa-icon-flex position-relative">
                                     <img src="assets/images/cart.png" width="100%" alt="" />
                                     <span class="product-count">
                                         <%= session.cartCount !== undefined ? session.cartCount : 'null' %>
@@ -141,7 +126,7 @@
                                 </div>
                             </li>
                             <li>
-                                <a href="my-wishlist">
+                                <a href="/my-wishlist">
                                     <div class="alfa-icon-flex">
                                         <img src="assets/images/heart.png" width="100%" alt="">
                                         <span>Wishlist</span>
@@ -149,8 +134,8 @@
                                 </a>
                             </li>
                             <li>
-                                <a href="my-cart">
-                                    <div class="alfa-icon-flex position-relative" id="leftOffCanvas">
+                                <a href="/cart">
+                                    <div class="alfa-icon-flex position-relative">
                                         <span class="product-count">1</span>
                                         <img src="assets/images/cart.png" width="100%" alt="">
                                         <span>Cart</span>
@@ -169,7 +154,7 @@
     </div>
 </div>
 <!-- Mobile Navbar -->
-<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+<div class="offcanvas sidebar-offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
     <div class="offcanvas-header">
         <h5 class="offcanvas-title" id="offcanvasExampleLabel"><img src="assets/images/alfa-logo.png" width="50px"
                 alt=""></h5>
@@ -187,147 +172,6 @@
         </div>
     </div>
 </div>
-<!-- Cart offcanvas -->
-<div class="alfa-offcanvas-wrapper" id="cartOffCanvase">
-    <div>
-        <div class="alfa-offcanvas-header">
-            <div class="header-left">
-                <h4>Shopping Cart</h4>
-            </div>
-            <div class="header-right">
-                <a style="cursor: pointer" id="closeOffcanvas"><img src="assets/images/close.png" alt="" /></a>
-            </div>
-        </div>
-        <div class="alfa-offcanvas-body">
-            <div class="alfa-cart-items">
-                <div class="cart-items">
-                    <div class="cart-items-left">
-                        <div class="cart-image">
-                            <img src="assets/images/cat3.png" class="cart-img" alt="" />
-                        </div>
-                        <div class="pro-cart-contents">
-                            <div class="pro-cart-title">
-                                <h3>Menswear Trouser</h3>
-                            </div>
-                            <div class="pro-cart-colorsize">
-                                <p>Size : XL</p>
-                                <p>Color : Grey</p>
-                            </div>
-                            <div class="pro-cart-price">
-                                <h3>£50.00</h3>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="cart-items-right">
-                        <div>
-                            <div class="cart-delete">
-                                <a href=""><img src="assets/images/delete.png" alt="" /></a>
-                            </div>
-                            <div class="cart-quantity-wrapper">
-                                <div class="left-input">
-                                    <span><img src="assets/images/minuse.png" alt="" /></span>
-                                </div>
-                                <div class="cart-quantity">
-                                    <input type="text" value="1" class="cart-value" />
-                                </div>
-                                <div class="right-input">
-                                    <span><img src="assets/images/plus.png" alt="" /></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="cart-items">
-                    <div class="cart-items-left">
-                        <div class="cart-image">
-                            <img src="assets/images/cat3.png" class="cart-img" alt="" />
-                        </div>
  
-                        <div class="pro-cart-contents">
-                            <div class="pro-cart-title">
-                                <h3>Menswear Trouser</h3>
-                            </div>
-                            <div class="pro-cart-colorsize">
-                                <p>Size : XL</p>
-                                <p>Color : Grey</p>
-                            </div>
-                            <div class="pro-cart-price">
-                                <h3>£50.00</h3>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="cart-items-right">
-                        <div>
-                            <div class="cart-delete">
-                                <a href=""><img src="assets/images/delete.png" alt="" /></a>
-                            </div>
-                            <div class="cart-quantity-wrapper">
-                                <div class="left-input">
-                                    <span><img src="assets/images/minuse.png" alt="" /></span>
-                                </div>
-                                <div class="cart-quantity">
-                                    <input type="text" value="1" class="cart-value" />
-                                </div>
-                                <div class="right-input">
-                                    <span><img src="assets/images/plus.png" alt="" /></span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="alfa-offcanvas-footer">
-                <div class="promo-code-wrap">
-                    <input type="text" class="promo-input" placeholder="Promo Code" />
-                    <button type="submit" class="apply-btn" name="submit">Apply</button>
-                </div>
-                <div class="alfa-cart-total">
-                    <ul>
-                        <li>
-                            <div class="alfa-text">Sub- Total</div>
-                            <div class="alfa-price">£456.00</div>
-                        </li>
-                        <li>
-                            <div class="alfa-text">GST</div>
-                            <div class="alfa-price">£91.00</div>
-                        </li>
-                        <li>
-                            <div class="alfa-text">Discount</div>
-                            <div class="alfa-price">-£30.00</div>
-                        </li>
-                        <li>
-                            <div class="alfa-text">Delivery Fee</div>
-                            <div class="alfa-price">£25.00</div>
-                        </li>
-                    </ul>
-                </div>
-                <div class="alfa-cart-total">
-                    <ul>
-                        <li>
-                            <div class="alfa-text">Total Cost</div>
-                            <div class="alfa-price">£542.00</div>
-                        </li>
-                    </ul>
-                </div>
-                <div class="alfa-checkout-wrapper">
-                    <button type="button" class="checkout-btn" onclick='window.location.href="/checkout"'>Proceed to
-                        Checkout</button>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-<!-- End -->
 
-<script>
-    var leftOffCanvas = document.getElementById("leftOffCanvas");
-    var closeOffcanvas = document.getElementById("closeOffcanvas");
-    var showCanvas = document.getElementById("cartOffCanvase");
-    leftOffCanvas.addEventListener("click", function () {
-        showCanvas.classList.add("show");
-    });
-
-    closeOffcanvas.addEventListener("click", function () {
-        showCanvas.classList.remove("show");
-    });
-</script>
+ 

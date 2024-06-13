@@ -99,7 +99,9 @@ app.use("/admin/", subcategoryRoute);
 app.get('/accessories',(req,res) =>{
   return res.render('accessories')
 })
-
+app.get('/my-profile',(req,res) =>{
+  return res.render('my-profile')
+})
 const PORT = 8081;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

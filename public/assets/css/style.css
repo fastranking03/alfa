@@ -605,9 +605,9 @@ a {
   margin: auto;
 }
 .arrival-wrapper {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
   justify-content: space-between;
+  grid-template-columns: auto auto auto auto auto auto;
  }
 .category-wrapper {
   display: grid;
@@ -905,7 +905,7 @@ a {
 .product-add-to-card-wrap {
   position: absolute;
   margin-top: -54px;
-  left: 20%;
+  left: 21%;
 }
 
 .add-to-cart {
@@ -1499,6 +1499,7 @@ a {
 .product-size-list ul .size-item.cart-size{
     width: 28px;
     height: 28px;
+    display: inline-block;
     font-size: 14px;
 }
 .pro-cart-price h3 {
@@ -2418,6 +2419,7 @@ font-size: 14px;
     font-size: 14px;
     font-weight: 500;
     padding: 4px 7px;
+    height: 31px;
 }
 .address-content{
   padding: 12px 18px;
@@ -2473,4 +2475,34 @@ font-size: 14px;
     opacity: 1;
     -webkit-transform: scale(1);
     transform: scale(1);
+}
+.profile-wrapper{
+  display: flex;
+  justify-content: space-between;
+}
+.profile-content{
+  display: flex;
+  align-items: center;
+}
+.profile-content .profile-data{
+  margin: 0 10px;
+}
+.profile-content .profile-data h6,.profile-content .profile-data p{
+  margin: 0;
+}
+.profile-form-group{
+  margin: 0 0 35px;
+}
+.profile-btn{
+  width: 120px;
+  height: 40px;
+  background: var(--primaryColor);
+  color: var(--whiteColor);
+  border: none;
+  font-size: 14px;
+}
+.profile-icon img{
+    width: 85px;
+    height: 85px;
+    object-fit: fill;
 }
