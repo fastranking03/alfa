@@ -62,7 +62,7 @@
                                               <% if (stock && numericSize.length > 0) { %>
                                                 <li class="cart-li">
                                                   <input type="radio" id="size-<%= item.product_id %>-<%= numericSize %>" name="selectedSize-<%= item.product_id %>" value="<%= numericSize %>" <%= stock > 0 ? '' : 'disabled' %> <%= item.selected_size && item.selected_size.toLowerCase() === numericSize.toLowerCase() ? 'checked' : '' %> required />
-                                                  <label id="label-<%= item.product_id %>-<%= numericSize %>" style="<%= stock > 0 ? '' : 'opacity: 0.5;' %>" for="size-<%= item.product_id %>-<%= numericSize %>" class="size-item <%= stock > 0 ? '' : 'disabled' %>">
+                                                  <label id="label-<%= item.product_id %>-<%= numericSize %>" style="<%= stock > 0 ? '' : 'opacity: 0.5;' %>" for="size-<%= item.product_id %>-<%= numericSize %>" class="size-item card-s <%= stock > 0 ? '' : 'disabled' %>">
                                                     <span class="size"><%= numericSize %></span>
                                                   </label>
                                                 </li>
@@ -71,7 +71,7 @@
                                               <% if (stock) { %>
                                                 <li class="cart-li">
                                                   <input type="radio" id="size-<%= item.product_id %>-<%= size %>" name="selectedSize-<%= item.product_id %>" value="<%= size.toUpperCase() %>" <%= stock > 0 ? '' : 'disabled' %> <%= item.selected_size && item.selected_size.toLowerCase() === size.toLowerCase() ? 'checked' : '' %> required />
-                                                  <label id="label-<%= item.product_id %>-<%= size %>" style="<%= stock > 0 ? '' : 'opacity: 0.5;' %>" for="size-<%= item.product_id %>-<%= size %>" class="size-item <%= stock > 0 ? '' : 'disabled' %>">
+                                                  <label id="label-<%= item.product_id %>-<%= size %>" style="<%= stock > 0 ? '' : 'opacity: 0.5;' %>" for="size-<%= item.product_id %>-<%= size %>" class="card-s size-item <%= stock > 0 ? '' : 'disabled' %>">
                                                     <span class="size"><%= size.toUpperCase() %></span>
                                                   </label>
                                                 </li>
@@ -87,7 +87,7 @@
                                     </div>
                                     <div class="new-cart-quantity">
                                       <span class="cart-short-text">Quantity : <span id="quantity-display-<%= item.id %>"><%=item.quantity %></span></span>
-                                      <div class="cart-quantity-wrapper">
+                                      <div class="cart-quantity-wrapper cart-qw">
                                         <div class="left-input">
                                           <span class="decrement" id="minus"><i class="fa-solid fa-minus"></i></span>
                                         </div>

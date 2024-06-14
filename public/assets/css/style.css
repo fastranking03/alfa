@@ -2606,6 +2606,11 @@ font-size: 14px;
   width: 16px;
   height: 16px;
 }
+.card-s{
+  width: 30px !important;
+  font-size: 14px !important;
+  overflow: hidden;
+}
 .cart-label{
   background: var(--primaryColor);
   color: var(--whiteColor) !important;
@@ -2613,3 +2618,6 @@ font-size: 14px;
 .cart-li input[type="radio"] {
   display: none;
 }
+ .cart-qw{
+  padding: 1px 0 !important;
+ }
