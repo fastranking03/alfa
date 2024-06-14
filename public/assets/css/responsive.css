@@ -26,7 +26,9 @@
     .arrival-wrapper {
         grid-template-columns: auto auto auto auto;
       }
-    
+      .features-row .feature-box{
+        padding: 5px;
+      }
 }
 @media screen and (max-width:1199px) {
     
@@ -47,6 +49,9 @@
     }
 }
 @media screen and (max-width:987px){
+    .testimonial-content {
+        margin: 0 50px;
+    }
     .features-row {
          grid-template-columns: auto auto;
         gap: 19px;
@@ -189,7 +194,7 @@
     }
 
     .mt-100 {
-        top: 70px;
+        top: 90px;
     }
     .mt-700{
         top: 70px !important;
@@ -789,7 +794,28 @@
     .payment-wrapper .payment-left-item , .payment-wrapper .payment-right-item{
         width: 100%;
     }
-   
+    .address-form-group .address-label {
+        margin: -10px 3px;
+    }
+    .address-form-group .address-input {
+        height: 53px;
+        padding: 10px 14px 0;
+    }
+    .address-form-group .mobile-input {
+        text-align: right;
+        padding: 0px 16px !important;
+    }
+    .address-form-group .alfa-uk-flag {
+        position: absolute;
+        top: 14px;
+        left: 18px;
+    }
+    .addres-row .ad-md-3 {
+        width: 30%;
+    }
+    .addres-row .ad-md-9 {
+        width: 70%;
+    }
 }
 
 @media screen and (max-width:376px) {
@@ -805,4 +831,12 @@
         .shop-content {
              padding: 0 3px;
         }
+}
+@media screen and (max-width:360px) {
+    .offer-item-name {
+        left: -46px;
+    }
+    .offer-content {
+        right: 26px;
+    }
 }
