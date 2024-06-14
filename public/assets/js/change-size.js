@@ -5,9 +5,12 @@
       const newSize = $(this).val();
       const oldSize = $(`input[name="selectedSize-${productId}"]:checked`).val();
 
+      console.log(newSize);
+      console.log(oldSize);
+
       // Make an AJAX call to update the size in the backend
       $.ajax({
-        url: '/update-cart-size',
+        url: '/update-product-size',
         method: 'POST',
         contentType: 'application/json',
         data: JSON.stringify({
@@ -16,7 +19,7 @@
           oldSize: oldSize
         }),
         success: function(response) {
-          alert(`Size changed from ${oldSize} to ${newSize}`);
+          alert(`Size changed from ${response.old_size} to ${newSize}`);
         },
         error: function(error) {
           alert('Error updating size');

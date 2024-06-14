@@ -571,7 +571,39 @@ router.post("/update-quantity", async (req, res) => {
       res.status(500).json({ error: 'Failed to update quantity' });
   }
 });
+// 
+router.post("/update-product-size", async (req, res) => {
+  try {
+    const { productId, newSize, oldSize } = req.body;
+    const user = req.session.user;
 
+    // console.log(newSize);
+    // console.log(oldSize);
+
+    if (!user || !user.id) {
+      // User is not logged in, update size in session cart
+      const cartItems = req.session.cart || [];
+      const cartItem = cartItems.find(item => item.product_id === productId);
+      if (cartItem) {
+        cartItem.selected_size = newSize;
+      }
+      req.session.cart = cartItems;
+    } else {
+      // User is logged in, update size in the database
+      await connect.query(
+        "UPDATE users_cart SET selected_size = ? WHERE user_id = ? AND product_id = ?",
+        [newSize, user.id, productId]
+      );
+    }
+
+    res.status(200).send({ message: "Size updated successfully" , old_size:oldSize});
+  } catch (error) {
+    console.error("Error updating size:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+// 
 
 router.post("/submit-address", async (req, res) => {
   try {
