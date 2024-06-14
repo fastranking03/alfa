@@ -433,7 +433,6 @@ router.post("/checkout", async (req, res) => {
     res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 });
- 
 
 router.get("/cart", async (req, res) => {
   try {
@@ -469,7 +468,6 @@ router.get("/cart", async (req, res) => {
         "SELECT COUNT(*) AS wishlist_count FROM users_favorites WHERE user_id = ?",
         [userId]
       );
-      
 
       const sql = "SELECT * FROM user_address WHERE user_id = ?";
 
@@ -482,22 +480,31 @@ router.get("/cart", async (req, res) => {
       req.session.cartCount = cartCount;
       req.session.wishlistCount = wishlistCount;
 
-      const [cartResultall] = await connect.query(
-        `SELECT c.*, p.* 
+      const [cartResultAll] = await connect.query(
+        `SELECT c.*, p.*, p.wear_type_bottom_or_top
         FROM users_cart c
         INNER JOIN products p ON c.product_id = p.id
         WHERE c.user_id = ?`,
         [userId]
-      ); 
+      );
 
-      
-      const cartItemPromises = cartResultall.map(async (cartItem) => {
+      const cartItemPromises = cartResultAll.map(async (cartItem) => {
         let sizes = {};
         if (cartItem.wear_type_bottom_or_top === "top") {
-          const [sizeRows] = await connect.query(`SELECT xs, s, m, l, xl, xxl, xxxl, xxxxl FROM topwear_inventory_with_sizes WHERE product_id = ?`, [cartItem.product_id]);
+          const [sizeRows] = await connect.query(
+            `SELECT xs, s, m, l, xl, xxl, xxxl, xxxxl 
+             FROM topwear_inventory_with_sizes 
+             WHERE product_id = ?`,
+            [cartItem.product_id]
+          );
           sizes = sizeRows[0];
         } else if (cartItem.wear_type_bottom_or_top === "bottom") {
-          const [sizeRows] = await connect.query(`SELECT size_28, size_30, size_32, size_34, size_36, size_38, size_40, size_42, size_44, size_46 FROM bottom_wear_inventory_with_sizes WHERE product_id = ?`, [cartItem.product_id]);
+          const [sizeRows] = await connect.query(
+            `SELECT size_28, size_30, size_32, size_34, size_36, size_38, size_40, size_42, size_44, size_46 
+             FROM bottom_wear_inventory_with_sizes 
+             WHERE product_id = ?`,
+            [cartItem.product_id]
+          );
           sizes = sizeRows[0];
         }
         return {
@@ -508,70 +515,140 @@ router.get("/cart", async (req, res) => {
 
       const cartItems = await Promise.all(cartItemPromises);
 
-      res.render("my-cart", { user, cartItems, addresses });
-    }
-  } catch (error) {
-    console.error("Error fetching cart items:", error);
-    res.status(500).send("Internal Server Error");
-  }
-}); 
-
-router.post("/update-quantity", async (req, res) => {
-  const { productId, quantity } = req.body;
-  const userId = req.session.user.id;
-
-  try {
-      // Update quantity in the database
-      const updateQuery = `
-          UPDATE users_cart
-          SET quantity = ?
-          WHERE user_id = ? AND product_id = ?
-      `;
-      await connect.query(updateQuery, [quantity, userId, productId]);
-
-      // Fetch updated cart items
-      const [cartItems] = await connect.query(
-          `SELECT c.*, p.*
-          FROM users_cart c
-          INNER JOIN products p ON c.product_id = p.id
-          WHERE c.user_id = ?`,
-          [userId]
-      );
-
-      // Calculate totals
+      // Calculate totals for items in stock
       let totalPrice = 0;
       let totalDiscount = 0;
+      let inStockItemCount = 0;
 
       cartItems.forEach((item) => {
-          const price = parseFloat(item.product_price);
-          const discount = parseFloat(item.discount_on_product) || 0;
-          const quantity = parseInt(item.quantity);
-
+        const price = parseFloat(item.product_price);
+        const discount = parseFloat(item.discount_on_product) || 0;
+        const quantity = parseInt(item.quantity);
+        // Check stock availability
+        const stock = item.sizes ;
+        if (stock  ) { // Ensure the stock is available
           totalPrice += price * quantity;
           totalDiscount += (price * discount) / 100;
+          inStockItemCount++;
+        }
       });
 
       const GST = totalPrice * 0.2;
       const deliveryFee = 25;
       const totalCost = totalPrice + GST + deliveryFee - totalDiscount;
 
-      console.log(`Quantity updated successfully for product ${productId} to ${quantity}`);
-
-      // Send response with updated totals
-      res.status(200).json({
-          message: 'Quantity updated successfully',
-          totalPrice: totalPrice,
-          totalDiscount: totalDiscount,
-          GST: GST,
-          deliveryFee: deliveryFee,
-          totalCost: totalCost
+      res.render("my-cart", {
+        user,
+        cartItems,
+        addresses,
+        totalPrice,
+        totalDiscount,
+        GST,
+        deliveryFee,
+        totalCost,
       });
+    }
   } catch (error) {
-      console.error('Error updating quantity:', error);
-      res.status(500).json({ error: 'Failed to update quantity' });
+    console.error("Error fetching cart items:", error);
+    res.status(500).send("Internal Server Error");
   }
 });
-// 
+
+
+router.post("/update-quantity", async (req, res) => {
+  const { productId, quantity } = req.body;
+  const userId = req.session.user.id;
+
+  try {
+    // Update quantity in the database
+    const updateQuery = `
+          UPDATE users_cart
+          SET quantity = ?
+          WHERE user_id = ? AND product_id = ?
+      `;
+    await connect.query(updateQuery, [quantity, userId, productId]);
+
+  //  *******************************************
+  const [cartResultAll] = await connect.query(
+    `SELECT c.*, p.*, p.wear_type_bottom_or_top
+    FROM users_cart c
+    INNER JOIN products p ON c.product_id = p.id
+    WHERE c.user_id = ?`,
+    [userId]
+  );
+
+  const cartItemPromises = cartResultAll.map(async (cartItem) => {
+    let sizes = {};
+    if (cartItem.wear_type_bottom_or_top === "top") {
+      const [sizeRows] = await connect.query(
+        `SELECT xs, s, m, l, xl, xxl, xxxl, xxxxl 
+         FROM topwear_inventory_with_sizes 
+         WHERE product_id = ?`,
+        [cartItem.product_id]
+      );
+      sizes = sizeRows[0];
+    } else if (cartItem.wear_type_bottom_or_top === "bottom") {
+      const [sizeRows] = await connect.query(
+        `SELECT size_28, size_30, size_32, size_34, size_36, size_38, size_40, size_42, size_44, size_46 
+         FROM bottom_wear_inventory_with_sizes 
+         WHERE product_id = ?`,
+        [cartItem.product_id]
+      );
+      sizes = sizeRows[0];
+    }
+    return {
+      ...cartItem,
+      sizes: sizes
+    };
+  });
+
+  const cartItems = await Promise.all(cartItemPromises);
+
+  // Calculate totals for items in stock
+  let totalPrice = 0;
+  let totalDiscount = 0;
+  let inStockItemCount = 0;
+
+  cartItems.forEach((item) => {
+    const price = parseFloat(item.product_price);
+    const discount = parseFloat(item.discount_on_product) || 0;
+    const quantity = parseInt(item.quantity);
+    // Check stock availability
+    const stock = item.sizes ;
+    if (stock  ) { // Ensure the stock is available
+      totalPrice += price * quantity;
+      totalDiscount += (price * discount) / 100;
+      inStockItemCount++;
+    }
+  });
+
+  const GST = totalPrice * 0.2;
+  const deliveryFee = 25;
+  const totalCost = totalPrice + GST + deliveryFee - totalDiscount;
+
+    // *******************************************
+
+     
+    
+    console.log(
+      `Quantity updated successfully for product ${productId} to ${quantity}`
+    );
+
+    // Send response with updated totals
+    res.status(200).json({
+      message: "Quantity updated successfully",
+      totalPrice: totalPrice,
+      totalDiscount: totalDiscount,
+      GST: GST,
+      deliveryFee: deliveryFee,
+      totalCost: totalCost,
+    });
+  } catch (error) {
+    console.error("Error updating quantity:", error);
+    res.status(500).json({ error: "Failed to update quantity" });
+  }
+});
+//
 
 router.post("/update-product-size", async (req, res) => {
   try {
@@ -584,7 +661,7 @@ router.post("/update-product-size", async (req, res) => {
     if (!user || !user.id) {
       // User is not logged in, update size in session cart
       const cartItems = req.session.cart || [];
-      const cartItem = cartItems.find(item => item.product_id === productId);
+      const cartItem = cartItems.find((item) => item.product_id === productId);
       if (cartItem) {
         cartItem.selected_size = newSize;
       }
@@ -597,14 +674,16 @@ router.post("/update-product-size", async (req, res) => {
       );
     }
 
-    res.status(200).send({ message: "Size updated successfully" , old_size:oldSize});
+    res
+      .status(200)
+      .send({ message: "Size updated successfully", old_size: oldSize });
   } catch (error) {
     console.error("Error updating size:", error);
     res.status(500).send("Internal Server Error");
   }
 });
 
-// 
+//
 
 router.post("/submit-address", async (req, res) => {
   try {
@@ -812,10 +891,10 @@ router.post("/order-confirm", async (req, res) => {
 router.post("/add-to-cart", async (req, res) => {
   const user = req.session.user;
 
-  const { product_id, selectedSize , product_quantity } = req.body;
+  const { product_id, selectedSize, product_quantity } = req.body;
   var selected_size = selectedSize;
   var quantity = product_quantity;
-  const cartItem = { product_id, selected_size , quantity };
+  const cartItem = { product_id, selected_size, quantity };
 
   if (!user || !user.id) {
     // return res.status(401).send("User not authenticated");
@@ -854,9 +933,14 @@ router.post("/add-to-cart", async (req, res) => {
       } else {
         const insertQuery =
           "INSERT INTO users_cart (user_id, product_id , selected_size , quantity) VALUES (?, ? , ? , ?)";
-        await connect.query(insertQuery, [userId, product_id, selectedSize , product_quantity ]);
-      } 
-      res.redirect("/cart"); 
+        await connect.query(insertQuery, [
+          userId,
+          product_id,
+          selectedSize,
+          product_quantity,
+        ]);
+      }
+      res.redirect("/cart");
     } catch (error) {
       console.error("Error adding product to cart:", error);
       res.status(500).send("Error adding product to cart");
@@ -892,13 +976,15 @@ router.get("/about-us", (req, res) => {
   res.render("about-us", { user });
 });
 
-
 router.get("/blog-detail/:slug_name", async (req, res) => {
   try {
     const user = req.session.user;
     const slugName = req.params.slug_name;
 
-    const [rows] = await connect.query("SELECT * FROM blogs WHERE slug_name = ?", [slugName]);
+    const [rows] = await connect.query(
+      "SELECT * FROM blogs WHERE slug_name = ?",
+      [slugName]
+    );
     const blog = rows[0]; // Get the first item from the result set
 
     if (!blog) {
@@ -911,7 +997,6 @@ router.get("/blog-detail/:slug_name", async (req, res) => {
     res.status(500).send("Server Error");
   }
 });
- 
 
 router.get("/my-orders", async (req, res) => {
   const user = req.session.user;
