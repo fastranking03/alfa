@@ -2606,3 +2606,16 @@ font-size: 14px;
   width: 16px;
   height: 16px;
 }
+.cart-label{
+  width: 30px;
+  height: 30px;
+  display: inline-block;
+  text-align: center;
+  line-height: 24px;
+  font-size: 14px;
+  cursor: pointer;
+  border: 1px solid var(--primaryColor);
+}
+.cart-li input[type="radio"] {
+  display: none;
+}
