@@ -1,0 +1,36 @@
+<ul>
+    <% if (item.wear_type_bottom_or_top === 'bottom') { %>
+      <% for (const [size, value] of Object.entries(item.sizes)) { %>
+        <% const numericSize = size.replace('size_', ''); %>
+        <% if (value !== null && value !== 0) { %>
+          <li>
+            <a href="javascript:void(0);" class="size-item cart-size <%= item.selected_size.toLowerCase() === numericSize.toLowerCase() ? 'selected' : '' %>"
+               data-product-id="<%= item.id %>"
+               data-size="<%= numericSize %>"
+               onclick="changeSize('<%= item.id %>', '<%= numericSize %>')">
+              <%= numericSize %>
+            </a>
+          </li>
+        <% } else { %>
+          <li>
+            <span class="disabled-size <%= item.selected_size.toLowerCase() === numericSize.toLowerCase() ? 'selected' : '' %>">
+              <%= numericSize %>
+            </span>
+          </li>
+        <% } %>
+      <% } %>
+    <% } else { %>
+      <% for (const [size, value] of Object.entries(item.sizes)) { %>
+        <% if (value) { %>
+          <li>
+            <a href="javascript:void(0);" class="size-item cart-size <%= item.selected_size.toLowerCase() === size.toLowerCase() ? 'selected' : '' %>"
+               data-product-id="<%= item.id %>"
+               data-size="<%= size %>"
+               onclick="changeSize('<%= item.id %>', '<%= size %>')">
+              <%= size %>
+            </a>
+          </li>
+        <% } %>
+      <% } %>
+    <% } %>
+  </ul>

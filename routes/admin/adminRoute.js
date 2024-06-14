@@ -115,4 +115,13 @@ router.get("/user-detailed-view/:userId", async (req, res) => {
   }
 });
 
+
+// Static Routes
+router.get('/orders',(req,res) =>{
+  return res.render('admin/orders')
+})
+router.get('/order-details',(req,res) =>{
+  res.render("admin/order-details")
+})
+
 export default router;

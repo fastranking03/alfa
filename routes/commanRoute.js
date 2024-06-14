@@ -164,10 +164,21 @@ GROUP BY c.id;
   }
 });
 
-router.get("/blogs", (req, res) => {
-  const user = req.session.user;
-  res.render("blogs", { user });
+router.get("/blogs", async (req, res) => {
+  try {
+    const user = req.session.user;
+
+    // Fetch blogs from the database
+    const [blogs] = await connect.query("SELECT * FROM blogs");
+
+    // Render the blogs page and pass the user and blogs data to the template
+    res.render("blogs", { user, blogs });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Server Error");
+  }
 });
+
 // router.get("/product-detail/:id", async (req, res) => {
 //   try {
 //     const cartCount = req.cartCount || 0;
@@ -422,74 +433,7 @@ router.post("/checkout", async (req, res) => {
     res.status(500).json({ success: false, message: "Internal Server Error" });
   }
 });
-
-// router.get("/cart", async (req, res) => {
-//   // Mark the route callback as async
-//   const user = req.session.user;
-
-//   if (!user || !user.id) {
-//     // User is not logged in, retrieve cart items from the session
-//     const cartItems = req.session.cart || [];
-
-//     const promises = cartItems.map((cartItem) =>
-//       connect
-//         .query(`SELECT * FROM products WHERE id = ?`, [cartItem.product_id])
-//         .then(([product]) => ({
-//           ...cartItem, // Spread the cartItem to include selected_size
-//           product_name: product[0].product_name,
-//           product_main_image: product[0].product_main_image,
-//           product_price: product[0].product_price,
-//           discount_on_product: product[0].discount_on_product,
-//         }))
-//     );
-
-//     // Resolve all promises
-//     const resolvedCartItems = await Promise.all(promises);
-
-//     // Render the cart page with cart items including product details
-//     res.render("my-cart", { cartItems: resolvedCartItems });
-//   } else {
-//       const user = req.session.user;
-//       const userId = user ? user.id : null;
-
-//       // Initialize cartCount and wishlistCount
-//       let cartCount;
-//       let wishlistCount;
-
-//       // If the user is logged in, fetch cart and wishlist counts
-//       if (userId) {
-//         const [cartResult] = await connect.query(
-//           "SELECT COUNT(*) AS cart_count FROM users_cart WHERE user_id = ?",
-//           [userId]
-//         );
-//         const [wishlistResult] = await connect.query(
-//           "SELECT COUNT(*) AS wishlist_count FROM users_favorites WHERE user_id = ?",
-//           [userId]
-//         );
-
-//         cartCount = cartResult[0].cart_count;
-//         wishlistCount = wishlistResult[0].wishlist_count;
-
-//         // Update session variables
-//         req.session.cartCount = cartCount;
-//         req.session.wishlistCount = wishlistCount;
-
-//       // Fetch cart items from the database
-//       const [cartItems] = await connect.query(
-//         `SELECT c.*, p.*
-//       FROM users_cart c
-//       INNER JOIN products p ON c.product_id = p.id
-//       WHERE c.user_id = ?`,
-//         [userId]
-//       );
-
-//       res.render("my-cart", { user, cartItems }); // Pass cartItems to the view
-//     } catch (error) {
-//       console.error("Error fetching cart items:", error);
-//       res.status(500).send("Internal Server Error");
-//     }
-//   }
-// });
+ 
 
 router.get("/cart", async (req, res) => {
   try {
@@ -525,6 +469,7 @@ router.get("/cart", async (req, res) => {
         "SELECT COUNT(*) AS wishlist_count FROM users_favorites WHERE user_id = ?",
         [userId]
       );
+      
 
       const sql = "SELECT * FROM user_address WHERE user_id = ?";
 
@@ -537,13 +482,31 @@ router.get("/cart", async (req, res) => {
       req.session.cartCount = cartCount;
       req.session.wishlistCount = wishlistCount;
 
-      const [cartItems] = await connect.query(
+      const [cartResultall] = await connect.query(
         `SELECT c.*, p.* 
         FROM users_cart c
         INNER JOIN products p ON c.product_id = p.id
         WHERE c.user_id = ?`,
         [userId]
-      );
+      ); 
+
+      
+      const cartItemPromises = cartResultall.map(async (cartItem) => {
+        let sizes = {};
+        if (cartItem.wear_type_bottom_or_top === "top") {
+          const [sizeRows] = await connect.query(`SELECT xs, s, m, l, xl, xxl, xxxl, xxxxl FROM topwear_inventory_with_sizes WHERE product_id = ?`, [cartItem.product_id]);
+          sizes = sizeRows[0];
+        } else if (cartItem.wear_type_bottom_or_top === "bottom") {
+          const [sizeRows] = await connect.query(`SELECT size_28, size_30, size_32, size_34, size_36, size_38, size_40, size_42, size_44, size_46 FROM bottom_wear_inventory_with_sizes WHERE product_id = ?`, [cartItem.product_id]);
+          sizes = sizeRows[0];
+        }
+        return {
+          ...cartItem,
+          sizes: sizes
+        };
+      });
+
+      const cartItems = await Promise.all(cartItemPromises);
 
       res.render("my-cart", { user, cartItems, addresses });
     }
@@ -551,7 +514,96 @@ router.get("/cart", async (req, res) => {
     console.error("Error fetching cart items:", error);
     res.status(500).send("Internal Server Error");
   }
+}); 
+
+router.post("/update-quantity", async (req, res) => {
+  const { productId, quantity } = req.body;
+  const userId = req.session.user.id;
+
+  try {
+      // Update quantity in the database
+      const updateQuery = `
+          UPDATE users_cart
+          SET quantity = ?
+          WHERE user_id = ? AND product_id = ?
+      `;
+      await connect.query(updateQuery, [quantity, userId, productId]);
+
+      // Fetch updated cart items
+      const [cartItems] = await connect.query(
+          `SELECT c.*, p.*
+          FROM users_cart c
+          INNER JOIN products p ON c.product_id = p.id
+          WHERE c.user_id = ?`,
+          [userId]
+      );
+
+      // Calculate totals
+      let totalPrice = 0;
+      let totalDiscount = 0;
+
+      cartItems.forEach((item) => {
+          const price = parseFloat(item.product_price);
+          const discount = parseFloat(item.discount_on_product) || 0;
+          const quantity = parseInt(item.quantity);
+
+          totalPrice += price * quantity;
+          totalDiscount += (price * discount) / 100;
+      });
+
+      const GST = totalPrice * 0.2;
+      const deliveryFee = 25;
+      const totalCost = totalPrice + GST + deliveryFee - totalDiscount;
+
+      console.log(`Quantity updated successfully for product ${productId} to ${quantity}`);
+
+      // Send response with updated totals
+      res.status(200).json({
+          message: 'Quantity updated successfully',
+          totalPrice: totalPrice,
+          totalDiscount: totalDiscount,
+          GST: GST,
+          deliveryFee: deliveryFee,
+          totalCost: totalCost
+      });
+  } catch (error) {
+      console.error('Error updating quantity:', error);
+      res.status(500).json({ error: 'Failed to update quantity' });
+  }
 });
+// 
+router.post("/update-product-size", async (req, res) => {
+  try {
+    const { productId, newSize, oldSize } = req.body;
+    const user = req.session.user;
+
+    // console.log(newSize);
+    // console.log(oldSize);
+
+    if (!user || !user.id) {
+      // User is not logged in, update size in session cart
+      const cartItems = req.session.cart || [];
+      const cartItem = cartItems.find(item => item.product_id === productId);
+      if (cartItem) {
+        cartItem.selected_size = newSize;
+      }
+      req.session.cart = cartItems;
+    } else {
+      // User is logged in, update size in the database
+      await connect.query(
+        "UPDATE users_cart SET selected_size = ? WHERE user_id = ? AND product_id = ?",
+        [newSize, user.id, productId]
+      );
+    }
+
+    res.status(200).send({ message: "Size updated successfully" , old_size:oldSize});
+  } catch (error) {
+    console.error("Error updating size:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+// 
 
 router.post("/submit-address", async (req, res) => {
   try {
@@ -759,9 +811,10 @@ router.post("/order-confirm", async (req, res) => {
 router.post("/add-to-cart", async (req, res) => {
   const user = req.session.user;
 
-  const { product_id, selectedSize } = req.body;
+  const { product_id, selectedSize , product_quantity } = req.body;
   var selected_size = selectedSize;
-  const cartItem = { product_id, selected_size };
+  var quantity = product_quantity;
+  const cartItem = { product_id, selected_size , quantity };
 
   if (!user || !user.id) {
     // return res.status(401).send("User not authenticated");
@@ -781,6 +834,7 @@ router.post("/add-to-cart", async (req, res) => {
         product_id,
         product_name,
         selectedSize,
+        product_quantity,
         finalPrice_after_discount,
         discount_on_product,
         actual_mrp_price,
@@ -798,20 +852,10 @@ router.post("/add-to-cart", async (req, res) => {
         // Send a JSON response indicating that the product already exists in the cart
       } else {
         const insertQuery =
-          "INSERT INTO users_cart (user_id, product_id , selected_size) VALUES (?, ? , ?)";
-        await connect.query(insertQuery, [userId, product_id, selectedSize]);
-      }
-
-      res.redirect("/cart");
-      // Process the data, such as saving it to the cart database or session
-      // For demonstration purposes, we'll just log the data
-      // console.log("Product ID:", product_id);
-      // console.log("Product Name:", product_name);
-      // console.log("Final Price after Discount:", finalPrice_after_discount);
-      // console.log("Discount on Product:", discount_on_product);
-      // console.log("Actual MRP Price:", actual_mrp_price);
-      // console.log("Category:", category);
-      // console.log("Sub Category:", sub_category);
+          "INSERT INTO users_cart (user_id, product_id , selected_size , quantity) VALUES (?, ? , ? , ?)";
+        await connect.query(insertQuery, [userId, product_id, selectedSize , product_quantity ]);
+      } 
+      res.redirect("/cart"); 
     } catch (error) {
       console.error("Error adding product to cart:", error);
       res.status(500).send("Error adding product to cart");
@@ -847,11 +891,26 @@ router.get("/about-us", (req, res) => {
   res.render("about-us", { user });
 });
 
-//
-router.get("/blog-detail", (req, res) => {
-  const user = req.session.user;
-  res.render("blog-detail", { user });
+
+router.get("/blog-detail/:slug_name", async (req, res) => {
+  try {
+    const user = req.session.user;
+    const slugName = req.params.slug_name;
+
+    const [rows] = await connect.query("SELECT * FROM blogs WHERE slug_name = ?", [slugName]);
+    const blog = rows[0]; // Get the first item from the result set
+
+    if (!blog) {
+      return res.status(404).send("Blog not found");
+    }
+
+    res.render("blog-detail", { user, blog });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Server Error");
+  }
 });
+ 
 
 router.get("/my-orders", async (req, res) => {
   const user = req.session.user;

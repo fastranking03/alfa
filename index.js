@@ -14,6 +14,7 @@ import CategoryRoutes from './routes/categoryRoute.js'
 import inventoryRoute from "./routes/admin/inventoryRoute.js";
 import adminProductsRoute from "./routes/admin/productRoute.js";
 import placeOrderRoute from './routes/placeOrderRoute.js';
+ 
 import session from "express-session";
 import slugify from "slugify";
 import { fileURLToPath } from "url";
@@ -37,11 +38,12 @@ app.use(
     cookie: { secure: false, maxAge: 12 * 60 * 60 * 1000 },
   })
 );
+ 
 
 app.use(async (req, res, next) => {
   try {
-    // Fetch categories from the database
     const [categories] = await connect.query("SELECT * FROM category");
+    const [contentArray] = await connect.query("SELECT * FROM alfa_content");
     
     if (!req.session.user) {
       if (!req.session.cart) {
@@ -54,19 +56,21 @@ app.use(async (req, res, next) => {
       req.session.cartCount = req.session.cart.length;
       req.session.wishlistCount = req.session.wishlist.length;
     }
- 
+
     res.locals.cartCount = req.session.cartCount || 0;
     res.locals.wishlistCount = req.session.wishlistCount || 0;
     res.locals.session = req.session;
     res.locals.user = req.session.user;
+
     res.locals.categories = categories; // Make categories available globally
+    res.locals.content = contentArray[0]; // Assign the first (and only) row of content  
     next();
   } catch (error) {
-    // Handle error appropriately
-    console.error("Error fetching categories:", error);
+    console.error("Error fetching data:", error);
     next(error);
   }
 });
+
 
 //  Set Template Engine
 app.set("view engine", "ejs");
@@ -95,6 +99,7 @@ app.use("/admin/", categoryRoute);
 app.use("/admin/", inventoryRoute);
 app.use("/admin/", adminProductsRoute);
 app.use("/admin/", subcategoryRoute);
+ 
 
 app.get('/accessories',(req,res) =>{
   return res.render('accessories')

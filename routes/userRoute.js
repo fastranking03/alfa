@@ -154,7 +154,7 @@ router.post("/login", async (req, res) => {
     // Check if the user has items in the session cart
     if (req.session.cart && req.session.cart.length > 0) {
       for (const item of req.session.cart) {
-        const { product_id, selected_size } = item;
+        const { product_id, selected_size, quantity } = item;
 
         // Check if the cart item already exists in the database
         const checkCartItemQuery = `
@@ -169,24 +169,26 @@ router.post("/login", async (req, res) => {
         if (existingCartItem.length > 0) {
           // Update the existing cart item
           const updateCartItemQuery = `
-            UPDATE users_cart SET selected_size = ? WHERE user_id = ? AND product_id = ? AND selected_size = ?
+            UPDATE users_cart SET selected_size = ? WHERE user_id = ? AND product_id = ? AND selected_size = ? AND quantity = ?
           `;
           await connect.query(updateCartItemQuery, [
             selected_size,
             user[0].id,
             product_id,
             selected_size,
+            quantity,
           ]);
         } else {
           // Insert the new cart item into the database
           const insertCartItemQuery = `
-            INSERT INTO users_cart (user_id, product_id, selected_size, created_at)
-            VALUES (?, ?, ?, NOW())
+            INSERT INTO users_cart (user_id, product_id, selected_size, quantity , created_at)
+            VALUES (?, ?, ?, ? , NOW())
           `;
           await connect.query(insertCartItemQuery, [
             user[0].id,
             product_id,
             selected_size,
+            quantity,
           ]);
         }
         res.redirect("/cart");
@@ -209,57 +211,6 @@ router.post("/login", async (req, res) => {
   }
 });
 
-// Forget Password
-// router.post("/forget-password", async (req, res) => {
-//   const { email } = req.body;
-//   try {
-//     // Query the database to check if the email is registered
-//     const [user] = await connect.query(
-//       "SELECT * FROM user_registration WHERE email = ?",
-//       [email]
-//     );
-
-//     if (user.length === 0) {
-//       return res.render("forget-password", {
-//         error: "Email is not registered.",
-//       });
-//     }
-
-//     // Generate OTP
-//     const otp = Math.floor(100000 + Math.random() * 900000).toString();
-
-//     // Nodemailer configuration
-//     const transporter = nodemailer.createTransport({
-//       host: "smtp.gmail.com", // SMTP server address for Gmail
-//       port: 587,
-//       auth: {
-//         user: "jaydenmitchell0282@gmail.com",
-//         pass: "rtcslwgbcgxkoibh",
-//       },
-//     });
-
-//     const mailOptions = {
-//       from: "jaydenmitchell0282@gmail.com",
-//       to: email,
-//       subject: "Password Reset OTP",
-//       text: `Your OTP for password reset is ${otp}`,
-//     };
-
-//     await transporter.sendMail(mailOptions);
-
-//     // Update the user's OTP in the database
-//     await connect.query("UPDATE user_registration SET otp = ? WHERE email = ?", [
-//       otp,
-//       email,
-//     ]);
-
-//     // Render the OTP verification page with the email
-//     res.render("otp-verification", { email: email });
-//   } catch (error) {
-//     console.error("Error processing forget password request:", error);
-//     res.render("forget-password", { error: "An error occurred" });
-//   }
-// });
 router.post("/forget-password", async (req, res) => {
   try {
     const { email } = req.body;
