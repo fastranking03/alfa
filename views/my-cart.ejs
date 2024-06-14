@@ -72,44 +72,42 @@
 
 
                                   <div class="product-size-list">
-
+                                    <!-- Display current selected size -->
                                     <span class="cart-short-text" data-product-id="<%= item.product_id %>" data-selected-size="<%= item.selected_size %>">
                                       Select Size : <%= item.selected_size %>
                                     </span>
-
-                                    <div class="product-size-list">
-                                      <!-- <span class="cart-short-text">Select Size : <%= item.selected_size %></span> -->
-                                      <ul id="sizeList-<%= item.product_id %>" class="size-list">
-                                        <% if (item.sizes && Object.keys(item.sizes).length > 0) { %>
-                                          <% for (const [size, stock] of Object.entries(item.sizes)) { %>
-                                            <% if (item.wear_type_bottom_or_top === 'bottom') { %>
-                                              <% const numericSize = size.replace('size_', ''); %>
-                                              <% if (stock && numericSize.length > 0) { %>
-                                                <li>
-                                                  <input type="radio" id="size-<%= item.product_id %>-<%= numericSize %>" name="selectedSize-<%= item.product_id %>" value="<%= numericSize %>" <%= stock > 0 ? '' : 'disabled' %> <%= item.selected_size.toLowerCase() === numericSize.toLowerCase() ? 'checked' : '' %> required />
-                                                  <label style="width: 40px; height: 40px" for="size-<%= item.product_id %>-<%= numericSize %>" class="size-item <%= stock > 0 ? '' : 'disabled' %>">
-                                                    <span class="size"><%= numericSize %></span>
-                                                  </label>
-                                                </li>
-                                              <% } %>
-                                            <% } else { %>
-                                              <% if (stock) { %>
-                                                <li>
-                                                  <input type="radio" id="size-<%= item.product_id %>-<%= size %>" name="selectedSize-<%= item.product_id %>" value="<%= size.toUpperCase() %>" <%= stock > 0 ? '' : 'disabled' %> <%= item.selected_size.toLowerCase() === size.toLowerCase() ? 'checked' : '' %> required />
-                                                  <label style="width: 40px; height: 40px" for="size-<%= item.product_id %>-<%= size %>" class="size-item <%= stock > 0 ? '' : 'disabled' %>">
-                                                    <span class="size"><%= size.toUpperCase() %></span>
-                                                  </label>
-                                                </li>
-                                              <% } %>
+                                  
+                                    <!-- List of available sizes -->
+                                    <ul id="sizeList-<%= item.product_id %>" class="size-list">
+                                      <% if (item.sizes && Object.keys(item.sizes).length > 0) { %>
+                                        <% for (const [size, stock] of Object.entries(item.sizes)) { %>
+                                          <% if (item.wear_type_bottom_or_top === 'bottom') { %>
+                                            <% const numericSize = size.replace('size_', ''); %>
+                                            <% if (stock && numericSize.length > 0) { %>
+                                              <li>
+                                                <input type="radio" id="size-<%= item.product_id %>-<%= numericSize %>" name="selectedSize-<%= item.product_id %>" value="<%= numericSize %>" <%= stock > 0 ? '' : 'disabled' %> <%= item.selected_size && item.selected_size.toLowerCase() === numericSize.toLowerCase() ? 'checked' : '' %> required />
+                                                <label style="width: 40px; height: 40px; display: inline-block; text-align: center; line-height: 40px; cursor: pointer; <%= stock > 0 ? '' : 'opacity: 0.5;' %>" for="size-<%= item.product_id %>-<%= numericSize %>" class="size-item <%= stock > 0 ? '' : 'disabled' %>">
+                                                  <span class="size"><%= numericSize %></span>
+                                                </label>
+                                              </li>
+                                            <% } %>
+                                          <% } else { %>
+                                            <% if (stock) { %>
+                                              <li>
+                                                <input type="radio" id="size-<%= item.product_id %>-<%= size %>" name="selectedSize-<%= item.product_id %>" value="<%= size.toUpperCase() %>" <%= stock > 0 ? '' : 'disabled' %> <%= item.selected_size && item.selected_size.toLowerCase() === size.toLowerCase() ? 'checked' : '' %> required />
+                                                <label style="width: 40px; height: 40px; display: inline-block; text-align: center; line-height: 40px; cursor: pointer; <%= stock > 0 ? '' : 'opacity: 0.5;' %>" for="size-<%= item.product_id %>-<%= size %>" class="size-item <%= stock > 0 ? '' : 'disabled' %>">
+                                                  <span class="size"><%= size.toUpperCase() %></span>
+                                                </label>
+                                              </li>
                                             <% } %>
                                           <% } %>
-                                        <% } else { %>
-                                          <p>Currently Out Of Stock</p>
                                         <% } %>
-                                      </ul>
-                                    </div>
-                                    
+                                      <% } else { %>
+                                        <p>Currently Out Of Stock</p>
+                                      <% } %>
+                                    </ul>
                                   </div>
+                                  
                                   <div class="new-cart-quantity">
                                     <span class="cart-short-text"
                                       >Quantity :
