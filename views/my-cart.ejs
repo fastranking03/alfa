@@ -63,16 +63,19 @@
                                     alt=""
                                   />
                                 </div>
+
                                 <div class="pro-cart-contents">
                                   <div class="pro-cart-title">
                                     <h3><%= item.product_name %></h3>
                                   </div>
 
+
+
                                   <div class="product-size-list">
-                                    <span class="cart-short-text"
-                                      >Select Size :
-                                      <%=item.selected_size%></span
-                                    >
+
+                                    <span class="cart-short-text" data-product-id="<%= item.product_id %>" data-selected-size="<%= item.selected_size %>">
+                                      Select Size : <%= item.selected_size %>
+                                    </span>
 
                                     <div class="product-size-list">
                                       <!-- <span class="cart-short-text">Select Size : <%= item.selected_size %></span> -->
@@ -84,7 +87,7 @@
                                               <% if (stock && numericSize.length > 0) { %>
                                                 <li>
                                                   <input type="radio" id="size-<%= item.product_id %>-<%= numericSize %>" name="selectedSize-<%= item.product_id %>" value="<%= numericSize %>" <%= stock > 0 ? '' : 'disabled' %> <%= item.selected_size.toLowerCase() === numericSize.toLowerCase() ? 'checked' : '' %> required />
-                                                  <label style="width: 60px; height: 40px" for="size-<%= item.product_id %>-<%= numericSize %>" class="size-item <%= stock > 0 ? '' : 'disabled' %>">
+                                                  <label style="width: 40px; height: 40px" for="size-<%= item.product_id %>-<%= numericSize %>" class="size-item <%= stock > 0 ? '' : 'disabled' %>">
                                                     <span class="size"><%= numericSize %></span>
                                                   </label>
                                                 </li>
@@ -93,7 +96,7 @@
                                               <% if (stock) { %>
                                                 <li>
                                                   <input type="radio" id="size-<%= item.product_id %>-<%= size %>" name="selectedSize-<%= item.product_id %>" value="<%= size.toUpperCase() %>" <%= stock > 0 ? '' : 'disabled' %> <%= item.selected_size.toLowerCase() === size.toLowerCase() ? 'checked' : '' %> required />
-                                                  <label style="width: 60px; height: 40px" for="size-<%= item.product_id %>-<%= size %>" class="size-item <%= stock > 0 ? '' : 'disabled' %>">
+                                                  <label style="width: 40px; height: 40px" for="size-<%= item.product_id %>-<%= size %>" class="size-item <%= stock > 0 ? '' : 'disabled' %>">
                                                     <span class="size"><%= size.toUpperCase() %></span>
                                                   </label>
                                                 </li>
