@@ -469,6 +469,7 @@ router.get("/cart", async (req, res) => {
         "SELECT COUNT(*) AS wishlist_count FROM users_favorites WHERE user_id = ?",
         [userId]
       );
+      
 
       const sql = "SELECT * FROM user_address WHERE user_id = ?";
 
@@ -481,13 +482,31 @@ router.get("/cart", async (req, res) => {
       req.session.cartCount = cartCount;
       req.session.wishlistCount = wishlistCount;
 
-      const [cartItems] = await connect.query(
+      const [cartResultall] = await connect.query(
         `SELECT c.*, p.* 
         FROM users_cart c
         INNER JOIN products p ON c.product_id = p.id
         WHERE c.user_id = ?`,
         [userId]
-      );
+      ); 
+
+      
+      const cartItemPromises = cartResultall.map(async (cartItem) => {
+        let sizes = {};
+        if (cartItem.wear_type_bottom_or_top === "top") {
+          const [sizeRows] = await connect.query(`SELECT xs, s, m, l, xl, xxl, xxxl, xxxxl FROM topwear_inventory_with_sizes WHERE product_id = ?`, [cartItem.product_id]);
+          sizes = sizeRows[0];
+        } else if (cartItem.wear_type_bottom_or_top === "bottom") {
+          const [sizeRows] = await connect.query(`SELECT size_28, size_30, size_32, size_34, size_36, size_38, size_40, size_42, size_44, size_46 FROM bottom_wear_inventory_with_sizes WHERE product_id = ?`, [cartItem.product_id]);
+          sizes = sizeRows[0];
+        }
+        return {
+          ...cartItem,
+          sizes: sizes
+        };
+      });
+
+      const cartItems = await Promise.all(cartItemPromises);
 
       res.render("my-cart", { user, cartItems, addresses });
     }

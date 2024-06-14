@@ -7,6 +7,15 @@
     <%- include('includes/head') %>
 
     <script src="https://cdn.jsdelivr.net/npm/slugify@1.5.0/slugify.min.js"></script>
+
+    <style>
+      .product-size-list .selected {
+        background-color: #381818; /* Example background color */
+        border: 1px solid #801212; /* Example border */
+        color: #a8bba4; /* Example text color */
+        /* Add any other styling as needed */
+      }
+    </style>
   </head>
 
   <body>
@@ -65,42 +74,45 @@
                                       <%=item.selected_size%></span
                                     >
 
-                                    <!-- <span>  <h3 id="productid"><%= item.id %></h3></span> -->
-                                    <ul>
-                                      <!-- <li><a href="" class="size-item cart-size active">S</a></li> -->
-                                      <li>
-                                        <input
-                                          type="text"
-                                          name="products[<%=index%>][size]"
-                                          value="<%= item.selected_size ? item.selected_size : 'S' %>"
-                                          class="cart-value"
-                                        />
-                                      </li>
-                                      <li>
-                                        <a href="" class="size-item cart-size"
-                                          >M</a
-                                        >
-                                      </li>
-                                      <li>
-                                        <a href="" class="size-item cart-size"
-                                          >L</a
-                                        >
-                                      </li>
-                                      <li>
-                                        <a href="" class="size-item cart-size"
-                                          >XL</a
-                                        >
-                                      </li>
-                                      <li>
-                                        <a href="" class="size-item cart-size"
-                                          >XXL</a
-                                        >
-                                      </li>
-                                    </ul>
+                                    <div class="product-size-list">
+                                      <!-- <span class="cart-short-text">Select Size : <%= item.selected_size %></span> -->
+                                      <ul id="sizeList-<%= item.product_id %>" class="size-list">
+                                        <% if (item.sizes && Object.keys(item.sizes).length > 0) { %>
+                                          <% for (const [size, stock] of Object.entries(item.sizes)) { %>
+                                            <% if (item.wear_type_bottom_or_top === 'bottom') { %>
+                                              <% const numericSize = size.replace('size_', ''); %>
+                                              <% if (stock && numericSize.length > 0) { %>
+                                                <li>
+                                                  <input type="radio" id="size-<%= item.product_id %>-<%= numericSize %>" name="selectedSize-<%= item.product_id %>" value="<%= numericSize %>" <%= stock > 0 ? '' : 'disabled' %> <%= item.selected_size.toLowerCase() === numericSize.toLowerCase() ? 'checked' : '' %> required />
+                                                  <label style="width: 60px; height: 40px" for="size-<%= item.product_id %>-<%= numericSize %>" class="size-item <%= stock > 0 ? '' : 'disabled' %>">
+                                                    <span class="size"><%= numericSize %></span>
+                                                  </label>
+                                                </li>
+                                              <% } %>
+                                            <% } else { %>
+                                              <% if (stock) { %>
+                                                <li>
+                                                  <input type="radio" id="size-<%= item.product_id %>-<%= size %>" name="selectedSize-<%= item.product_id %>" value="<%= size.toUpperCase() %>" <%= stock > 0 ? '' : 'disabled' %> <%= item.selected_size.toLowerCase() === size.toLowerCase() ? 'checked' : '' %> required />
+                                                  <label style="width: 60px; height: 40px" for="size-<%= item.product_id %>-<%= size %>" class="size-item <%= stock > 0 ? '' : 'disabled' %>">
+                                                    <span class="size"><%= size.toUpperCase() %></span>
+                                                  </label>
+                                                </li>
+                                              <% } %>
+                                            <% } %>
+                                          <% } %>
+                                        <% } else { %>
+                                          <p>Currently Out Of Stock</p>
+                                        <% } %>
+                                      </ul>
+                                    </div>
+                                    
                                   </div>
                                   <div class="new-cart-quantity">
                                     <span class="cart-short-text"
-                                      >Quantity : <span id="quantity-display-<%= item.id %>"><%=item.quantity %></span></span
+                                      >Quantity :
+                                      <span id="quantity-display-<%= item.id %>"
+                                        ><%=item.quantity %></span
+                                      ></span
                                     >
                                     <div class="cart-quantity-wrapper">
                                       <div class="left-input">
@@ -128,6 +140,7 @@
                                     <div class="product-limit-msg">
                                       <span>Maximum quantity reached </span>
                                     </div>
+
                                   </div>
                                 </div>
                               </div>
