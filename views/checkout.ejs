@@ -110,28 +110,28 @@
                       <ul>
                         <li>
                           <div class="alfa-text">Sub- Total</div>
-                          <div class="alfa-price">£<%=product_price %>
+                          <div class="alfa-price">£<%=subtotal %>
                           </div>
                         </li>
 
                         <li>
                           <div class="alfa-text">
-                            Discount [ <%=discount_on_product %>% ]
+                            Total Discount Amount
                           </div>
-                          <div class="alfa-price">- £<%=discountAmount %>
+                          <div class="alfa-price">- £<%=discount %>
                           </div>
                         </li>
 
                         <li>
                           <div class="alfa-text">Vat ( 20% )</div>
 
-                          <div class="alfa-price">£ <%=vatAmount %>
+                          <div class="alfa-price">£ <%=vat %>
                           </div>
                         </li>
                         <li>
                           <div class="alfa-text">Delivery Fee</div>
 
-                          <div class="alfa-price">£<%=delivery_charge %>
+                          <div class="alfa-price">£<%=deliveryFee %>
                           </div>
                         </li>
                       </ul>
@@ -141,7 +141,7 @@
                         <li>
                           <div class="alfa-text">Total Cost</div>
                           <div class="alfa-price">
-                            £<%=finalPriceAfterVAT %>>
+                            £ <%=totalCost %>>
                           </div>
                         </li>
                       </ul>

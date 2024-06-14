@@ -362,79 +362,104 @@ router.get("/checkout", (req, res) => {
 //
 
 
+// router.post("/checkout", async (req, res) => {
+//   try {
+//     const user = req.session.user;
+//     // const cartCount = req.cartCount || 0;
+//     // const wishlistCount = req.wishlistCount || 0;
+//     const userId = req.session.user.id;
+
+//     // Retrieve form inputs from req.body
+//     const { product_id, product_name, category, sub_category, selectedSize } =
+//       req.body;
+
+//     const sql = "SELECT * FROM user_address WHERE user_id = ?";
+
+//     // Execute the query with the user ID as a parameter
+//     const [addresses] = await connect.query(sql, [userId]);
+
+//     const [productRows] = await connect.query(
+//       "SELECT product_price, discount_on_product, product_main_image FROM products WHERE id = ?",
+//       [product_id]
+//     );
+
+//     if (productRows.length === 0) {
+//       return res
+//         .status(404)
+//         .json({ success: false, message: "Product not found" });
+//     }
+
+//     const { product_price, discount_on_product, product_main_image } =
+//       productRows[0];
+
+//     // Calculate the price after applying the discount
+//     const finalPrice_after_discount = (
+//       product_price *
+//       (1 - discount_on_product / 100)
+//     ).toFixed(2);
+
+//     const discountAmount = product_price * (discount_on_product / 100);
+
+//     // Calculate the VAT amount
+//     const vatAmount = (finalPrice_after_discount * (20 / 100)).toFixed(2);
+
+//     // Define the delivery charge
+//     const delivery_charge = 10;
+
+//     // Calculate the final price after adding VAT and delivery charge
+//     const finalPriceAfterVAT = (
+//       parseFloat(finalPrice_after_discount) +
+//       parseFloat(vatAmount) +
+//       delivery_charge
+//     ).toFixed(2);
+//     // Now you can use these variables as needed, for example, to render the checkout page
+//     res.render("checkout", {
+//       addresses,
+//       user,
+//       product_id,
+//       product_name,
+//       product_main_image,
+//       finalPrice_after_discount,
+//       discountAmount,
+//       discount_on_product,
+//       product_price,
+//       vatAmount,
+//       delivery_charge,
+//       finalPriceAfterVAT,
+//       category,
+//       sub_category,
+//       selectedSize,
+//     });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ success: false, message: "Internal Server Error" });
+//   }
+// });
+
+
 router.post("/checkout", async (req, res) => {
+  const user = req.session.user;
+  const userId = user.id;
   try {
-    const user = req.session.user;
-    // const cartCount = req.cartCount || 0;
-    // const wishlistCount = req.wishlistCount || 0;
-    const userId = req.session.user.id;
+    // Extract pricing details from request body
+    const { subtotal, discount, vat, deliveryFee, totalCost } = req.body;
+ 
+     // Query to get user addresses
+     const addressSql = "SELECT * FROM user_address WHERE user_id = ?";
+     const [addresses] = await connect.query(addressSql, [userId]);
 
-    // Retrieve form inputs from req.body
-    const { product_id, product_name, category, sub_category, selectedSize } =
-      req.body;
-
-    const sql = "SELECT * FROM user_address WHERE user_id = ?";
-
-    // Execute the query with the user ID as a parameter
-    const [addresses] = await connect.query(sql, [userId]);
-
-    const [productRows] = await connect.query(
-      "SELECT product_price, discount_on_product, product_main_image FROM products WHERE id = ?",
-      [product_id]
-    );
-
-    if (productRows.length === 0) {
-      return res
-        .status(404)
-        .json({ success: false, message: "Product not found" });
-    }
-
-    const { product_price, discount_on_product, product_main_image } =
-      productRows[0];
-
-    // Calculate the price after applying the discount
-    const finalPrice_after_discount = (
-      product_price *
-      (1 - discount_on_product / 100)
-    ).toFixed(2);
-
-    const discountAmount = product_price * (discount_on_product / 100);
-
-    // Calculate the VAT amount
-    const vatAmount = (finalPrice_after_discount * (20 / 100)).toFixed(2);
-
-    // Define the delivery charge
-    const delivery_charge = 10;
-
-    // Calculate the final price after adding VAT and delivery charge
-    const finalPriceAfterVAT = (
-      parseFloat(finalPrice_after_discount) +
-      parseFloat(vatAmount) +
-      delivery_charge
-    ).toFixed(2);
-    // Now you can use these variables as needed, for example, to render the checkout page
-    res.render("checkout", {
-      addresses,
-      user,
-      product_id,
-      product_name,
-      product_main_image,
-      finalPrice_after_discount,
-      discountAmount,
-      discount_on_product,
-      product_price,
-      vatAmount,
-      delivery_charge,
-      finalPriceAfterVAT,
-      category,
-      sub_category,
-      selectedSize,
-    });
+     // Count of user addresses
+     const addressCount = addresses.length;
+ 
+    // Render a success page or redirect to order confirmation page
+    res.render("checkout", { subtotal, discount, vat, deliveryFee, totalCost, addresses ,  addressCount});
   } catch (error) {
-    console.error(error);
-    res.status(500).json({ success: false, message: "Internal Server Error" });
+    console.error("Error during checkout:", error);
+    res.render("checkout-error", { message: "Failed to process checkout" });
   }
 });
+
+
 
 router.get("/cart", async (req, res) => {
   try {
