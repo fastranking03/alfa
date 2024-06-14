@@ -742,7 +742,6 @@ router.get("/add-address", (req, res) => {
 //   const user = req.session.user;
 //   res.render("my-wishlist", { user });
 // });
-
 router.get("/my-wishlist", async (req, res) => {
   const user = req.session.user;
 
@@ -758,18 +757,45 @@ router.get("/my-wishlist", async (req, res) => {
         INNER JOIN products p ON uf.product_id = p.id
         WHERE uf.user_id = ?
       `;
-      const [wishlistItems] = await connect.query(getUserFavoritesQuery, [
-        user.id,
-      ]);
+      const [wishlistItems] = await connect.query(getUserFavoritesQuery, [user.id]);
+
+      // Fetch sizes for each product
+      const wishlistItemPromises = wishlistItems.map(async (item) => {
+        let sizes = {};
+        if (item.wear_type_bottom_or_top === 'top') {
+          const [sizeRows] = await connect.query(
+            `SELECT xs, s, m, l, xl, xxl, xxxl, xxxxl 
+             FROM topwear_inventory_with_sizes 
+             WHERE product_id = ?`,
+            [item.product_id]
+          );
+          sizes = sizeRows[0];
+        } else if (item.wear_type_bottom_or_top === 'bottom') {
+          const [sizeRows] = await connect.query(
+            `SELECT size_28, size_30, size_32, size_34, size_36, size_38, size_40, size_42, size_44, size_46 
+             FROM bottom_wear_inventory_with_sizes 
+             WHERE product_id = ?`,
+            [item.product_id]
+          );
+          sizes = sizeRows[0];
+        }
+        return {
+          ...item,
+          sizes: sizes
+        };
+      });
+
+      const resolvedWishlistItems = await Promise.all(wishlistItemPromises);
 
       // Render the my-wishlist page with the user's favorite products
-      return res.render("my-wishlist", { user, wishlistItems });
+      return res.render("my-wishlist", { user, wishlistItems: resolvedWishlistItems });
     } catch (error) {
       console.error("Error fetching wishlist items:", error);
       return res.render("error", { message: "Error fetching wishlist items" });
     }
   }
 });
+
 
 router.get("/order-confirm", (req, res) => {
   const user = req.session.user;
