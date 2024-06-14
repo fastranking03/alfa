@@ -1494,7 +1494,7 @@ a {
   margin: 0 0 4px;
 }
 .cart-short-text{
-  font-size: 14px;
+  font-size: 13px;
   color: #B5B5B5;
 }
 .pro-cart-colorsize p {
@@ -2606,16 +2606,18 @@ font-size: 14px;
   width: 16px;
   height: 16px;
 }
+.card-s{
+  width: 30px !important;
+  font-size: 14px !important;
+  overflow: hidden;
+}
 .cart-label{
-  width: 30px;
-  height: 30px;
-  display: inline-block;
-  text-align: center;
-  line-height: 24px;
-  font-size: 14px;
-  cursor: pointer;
-  border: 1px solid var(--primaryColor);
+  background: var(--primaryColor);
+  color: var(--whiteColor) !important;
 }
 .cart-li input[type="radio"] {
   display: none;
 }
+ .cart-qw{
+  padding: 1px 0 !important;
+ }
