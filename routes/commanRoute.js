@@ -360,6 +360,8 @@ router.get("/checkout", (req, res) => {
 });
 
 //
+
+
 router.post("/checkout", async (req, res) => {
   try {
     const user = req.session.user;
@@ -784,7 +786,7 @@ router.get("/my-wishlist", async (req, res) => {
           sizes: sizes
         };
       });
-
+ 
       const resolvedWishlistItems = await Promise.all(wishlistItemPromises);
 
       // Render the my-wishlist page with the user's favorite products

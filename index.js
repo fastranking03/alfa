@@ -14,6 +14,7 @@ import CategoryRoutes from './routes/categoryRoute.js'
 import inventoryRoute from "./routes/admin/inventoryRoute.js";
 import adminProductsRoute from "./routes/admin/productRoute.js";
 import placeOrderRoute from './routes/placeOrderRoute.js';
+ 
 import session from "express-session";
 import slugify from "slugify";
 import { fileURLToPath } from "url";
@@ -37,7 +38,7 @@ app.use(
     cookie: { secure: false, maxAge: 12 * 60 * 60 * 1000 },
   })
 );
-
+ 
 
 app.use(async (req, res, next) => {
   try {
@@ -71,7 +72,6 @@ app.use(async (req, res, next) => {
 });
 
 
-
 //  Set Template Engine
 app.set("view engine", "ejs");
 app.set("views", path.resolve("./views"));
@@ -92,19 +92,27 @@ app.use("/", favoritesRoute);
 app.use("/", cartRoute);
 app.use("/", placeOrderRoute);
 app.use("/category/" , CategoryRoutes);
-
+  
 app.use("/admin/", adminRoute);
 app.use("/admin/", bannerRoute);
 app.use("/admin/", categoryRoute);
 app.use("/admin/", inventoryRoute);
 app.use("/admin/", adminProductsRoute);
 app.use("/admin/", subcategoryRoute);
+ 
 
 app.get('/accessories',(req,res) =>{
   return res.render('accessories')
 })
-
+app.get('/my-profile',(req,res) =>{
+  return res.render('my-profile')
+})
+app.get('/payment',(req,res) =>{
+  return res.render('payment')
+})
 const PORT = 8081;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
+

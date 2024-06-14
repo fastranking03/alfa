@@ -10,8 +10,9 @@
 
 <body>
     <div class="alfa-main-wraper"> 
+        <%- include('includes/header') %>
             <div class="mt-100">
-                <div class="user-container">
+                 <div class="user-container">
                     <div class="user-banner-wrapper">
                         <div class="t-banner">
                             <img src="assets/images/loginImg.png" alt="">
@@ -57,8 +58,7 @@
                                                     <label for="Email">Email ID</label>
                                                     <input type="text" class="form-input" name="email" id="emailInput"
                                                         placeholder="Enter your Email ID">
-                                                    <div id="emailError" style="color: red; display: none;">Please
-                                                        enter a valid email address.</div>
+                                                    <div id="emailError" style="color: red; display: none;">Please enter a valid email address.</div>
                                                 </div>
                                             </div>
                                             <div class="col-md-12">
@@ -66,8 +66,7 @@
                                                     <label for="Password">Password</label>
                                                     <input type="password" class="form-input" name="password"
                                                         id="passwordView" placeholder="Enter your Password">
-                                                    <span id="onEyeClick"><img src="assets/images/eye.png"
-                                                            alt=""></span>
+                                                    <span id="onEyeClick"><i id="eyeView" class="fa-regular fa-eye-slash"></i></span>
                                                 </div>
                                             </div>
                                             <div class="text-end user-forget">
@@ -95,16 +94,21 @@
             </div>
     </div>
     <script>
-        var onEyeClick = document.getElementById("onEyeClick");
+      var onEyeClick = document.getElementById("onEyeClick");
         var passwordView = document.getElementById("passwordView");
-        onEyeClick.addEventListener('click', function () {
+        var eyeView = document.getElementById("eyeView");
+
+        onEyeClick.addEventListener('click', function() {
             if (passwordView.type == "text") {
-                passwordView.type = "password"
+                passwordView.type = "password";
+                eyeView.classList.remove("fa-eye");
+                eyeView.classList.add("fa-eye-slash");
+            } else {
+                passwordView.type = "text";
+                eyeView.classList.remove("fa-eye-slash");
+                eyeView.classList.add("fa-eye");
             }
-            else {
-                passwordView.type = "text"
-            }
-        })
+        });
         document.addEventListener("DOMContentLoaded", function () {
             const emailInput = document.getElementById("emailInput");
             const emailError = document.getElementById("emailError");

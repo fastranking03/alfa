@@ -1,0 +1,208 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alfa Admin | Order Details</title>
+    <%- include('includes/head') %>
+</head>
+
+<body class="admin-body">
+    <div class="main-admin-warpper">
+        <%- include('includes/header') %>
+            <div class="alfa-admin-wrapper">
+                <div class="admin-side-nav">
+                    <%- include('includes/sidebar') %>
+                        <div class="admin-main-layout">
+                            <div class="admin-bradcrumb">
+                                <div class="admin-brudcrumb-title">
+                                    <h3>Order Details</h3>
+                                </div>
+                                <div class="adminRightWrapper">
+                                    <div class="export-wrap">
+                                        <a href="" class="admin-btn">Restock</a>
+                                        <a href="" class="admin-btn"><span><i
+                                                    class="fa-regular fa-pen-to-square"></i></span> Edit</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="admin-order-detail-wrapper">
+                                <div class="row">
+                                    <div class="col-md-8">
+                                        <div class="od-left-wrapper">
+                                            <div class="od-header">
+                                                <div class="od-left">
+                                                    <h4>Order Id 658436</h4>
+                                                    <p>10 June 2024, 12:25 PM</p>
+                                                </div>
+                                                <div class="od-status order-status-wrapper">
+                                                    <span class="order-status success">Success</span>
+                                                </div>
+                                            </div>
+                                            <hr style="margin: 0;">
+                                            <div class="od-items-wrapper">
+                                                <div class="od-item-text">
+                                                    <h5>Order Item</h5>
+                                                </div>
+                                                <div class="od-items">
+                                                    <div class="od-items-left">
+                                                        <div class="od-item-img">
+                                                            <img class="od-img"
+                                                                src="../assets/images/alfa_products/shirt2.png" alt="">
+                                                        </div>
+                                                        <div class="od-product-text">
+                                                            <h6>Menswear Trouser</h6>
+                                                            <span>Qty: 1</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="od-items-right">
+                                                        <h5>£60.00</h5>
+                                                    </div>
+                                                </div>
+                                                <div class="od-items">
+                                                    <div class="od-items-left">
+                                                        <div class="od-item-img">
+                                                            <img class="od-img"
+                                                                src="../assets/images/alfa_products/shirt2.png" alt="">
+                                                        </div>
+                                                        <div class="od-product-text">
+                                                            <h6>Menswear Trouser</h6>
+                                                            <span>Qty: 1</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="od-items-right">
+                                                        <h5>£60.00</h5>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <hr style="margin: 0;">
+                                            <div class="od-alfa-total">
+                                                <ul>
+                                                    <li>
+                                                        <div class="alfa-text">Sub-Total</div>
+                                                        <div class="alfa-price">
+                                                             <span id="totalPrice-ajax">  £425.00</span>
+                                                        </div>
+                                                    </li>
+
+                                                    <li>
+                                                        <div class="alfa-text">Total Discount</div>
+                                                        <div class="alfa-price">
+                                                             <span id="totalDiscount-ajax">  £109.00</span>
+                                                        </div>
+                                                    </li>
+
+                                                    <li>
+                                                        <div class="alfa-text">GST</div>
+                                                        <div class="alfa-price">
+                                                          <span id="GST-ajax"> £85.00</span>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="alfa-text">Delivery Fee</div>
+                                                        <div class="alfa-price">
+                                                             <span id="Delivery-ajax"> £25.00</span>
+                                                        </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                            <hr style="margin: 0;">
+                                            <div class="od-alfa-total">
+                                                <ul>
+                                                    <li>
+                                                        <div class="alfa-text">Total Cost</div>
+                                                        <div class="alfa-price">
+                                                             <span id="totalPrice-ajax"> £425.00</span>
+                                                        </div>
+                                                    </li>
+                                                 </ul>
+                                            </div>
+                                        </div>
+                                        <div class="od-left-wrapper mt-3">
+                                            <div class="od-header">
+                                                <div class="od-left">
+                                                    <h4 style="font-size: 20px;">Order Status</h4>
+                                                 </div>
+                                                <div class="od-status order-status-wrapper">
+                                                    <span class="shipped">Shipped on 23rd May 2024</span>
+                                                </div>
+                                            </div>
+                                            <hr style="margin: 0;">
+                                            <div class="order-proccess-wrapper">
+                                                <div class="process-wrapper">
+                                                    <div class="process-item process-active">
+                                                       <div class="proccess-text-center">
+                                                             <span><i class="fa-solid fa-file-invoice"></i></span>
+                                                            <h6>Order Placed</h6>
+                                                        </div>
+                                                    </div>
+                                                    <div class="process-item process-active">
+                                                        <div class="proccess-text-center">
+                                                            <span><i class="fa-solid fa-cube"></i></span>
+                                                            <h6>Processing</h6>
+                                                        </div>
+                                                    </div>
+                                                    <div class="process-item">
+                                                        <div class="proccess-text-center">
+                                                            <span><i class="fa-solid fa-truck"></i></span>
+                                                            <h6>On The Road</h6>
+                                                        </div>
+                                                    </div>
+                                                    <div class="process-item">
+                                                        <div class="proccess-text-center">
+                                                            <span><i class="fa-regular fa-handshake"></i></span>
+                                                            <h6 style="left: -6px;">Delivered</h6>
+                                                        </div>
+                                                     </div>
+                                                </div>
+                                             </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="od-left-wrapper">
+                                            <div class="od-header">
+                                                <div class="od-left">
+                                                    <h4>Customer Details</h4>
+                                                 </div>
+                                                <div class="od-status order-status-wrapper">
+                                                    <a href="" class="order-status text-black"><i class="fa-regular fa-pen-to-square"></i></a>
+                                                </div>
+                                            </div>
+                                            <hr style="margin: 0;">
+                                            <div class="od-right-detail">
+                                                <ul>
+                                                   <li>
+                                                       <div class="od-label-text">Name : </div>
+                                                       <div class="od-price">Mason </div>
+                                                   </li>
+                                                   <li>
+                                                    <div class="od-label-text">Email : </div>
+                                                    <div class="od-price">mason.co.uk </div>
+                                                </li>
+                                                <li>
+                                                    <div class="od-label-text">Mobile : </div>
+                                                    <div class="od-price">+44 256 253 3564 </div>
+                                                </li>
+                                                 <li>
+                                                    <div class="od-label-text">Billing Address : </div>
+                                                    <div class="od-price">Lorem ipsum dolor sit amet consectetur adipisicing elit.</div>
+                                                </li>
+                                                <li>
+                                                    <div class="od-label-text">Payment Method : </div>
+                                                    <div class="od-price">COD</div>
+                                                </li>
+                                                 </ul>
+                                           </div>
+                                        </div>
+                                       
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </div>
+    </div>
+    </div>
+</body>
+
+</html>

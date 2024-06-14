@@ -10,7 +10,7 @@
 
 <body>
   <div class="alfa-main-wraper">
-
+    <%- include('includes/header') %>
     <div class="mt-100">
       <div class="user-container">
         <div class="user-banner-wrapper">
@@ -61,31 +61,31 @@
                 </div>
               </div>
               <div class="main-form">
-                <form action="/signup" method="post">
+                <form action="/signup" method="post" id="loginForm">
                   <div class="row">
                     <div class="col-md-12">
                       <div class="alfa-form-group">
-                        <label for="Email">Enter Your Name</label>
+                        <label for="Email">Your Name</label>
                         <input type="text" class="form-input" name="name" placeholder="Enter your Name" required>
                       </div>
                     </div>
                     <div class="col-md-12">
                       <div class="alfa-form-group">
                         <label for="Email">Email ID</label>
-                        <input type="text" class="form-input" name="email" id="email" onclick="emailFunction()" placeholder="Enter your Email ID">
-                        <span id="email_errror">Invaloa</span>
+                        <input type="text" class="form-input" name="email" id="emailInput" placeholder="Enter your Email ID">
+                        <div id="emailError" style="color: red; display: none;">Please enter a valid email address.</div>
                       </div>
                     </div>
                     <div class="col-md-12">
                       <div class="alfa-form-group position-relative">
                         <label for="Password">Password</label>
-                        <input type="text" class="form-input" name="password" id="passwordView" placeholder="Enter your Password">
-                        <span id="onEyeClick"><img src="assets/images/eye.png" alt=""></span>
+                        <input type="password" class="form-input" name="password" id="passwordView" placeholder="Enter your Password">
+                        <span id="onEyeClick"><i id="eyeView" class="fa-regular fa-eye-slash"></i></span>
                       </div>
                     </div>
                     <div class="col-md-12">
                       <div class="user-button">
-                        <button class="user-btn" type="submit">Register</button>
+                        <button class="user-btn" id="signUp">Register</button>
                       </div>
                     </div>
                     <div class="col-md-12">
@@ -105,41 +105,47 @@
   <script>
     var onEyeClick = document.getElementById("onEyeClick");
     var passwordView = document.getElementById("passwordView");
+    var eyeView = document.getElementById("eyeView");
+
     onEyeClick.addEventListener('click', function() {
-      if (passwordView.type == "text") {
-        passwordView.type = "password"
-      } else {
-        passwordView.type = "text"
-      }
-    })
-    document.addEventListener("DOMContentLoaded", function () {
-    const emailInput = document.getElementById("emailInput");
-    const emailError = document.getElementById("emailError");
-    const loginForm = document.getElementById("loginForm");
-
-    emailInput.addEventListener("input", function () {
-         const emailValue = emailInput.value;
-        if (validateEmail(emailValue)) {
-            emailError.style.display = "none";
-            document.getElementById("login").classList.add("user-btn-primary")
+        if (passwordView.type == "text") {
+            passwordView.type = "password";
+            eyeView.classList.remove("fa-eye");
+            eyeView.classList.add("fa-eye-slash");
         } else {
-            emailError.style.display = "block";
-            document.getElementById("login").classList.remove("user-btn-primary")
+            passwordView.type = "text";
+            eyeView.classList.remove("fa-eye-slash");
+            eyeView.classList.add("fa-eye");
         }
     });
+    
+     document.addEventListener("DOMContentLoaded", function () {
+            const emailInput = document.getElementById("emailInput");
+            const emailError = document.getElementById("emailError");
+            const loginForm = document.getElementById("loginForm");
 
-    loginForm.addEventListener("submit", function (event) {
-        const emailValue = emailInput.value;
-        if (!validateEmail(emailValue)) {
-            emailError.style.display = "block";
-            event.preventDefault();
-        }
-    });
-    function validateEmail(email) {
-        const emailPattern = /^[A-Za-z0-9\._%+\-]+@[A-Za-z0-9\.\-]+\.[A-Za-z]{2,}$/;
-        return emailPattern.test(email);
-    }
-});
+            emailInput.addEventListener("input", function () {
+                 const emailValue = emailInput.value;
+                if (validateEmail(emailValue)) {
+                    emailError.style.display = "none";
+                    document.getElementById("signUp").classList.add("user-btn-primary")
+                } else {
+                    emailError.style.display = "block";
+                    document.getElementById("signUp").classList.remove("user-btn-primary")
+                }
+            });
+            loginForm.addEventListener("submit", function (event) {
+                const emailValue = emailInput.value;
+                if (!validateEmail(emailValue)) {
+                    emailError.style.display = "block";
+                    event.preventDefault();
+                }
+            });
+            function validateEmail(email) {
+                const emailPattern = /^[A-Za-z0-9\._%+\-]+@[A-Za-z0-9\.\-]+\.[A-Za-z]{2,}$/;
+                return emailPattern.test(email);
+            }
+        });
   </script>
 </body>
 
