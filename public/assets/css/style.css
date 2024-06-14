@@ -1428,6 +1428,7 @@ a {
 .new-cart-quantity{
   position: relative;
   top: -8px;
+  width: 100px;
 }
 .product-limit-msg span{
   font-size: 13px;
