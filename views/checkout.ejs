@@ -81,30 +81,32 @@
                   </div>
                   <div class="checkout-cart-wrapper">
                     <div class="checkout-wrapp">
-                      <div class="check-item">
-                        <div class="check-item-left">
-                          <div class="check-item-image">
-                            <img src="../product_images/<%=product_main_image  %>" class="check-image" alt="" />
+                      <% cartItemsInStock.forEach(item => { %>
+                        <div class="check-item">
+                          <div class="check-item-left">
+                            <div class="check-item-image">
+                              <img src="../product_images/<%= item.product_main_image %>" class="check-image" alt="" />
+                            </div>
+                            <div class="checkout-cont">
+                              <h4><%= item.product_name %></h4>
+                              <div class="checkout-rest-cont">
+                                <p>Color : <%= item.product_color %></p>
+                                <p>Size : <%= item.selected_size %></p>
+                                <p>Qty : <%= item.quantity %></p>
+                              </div>
+                            </div>
                           </div>
-                          <div class="checkout-cont">
-                            <h4>Menswear Trouser</h4>
-                            <div class="checkout-rest-cont">
-                              <p>Color : Blue</p>
-                              <p>Size :<%=selectedSize %>
-                              </p>
-                              <p>Qty : 1</p>
+                          <div class="check-item-right">
+                            <div class="check-price">
+                              <h5>
+                                <span class="final-price">£<%= (item.product_price * (1 - (item.discount_on_product / 100))).toFixed(2) %></span>
+                                <span class="mrp-price">£<%= item.product_price %></span>
+                              </h5>
                             </div>
                           </div>
                         </div>
-                        <div class="check-item-right">
-                          <div class="check-price">
-                            <h5>
-                              <span class="final-price">£<%=finalPrice_after_discount%></span><span class="mrp-price">
-                                £<%=product_price %></span>
-                            </h5>
-                          </div>
-                        </div>
-                      </div>
+                      <% }); %>
+                      
                     </div>
                     <div class="alfa-cart-total">
                       <ul>
@@ -148,23 +150,13 @@
                     </div>
 
                     <form id="checkoutForm" action="order-confirm" method="post">
-                  
-                      <input type="hidden" name="product_id" value="<%=product_id %>" />
-                      <input type="hidden" name="product_name" value="<%=product_name %>" />
-
-                      <input type="hidden" name="selected_size" value="<%=selectedSize %>" />
-
-
-                      <input type="hidden" name="category" value="<%=category %>" />
-                      <input type="hidden" name="sub_category" value="<%=sub_category %>" />
-
-                      <input type="hidden" name="product_price" value="<%= product_price %>" />
-                      <input type="hidden" name="discount_on_product" value="<%=discount_on_product %>" />
-
-                      <input type="hidden" name="discount_amount" value="<%= discountAmount %>" />
-                      <input type="hidden" name="vat" value="<%= vatAmount %>" />
-                      <input type="hidden" name="delivery" value="<%= delivery_charge %>" />
-                      <input type="hidden" name="total_payable" value="<%= finalPriceAfterVAT %>" />
+                      <input type="hidden" name="cartItemscheckoutpage" value='<%= JSON.stringify(cartItemsInStock) %>' /> 
+                      
+                      <input type="hidden" name="product_price" value="<%= subtotal %>" /> 
+                      <input type="hidden" name="discount_amount" value="<%= discount %>" />
+                      <input type="hidden" name="vat" value="<%= vat %>" />
+                      <input type="hidden" name="delivery" value="<%= deliveryFee %>" />
+                      <input type="hidden" name="total_payable" value="<%= totalCost %>" />
 
                       <!-- Add other necessary fields here -->
                       <!-- <button type="submit" class="checkout-btn">Pay Now</button> -->

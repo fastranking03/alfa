@@ -361,7 +361,6 @@ router.get("/checkout", (req, res) => {
 
 //
 
-
 // router.post("/checkout", async (req, res) => {
 //   try {
 //     const user = req.session.user;
@@ -436,30 +435,40 @@ router.get("/checkout", (req, res) => {
 //   }
 // });
 
-
 router.post("/checkout", async (req, res) => {
   const user = req.session.user;
   const userId = user.id;
   try {
     // Extract pricing details from request body
-    const { subtotal, discount, vat, deliveryFee, totalCost } = req.body;
- 
-     // Query to get user addresses
-     const addressSql = "SELECT * FROM user_address WHERE user_id = ?";
-     const [addresses] = await connect.query(addressSql, [userId]);
+    const { subtotal, discount, vat, deliveryFee, totalCost , cartItemsviewpage} = req.body;
+    const cartItemsInStock = JSON.parse(cartItemsviewpage);
 
-     // Count of user addresses
-     const addressCount = addresses.length;
+
+    // Query to get user addresses
+    const addressSql = "SELECT * FROM user_address WHERE user_id = ?";
+    const [addresses] = await connect.query(addressSql, [userId]);
+
+    // Count of user addresses
+    const addressCount = addresses.length; 
+    console.log("Cart items in stock:", cartItemsInStock , addressCount);
+    
  
     // Render a success page or redirect to order confirmation page
-    res.render("checkout", { subtotal, discount, vat, deliveryFee, totalCost, addresses ,  addressCount});
+    res.render("checkout", {
+      subtotal,
+      discount,
+      vat,
+      deliveryFee,
+      totalCost,
+      addresses,
+      addressCount,
+      cartItemsInStock,
+    });
   } catch (error) {
     console.error("Error during checkout:", error);
     res.render("checkout-error", { message: "Failed to process checkout" });
   }
 });
-
-
 
 router.get("/cart", async (req, res) => {
   try {
@@ -536,7 +545,7 @@ router.get("/cart", async (req, res) => {
         }
         return {
           ...cartItem,
-          sizes: sizes
+          sizes: sizes,
         };
       });
 
@@ -552,8 +561,9 @@ router.get("/cart", async (req, res) => {
         const discount = parseFloat(item.discount_on_product) || 0;
         const quantity = parseInt(item.quantity);
         // Check stock availability
-        const stock = item.sizes ;
-        if (stock  ) { // Ensure the stock is available
+        const stock = item.sizes;
+        if (stock) {
+          // Ensure the stock is available
           totalPrice += price * quantity;
           totalDiscount += (price * discount) / 100;
           inStockItemCount++;
@@ -564,6 +574,12 @@ router.get("/cart", async (req, res) => {
       const deliveryFee = 25;
       const totalCost = totalPrice + GST + deliveryFee - totalDiscount;
 
+      // Filter items where stock is available
+      const cartItemsInStock = cartItems.filter((item) => {
+        const stock = item.sizes;
+        return stock && Object.values(stock).some((value) => value > 0);
+      });
+
       res.render("my-cart", {
         user,
         cartItems,
@@ -573,6 +589,7 @@ router.get("/cart", async (req, res) => {
         GST,
         deliveryFee,
         totalCost,
+        cartItemsInStock,
       });
     }
   } catch (error) {
@@ -580,7 +597,6 @@ router.get("/cart", async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
-
 
 router.post("/update-quantity", async (req, res) => {
   const { productId, quantity } = req.body;
@@ -595,68 +611,67 @@ router.post("/update-quantity", async (req, res) => {
       `;
     await connect.query(updateQuery, [quantity, userId, productId]);
 
-  //  *******************************************
-  const [cartResultAll] = await connect.query(
-    `SELECT c.*, p.*, p.wear_type_bottom_or_top
+    //  *******************************************
+    const [cartResultAll] = await connect.query(
+      `SELECT c.*, p.*, p.wear_type_bottom_or_top
     FROM users_cart c
     INNER JOIN products p ON c.product_id = p.id
     WHERE c.user_id = ?`,
-    [userId]
-  );
+      [userId]
+    );
 
-  const cartItemPromises = cartResultAll.map(async (cartItem) => {
-    let sizes = {};
-    if (cartItem.wear_type_bottom_or_top === "top") {
-      const [sizeRows] = await connect.query(
-        `SELECT xs, s, m, l, xl, xxl, xxxl, xxxxl 
+    const cartItemPromises = cartResultAll.map(async (cartItem) => {
+      let sizes = {};
+      if (cartItem.wear_type_bottom_or_top === "top") {
+        const [sizeRows] = await connect.query(
+          `SELECT xs, s, m, l, xl, xxl, xxxl, xxxxl 
          FROM topwear_inventory_with_sizes 
          WHERE product_id = ?`,
-        [cartItem.product_id]
-      );
-      sizes = sizeRows[0];
-    } else if (cartItem.wear_type_bottom_or_top === "bottom") {
-      const [sizeRows] = await connect.query(
-        `SELECT size_28, size_30, size_32, size_34, size_36, size_38, size_40, size_42, size_44, size_46 
+          [cartItem.product_id]
+        );
+        sizes = sizeRows[0];
+      } else if (cartItem.wear_type_bottom_or_top === "bottom") {
+        const [sizeRows] = await connect.query(
+          `SELECT size_28, size_30, size_32, size_34, size_36, size_38, size_40, size_42, size_44, size_46 
          FROM bottom_wear_inventory_with_sizes 
          WHERE product_id = ?`,
-        [cartItem.product_id]
-      );
-      sizes = sizeRows[0];
-    }
-    return {
-      ...cartItem,
-      sizes: sizes
-    };
-  });
+          [cartItem.product_id]
+        );
+        sizes = sizeRows[0];
+      }
+      return {
+        ...cartItem,
+        sizes: sizes,
+      };
+    });
 
-  const cartItems = await Promise.all(cartItemPromises);
+    const cartItems = await Promise.all(cartItemPromises);
 
-  // Calculate totals for items in stock
-  let totalPrice = 0;
-  let totalDiscount = 0;
-  let inStockItemCount = 0;
+    // Calculate totals for items in stock
+    let totalPrice = 0;
+    let totalDiscount = 0;
+    let inStockItemCount = 0;
 
-  cartItems.forEach((item) => {
-    const price = parseFloat(item.product_price);
-    const discount = parseFloat(item.discount_on_product) || 0;
-    const quantity = parseInt(item.quantity);
-    // Check stock availability
-    const stock = item.sizes ;
-    if (stock  ) { // Ensure the stock is available
-      totalPrice += price * quantity;
-      totalDiscount += (price * discount) / 100;
-      inStockItemCount++;
-    }
-  });
+    cartItems.forEach((item) => {
+      const price = parseFloat(item.product_price);
+      const discount = parseFloat(item.discount_on_product) || 0;
+      const quantity = parseInt(item.quantity);
+      // Check stock availability
+      const stock = item.sizes;
+      if (stock) {
+        // Ensure the stock is available
+        totalPrice += price * quantity;
+        totalDiscount += (price * discount) / 100;
+        inStockItemCount++;
+      }
+    });
 
-  const GST = totalPrice * 0.2;
-  const deliveryFee = 25;
-  const totalCost = totalPrice + GST + deliveryFee - totalDiscount;
+    const GST = totalPrice * 0.2;
+    const deliveryFee = 25;
+    const totalCost = totalPrice + GST + deliveryFee - totalDiscount;
 
     // *******************************************
 
-     
-    
     console.log(
       `Quantity updated successfully for product ${productId} to ${quantity}`
     );
@@ -784,12 +799,14 @@ router.get("/my-wishlist", async (req, res) => {
         INNER JOIN products p ON uf.product_id = p.id
         WHERE uf.user_id = ?
       `;
-      const [wishlistItems] = await connect.query(getUserFavoritesQuery, [user.id]);
+      const [wishlistItems] = await connect.query(getUserFavoritesQuery, [
+        user.id,
+      ]);
 
       // Fetch sizes for each product
       const wishlistItemPromises = wishlistItems.map(async (item) => {
         let sizes = {};
-        if (item.wear_type_bottom_or_top === 'top') {
+        if (item.wear_type_bottom_or_top === "top") {
           const [sizeRows] = await connect.query(
             `SELECT xs, s, m, l, xl, xxl, xxxl, xxxxl 
              FROM topwear_inventory_with_sizes 
@@ -797,7 +814,7 @@ router.get("/my-wishlist", async (req, res) => {
             [item.product_id]
           );
           sizes = sizeRows[0];
-        } else if (item.wear_type_bottom_or_top === 'bottom') {
+        } else if (item.wear_type_bottom_or_top === "bottom") {
           const [sizeRows] = await connect.query(
             `SELECT size_28, size_30, size_32, size_34, size_36, size_38, size_40, size_42, size_44, size_46 
              FROM bottom_wear_inventory_with_sizes 
@@ -808,21 +825,23 @@ router.get("/my-wishlist", async (req, res) => {
         }
         return {
           ...item,
-          sizes: sizes
+          sizes: sizes,
         };
       });
- 
+
       const resolvedWishlistItems = await Promise.all(wishlistItemPromises);
 
       // Render the my-wishlist page with the user's favorite products
-      return res.render("my-wishlist", { user, wishlistItems: resolvedWishlistItems });
+      return res.render("my-wishlist", {
+        user,
+        wishlistItems: resolvedWishlistItems,
+      });
     } catch (error) {
       console.error("Error fetching wishlist items:", error);
       return res.render("error", { message: "Error fetching wishlist items" });
     }
   }
 });
-
 
 router.get("/order-confirm", (req, res) => {
   const user = req.session.user;
