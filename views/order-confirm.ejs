@@ -108,16 +108,12 @@
                                         <ul>
                                             <li>
                                                 <div class="alfa-text">Sub-Total</div>
-                                                <div class="alfa-price"> £ <%= orderDetails.amount_without_vat %></div>
+                                                <div class="alfa-price"> £ <%= orderDetails.sub_total %></div>
                                             </li>
                                             <li>
                                                 <div class="alfa-text">Vat (20%)</div>
                                                 <div class="alfa-price">£ <%= orderDetails.vat %></div>
-                                            </li>
-                                            <!-- <li>
-                                                <div class="alfa-text">Discount</div>
-                                                <div class="alfa-price">- £ <%= orderDetails.discount %></div>
-                                            </li> -->
+                                            </li> 
                                             <li>
                                                 <div class="alfa-text">Delivery Fee</div>
                                                 <div class="alfa-price">£ <%= orderDetails.delivery_charges %></div>

@@ -55,21 +55,26 @@ router.get("/", async (req, res) => {
 });
 
 // Route for the product page
-
+ 
 router.post("/place-order", async (req, res) => {
   const user = req.session.user;
   const userId = user ? user.id : null;
+
   if (!user) {
     return res.redirect("/login"); // Redirect to the login page if the user is not logged in
   }
-  const { products, subtotal, gst, deliveryFee, totalCost, address_id } =
-    req.body;
+
+  const { cartItemscheckoutpage, subtotal, discount_amount, vat, deliveryFee, total_payable, address_id } = req.body;
 
   try {
+    // Parse cartItemscheckoutpage if passed as JSON string
+    const parsedCartItems = JSON.parse(cartItemscheckoutpage);
+
+    // Start a transaction
+    await connect.query('START TRANSACTION');
+
     // Generate new order ID
-    const [lastOrderRow] = await connect.query(
-      "SELECT order_id FROM orders ORDER BY order_id DESC LIMIT 1"
-    );
+    const [lastOrderRow] = await connect.query("SELECT order_id FROM orders ORDER BY order_id DESC LIMIT 1");
     let newOrderId = "ALOI000001";
     if (lastOrderRow.length > 0) {
       const lastOrderId = lastOrderRow[0].order_id;
@@ -79,62 +84,62 @@ router.post("/place-order", async (req, res) => {
     }
 
     // Insert new order
-    await connect.query(
-      "INSERT INTO orders (order_id, user_id, total_payable, vat,  delivery_charges, amount_without_vat , address_id) VALUES (?, ?, ?, ?, ?, ? , ?)",
-      [newOrderId, userId, totalCost, gst, deliveryFee, subtotal, address_id]
+    const [insertOrderResult] = await connect.query(
+      "INSERT INTO orders (order_id, user_id, total_payable, vat, delivery_charges, sub_total, discount_amount, address_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+      [newOrderId, userId, total_payable, vat, deliveryFee, subtotal, discount_amount, address_id]
     );
 
-    // Insert order items
-    for (const product of products) {
-      await connect.query(
-        "INSERT INTO order_items (order_id, product_id, quantity, price, size) VALUES (?, ?, ?, ?, ?)",
-        [
-          newOrderId,
-          product.productId,
-          product.quantity,
-          product.price,
-          product.size,
-        ]
-      );
+    // Check if insertion into orders table was successful
+    if (insertOrderResult.affectedRows !== 1) {
+      throw new Error("Failed to insert into orders table");
     }
 
+    // Insert order items
+    const insertOrderItemsPromises = parsedCartItems.map(async (product) => {
+      await connect.query(
+        "INSERT INTO order_items (order_id, product_id, quantity, price, size, colour) VALUES (?, ?, ?, ?, ?, ?)",
+        [newOrderId, product.product_id, product.quantity, product.product_price, product.selected_size, product.colour]
+      );
+    });
+
+    // Execute all order item insertion queries
+    await Promise.all(insertOrderItemsPromises);
+
+    // Commit the transaction after all queries succeed
+    await connect.query('COMMIT');
+
+    // Fetch order details and items for confirmation page
     const [orderDetails] = await connect.query(
-      `SELECT o.*, a.name, a.email, a.phone, a.address_title , a.full_address 
+      `SELECT o.*, a.name, a.email, a.phone, a.address_title, a.full_address 
        FROM orders o
        JOIN user_address a ON o.address_id = a.id
        WHERE o.order_id = ?`,
       [newOrderId]
     );
 
-    // const [orderItems] = await connection.query(
-    //   "SELECT * FROM order_items WHERE order_id = ?",
-    //   [newOrderId]
-    // );
-
     const [orderItems] = await connect.query(
-      `SELECT oi.*, p.product_name, p.product_title , p.product_description, p.product_main_image
+      `SELECT oi.*, p.product_name, p.product_title, p.product_description, p.product_main_image
        FROM order_items oi 
        JOIN products p ON oi.product_id = p.id 
        WHERE oi.order_id = ?`,
       [newOrderId]
     );
 
-    const adresssql = "SELECT * FROM user_address WHERE user_id = ?";
-
-    // Execute the query with the user ID as a parameter
-    const [addresses] = await connect.query(adresssql, [userId]);
-
     // Render the order confirmation page with order details
     res.render("order-confirm", {
-      orderDetails: orderDetails[0],
+      orderDetails: orderDetails[0], // Assuming orderDetails is an array and you want the first item
       orderItems,
       user,
     });
   } catch (error) {
-    console.error(error);
+    console.error("Error placing order:", error);
+    await connect.query('ROLLBACK'); // Rollback the transaction in case of an error
     res.status(500).send("Failed to place order");
   }
 });
+
+
+
 
 router.get("/product", async (req, res) => {
   const user = req.session.user;
@@ -861,18 +866,13 @@ router.post("/order-confirm", async (req, res) => {
     const email = user.email;
 
     // Get the form data from the request body
-    const {
-      product_id,
-      address_id,
-      product_name,
-      selected_size,
-      category,
-      sub_category,
-      product_price,
-      discount_on_product,
+    const { 
+      cartItemscheckoutpage,
+      address_id,    
+      subtotal, 
       discount_amount,
       vat,
-      delivery,
+      delivery_charges,
       total_payable,
     } = req.body;
 
@@ -889,12 +889,7 @@ router.post("/order-confirm", async (req, res) => {
       newOrderId = "ALOI" + nextOrderNumber.toString().padStart(6, "0");
     }
 
-    const [productRows] = await connect.query(
-      "SELECT product_main_image FROM products WHERE id = ?",
-      [product_id]
-    );
-
-    const { product_main_image } = productRows[0];
+     
 
     // Insert the new order into the database
     const query = `

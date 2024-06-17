@@ -107,9 +107,20 @@ app.get('/accessories',(req,res) =>{
 app.get('/my-profile',(req,res) =>{
   return res.render('my-profile')
 })
-app.get('/payment',(req,res) =>{
-  return res.render('payment')
+app.post('/payment',(req,res) =>{
+  let { cartItemscheckoutpage, subtotal,discount_amount, vat, delivery_charges, total_payable, selectedAddress} = req.body; 
+   cartItemscheckoutpage = JSON.parse(cartItemscheckoutpage);
+  return res.render('payment', {
+    cartItemscheckoutpage,
+    subtotal,
+    discount_amount,
+    vat,
+    delivery_charges,
+    total_payable,
+    selectedAddress
+  });
 })
+
 const PORT = 8081;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);

@@ -102,40 +102,87 @@
                                             <ul>
                                                 <li>
                                                     <div class="alfa-text">Sub- Total</div>
-                                                    <div class="alfa-price">£85
+                                                    <div class="alfa-price">£ <%=subtotal  %>
                                                     </div>
                                                 </li>
 
                                                 <li>
                                                     <div class="alfa-text">
-                                                        Shipping
+                                                        Shipping Charges
                                                     </div>
-                                                    <div class="alfa-price">Free
+                                                    <div class="alfa-price">£  <%=delivery_charges  %>
+                                                    </div>
+                                                </li>
+
+                                                <li>
+                                                    <div class="alfa-text">
+                                                        Vat
+                                                    </div>
+                                                    <div class="alfa-price">£  <%=vat %>
                                                     </div>
                                                 </li>
 
                                                 <li>
                                                     <div class="alfa-text">Discount</div>
 
-                                                    <div class="alfa-price">£ 13.60
+                                                    <div class="alfa-price">£ <%=discount_amount  %>
                                                     </div>
                                                 </li>
-                                                 
+                                                
                                             </ul>
                                         </div>
+
                                         <div class="alfa-cart-total">
                                             <ul>
                                                 <li>
                                                     <div class="alfa-text">Total Cost</div>
                                                     <div class="alfa-price">
-                                                        £91.60
+                                                        £ <%=total_payable  %>
                                                     </div>
                                                 </li>
                                             </ul>
                                         </div>
-                                        <div class="complete-process-wrapper" style="text-align: right;">
-                                            <button class="cart-btn add-to-cart">Complete Order</button>
-                                        </div>
+
+                                        <!--  -->
+                                        
+                  <form action="place-order" method="post"> 
+
+                  <input type="hidden" name="address_id"  value="<%=selectedAddress  %>">
+
+                      <input
+                      type="hidden"
+                      name="cartItemscheckoutpage"
+                      value="<%= JSON.stringify(cartItemscheckoutpage) %>"
+                    />
+
+                    <input
+                      type="hidden"
+                      name="subtotal"
+                      value="<%= subtotal %>"
+                    />
+                    <input
+                      type="hidden"
+                      name="discount_amount"
+                      value="<%= discount_amount %>"
+                    />
+                    <input type="hidden" name="vat" value="<%= vat %>" />
+                    <input
+                      type="hidden"
+                      name="deliveryFee"
+                      value="<%= delivery_charges %>"
+                    />
+                    <input
+                      type="hidden"
+                      name="total_payable"
+                      value="<%= total_payable %>"
+                    />
+ 
+
+                    <div class="complete-process-wrapper" style="text-align: right;">
+                        <button type="submit" class="cart-btn add-to-cart">Complete Order</button>
+                    </div>
+                  </form>
+                   
                                      </div>
                                 </div>
                             </div>
