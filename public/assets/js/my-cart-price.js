@@ -88,6 +88,12 @@ $(document).ready(function () {
           gstElement.textContent = response.GST.toFixed(2);
         }
 
+        // Update subtotal
+        var subtotal = document.getElementById("subtotal-ajax");
+        if (subtotal) {
+          subtotal.textContent = response.subtotal.toFixed(2);
+        }
+
         // Update Delivery Fee
         var deliveryFeeElement = document.getElementById("Delivery-ajax");
         if (deliveryFeeElement) {

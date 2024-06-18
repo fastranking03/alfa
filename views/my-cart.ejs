@@ -35,6 +35,7 @@
                     <div class="alfa-cart-items cart-right-wrap">
                       <div class="cart-table">
                         <div class="cart-tbody" id="cart-pricing">
+
                           <% cartItems.forEach((item, index) => { %>
                             <div class="cart-tr cart-b-tr">
                               <div class="cart-td">
@@ -51,6 +52,7 @@
                                     <div class="pro-cart-title">
                                       <h3><%= item.product_name %></h3>
                                     </div>
+
                                     <div class="product-size-list">
                                       <span class="cart-short-text" data-product-id="<%= item.product_id %>" data-selected-size="<%= item.selected_size %>">
                                         Select Size : <%= item.selected_size %>
@@ -84,14 +86,15 @@
                                         <% } %>
                                       </ul> 
                                     </div>
+
                                     <div class="new-cart-quantity">
-                                      <span class="cart-short-text">Quantity : <span id="quantity-display-<%= item.id %>"><%=item.quantity %></span></span>
+                                      <span class="cart-short-text">Quantity : <span id="quantity-display-<%= item.product_id %>"><%=item.quantity %></span></span>
                                       <div class="cart-quantity-wrapper cart-qw">
                                         <div class="left-input">
                                           <span class="decrement" id="minus"><i class="fa-solid fa-minus"></i></span>
                                         </div>
                                         <div class="cart-quantity">
-                                          <input type="text" name="product_quantity" value="<%=item.quantity %>" class="cart-value" data-product-id="<%= item.id %>" id="quantity-js" />
+                                          <input type="text" name="product_quantity" value="<%=item.quantity %>" class="cart-value" data-product-id="<%= item.product_id %>" id="quantity-js" />
                                         </div>
                                         <div class="right-input">
                                           <span class="increment"><i class="fa-solid fa-plus"></i></span>
@@ -122,6 +125,7 @@
                               </div>
                             </div>
                           <% }); %>
+
                           <!-- Display total calculations -->
                          </div>
                         
@@ -170,7 +174,7 @@
                             <div class="alfa-text">Sub Total </div>
                             <div class="alfa-price">
                                
-                              <span id="totalDiscount-ajax"
+                              <span id="subtotal-ajax"
                                 ><%=subtotal%></span
                               >
                             </div>

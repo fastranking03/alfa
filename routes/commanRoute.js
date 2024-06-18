@@ -66,7 +66,7 @@ router.get("/", async (req, res) => {
 });
 
 // Route for the product page
- 
+
 router.post("/place-order", async (req, res) => {
   const user = req.session.user;
   const userId = user ? user.id : null;
@@ -75,17 +75,28 @@ router.post("/place-order", async (req, res) => {
     return res.redirect("/login"); // Redirect to the login page if the user is not logged in
   }
 
-  const { cartItemscheckoutpage, subtotal, discount_amount, vat, deliveryFee, total_payable, address_id } = req.body;
+  const {
+    cartItemscheckoutpage,
+    total_mrp,
+    discount_amount,
+    subtotal,
+    vat,
+    deliveryFee,
+    total_payable,
+    address_id,
+  } = req.body;
 
   try {
     // Parse cartItemscheckoutpage if passed as JSON string
     const parsedCartItems = JSON.parse(cartItemscheckoutpage);
 
     // Start a transaction
-    await connect.query('START TRANSACTION');
+    await connect.query("START TRANSACTION");
 
     // Generate new order ID
-    const [lastOrderRow] = await connect.query("SELECT order_id FROM orders ORDER BY order_id DESC LIMIT 1");
+    const [lastOrderRow] = await connect.query(
+      "SELECT order_id FROM orders ORDER BY order_id DESC LIMIT 1"
+    );
     let newOrderId = "ALOI000001";
     if (lastOrderRow.length > 0) {
       const lastOrderId = lastOrderRow[0].order_id;
@@ -95,29 +106,58 @@ router.post("/place-order", async (req, res) => {
     }
 
     // Insert new order
-    const [insertOrderResult] = await connect.query(
-      "INSERT INTO orders (order_id, user_id, total_payable, vat, delivery_charges, sub_total, discount_amount, address_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-      [newOrderId, userId, total_payable, vat, deliveryFee, subtotal, discount_amount, address_id]
-    );
+    try {
+      const [insertOrderResult] = await connect.query(
+        "INSERT INTO orders (order_id, user_id, total_payable, vat, delivery_charges, sub_total, total_mrp, discount_amount, address_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+        [
+          newOrderId,
+          userId,
+          parseFloat(total_payable),
+          parseFloat(vat),
+          parseFloat(deliveryFee),
+          parseFloat(subtotal),
+          parseFloat(total_mrp),
+          parseFloat(discount_amount),
+          parseInt(address_id),
+        ]
+      );
 
-    // Check if insertion into orders table was successful
-    if (insertOrderResult.affectedRows !== 1) {
-      throw new Error("Failed to insert into orders table");
+      // Check if insertion into orders table was successful
+      if (insertOrderResult.affectedRows !== 1) {
+        throw new Error("Failed to insert into orders table");
+      }
+    } catch (orderError) {
+      console.error("Error inserting order:", orderError);
+      await connect.query("ROLLBACK");
+      return res.status(500).send("Failed to place order");
     }
 
     // Insert order items
-    const insertOrderItemsPromises = parsedCartItems.map(async (product) => {
-      await connect.query(
-        "INSERT INTO order_items (order_id, product_id, quantity, price, size, colour) VALUES (?, ?, ?, ?, ?, ?)",
-        [newOrderId, product.product_id, product.quantity, product.product_price, product.selected_size, product.colour]
-      );
-    });
+    try {
+      const insertOrderItemsPromises = parsedCartItems.map(async (product) => {
+        await connect.query(
+          "INSERT INTO order_items (order_id, product_id, quantity, price, size, colour) VALUES (?, ?, ?, ?, ?, ?)",
+          [
+            newOrderId,
+            product.product_id,
+            product.quantity,
+            parseFloat(product.product_price),
+            product.selected_size,
+            product.colour,
+          ]
+        );
+      });
 
-    // Execute all order item insertion queries
-    await Promise.all(insertOrderItemsPromises);
+      // Execute all order item insertion queries
+      await Promise.all(insertOrderItemsPromises);
+    } catch (orderItemsError) {
+      console.error("Error inserting order items:", orderItemsError);
+      await connect.query("ROLLBACK");
+      return res.status(500).send("Failed to place order items");
+    }
 
     // Commit the transaction after all queries succeed
-    await connect.query('COMMIT');
+    await connect.query("COMMIT");
 
     // Fetch order details and items for confirmation page
     const [orderDetails] = await connect.query(
@@ -144,13 +184,10 @@ router.post("/place-order", async (req, res) => {
     });
   } catch (error) {
     console.error("Error placing order:", error);
-    await connect.query('ROLLBACK'); // Rollback the transaction in case of an error
+    await connect.query("ROLLBACK"); // Rollback the transaction in case of an error
     res.status(500).send("Failed to place order");
   }
 });
-
-
-
 
 router.get("/product", async (req, res) => {
   const user = req.session.user;
@@ -195,90 +232,7 @@ router.get("/blogs", async (req, res) => {
   }
 });
 
-// router.get("/product-detail/:id", async (req, res) => {
-//   try {
-//     const cartCount = req.cartCount || 0;
-//     const wishlistCount = req.wishlistCount || 0;
-//     const user = req.session.user;
-//     const productId = req.params.id;
-//     const [productRows] = await connect.query(
-//       "SELECT wear_type_bottom_or_top FROM products WHERE id = ?",
-//       [productId]
-//     );
-//     if (productRows.length === 0) {
-//       return 0; // Product not found
-//     }
 
-//     const wearType = productRows[0].wear_type_bottom_or_top;
-//     let sizeQuery;
-//     if (wearType === "top") {
-//       sizeQuery = `
-//         SELECT
-//           xs, s, m, l, xl, xxl, xxxl, xxxxl
-//         FROM
-//           topwear_inventory
-//         WHERE
-//           product_id = ?`;
-//       [sizeRows] = await connection.query(sizeQuery, [productId]);
-//     } else if (wearType === "bottom") {
-//       sizeQuery = `
-//         SELECT
-//           size_28, size_30, size_32, size_34, size_36, size_38, size_40, size_42, size_44, size_46
-//         FROM
-//           bottomwear_inventory
-//         WHERE
-//           product_id = ?`;
-//       [sizeRows] = await connection.query(sizeQuery, [productId]);
-//     }
-
-//     if (sizeRows.length === 0) {
-//       return { sizes: null }; // Product ID not found in inventory
-//     }
-
-//     const sizes = {};
-//     for (const [size, value] of Object.entries(sizeRows[0])) {
-//       if (value) {
-//         sizes[size.replace("_", " ")] = value;
-//       }
-//     }
-
-//     const [rows] = await connect.query(
-//       `SELECT
-//           p.*,
-//           c.id AS category_id,
-//           c.category_name,
-//           s.id AS subcategory_id,
-//           s.sub_category_name
-//        FROM products p
-//        INNER JOIN category c ON p.category_id = c.id
-//        INNER JOIN sub_category s ON p.subcategory_id = s.id
-//        WHERE p.id = ?`,
-//       [productId]
-//     );
-
-//     if (rows.length === 0) {
-//       return res.status(404).send("Product not found");
-//     }
-
-//     const product = rows[0];
-
-//     const [product_images] = await connect.query(
-//       "SELECT * FROM Product_Images WHERE product_id = ?",
-//       [productId]
-//     );
-
-//     res.render("product-detail", {
-//       cartCount,
-//       wishlistCount,
-//       user,
-//       product,
-//       product_images,
-//     });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).send("Internal Server Error");
-//   }
-// });
 router.get("/product-detail/:id", async (req, res) => {
   try {
     const user = req.session.user;
@@ -374,82 +328,7 @@ router.get("/checkout", (req, res) => {
   const user = req.session.user;
   res.render("checkout", { user });
 });
-
-//
-
-// router.post("/checkout", async (req, res) => {
-//   try {
-//     const user = req.session.user;
-//     // const cartCount = req.cartCount || 0;
-//     // const wishlistCount = req.wishlistCount || 0;
-//     const userId = req.session.user.id;
-
-//     // Retrieve form inputs from req.body
-//     const { product_id, product_name, category, sub_category, selectedSize } =
-//       req.body;
-
-//     const sql = "SELECT * FROM user_address WHERE user_id = ?";
-
-//     // Execute the query with the user ID as a parameter
-//     const [addresses] = await connect.query(sql, [userId]);
-
-//     const [productRows] = await connect.query(
-//       "SELECT product_price, discount_on_product, product_main_image FROM products WHERE id = ?",
-//       [product_id]
-//     );
-
-//     if (productRows.length === 0) {
-//       return res
-//         .status(404)
-//         .json({ success: false, message: "Product not found" });
-//     }
-
-//     const { product_price, discount_on_product, product_main_image } =
-//       productRows[0];
-
-//     // Calculate the price after applying the discount
-//     const finalPrice_after_discount = (
-//       product_price *
-//       (1 - discount_on_product / 100)
-//     ).toFixed(2);
-
-//     const discountAmount = product_price * (discount_on_product / 100);
-
-//     // Calculate the VAT amount
-//     const vatAmount = (finalPrice_after_discount * (20 / 100)).toFixed(2);
-
-//     // Define the delivery charge
-//     const delivery_charge = 10;
-
-//     // Calculate the final price after adding VAT and delivery charge
-//     const finalPriceAfterVAT = (
-//       parseFloat(finalPrice_after_discount) +
-//       parseFloat(vatAmount) +
-//       delivery_charge
-//     ).toFixed(2);
-//     // Now you can use these variables as needed, for example, to render the checkout page
-//     res.render("checkout", {
-//       addresses,
-//       user,
-//       product_id,
-//       product_name,
-//       product_main_image,
-//       finalPrice_after_discount,
-//       discountAmount,
-//       discount_on_product,
-//       product_price,
-//       vatAmount,
-//       delivery_charge,
-//       finalPriceAfterVAT,
-//       category,
-//       sub_category,
-//       selectedSize,
-//     });
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ success: false, message: "Internal Server Error" });
-//   }
-// });
+ 
 
 router.post("/checkout", async (req, res) => {
   const user = req.session.user;
@@ -505,19 +384,21 @@ router.post("/checkout", async (req, res) => {
       if (stock) {
         // Ensure the stock is available
         totalPrice += price * quantity;
-        totalDiscount += (price * discount) / 100;
+        totalDiscount += ((price * discount) / 100) * quantity;
         inStockItemCount++;
       }
     });
 
     const vatRate = 0.2; // 20% VAT rate
-    const subtotal = totalPrice - totalDiscount;
-    const vat = subtotal * vatRate;
-    
-
+    const subtotal = (totalPrice - totalDiscount).toFixed(2);
+    const vat = (subtotal * vatRate).toFixed(2);
     const deliveryFee = 25;
-    const totalCost = totalPrice + vat + deliveryFee - totalDiscount;
-   
+    const totalCost = (
+      parseFloat(totalPrice) +
+      parseFloat(vat) +
+      deliveryFee -
+      parseFloat(totalDiscount)
+    ).toFixed(2);
 
     // Filter items where stock is available
     const cartItemsInStock = cartItems.filter((item) => {
@@ -525,23 +406,19 @@ router.post("/checkout", async (req, res) => {
       return stock && Object.values(stock).some((value) => value > 0);
     });
 
-
-
     // Query to get user addresses
     const addressSql = "SELECT * FROM user_address WHERE user_id = ?";
     const [addresses] = await connect.query(addressSql, [userId]);
 
     // Count of user addresses
-    const addressCount = addresses.length; 
-   
-     
- 
+    const addressCount = addresses.length;
+
     // Render a success page or redirect to order confirmation page
     res.render("checkout", {
-      totalPrice,
-      totalDiscount,
-      vat ,
-      deliveryFee ,
+      totalPrice: totalPrice.toFixed(2),
+      totalDiscount: totalDiscount.toFixed(2),
+      vat,
+      deliveryFee: deliveryFee.toFixed(2),
       totalCost,
       subtotal,
       addresses,
@@ -550,10 +427,9 @@ router.post("/checkout", async (req, res) => {
     });
   } catch (error) {
     console.error("Error during checkout:", error);
-    res.render("checkout-error", { message: "Failed to process checkout" });
+    res.render("error", { message: "Failed to process checkout" });
   }
 });
-
 
 
 router.get("/cart", async (req, res) => {
@@ -616,18 +492,15 @@ router.get("/cart", async (req, res) => {
         const quantity = parseInt(item.quantity);
         // Calculate totals for items in cart
         totalPrice += price * quantity;
-        totalDiscount += (price * discount * quantity) / 100;
+        totalDiscount +=  ((price * discount) / 100) * quantity;
         inStockItemCount++; // For guest user, treat all items as in stock
       });
 
-      const vatRate = 0.2; // 20% VAT rate
       const subtotal = totalPrice - totalDiscount;
-      const GST = subtotal * vatRate;
-      
+    const GST = subtotal * 0.2;
+    const deliveryFee = 25;
+    const totalCost = totalPrice + GST + deliveryFee - totalDiscount;
 
-      const deliveryFee = 25;
-      const totalCost = totalPrice + GST + deliveryFee - totalDiscount;
-     
 
       res.render("my-cart", {
         user,
@@ -640,13 +513,13 @@ router.get("/cart", async (req, res) => {
         totalCost,
         cartItemsInStock: cartItemsWithSizes, // For guest user, all items are considered in stock
       });
-    }  else {
-      const userId = user.id; 
+    } else {
+      const userId = user.id;
 
       const [cartResult] = await connect.query(
         "SELECT COUNT(*) AS cart_count FROM users_cart WHERE user_id = ?",
         [userId]
-      );  
+      );
       const [wishlistResult] = await connect.query(
         "SELECT COUNT(*) AS wishlist_count FROM users_favorites WHERE user_id = ?",
         [userId]
@@ -712,18 +585,23 @@ router.get("/cart", async (req, res) => {
         if (stock) {
           // Ensure the stock is available
           totalPrice += price * quantity;
-          totalDiscount += (price * discount) / 100;
+          // totalDiscount += (price * discount) / 100;
+          totalDiscount += ((price * discount) / 100) * quantity;
           inStockItemCount++;
         }
       });
 
       const vatRate = 0.2; // 20% VAT rate
-      const subtotal = totalPrice - totalDiscount;
-      const GST = subtotal * vatRate;
-      
-
+      const subtotal = (totalPrice - totalDiscount).toFixed(2);
+      const GST = (subtotal * vatRate).toFixed(2);
       const deliveryFee = 25;
-      const totalCost = totalPrice + GST + deliveryFee - totalDiscount;
+      const totalCost = (
+        parseFloat(totalPrice) +
+        parseFloat(GST) +
+        deliveryFee -
+        parseFloat(totalDiscount)
+      ).toFixed(2);
+
       // Filter items where stock is available
       const cartItemsInStock = cartItems.filter((item) => {
         const stock = item.sizes;
@@ -749,182 +627,257 @@ router.get("/cart", async (req, res) => {
   }
 });
 
+// router.post("/update-quantity", async (req, res) => {
+//   const { productId, quantity } = req.body;
+//   const userId = req.session.user.id;
+
+//   try {
+
+//     // Update quantity in the database
+//     const updateQuery = `
+//           UPDATE users_cart
+//           SET quantity = ?
+//           WHERE user_id = ? AND product_id = ?
+//       `;
+//     await connect.query(updateQuery, [quantity, userId, productId]);
+
+//     //  *******************************************
+//     const [cartResultAll] = await connect.query(
+//       `SELECT c.*, p.*, p.wear_type_bottom_or_top
+//     FROM users_cart c
+//     INNER JOIN products p ON c.product_id = p.id
+//     WHERE c.user_id = ?`,
+//       [userId]
+//     );
+
+//     const cartItemPromises = cartResultAll.map(async (cartItem) => {
+//       let sizes = {};
+//       if (cartItem.wear_type_bottom_or_top === "top") {
+//         const [sizeRows] = await connect.query(
+//           `SELECT xs, s, m, l, xl, xxl, xxxl, xxxxl 
+//          FROM topwear_inventory_with_sizes 
+//          WHERE product_id = ?`,
+//           [cartItem.product_id]
+//         );
+//         sizes = sizeRows[0];
+//       } else if (cartItem.wear_type_bottom_or_top === "bottom") {
+//         const [sizeRows] = await connect.query(
+//           `SELECT size_28, size_30, size_32, size_34, size_36, size_38, size_40, size_42, size_44, size_46 
+//          FROM bottom_wear_inventory_with_sizes 
+//          WHERE product_id = ?`,
+//           [cartItem.product_id]
+//         );
+//         sizes = sizeRows[0];
+//       }
+//       return {
+//         ...cartItem,
+//         sizes: sizes,
+//       };
+//     });
+
+//     const cartItems = await Promise.all(cartItemPromises);
+
+//     // Calculate totals for items in stock
+//     let totalPrice = 0;
+//     let totalDiscount = 0;
+//     let inStockItemCount = 0;
+
+//     cartItems.forEach((item) => {
+//       const price = parseFloat(item.product_price);
+//       const discount = parseFloat(item.discount_on_product) || 0;
+//       const quantity = parseInt(item.quantity);
+//       // Check stock availability
+//       const stock = item.sizes;
+//       if (stock) {
+//         // Ensure the stock is available
+//         totalPrice += price * quantity;
+//         // totalDiscount += (price * discount) / 100;
+//         totalDiscount += ((price * discount) / 100) * quantity;
+//         inStockItemCount++;
+//       }
+//     });
+
+//     const subtotal = totalPrice - totalDiscount;
+//     const GST = subtotal * 0.2;
+//     const deliveryFee = 25;
+//     const totalCost = totalPrice + GST + deliveryFee - totalDiscount;
+
+//     // *******************************************
+//     console.log(
+//       `Quantity updated successfully for product ${productId} to ${quantity}`
+//     );
+
+//     // Send response with updated totals
+//     res.status(200).json({
+//       message: "Quantity updated successfully",
+//       totalPrice: totalPrice,
+//       totalDiscount: totalDiscount,
+//       subtotal,
+//       GST: GST,
+//       deliveryFee: deliveryFee,
+//       totalCost: totalCost,
+//     });
+//   } catch (error) {
+//     console.error("Error updating quantity:", error);
+//     res.status(500).json({ error: "Failed to update quantity" });
+//   }
+// });
 
 
-router.post("/update-quantity", async (req, res) => {
+router.post('/update-quantity', async (req, res) => {
   const { productId, quantity } = req.body;
-  const userId = req.session.user.id;
 
   try {
-    // Update quantity in the database
-    const updateQuery = `
-          UPDATE users_cart
-          SET quantity = ?
-          WHERE user_id = ? AND product_id = ?
+    if (req.session.user && req.session.user.id) {
+      // User is logged in, update quantity in the database
+      const userId = req.session.user.id;
+      const updateQuery = `
+        UPDATE users_cart
+        SET quantity = ?
+        WHERE user_id = ? AND product_id = ?
       `;
-    await connect.query(updateQuery, [quantity, userId, productId]);
+      await connect.query(updateQuery, [quantity, userId, productId]);
 
-    //  *******************************************
-    const [cartResultAll] = await connect.query(
-      `SELECT c.*, p.*, p.wear_type_bottom_or_top
-    FROM users_cart c
-    INNER JOIN products p ON c.product_id = p.id
-    WHERE c.user_id = ?`,
-      [userId]
-    );
+      // Fetch updated cart items for the user
+      const [cartResultAll] = await connect.query(
+        `SELECT c.*, p.*, p.wear_type_bottom_or_top
+         FROM users_cart c
+         INNER JOIN products p ON c.product_id = p.id
+         WHERE c.user_id = ?`,
+        [userId]
+      );
 
-    const cartItemPromises = cartResultAll.map(async (cartItem) => {
-      let sizes = {};
-      if (cartItem.wear_type_bottom_or_top === "top") {
-        const [sizeRows] = await connect.query(
-          `SELECT xs, s, m, l, xl, xxl, xxxl, xxxxl 
-         FROM topwear_inventory_with_sizes 
-         WHERE product_id = ?`,
-          [cartItem.product_id]
-        );
-        sizes = sizeRows[0];
-      } else if (cartItem.wear_type_bottom_or_top === "bottom") {
-        const [sizeRows] = await connect.query(
-          `SELECT size_28, size_30, size_32, size_34, size_36, size_38, size_40, size_42, size_44, size_46 
-         FROM bottom_wear_inventory_with_sizes 
-         WHERE product_id = ?`,
-          [cartItem.product_id]
-        );
-        sizes = sizeRows[0];
-      }
-      return {
-        ...cartItem,
-        sizes: sizes,
-      };
-    });
-
-    const cartItems = await Promise.all(cartItemPromises);
-
-    // Calculate totals for items in stock
-    let totalPrice = 0;
-    let totalDiscount = 0;
-    let inStockItemCount = 0;
-
-    cartItems.forEach((item) => {
-      const price = parseFloat(item.product_price);
-      const discount = parseFloat(item.discount_on_product) || 0;
-      const quantity = parseInt(item.quantity);
-      // Check stock availability
-      const stock = item.sizes;
-      if (stock) {
-        // Ensure the stock is available
-        totalPrice += price * quantity;
-        totalDiscount += (price * discount) / 100;
-        inStockItemCount++;
-      }
-    });
-
-    const subtotal = totalPrice - totalDiscount ;
-    const GST = subtotal * 0.2;
-    const deliveryFee = 25;
-    const totalCost = totalPrice + GST + deliveryFee - totalDiscount;
-
-    // *******************************************
-
-    console.log(
-      `Quantity updated successfully for product ${productId} to ${quantity}`
-    );
-
-    // Send response with updated totals
-    res.status(200).json({
-      message: "Quantity updated successfully",
-      totalPrice: totalPrice,
-      totalDiscount: totalDiscount,
-      subtotal,
-      GST: GST,
-      deliveryFee: deliveryFee,
-      totalCost: totalCost,
-    });
-  } catch (error) {
-    console.error("Error updating quantity:", error);
-    res.status(500).json({ error: "Failed to update quantity" });
-  }
-});
-//
-
-
-
-router.post("/update-quantity-guest", async (req, res) => {
-  const { productId, quantity } = req.body;
-  console.log("Received productId:", productId);
-  console.log("Received quantity:", quantity);
-
-  try {
-    const cartItems = req.session.cart || [];
-
-    // Fetch product details for each item in the session cart
-    const promises = cartItems.map((cartItem) =>
-      connect
-        .query("SELECT * FROM products WHERE id = ?", [cartItem.product_id])
-        .then(([product]) => ({
+      // Process cart items to calculate totals
+      const cartItems = await Promise.all(cartResultAll.map(async (cartItem) => {
+        let sizes = {};
+        if (cartItem.wear_type_bottom_or_top === 'top') {
+          const [sizeRows] = await connect.query(
+            `SELECT xs, s, m, l, xl, xxl, xxxl, xxxxl 
+             FROM topwear_inventory_with_sizes 
+             WHERE product_id = ?`,
+            [cartItem.product_id]
+          );
+          sizes = sizeRows[0];
+        } else if (cartItem.wear_type_bottom_or_top === 'bottom') {
+          const [sizeRows] = await connect.query(
+            `SELECT size_28, size_30, size_32, size_34, size_36, size_38, size_40, size_42, size_44, size_46 
+             FROM bottom_wear_inventory_with_sizes 
+             WHERE product_id = ?`,
+            [cartItem.product_id]
+          );
+          sizes = sizeRows[0];
+        }
+        return {
           ...cartItem,
-          product_name: product[0].product_name,
-          product_main_image: product[0].product_main_image,
-          product_price: parseFloat(product[0].product_price), // Ensure price is float
-          discount_on_product: parseFloat(product[0].discount_on_product) || 0, // Ensure discount is float or default to 0
-          wear_type_bottom_or_top: product[0].wear_type_bottom_or_top,
-        }))
-    );
+          sizes: sizes,
+        };
+      }));
 
-    // Execute all promises concurrently
-    const updatedCartItems = await Promise.all(promises);
+      // Calculate totals for items in stock
+      let totalPrice = 0;
+      let totalDiscount = 0;
 
-    // Update quantity for the specified product in session cart
-    const updatedCart = updatedCartItems.map((item) => {
-      if (item.product_id === productId) {
-        // Convert quantity to integer
-        item.quantity = parseInt(quantity);
-      }
-      return item;
-    });
+      cartItems.forEach((item) => {
+        const price = parseFloat(item.product_price);
+        const discount = parseFloat(item.discount_on_product) || 0;
+        const quantity = parseInt(item.quantity);
+        totalPrice += price * quantity;
+        totalDiscount += (price * discount * quantity) / 100;
+      });
 
-    // Update session cart with modified quantities
-    req.session.cart = updatedCart;
+      const subtotal = totalPrice - totalDiscount;
+      const GST = subtotal * 0.2;
+      const deliveryFee = 25;
+      const totalCost = totalPrice + GST + deliveryFee - totalDiscount;
 
-    // Calculate totals after quantity update
-    let totalPrice = 0;
-    let totalDiscount = 0;
-    let inStockItemCount = 0;
+      // Send response with updated totals
+      return res.status(200).json({
+        message: 'Quantity updated successfully',
+        totalPrice: totalPrice,
+        totalDiscount: totalDiscount,
+        subtotal,
+        GST: GST,
+        deliveryFee: deliveryFee,
+        totalCost: totalCost,
+      });
+    } else {
+      // Guest user, update quantity in session cart
+      const cartItems = req.session.cart || [];
 
-    updatedCart.forEach((item) => {
-      const price = parseFloat(item.product_price);
-      const discount = parseFloat(item.discount_on_product) || 0;
-      const itemQuantity = parseInt(item.quantity); // Ensure quantity is integer
-      totalPrice += price * itemQuantity;
-      totalDiscount += (price * discount * itemQuantity) / 100;
-      inStockItemCount++; // Assuming all items in session are considered in stock
-    });
+      // Log productId and quantity received
+console.log('Received productId:', productId);
+console.log('Received quantity:', quantity);
 
-    const GST = totalPrice * 0.2;
-    const deliveryFee = 25;
-    const totalCost = totalPrice + GST + deliveryFee - totalDiscount;
+      
 
-    // Log updated session cart to console for verification
-    console.log("Updated session cart:", req.session.cart);
+      // Fetch product details for each item in the session cart
+      const promises = cartItems.map((cartItem) =>
+        connect
+          .query('SELECT * FROM products WHERE id = ?', [cartItem.product_id])
+          .then(([product]) => ({
+            ...cartItem,
+            product_name: product[0].product_name,
+            product_main_image: product[0].product_main_image,
+            product_price: parseFloat(product[0].product_price), // Ensure price is float
+            discount_on_product: parseFloat(product[0].discount_on_product) || 0, // Ensure discount is float or default to 0
+            wear_type_bottom_or_top: product[0].wear_type_bottom_or_top,
+          }))
+      );
 
-    // Send response with updated cart or totals
-    return res.status(200).json({
-      message: "Quantity updated successfully in session",
-      totalPrice: totalPrice,
-      totalDiscount: totalDiscount,
-      GST: GST,
-      deliveryFee: deliveryFee,
-      totalCost: totalCost,
-    });
+      // Execute all promises concurrently
+      const updatedCartItems = await Promise.all(promises);
+
+      // Update quantity for the specified product in session cart
+      const updatedCart = updatedCartItems.map((item) => {
+        if (item.product_id === productId) {
+          // Convert quantity to integer
+          item.quantity = parseInt(quantity);
+        }
+        return item;
+      });
+
+      // Update session cart with modified quantities
+      req.session.cart = updatedCart;
+
+      console.log(cartItems);
+      // Calculate totals after quantity update
+      let totalPrice = 0;
+      let totalDiscount = 0;
+
+      updatedCart.forEach((item) => {
+        const price = parseFloat(item.product_price);
+        const discount = parseFloat(item.discount_on_product) || 0;
+        const itemQuantity = parseInt(item.quantity); // Ensure quantity is integer
+        totalPrice += price * itemQuantity;
+        totalDiscount += (price * discount * itemQuantity) / 100;
+      });
+      
+      console.log('Updated session cart:', updatedCart);
+      
+      // Calculate other totals with maximum two decimal places
+      const subtotal = parseFloat((totalPrice - totalDiscount).toFixed(2));
+      const GST = parseFloat((totalPrice * 0.2).toFixed(2));
+      const deliveryFee = parseFloat(25.00.toFixed(2)); // Fixed delivery fee
+      const totalCost = parseFloat((totalPrice + GST + deliveryFee - totalDiscount).toFixed(2));
+      
+
+      // Send response with updated cart or totals
+      return res.status(200).json({
+        message: 'Quantity updated successfully in session',
+        totalPrice: totalPrice,
+        totalDiscount: totalDiscount,
+        subtotal,
+        GST: GST,
+        deliveryFee: deliveryFee,
+        totalCost: totalCost,
+      });
+    }
   } catch (error) {
-    console.error("Error updating quantity for guest:", error);
-    res.status(500).json({ error: "Failed to update quantity for guest" });
+    console.error('Error updating quantity:', error);
+    res.status(500).json({ error: 'Failed to update quantity' });
   }
 });
-
-
-
-
+ 
 router.post("/update-product-size", async (req, res) => {
   try {
     const { productId, newSize, oldSize } = req.body;
@@ -1094,10 +1047,10 @@ router.post("/order-confirm", async (req, res) => {
     const email = user.email;
 
     // Get the form data from the request body
-    const { 
+    const {
       cartItemscheckoutpage,
-      address_id,    
-      subtotal, 
+      address_id,
+      subtotal,
       discount_amount,
       vat,
       delivery_charges,
@@ -1116,8 +1069,6 @@ router.post("/order-confirm", async (req, res) => {
       const nextOrderNumber = lastOrderNumber + 1;
       newOrderId = "ALOI" + nextOrderNumber.toString().padStart(6, "0");
     }
-
-     
 
     // Insert the new order into the database
     const query = `
@@ -1339,7 +1290,7 @@ router.get("/contact-us", (req, res) => {
   res.render("contact-us", { user });
 });
 
-router.post('/save-profile',  async (req, res) => {
+router.post("/save-profile", async (req, res) => {
   const { user_id, name, email, phone, alt_phone } = req.body;
 
   try {
@@ -1350,7 +1301,7 @@ router.post('/save-profile',  async (req, res) => {
     );
 
     // Redirect to the profile page with a success message
-    res.redirect('/my-profile');
+    res.redirect("/my-profile");
   } catch (error) {
     console.error("Error updating profile:", error);
     res.status(500).json({ error: "Failed to update profile" });

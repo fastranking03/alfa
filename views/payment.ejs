@@ -101,7 +101,21 @@
                                             </div>
                                             <ul>
                                                 <li>
-                                                    <div class="alfa-text">Sub- Total</div>
+                                                    <div class="alfa-text">Total MRP</div>
+                                                    <div class="alfa-price">£ <%=total_mrp  %>
+                                                    </div>
+                                                </li>
+
+                                                <li>
+                                                    <div class="alfa-text">Discount on MRP</div>
+
+                                                    <div class="alfa-price">£ <%=discount_on_mrp  %>
+                                                    </div>
+                                                </li>
+
+                                                <li>
+                                                    <div class="alfa-text">Sub Total</div>
+
                                                     <div class="alfa-price">£ <%=subtotal  %>
                                                     </div>
                                                 </li>
@@ -122,12 +136,7 @@
                                                     </div>
                                                 </li>
 
-                                                <li>
-                                                    <div class="alfa-text">Discount</div>
-
-                                                    <div class="alfa-price">£ <%=discount_amount  %>
-                                                    </div>
-                                                </li>
+                                               
                                                 
                                             </ul>
                                         </div>
@@ -157,14 +166,23 @@
 
                     <input
                       type="hidden"
-                      name="subtotal"
-                      value="<%= subtotal %>"
+                      name="total_mrp"
+                      value="<%= total_mrp %>"
                     />
+
                     <input
                       type="hidden"
                       name="discount_amount"
-                      value="<%= discount_amount %>"
+                      value="<%= discount_on_mrp %>"
                     />
+
+                    <input
+                      type="hidden"
+                      name="subtotal"
+                      value="<%= subtotal %>"
+                    />
+
+
                     <input type="hidden" name="vat" value="<%= vat %>" />
                     <input
                       type="hidden"
