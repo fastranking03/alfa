@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alfa | OTP Verification</title>
+  <%- include('includes/head') %>
+</head>
+
+<body>
+  <div class="alfa-main-wraper">
+    <div class="mt-1000">
+      <div class="user-password-steps">
+        <div class="alfa-user-wrap">
+          <div class="user-back">
+            <a onclick="window.history.back()"><img src="assets/images/back.png" alt=""></a>
+          </div>
+        </div>
+        <div class="alfa-pass-container">
+          <div class="password-wrap">
+            <div class="pass-title text-center">
+              <h3>Enter Your Verification Code</h3>
+              <p>We Sent a verification code to <%= email  %> </p>
+            </div>
+            <form action="account-verification" method="post">
+              <input type="hidden" name="email" value="<%= email  %>">
+              <div class="row">
+                <div class="col-md-12 mx-auto text-center"> 
+                    <input type="text" name="otp" class="form-input" id="otp" maxlength="6" placeholder="Enter Otp" required > 
+                </div>
+
+                <div class="col-md-12 mt-3">
+                  <div class="user-buttons text-center">
+                    <a href class="user-btns">Resent code </a>
+                  </div>
+                </div>
+
+                <div class="col-md-12 mt-3">
+                  <div class="user-button">
+                    <button class="user-btn" id="otp-primary">Continue</button>
+                  </div>  
+                </div>  
+              </div> 
+            </form>  
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+  
+  <script>
+    function digitValidate(ele) {
+      ele.value = ele.value.replace(/[^0-9]/g, '');
+    }
+
+    function tabChange(val) {
+      let otp = '';
+      for (let i = 1; i <= 6; i++) {
+        const otpDigit = document.querySelector(`input[name="otp${i}"]`).value;
+        otp += otpDigit;
+        if (otpDigit.length === 1) {
+          document.querySelector(`input[name="otp${val + 1}"]`)?.focus();
+        }
+      }
+      document.getElementById('otp').value = otp;
+    }
+
+    document.addEventListener("DOMContentLoaded", function () {
+      const otp = document.getElementById("otp");
+      otp.addEventListener("input", function () {
+         if (otp.value.length === 6) {
+             document.getElementById("otp-primary").classList.add("user-btn-primary")
+        } else {
+             document.getElementById("otp-primary").classList.remove("user-btn-primary")
+        }
+    });
+
+    })
+  </script>
+</body>
+
+</html>

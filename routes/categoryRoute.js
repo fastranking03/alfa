@@ -4,8 +4,7 @@ import connect from "../db/connect.js";
 const router = express.Router();
 
 // Route to display products in a single category
-router.get("/:categoryName", async (req, res) => {
-  const user = req.session.user;
+router.get("/:categoryName", async (req, res) => { 
   const categoryName = req.params.categoryName;
   const querycategoryList = `
   SELECT c.*, COUNT(p.id) AS product_count
@@ -42,8 +41,7 @@ router.get("/:categoryName", async (req, res) => {
 
     // res.render('products', { products: productRows });
 
-    res.render("product", {
-      user,
+    res.render("product", { 
       products: productRows,
       categories: categories,
       product_count : total_product_count,

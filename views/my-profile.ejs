@@ -27,8 +27,8 @@
                                                 <img src="assets/images/testimonial.png" alt="">
                                             </div>
                                             <div class="profile-data">
-                                                <h6>Arif Khan</h6>
-                                                <p>arif099.co.uk</p>
+                                                <h6> <%=user.name  %></h6>
+                                                <p><%=user.email  %></p>
                                             </div>
                                         </div>
                                     </div>
@@ -36,34 +36,40 @@
                                         <div class="profile-form-text mb-3">
                                             <h5>Personal Information</h5>
                                         </div>
-                                        <form action="">
+                                        <form action="save-profile" method="post">
+                                            <input type="hidden" name="user_id" value="<%=user.id  %>">
                                             <div class="row">
                                                 <div class="col-md-6">
                                                     <div class="profile-form-group">
                                                         <input type="text" name="name"
                                                             class="form-control contact-form-control"
-                                                            placeholder="Name">
+                                                            placeholder="Name"
+                                                            value="<%=user.name  %>">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="profile-form-group">
                                                         <input type="text" name="email"
                                                             class="form-control contact-form-control"
-                                                            placeholder="Email ID">
+                                                            placeholder="Email ID"
+                                                            value="<%=user.email  %>">
+                                                            
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="profile-form-group">
                                                         <input type="text" name="phone"
                                                             class="form-control contact-form-control"
-                                                            placeholder="Phone No">
+                                                            placeholder="Phone No" 
+                                                            value="<%=user.phone_no  %>">
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="profile-form-group">
-                                                        <input type="text" name="phone"
+                                                        <input type="text" name="alt_phone"
                                                             class="form-control contact-form-control"
-                                                            placeholder="Optional Phone Number">
+                                                            placeholder="Optional Phone Number"
+                                                            value="<%=user.alt_phone_no  %>">
                                                     </div>
                                                 </div>
                                             </div>
@@ -84,8 +90,7 @@
             <%- include('includes/footer') %>
                 <!-- End -->
     </div>
-    <%- include('includes/foot') %>
-
+    <%- include('includes/foot') %> 
 </body>
 
 </html>

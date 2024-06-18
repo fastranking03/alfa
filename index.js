@@ -84,8 +84,9 @@ app.use("/category_images", express.static("category_images"));
 app.use("/product_images", express.static("product_images"));
 
 // Routes
-app.use("/", userRoute);
+
 app.use("/", commanRoute);
+app.use("/", userRoute);
 app.use("/", shirtsRoute);
 app.use("/", productsRoute);
 app.use("/", favoritesRoute);
@@ -103,10 +104,32 @@ app.use("/admin/", subcategoryRoute);
 
 app.get('/accessories',(req,res) =>{
   return res.render('accessories')
-})
-app.get('/my-profile',(req,res) =>{
-  return res.render('my-profile')
-})
+});
+
+app.get('/my-profile' , async (req, res) => {
+  try {
+    // Fetch user details from the user_registration table
+    const userId = req.session.user.id;
+    if(!userId){
+      redirect("/login");
+    }
+    else{
+      const [userDetails] = await connect.query(
+        "SELECT * FROM user_registration WHERE id = ?",
+        [userId]
+      );
+  
+      // Render the my-profile page with user details
+      return res.render('my-profile', { user: userDetails[0] });
+    }
+    
+  } catch (error) {
+    console.error("Error fetching user details:", error);
+    res.status(500).json({ error: "Failed to fetch user details" });
+  }
+});
+
+
 app.post('/payment',(req,res) =>{
   let { cartItemscheckoutpage, subtotal,discount_amount, vat, delivery_charges, total_payable, selectedAddress} = req.body; 
    cartItemscheckoutpage = JSON.parse(cartItemscheckoutpage);
@@ -119,7 +142,7 @@ app.post('/payment',(req,res) =>{
     total_payable,
     selectedAddress
   });
-})
+});
 
 const PORT = 8081;
 app.listen(PORT, () => {

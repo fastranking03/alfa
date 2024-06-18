@@ -124,14 +124,21 @@
                     <div class="alfa-cart-total">
                       <ul>
                         <li>
-                          <div class="alfa-text">Sub- Total</div>
-                          <div class="alfa-price">£<%=subtotal %></div>
+                          <div class="alfa-text">Total MRP</div>
+                          <div class="alfa-price">£<%=totalPrice %>  </div>
                         </li>
 
                         <li>
-                          <div class="alfa-text">Total Discount Amount</div>
-                          <div class="alfa-price">- £<%=discount %></div>
+                          <div class="alfa-text">Discount on MRP </div>
+                          <div class="alfa-price">- £<%=totalDiscount %></div>
                         </li>
+
+                        <li>
+                          <div class="alfa-text">Sub Total</div>
+                          <div class="alfa-price"> £ <%=subtotal %></div>
+                        </li>
+
+
 
                         <li>
                           <div class="alfa-text">Vat ( 20% )</div>
@@ -164,12 +171,12 @@
                       <input
                         type="hidden"
                         name="subtotal"
-                        value="<%= subtotal %>"
+                        value="<%= totalPrice %>"
                       />
                       <input
                         type="hidden"
                         name="discount_amount"
-                        value="<%= discount %>"
+                        value="<%= totalDiscount %>"
                       />
                       <input type="hidden" name="vat" value="<%= vat %>" />
                       <input
