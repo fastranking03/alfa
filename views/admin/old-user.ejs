@@ -17,21 +17,12 @@
           <div class="admin-main-layout">
             <div class="admin-bradcrumb">
               <div class="admin-brudcrumb-title">
-                  <h3>Bottom Wear Inventory</h3>
+                <h3>Bottom Wear Inventory</h3>
               </div>
-              <div class="adminRightWrapper">
-                  <div class="search-wrapper position-relative">
-                      <span><i class="fa-solid fa-magnifying-glass"></i></span>
-                      <input type="search" name="search" class="table-search" placeholder="Search" id="search">
-                  </div>
-                  <div class="export-wrap">
-                      <a href="#" class="admin-btn" id="export-btn">Export</a>
-                  </div>
-              </div>
-          </div>
-            <div class="table-responsive">
+            </div>
+            <div class="inventory-list table-responsive">
               <% if (inventory && inventory.length > 0) { %>
-              <table class="alfa-table">
+              <table class="table">
                 <thead>
                   <tr>
                     <th>S NO .</th>
@@ -51,7 +42,7 @@
                     <th>Action</th>
                   </tr>
                 </thead>
-                <tbody id="order-tbody">
+                <tbody>
                   <% inventory.forEach( (item , index) => { %>
                   <tr>
                     <td><%= index + 1 %></td>
@@ -85,14 +76,6 @@
               <p>No inventory available.</p>
               <% } %>
             </div>
-            <div class="table-pagination-wrapper">
-              <div class="table-pagination" id="pagination">
-                  <a href="#" class="pagination-previous"><span><i class="fa-solid fa-angle-left"></i></span></a>
-                  <a href="#" class="page-items active">1</a>
-                  <a href="#" class="page-items">2</a>
-                  <a href="#" class="pagination-next" style="color: #005D67;"><span><i class="fa-solid fa-angle-right"></i></span></a>
-              </div>
-          </div>
           </div>
           <% } %> <% // for Top wear %> <% if (inventory_type === "topwear") {
           %>
@@ -164,7 +147,5 @@
         </div>
       </div>
     </div>
-    
-    <%- include('includes/foot') %>
   </body>
 </html>

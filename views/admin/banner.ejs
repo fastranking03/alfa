@@ -1,92 +1,95 @@
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Alfa Admin | Banner</title>
-  <%- include('includes/head') %>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alfa Admin | Banner</title>
+    <%- include('includes/head') %>
 </head>
 
-<body>
-  <div class="main-admin-warpper">
-    <%- include('includes/header') %>
-    <div class="alfa-admin-wrapper">
-      <div class="admin-side-nav">
-        <%- include('includes/sidebar') %>
-        <div class="admin-main-layout">
-          <div class="admin-bradcrumb">
-            <div class="admin-brudcrumb-title">
-              <h3><span><i class="fa-solid fa-angle-left"></i></span>Banner List</h3>
-            </div>
-          </div>
-           <div class="product-list">
-             <div class="table-list-head">
-              <div class="alfa-data-search">
-                <div class="search-wrapper position-relative">
-                  <span><i class="fa-solid fa-magnifying-glass"></i></span>
-                  <input type="search" name="search" class="table-search" placeholder="Search" id="search">
+<body class="admin-body">
+    <div class="main-admin-warpper">
+        <%- include('includes/header') %>
+            <div class="alfa-admin-wrapper">
+                <div class="admin-side-nav">
+                    <%- include('includes/sidebar') %>
+                     <div class="admin-main-layout">
+                        <div class="admin-bradcrumb">
+                            <div class="admin-brudcrumb-title">
+                                <h3>Order List</h3>
+                            </div>
+                            <div class="adminRightWrapper">
+                                <div class="search-wrapper position-relative">
+                                    <span><i class="fa-solid fa-magnifying-glass"></i></span>
+                                    <input type="search" name="search" class="table-search" placeholder="Search" id="search">
+                                </div>
+                                <div class="export-wrap">
+                                    <a href="#" class="admin-btn" id="export-btn">Export</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="product-list">
+                            <div class="table-list-head">
+                                <div class="alfa-data-search">
+                                    <div class="select-warpper">
+                                        <div class="table-selects">
+                                            <select name="" id="" class="table-select">
+                                                <option value="all">All</option>
+                                                <option value="">One</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="table-list-btn">
+                                    <div class="table-btn">
+                                        <a href="/admin/add-banner">Add Banner</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="responsive-table">
+                                <table class="alfa-table">
+                                    <thead>
+                                        <tr>
+                                          <th>Sr No</th>
+                                          <th>Short Title</th>
+                                          <th>Main Title</th>
+                                          <th>Banner Image</th>
+                                          <th>Status</th>
+                                          <th>Created At</th>
+                                          <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="order-tbody">
+                                      <tr>
+                                        <% banners.forEach(banner => { %>
+                                         <td><%= banner.id %></td>
+                                        <td><%= banner.short_title %></td>
+                                        <td><%= banner.main_title %></td>
+                                        <td><img src="../../banner_images/<%= banner.image %>" alt="Banner Image" style="max-width:60px;"></td>
+                                        <td><%= banner.status %></td>
+                                        <td><%= banner.created_at %></td>
+                                        <td>
+                                          <a href="/admin/edit-banner/<%= banner.id %>" class="btn-item btn-edit"><span><i class="fa-solid fa-pen-to-square"></i></span></a> 
+                                          <a href="/admin/delete-banner/<%= banner.id %>" class="btn-item btn-delete"><span><i class="fa-solid fa-trash"></i></span></a>
+                                        </td>
+                                      </tr>
+                                      <% }); %>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="table-pagination-wrapper">
+                                <div class="table-pagination" id="pagination">
+                                    <a href="#" class="pagination-previous"><span><i class="fa-solid fa-angle-left"></i></span></a>
+                                    <a href="#" class="page-items active">1</a>
+                                    <a href="#" class="page-items">2</a>
+                                    <a href="#" class="pagination-next" style="color: #005D67;"><span><i class="fa-solid fa-angle-right"></i></span></a>
+                                </div>
+                            </div>
+                         </div>
+                    </div>
                 </div>
-                <div class="select-warpper">
-                  <div class="table-selects">
-                    <select name="" id="" class="table-select">
-                      <option value="all">All</option>
-                      <option value="">One</option>
-                    </select>
-                  </div>
-                </div>
-              </div>
-              <div class="table-list-btn">
-                <div class="table-btn">
-                  <a href="/admin/add-banner">Add Banner</a>
-                </div>
-              </div>
             </div>
-            <div class="responsive-table">
-              <table class="alfa-table">
-                <thead>
-                  <tr>
-                    <th>Sr No</th>
-                    <th>Short Title</th>
-                    <th>Main Title</th>
-                    <th>Banner Image</th>
-                    <th>Status</th>
-                    <th>Created At</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <% banners.forEach(banner => { %>
-                  <tr>
-                    <td><%= banner.id %></td>
-                    <td><%= banner.short_title %></td>
-                    <td><%= banner.main_title %></td>
-                    <td><img src="../../banner_images/<%= banner.image %>" alt="Banner Image" style="max-width:60px;"></td>
-                    <td><%= banner.status %></td>
-                    <td><%= banner.created_at %></td>
-                    <td>
-                      <a href="/admin/edit-banner/<%= banner.id %>" class="btn-item btn-edit"><span><i class="fa-solid fa-pen-to-square"></i></span></a> 
-                      <a href="/admin/delete-banner/<%= banner.id %>" class="btn-item btn-delete"><span><i class="fa-solid fa-trash"></i></span></a>
-                    </td>
-                  </tr>
-                  <% }); %>
-                  </tr>
-                </tbody>
-              </table>
-            </div>  
-            <div class="table-pagination-wrapper">
-              <div class="table-pagination">
-                <a href="#"><span><i class="fa-solid fa-angle-left"></i></span></a>
-                <a href="#" class="active page-items">1</a>
-                <a href="#" class="page-items">2</a>
-                <a href="#" style="color: #005D67;"><span><i class="fa-solid fa-angle-right"></i></span></a> 
-              </div>
-            </div>
-           </div>
-        </div>
-      </div>
     </div>
-  </div>
+    <%- include('includes/foot') %>
 </body>
-
 </html>

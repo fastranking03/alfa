@@ -185,7 +185,7 @@
  }
  .search-wrapper span{
     position: absolute;
-    top: 13px;
+    top: 10px;
     left: 10px;
     font-size: 14px;
     color: #a6a7a6;
@@ -206,6 +206,11 @@
  }
  .alfa-table tr td{
    padding: 12px;
+ }
+
+ .alfa-table tr:hover{
+   box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+   cursor: pointer;
  }
  .alfa-table tr:nth-child(even){
    background: #fefaea;
