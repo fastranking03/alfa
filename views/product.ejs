@@ -263,7 +263,7 @@
                       </div>
                     </div>
 
-                    <div class="product-filter desktop-filter">
+                    <div class="product-filter">
                       <div class="filter-title">
                         <h4 class="product-h4">Filter by price</h4>
                       </div>
@@ -271,7 +271,7 @@
                         <div class="price-slider">
                           <div class="price-range-slider">
                             Price:
-                            <span class="rangeValues">$10 - $100</span>
+                            <span class="rangeValues"> </span>
                             <input
                               value="10"
                               min="10"
@@ -297,15 +297,18 @@
                 <div class="product-md-9">
                   <div class="product-right-wrapper">
                     <div class="product-grid">
-                      <% products.forEach(product => { %>
+                      <% products.forEach(product=> { %>
                       <div
                         class="product-item"
-                        data-price="<%= product.product_price %>"
+                        data-price="<%=(product.product_price * (1 -
+                                  (product.discount_on_product /
+                                  100))).toFixed(2) %>"
+                        data-color="<%= product.colour %>"
                       >
                         <div class="produt-wrap">
-                          <a href="/product-detail/<%= product.id %>">
+                          <a href="/product-detail/<%= product.id %> ">
                             <img
-                              src="../product_images/<%= product.product_main_image %>"
+                              src="../product_images/<%= product.product_main_image%> %>"
                               class="pro-img"
                               alt=""
                             />
@@ -330,19 +333,20 @@
                                 Lorem ipsum dolor sit...
                               </p>
                             </a>
+
                             <div class="product-price">
                               <h5>
                                 <span class="final-price"
-                                  >£<%= (product.product_price * (1 -
+                                  >£<%=(product.product_price * (1 -
                                   (product.discount_on_product /
                                   100))).toFixed(2) %></span
                                 >
-                                <span class="mrp-price"
-                                  >£<%= product.product_price %></span
+                                <span class="mrp-price">
+                                  £<%=product.product_price %></span
                                 >
-                                <span class="discount-text"
-                                  >(<%= product.discount_on_product %>%
-                                  OFF)</span
+                                <span class="discount-text">
+                                  (<%=product.discount_on_product %>% OFF
+                                  )</span
                                 >
                               </h5>
                             </div>
@@ -363,8 +367,6 @@
                     </div>
                   </div>
                 </div>
-
-                <!-- JavaScript and jQuery -->
               </div>
             </div>
           </div>
@@ -621,7 +623,7 @@
               </div>
             </div>
 
-            <div class="mobile-product-filter">
+            <div class="product-filter">
               <div class="filter-title">
                 <h4 class="product-h4">Filter by price</h4>
               </div>
@@ -660,15 +662,21 @@
       <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
       <script>
         $(document).ready(function () {
+          // Price Range Filter
           const priceInputs = document.querySelectorAll(".price-range-input");
-          const productItems = document.querySelectorAll(".product-item");
+          const productItems = $(".product-item");
           const rangeValues = document.querySelectorAll(".rangeValues");
 
           priceInputs.forEach((input) => {
-            input.addEventListener("input", filterProductsByPrice);
+            input.addEventListener("input", applyFilters);
           });
 
-          function filterProductsByPrice() {
+          // Color Filter
+          const colorCheckboxes = $(".cat-checkbox");
+
+          colorCheckboxes.on("change", applyFilters);
+
+          function applyFilters() {
             const minPrice = parseInt(priceInputs[0].value);
             const maxPrice = parseInt(priceInputs[1].value);
 
@@ -676,25 +684,6 @@
               rangeValue.textContent = `$${minPrice} - $${maxPrice}`;
             });
 
-            productItems.forEach((item) => {
-              const productPrice = parseFloat(item.getAttribute("data-price"));
-
-              if (productPrice >= minPrice && productPrice <= maxPrice) {
-                item.style.display = "block"; // Show the product item
-              } else {
-                item.style.display = "none"; // Hide the product item
-              }
-            });
-          }
-        });
-      </script>
-
-      <script>
-        $(document).ready(function () {
-          const productItems = $(".product-item");
-          const colorCheckboxes = $(".cat-checkbox");
-
-          colorCheckboxes.on("change", function () {
             var selectedColors = []; // Array to store selected colors
 
             // Loop through all checkboxes to find selected colors
@@ -705,19 +694,22 @@
             });
 
             productItems.each(function () {
-              var productColor = $(this).data("color");
+              const productPrice = parseFloat($(this).data("price"));
+              const productColor = $(this).data("color");
 
-              // Show products if any selected color matches product color, or if "All Colors" is checked
+              // Show products if they match both price and color criteria
               if (
-                selectedColors.length === 0 ||
-                selectedColors.includes(productColor)
+                (selectedColors.length === 0 ||
+                  selectedColors.includes(productColor)) &&
+                productPrice >= minPrice &&
+                productPrice <= maxPrice
               ) {
-                $(this).show();
+                $(this).show(); // Show the product item using jQuery
               } else {
-                $(this).hide();
+                $(this).hide(); // Hide the product item using jQuery
               }
             });
-          });
+          }
         });
       </script>
 
@@ -818,5 +810,17 @@
       </script>
     </div>
     <%- include('includes/foot') %>
+    <script>
+      // document.addEventListener("DOMContentLoaded", function() {
+      //       const productGrid = document.querySelector(".product-grid");
+      //       const productItems = document.querySelectorAll(".product-item");
+      //       console.log(productItems.length)
+      //        if (productItems.length < 5) {
+      //           productGrid.style.justifyContent = "start";
+      //       } else {
+      //           productGrid.style.justifyContent = "space-between";
+      //       }
+      //   });
+    </script>
   </body>
 </html>
