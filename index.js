@@ -14,6 +14,7 @@ import CategoryRoutes from './routes/categoryRoute.js'
 import inventoryRoute from "./routes/admin/inventoryRoute.js";
 import adminProductsRoute from "./routes/admin/productRoute.js";
 import placeOrderRoute from './routes/placeOrderRoute.js';
+import blogRoute from './routes/admin/blogRoute.js';
  
 import session from "express-session";
 import slugify from "slugify";
@@ -100,7 +101,12 @@ app.use("/admin/", categoryRoute);
 app.use("/admin/", inventoryRoute);
 app.use("/admin/", adminProductsRoute);
 app.use("/admin/", subcategoryRoute);
+app.use("/admin/", blogRoute);
  
+
+app.get('/order-history',(req,res) =>{
+  return res.render('order-history')
+});
 
 app.get('/accessories',(req,res) =>{
   return res.render('accessories')
