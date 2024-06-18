@@ -75,6 +75,10 @@
     margin: 0;
     padding-left: 0;
  }
+ .admin-sidnav-layout ul li{
+   cursor: pointer;
+   border-bottom: 1px solid #eeeeee94;
+ }
  .admin-sidnav-layout ul a{
    text-decoration: none;
     font-size: 17px;
@@ -95,6 +99,13 @@
  .admin-side-nav{
     display: flex;
     gap: 10px;
+ }
+ .alfa-sub-menu a{
+   padding: 10px 42px !important;
+ }
+ .alfa-sub-menu a:hover{
+   background: #e5eff0 !important;
+   color: #000 !important;
  }
  .admin-navbar{
     width: 250px;
@@ -456,4 +467,12 @@
  .order-id{
    text-decoration: none;
    color: #000;
+ }
+ .admin-icons{
+   width: 25px;
+ }
+ .admin-submenu{
+   display: flex;
+    justify-content: space-between;
+    align-items: center;
  }
