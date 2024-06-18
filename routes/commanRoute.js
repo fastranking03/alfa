@@ -66,7 +66,7 @@ router.get("/", async (req, res) => {
 });
 
 // Route for the product page
- 
+
 router.post("/place-order", async (req, res) => {
   const user = req.session.user;
   const userId = user ? user.id : null;
@@ -75,17 +75,28 @@ router.post("/place-order", async (req, res) => {
     return res.redirect("/login"); // Redirect to the login page if the user is not logged in
   }
 
-  const { cartItemscheckoutpage, subtotal, discount_amount, vat, deliveryFee, total_payable, address_id } = req.body;
+  const {
+    cartItemscheckoutpage,
+    total_mrp,
+    discount_amount,
+    subtotal,
+    vat,
+    deliveryFee,
+    total_payable,
+    address_id,
+  } = req.body;
 
   try {
     // Parse cartItemscheckoutpage if passed as JSON string
     const parsedCartItems = JSON.parse(cartItemscheckoutpage);
 
     // Start a transaction
-    await connect.query('START TRANSACTION');
+    await connect.query("START TRANSACTION");
 
     // Generate new order ID
-    const [lastOrderRow] = await connect.query("SELECT order_id FROM orders ORDER BY order_id DESC LIMIT 1");
+    const [lastOrderRow] = await connect.query(
+      "SELECT order_id FROM orders ORDER BY order_id DESC LIMIT 1"
+    );
     let newOrderId = "ALOI000001";
     if (lastOrderRow.length > 0) {
       const lastOrderId = lastOrderRow[0].order_id;
@@ -95,29 +106,58 @@ router.post("/place-order", async (req, res) => {
     }
 
     // Insert new order
-    const [insertOrderResult] = await connect.query(
-      "INSERT INTO orders (order_id, user_id, total_payable, vat, delivery_charges, sub_total, discount_amount, address_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-      [newOrderId, userId, total_payable, vat, deliveryFee, subtotal, discount_amount, address_id]
-    );
+    try {
+      const [insertOrderResult] = await connect.query(
+        "INSERT INTO orders (order_id, user_id, total_payable, vat, delivery_charges, sub_total, total_mrp, discount_amount, address_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
+        [
+          newOrderId,
+          userId,
+          parseFloat(total_payable),
+          parseFloat(vat),
+          parseFloat(deliveryFee),
+          parseFloat(subtotal),
+          parseFloat(total_mrp),
+          parseFloat(discount_amount),
+          parseInt(address_id),
+        ]
+      );
 
-    // Check if insertion into orders table was successful
-    if (insertOrderResult.affectedRows !== 1) {
-      throw new Error("Failed to insert into orders table");
+      // Check if insertion into orders table was successful
+      if (insertOrderResult.affectedRows !== 1) {
+        throw new Error("Failed to insert into orders table");
+      }
+    } catch (orderError) {
+      console.error("Error inserting order:", orderError);
+      await connect.query("ROLLBACK");
+      return res.status(500).send("Failed to place order");
     }
 
     // Insert order items
-    const insertOrderItemsPromises = parsedCartItems.map(async (product) => {
-      await connect.query(
-        "INSERT INTO order_items (order_id, product_id, quantity, price, size, colour) VALUES (?, ?, ?, ?, ?, ?)",
-        [newOrderId, product.product_id, product.quantity, product.product_price, product.selected_size, product.colour]
-      );
-    });
+    try {
+      const insertOrderItemsPromises = parsedCartItems.map(async (product) => {
+        await connect.query(
+          "INSERT INTO order_items (order_id, product_id, quantity, price, size, colour) VALUES (?, ?, ?, ?, ?, ?)",
+          [
+            newOrderId,
+            product.product_id,
+            product.quantity,
+            parseFloat(product.product_price),
+            product.selected_size,
+            product.colour,
+          ]
+        );
+      });
 
-    // Execute all order item insertion queries
-    await Promise.all(insertOrderItemsPromises);
+      // Execute all order item insertion queries
+      await Promise.all(insertOrderItemsPromises);
+    } catch (orderItemsError) {
+      console.error("Error inserting order items:", orderItemsError);
+      await connect.query("ROLLBACK");
+      return res.status(500).send("Failed to place order items");
+    }
 
     // Commit the transaction after all queries succeed
-    await connect.query('COMMIT');
+    await connect.query("COMMIT");
 
     // Fetch order details and items for confirmation page
     const [orderDetails] = await connect.query(
@@ -144,13 +184,10 @@ router.post("/place-order", async (req, res) => {
     });
   } catch (error) {
     console.error("Error placing order:", error);
-    await connect.query('ROLLBACK'); // Rollback the transaction in case of an error
+    await connect.query("ROLLBACK"); // Rollback the transaction in case of an error
     res.status(500).send("Failed to place order");
   }
 });
-
-
-
 
 router.get("/product", async (req, res) => {
   const user = req.session.user;
@@ -505,19 +542,21 @@ router.post("/checkout", async (req, res) => {
       if (stock) {
         // Ensure the stock is available
         totalPrice += price * quantity;
-        totalDiscount += (price * discount) / 100;
+        totalDiscount += ((price * discount) / 100) * quantity;
         inStockItemCount++;
       }
     });
 
     const vatRate = 0.2; // 20% VAT rate
-    const subtotal = totalPrice - totalDiscount;
-    const vat = subtotal * vatRate;
-    
-
+    const subtotal = (totalPrice - totalDiscount).toFixed(2);
+    const vat = (subtotal * vatRate).toFixed(2);
     const deliveryFee = 25;
-    const totalCost = totalPrice + vat + deliveryFee - totalDiscount;
-   
+    const totalCost = (
+      parseFloat(totalPrice) +
+      parseFloat(vat) +
+      deliveryFee -
+      parseFloat(totalDiscount)
+    ).toFixed(2);
 
     // Filter items where stock is available
     const cartItemsInStock = cartItems.filter((item) => {
@@ -525,23 +564,19 @@ router.post("/checkout", async (req, res) => {
       return stock && Object.values(stock).some((value) => value > 0);
     });
 
-
-
     // Query to get user addresses
     const addressSql = "SELECT * FROM user_address WHERE user_id = ?";
     const [addresses] = await connect.query(addressSql, [userId]);
 
     // Count of user addresses
-    const addressCount = addresses.length; 
-   
-     
- 
+    const addressCount = addresses.length;
+
     // Render a success page or redirect to order confirmation page
     res.render("checkout", {
-      totalPrice,
-      totalDiscount,
-      vat ,
-      deliveryFee ,
+      totalPrice: totalPrice.toFixed(2),
+      totalDiscount: totalDiscount.toFixed(2),
+      vat,
+      deliveryFee: deliveryFee.toFixed(2),
       totalCost,
       subtotal,
       addresses,
@@ -550,10 +585,9 @@ router.post("/checkout", async (req, res) => {
     });
   } catch (error) {
     console.error("Error during checkout:", error);
-    res.render("checkout-error", { message: "Failed to process checkout" });
+    res.render("error", { message: "Failed to process checkout" });
   }
 });
-
 
 
 router.get("/cart", async (req, res) => {
@@ -621,13 +655,12 @@ router.get("/cart", async (req, res) => {
       });
 
       const vatRate = 0.2; // 20% VAT rate
-      const subtotal = totalPrice - totalDiscount;
+      // const subtotal = totalPrice - totalDiscount;
+      totalDiscount += ((price * discount) / 100) * quantity;
       const GST = subtotal * vatRate;
-      
 
       const deliveryFee = 25;
       const totalCost = totalPrice + GST + deliveryFee - totalDiscount;
-     
 
       res.render("my-cart", {
         user,
@@ -640,13 +673,13 @@ router.get("/cart", async (req, res) => {
         totalCost,
         cartItemsInStock: cartItemsWithSizes, // For guest user, all items are considered in stock
       });
-    }  else {
-      const userId = user.id; 
+    } else {
+      const userId = user.id;
 
       const [cartResult] = await connect.query(
         "SELECT COUNT(*) AS cart_count FROM users_cart WHERE user_id = ?",
         [userId]
-      );  
+      );
       const [wishlistResult] = await connect.query(
         "SELECT COUNT(*) AS wishlist_count FROM users_favorites WHERE user_id = ?",
         [userId]
@@ -712,18 +745,23 @@ router.get("/cart", async (req, res) => {
         if (stock) {
           // Ensure the stock is available
           totalPrice += price * quantity;
-          totalDiscount += (price * discount) / 100;
+          // totalDiscount += (price * discount) / 100;
+          totalDiscount += ((price * discount) / 100) * quantity;
           inStockItemCount++;
         }
       });
 
       const vatRate = 0.2; // 20% VAT rate
-      const subtotal = totalPrice - totalDiscount;
-      const GST = subtotal * vatRate;
-      
-
+      const subtotal = (totalPrice - totalDiscount).toFixed(2);
+      const GST = (subtotal * vatRate).toFixed(2);
       const deliveryFee = 25;
-      const totalCost = totalPrice + GST + deliveryFee - totalDiscount;
+      const totalCost = (
+        parseFloat(totalPrice) +
+        parseFloat(GST) +
+        deliveryFee -
+        parseFloat(totalDiscount)
+      ).toFixed(2);
+
       // Filter items where stock is available
       const cartItemsInStock = cartItems.filter((item) => {
         const stock = item.sizes;
@@ -748,8 +786,6 @@ router.get("/cart", async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
-
-
 
 router.post("/update-quantity", async (req, res) => {
   const { productId, quantity } = req.body;
@@ -814,18 +850,18 @@ router.post("/update-quantity", async (req, res) => {
       if (stock) {
         // Ensure the stock is available
         totalPrice += price * quantity;
-        totalDiscount += (price * discount) / 100;
+        // totalDiscount += (price * discount) / 100;
+        totalDiscount += ((price * discount) / 100) * quantity;
         inStockItemCount++;
       }
     });
 
-    const subtotal = totalPrice - totalDiscount ;
+    const subtotal = totalPrice - totalDiscount;
     const GST = subtotal * 0.2;
     const deliveryFee = 25;
     const totalCost = totalPrice + GST + deliveryFee - totalDiscount;
 
     // *******************************************
-
     console.log(
       `Quantity updated successfully for product ${productId} to ${quantity}`
     );
@@ -846,8 +882,6 @@ router.post("/update-quantity", async (req, res) => {
   }
 });
 //
-
-
 
 router.post("/update-quantity-guest", async (req, res) => {
   const { productId, quantity } = req.body;
@@ -921,9 +955,6 @@ router.post("/update-quantity-guest", async (req, res) => {
     res.status(500).json({ error: "Failed to update quantity for guest" });
   }
 });
-
-
-
 
 router.post("/update-product-size", async (req, res) => {
   try {
@@ -1094,10 +1125,10 @@ router.post("/order-confirm", async (req, res) => {
     const email = user.email;
 
     // Get the form data from the request body
-    const { 
+    const {
       cartItemscheckoutpage,
-      address_id,    
-      subtotal, 
+      address_id,
+      subtotal,
       discount_amount,
       vat,
       delivery_charges,
@@ -1116,8 +1147,6 @@ router.post("/order-confirm", async (req, res) => {
       const nextOrderNumber = lastOrderNumber + 1;
       newOrderId = "ALOI" + nextOrderNumber.toString().padStart(6, "0");
     }
-
-     
 
     // Insert the new order into the database
     const query = `
@@ -1339,7 +1368,7 @@ router.get("/contact-us", (req, res) => {
   res.render("contact-us", { user });
 });
 
-router.post('/save-profile',  async (req, res) => {
+router.post("/save-profile", async (req, res) => {
   const { user_id, name, email, phone, alt_phone } = req.body;
 
   try {
@@ -1350,7 +1379,7 @@ router.post('/save-profile',  async (req, res) => {
     );
 
     // Redirect to the profile page with a success message
-    res.redirect('/my-profile');
+    res.redirect("/my-profile");
   } catch (error) {
     console.error("Error updating profile:", error);
     res.status(500).json({ error: "Failed to update profile" });

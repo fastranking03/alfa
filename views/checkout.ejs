@@ -170,20 +170,24 @@
 
                       <input
                         type="hidden"
-                        name="subtotal"
+                        name="total_mrp"
                         value="<%= totalPrice %>"
                       />
                       <input
                         type="hidden"
-                        name="discount_amount"
+                        name="discount_on_mrp"
                         value="<%= totalDiscount %>"
                       />
+
+                      <input type="hidden" name="subtotal" value="<%= subtotal  %>">
                       <input type="hidden" name="vat" value="<%= vat %>" />
+
                       <input
                         type="hidden"
                         name="delivery_charges"
                         value="<%= deliveryFee %>"
                       />
+
                       <input
                         type="hidden"
                         name="total_payable"

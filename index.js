@@ -131,12 +131,13 @@ app.get('/my-profile' , async (req, res) => {
 
 
 app.post('/payment',(req,res) =>{
-  let { cartItemscheckoutpage, subtotal,discount_amount, vat, delivery_charges, total_payable, selectedAddress} = req.body; 
+  let { cartItemscheckoutpage, total_mrp,discount_on_mrp,subtotal , vat, delivery_charges, total_payable, selectedAddress} = req.body; 
    cartItemscheckoutpage = JSON.parse(cartItemscheckoutpage);
   return res.render('payment', {
     cartItemscheckoutpage,
+    total_mrp,
+    discount_on_mrp,
     subtotal,
-    discount_amount,
     vat,
     delivery_charges,
     total_payable,
