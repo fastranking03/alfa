@@ -83,6 +83,7 @@ app.use("/banner_images", express.static("banner_images"));
 app.use("/category_images", express.static("category_images"));
 
 app.use("/product_images", express.static("product_images"));
+app.use("/blog_images", express.static("blog_images"));
 
 // Routes
 

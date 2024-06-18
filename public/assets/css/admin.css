@@ -137,7 +137,7 @@
     justify-content: space-between;
     margin: 0 0 20px;
  }
- .table-btn a{
+ .table-btn a ,.submit-btn{
     text-decoration: none;
     color: #fff;
     background: #005d67;
@@ -145,6 +145,7 @@
     display: flex;
     align-items: center;
     padding: 0 20px;
+    border: 1px solid var(--primaryColor);
  }
  .table-btn a:hover{
     color: #fff;
@@ -480,4 +481,20 @@
    display: flex;
     justify-content: space-between;
     align-items: center;
+ }
+ .dashboard-cart{
+   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
+   padding: 18px 20px 13px;
+ }
+ .dash-box-content{
+   margin: 18px 0;
+ }
+ .dash-box-content h4{
+   font-size: 30px;
+ }
+ .dash-desc{
+   color: #929292;
+ }
+ .dash-box-content span{
+   font-size: 20px;
  }

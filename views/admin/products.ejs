@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alfa Admin | Dashboard</title>
+   <%- include('includes/head') %>
+</head>
+
+<body>
+  <div class="main-admin-warpper">
+    <%- include('includes/header') %>
+    <div class="alfa-admin-wrapper">
+      <div class="admin-side-nav">
+        <%- include('includes/sidebar') %>
+        <div class="admin-main-layout">
+          <div class="admin-bradcrumb">
+            <div class="admin-brudcrumb-title">
+                <h3>Product List</h3>
+            </div>
+            <div class="adminRightWrapper">
+                <div class="search-wrapper position-relative">
+                    <span><i class="fa-solid fa-magnifying-glass"></i></span>
+                    <input type="search" name="search" class="table-search" placeholder="Search" id="search">
+                </div>
+                <div class="export-wrap">
+                    <a href="#" class="admin-btn" id="export-btn">Export</a>
+                </div>
+            </div>
+        </div>
+          <div class="product-list">
+            <div class="table-list-head">
+              <div class="alfa-data-search">
+                  <div class="select-warpper">
+                      <div class="table-selects">
+                          <select name="" id="" class="table-select">
+                              <option value="all">All</option>
+                              <option value="">One</option>
+                          </select>
+                      </div>
+                  </div>
+              </div>
+              <div class="table-list-btn">
+                  <div class="table-btn">
+                      <a href="/admin/add-product">Add product</a>
+                  </div>
+              </div>
+          </div>
+            <% if (products && products.length > 0) { %>
+            <div class="table-responsive">
+              <table class="alfa-table">
+                <thead class="table-dark">
+                  <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Image</th>
+                    <th>Price</th>
+                    <th>Discount</th>
+                    <th>Category</th>
+                    <th>Subcategory</th>
+                    <th>Created At</th>
+                    <th>Action</th>
+                   </tr>
+                </thead>
+                <tbody id="order-tbody">
+                  <% products.forEach(product => { %>
+                  <tr>
+                    <td><%= product.id %></td>
+                    <td><%= product.product_name %></td>
+                    <td>
+                      <img src="../../product_images/<%= product.product_main_image %>" alt="" style="width: 50px; height: 50px;">
+                  </td>
+                  
+                    <td><%= product.product_price %></td>
+                    <td><%= product.discount_on_product %></td>
+                    <td><%= product.category_name %></td>  
+                    <td><%= product.subcategory_name	 %></td>  
+                    <td><%= product.created_at.toLocaleString()  %></td>
+                    <td>
+ 
+                      <a href="admin/edit/<%= product.id %>" class="btn-item btn-edit"><span><i class="fa-solid fa-pen-to-square"></i></span></a> 
+                     </td> 
+                   </tr>
+                  <% }); %>
+                </tbody>
+              </table>
+            </div>
+            <div class="table-pagination-wrapper">
+              <div class="table-pagination" id="pagination">
+                  <a href="#" class="pagination-previous"><span><i class="fa-solid fa-angle-left"></i></span></a>
+                  <a href="#" class="page-items active">1</a>
+                  <a href="#" class="page-items">2</a>
+                  <a href="#" class="pagination-next" style="color: #005D67;"><span><i class="fa-solid fa-angle-right"></i></span></a>
+              </div>
+          </div>
+            <% } else { %>
+            <p>No products found.</p>
+            <% } %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <%- include('includes/foot') %>
+</body>
+
+</html>

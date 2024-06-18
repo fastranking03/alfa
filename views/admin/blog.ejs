@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alfa Admin | User List</title>
+    <title>Alfa Admin | Blog List</title>
     <%- include('includes/head') %>
 </head>
 
@@ -16,7 +16,7 @@
                     <div class="admin-main-layout">
                         <div class="admin-bradcrumb">
                             <div class="admin-brudcrumb-title">
-                                <h3>User List</h3>
+                                <h3>Blog List</h3>
                             </div>
                             <div class="adminRightWrapper">
                                 <div class="search-wrapper position-relative">
@@ -42,7 +42,7 @@
                                 </div>
                                 <div class="table-list-btn">
                                     <div class="table-btn">
-                                        <a href="/admin/add-banner">  </a>
+                                        <a href="/admin/add-blog">Add Blog</a>
                                     </div>
                                 </div>
                             </div>
@@ -51,33 +51,28 @@
                                     <thead>
                                       <tr>
                                         <th>ID</th>
-                                        <th>Name</th>
-                                        <th>Email</th>
-                                        <th>status</th>
+                                        <th>Tag</th>
+                                        <th>Title</th>
+                                        <th>Content</th>
+                                        <th>Created By</th>
+                                        <th>Image</th>
                                         <th>Created At</th>
                                         <th>Action</th>
                                       </tr>
                                     </thead>
                                     <tbody id="order-tbody">
-                                      <% users.forEach(user=> { %>
+                                      <% blogs.forEach(blog=> { %>
                                         <tr>
+                                          <td><%= blog.id %></td>
+                                          <td><%= blog.tag %></td>
+                                          <td><%= blog.title %></td>
+                                          <td><%= blog.content.substring(0,20) %> ...</td>
+                                          <td><%= blog.created_by %></td>
+                                          <td><img src="../../blog_images/<%= blog.image_path %>" alt="Banner Image" style="max-width:60px;"></td>
+                                          <td><%= blog.created_at.toLocaleString() %></td>
+                                          
                                           <td>
-                                            <%= user.id %>
-                                          </td>
-                                          <td>
-                                            <%= user.name %>
-                                          </td>
-                                          <td>
-                                            <%= user.email %>
-                                          </td>
-                                          <td>
-                                            <%= user.status %>
-                                          </td>
-                                          <td>
-                                            <%= user.created_at.toLocaleString() %>
-                                          </td>
-                                          <td>
-                                             <a href="/admin/user-detailed-view/<%= user.id %>" class="btn-item btn-edit"><span><i class="fa-regular fa-eye"></i></span></a>
+                                             <a href="/admin/user-detailed-view/<%= blog.id %>" class="btn-item btn-edit"><span><i class="fa-regular fa-eye"></i></span></a>
                                           </td>
                                         </tr>
                                         <% }); %>

@@ -3,7 +3,7 @@ import connect from "../../db/connect.js"; // Import your database connection
 
 const router = express.Router();
 
-router.get("/", async (req, res) => {
+router.get("/products", async (req, res) => {
   try {
     // Query all products from the database along with their category and subcategory information
     const query = `
@@ -22,7 +22,7 @@ router.get("/", async (req, res) => {
     const [rows, fields] = await connect.query(query);
 
     // Render the view with the fetched products
-    res.render("admin/index", { products: rows });
+    res.render("admin/products", { products: rows });
   } catch (error) {
     console.error("Error fetching products:", error);
     res.status(500).send("Internal Server Error");
@@ -122,6 +122,9 @@ router.get('/orders',(req,res) =>{
 })
 router.get('/order-details',(req,res) =>{
   res.render("admin/order-details")
+})
+router.get('/',(req,res) =>{
+  res.render("admin/index")
 })
 
 export default router;

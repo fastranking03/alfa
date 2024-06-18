@@ -1479,7 +1479,6 @@ a {
   align-items: center;
   gap: 10px;
 }
-
 .pro-cart-price h3 {
   font-size: 22px;
 }
@@ -2011,6 +2010,12 @@ a {
     padding: 40px 35px; 
     gap: 40px;
     margin: 0 0 20px;
+}
+.blog-detail-wrap{
+  width: 100% !important;
+}
+.blog-left-wrap ,.blog-right-wrap{
+  width: 50%;
 }
 .blog-left-top{
   display: flex;

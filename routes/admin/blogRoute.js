@@ -2,6 +2,7 @@
 import express from "express";
 import upload from "../../uploadConfig.js";
 import pool from "../../db/connect.js";
+import slugify  from "slugify";
 
 const router = express.Router();
 
@@ -21,17 +22,18 @@ router.get("/add-blog", (req, res) => {
 });
 
 // Add new banner
-router.post("/add-blog", upload.single("image"), async (req, res) => {
+router.post("/add-blog", upload.single("image_path"), async (req, res) => {
   const { tag, title, slug_name,content,date ,created_by,profession,instagram_link,facebook_link,linkedin_link} = req.body;
   const image = req.file ? req.file.filename : null;
+  const blog_slagify = slugify(title,{replacement: '-', remove: undefined, lower: true,  strict: false,trim: true })
 
   if (!image) {
     return res.status(400).send("Image upload failed.");
   }
-  const query = 'INSERT INTO blogs (tag, title, slug_name,content, image_path,created_by, profession,instagram_link,facebook_link,linkedin_link) VALUES (?, ?, ?, ?, "inactive")';
+  const query = 'INSERT INTO blogs (tag, title, slug_name,content, image_path,created_by, profession,instagram_link,facebook_link,linkedin_link) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
   try {
-    await pool.query(query, [tag, title, slug_name,content,image,date ,created_by,profession,instagram_link,facebook_link,linkedin_link]);
-    res.redirect("/admin/blogs");
+    await pool.query(query, [tag, title, blog_slagify,content,image,date ,created_by,profession,instagram_link,facebook_link,linkedin_link]);
+    res.redirect("/admin/blog");
   } catch (err) {
     res.status(500).send("Error adding banner: " + err.message);
   }
