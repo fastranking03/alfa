@@ -37,42 +37,55 @@
                                       <div class="pro-cart-title">
                                         <h3><%=item.product_name %></h3>
                                       </div>
+
                                       <div class="product-size-list">
                                         <span class="cart-short-text">Select Size</span>
                                         <ul>
-                                          <li><a href="" class="size-item cart-size active">S</a></li>
-                                           
-                                          <li>
-                                            <a href="" class="size-item cart-size">M</a>
-                                          </li>
-                                          <li>
-                                            <a href="" class="size-item cart-size">L</a>
-                                          </li>
-                                          <li>
-                                            <a href="" class="size-item cart-size">XL</a>
-                                          </li>
-                                          <li>
-                                            <a href="" class="size-item cart-size">XXL</a>
-                                          </li>
+                                          <% if (item.sizes && Object.keys(item.sizes).length > 0) { %>
+                                            <% Object.entries(item.sizes).forEach(([size, stock]) => { %>
+                                              <% if (item.wear_type_bottom_or_top === 'bottom') { %>
+                                                <% const numericSize = size.replace('size_', ''); %>
+                                                <% if (stock && numericSize.length > 0) { %>
+                                                  <li>
+                                                    <input type="radio" id="size-<%= item.product_id %>-<%= numericSize %>" name="selectedSize-<%= item.product_id %>" value="<%= numericSize %>" <%= stock > 0 ? '' : 'disabled' %> required />
+                                                    <label for="size-<%= item.product_id %>-<%= numericSize %>" class="size-item <%= stock > 0 ? '' : 'disabled' %>"><%= numericSize %></label>
+                                                  </li>
+                                                <% } %>
+                                              <% } else { %>
+                                                <% if (stock) { %>
+                                                  <li>
+                                                    <input type="radio" id="size-<%= item.product_id %>-<%= size %>" name="selectedSize-<%= item.product_id %>" value="<%= size.toUpperCase() %>" <%= stock > 0 ? '' : 'disabled' %> required />
+                                                    <label for="size-<%= item.product_id %>-<%= size %>" class="size-item <%= stock > 0 ? '' : 'disabled' %>"><%= size.toUpperCase() %></label>
+                                                  </li>
+                                                <% } %>
+                                              <% } %>
+                                            <% }); %>
+                                          <% } else { %>
+                                            <li>Currently Out Of Stock</li>
+                                          <% } %>
                                         </ul>
                                       </div>
+                                      
+
                                       <div class="new-cart-quantity">
                                         <span class="cart-short-text">Quantity</span>
                                         <div class="cart-quantity-wrapper cart-wrapper">
                                           <div class="left-input">
-                                            <span><i class="fa-solid fa-minus"></i></span>
+                                            <span class="decrement"><i class="fa-solid fa-minus"></i></span>
                                           </div>
                                           <div class="cart-quantity">
-                                            <input type="text" value="1" class="cart-value">
+                                            <input type="text" value="1" class="cart-value" data-product-id="<%= item.product_id %>" readonly>
                                           </div>
                                           <div class="right-input">
-                                            <span><i class="fa-solid fa-plus"></i></span>
+                                            <span class="increment"><i class="fa-solid fa-plus"></i></span>
                                           </div>
                                         </div>
-                                        <div class="product-limit-msg">
-                                          <span>Maximum quantity reached </span>
+                                        <div class="product-limit-msg" style="display:none; color: red;">
+                                          <span></span>
                                         </div>
                                       </div>
+                                      
+
                                     </div>
                                   </div>
                                 </div>
@@ -122,6 +135,7 @@
       <!-- End -->
     </div>
     <%- include('includes/foot') %>
+  
     
   </body>
 </html>

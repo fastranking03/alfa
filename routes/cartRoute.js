@@ -26,7 +26,7 @@ router.get("/cart/add/:productId", async (req, res) => {
     let product_id = req.params.productId;
     let selected_size = null;
 
-    const cartItem = { product_id, selected_size };
+    const cartItem = { product_id, selected_size ,  };
 
     req.session.cart = req.session.cart || [];
 

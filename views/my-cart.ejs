@@ -28,7 +28,8 @@
               <h3>Shopping Cart</h3>
             </div>
             <div class="container mt-3">
-              <form id="orderForm" action="place-order" method="post">
+              <form id="orderForm" action="checkout" method="post">
+                <input type="hidden" name="cartItemsviewpage" value='<%= JSON.stringify(cartItemsInStock) %>' />
                 <div class="row">
                   <div class="col-md-7">
                     <div class="alfa-cart-items cart-right-wrap">
@@ -81,9 +82,7 @@
                                         <% } else { %>
                                           <p>Currently Out Of Stock</p>
                                         <% } %>
-                                      </ul>
-                                      
-                                      
+                                      </ul> 
                                     </div>
                                     <div class="new-cart-quantity">
                                       <span class="cart-short-text">Quantity : <span id="quantity-display-<%= item.id %>"><%=item.quantity %></span></span>
@@ -105,10 +104,12 @@
                                   </div>
                                 </div>
                               </div>
+                              
                               <input type="hidden" name="products[<%=index%>][productId]" value="<%= item.product_id %>" />
                               <input type="hidden" name="products[<%=index%>][price]" value="<%= item.product_price %>" />
                               <div class="cart-td position-relative">
                                 <div class="pro-cart-price">
+
                                   <h5>
                                     <span class="mrp-price" style="font-size: 18px">£<%=item.product_price %></span>
                                     <span class="final-prices">£<%= (item.product_price * (1 - (item.discount_on_product / 100))).toFixed(2) %></span>
@@ -146,7 +147,7 @@
                       <div class="alfa-cart-total">
                         <ul>
                           <li>
-                            <div class="alfa-text">Sub-Total</div>
+                            <div class="alfa-text">Total MRP    </div>
                             <div class="alfa-price">
                               £
                               <span id="totalPrice-ajax"
@@ -156,7 +157,7 @@
                           </li>
 
                           <li>
-                            <div class="alfa-text">Total Discount</div>
+                            <div class="alfa-text">Discount on MRP  </div>
                             <div class="alfa-price">
                               - £
                               <span id="totalDiscount-ajax"
@@ -166,13 +167,24 @@
                           </li>
 
                           <li>
-                            <div class="alfa-text">GST</div>
+                            <div class="alfa-text">Sub Total </div>
+                            <div class="alfa-price">
+                               
+                              <span id="totalDiscount-ajax"
+                                ><%=subtotal%></span
+                              >
+                            </div>
+                          </li>
+                          
+
+                          <li>
+                            <div class="alfa-text">VAT</div>
                             <div class="alfa-price">
                               £ <span id="GST-ajax"><%= GST %></span>
                             </div>
                           </li>
                           <li>
-                            <div class="alfa-text">Delivery Fee</div>
+                            <div class="alfa-text">Delivery Fee   </div>
                             <div class="alfa-price">
                               £
                               <span id="Delivery-ajax"><%= deliveryFee %></span>
@@ -193,7 +205,27 @@
                         </ul>
                       </div>
                        <hr />
- 
+                       <input
+                       type="hidden"
+                       name="subtotal"
+                       value="<%= totalPrice %>"
+                     />
+     
+                     <input type="hidden" name="discount" value="<%=totalDiscount   %>">
+                     <input type="hidden" name="vat" value="<%= GST %>" />
+                     <input
+                       type="hidden"
+                       name="deliveryFee"
+                       value="<%= deliveryFee %>"
+                     />
+
+
+                     
+                     <input
+                       type="hidden"
+                       name="totalCost"
+                       value="<%= totalCost %>"
+                     />
                        <div class="alfa-checkout-wrapper">
                         <button type="submit" class="checkout-btn">
                           Proceed to Checkout
@@ -203,22 +235,7 @@
                   </div>
                 </div>
 
-                <input
-                  type="hidden"
-                  name="subtotal"
-                  value="<%= totalPrice %>"
-                />
-                <input type="hidden" name="gst" value="<%= GST %>" />
-                <input
-                  type="hidden"
-                  name="deliveryFee"
-                  value="<%= deliveryFee %>"
-                />
-                <input
-                  type="hidden"
-                  name="totalCost"
-                  value="<%= totalCost %>"
-                />
+                 
               </form>
             </div>
           </div>
