@@ -699,7 +699,8 @@
      }
     .pro-cart-price {
         display: flex;
-        justify-content: center;
+        justify-content: space-around;
+        align-items: center;
     }
     .product-cat-type .product-cat-list{
         flex-direction: row;
@@ -866,6 +867,22 @@
     .move-to-wishlist{
         position:static;
     }
+    .card-s {
+        width: 28px !important;
+        font-size: 12px !important;
+     }
+     .size-list{
+        gap: 0px !important;
+        column-gap: 5px !important;
+        row-gap: 0 !important;
+     }
+     .product-detail-reverse{
+        flex-direction: column-reverse;
+        margin-bottom: 15px;
+     }
+     .price-review-warapper{
+        margin: 17px auto 0px;
+     }
 }
 
 @media screen and (max-width:376px) {
