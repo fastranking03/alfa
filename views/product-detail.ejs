@@ -257,9 +257,7 @@
                                     <% } %>
                                       <% } else { %>
                                         <li>
-                                          <input type="radio" id="size-<%= size %>" name="selectedSize"
-                                            value="<%= size.toUpperCase() %>" <%=stock> 0 ? '' : 'disabled' %> required
-                                          />
+                                          <input type="radio" id="size-<%= size %>" name="selectedSize" value="<%= size.toUpperCase() %>" <%=stock> 0 ? '' : 'disabled' %> required />
                                           <label for="size-<%= size %>"
                                             class="size-item <%= stock > 0 ? '' : 'disabled' %>">
                                             <span class="size">

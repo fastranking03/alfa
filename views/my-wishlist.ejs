@@ -39,7 +39,11 @@
                                       <div class="pro-cart-title">
                                         <h3><%=item.product_name %></h3>
                                       </div>
-
+<style>
+  input[type="radio"] {
+    display: none;
+}
+</style>
                                       <div class="product-size-list">
                                         <span class="cart-short-text">Select Size</span>
                                         <ul>
@@ -67,9 +71,7 @@
                                           <% } %>
                                         </ul>
                                       </div>
-                                      
-
-                                      <div class="new-cart-quantity">
+                                       <div class="new-cart-quantity">
                                         <span class="cart-short-text">Quantity</span>
                                         <div class="cart-quantity-wrapper cart-wrapper">
                                           <div class="left-input">
