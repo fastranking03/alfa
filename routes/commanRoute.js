@@ -324,13 +324,13 @@ router.get("/product-detail/:id", async (req, res) => {
   }
 });
 
-router.get("/checkout", (req, res) => {
-  const user = req.session.user;
-  res.render("checkout", { user });
-});
+// router.get("/checkout", (req, res) => {
+//   const user = req.session.user;
+//   res.render("checkout", { user });
+// });
  
 
-router.post("/checkout", async (req, res) => {
+router.get("/checkout", async (req, res) => {
   const user = req.session.user;
   const userId = user.id;
   try {
@@ -918,43 +918,41 @@ router.post("/submit-address", async (req, res) => {
     const {
       userid,
       name,
-      phone,
-      alt_phone,
+      phone, 
       email,
-      address_title,
+      pincode , 
       address,
+      locality,
       city,
-      postcode,
-      country,
-      checkbox,
-      radio1,
+      state ,
+      address_type,
+      checkbox, 
     } = req.body;
 
     // Convert checkbox value to 1 if checked, 0 otherwise
     const sameAsDelivery = checkbox === "on" ? 1 : 0;
 
     // Your SQL query to insert the data
-    const sql = `INSERT INTO user_address (user_id, name, phone, alt_phone , email, address_title, full_address, city, postal_code , country , billing_info_same_as_delivery_address	, billing_type   ) 
-                   VALUES (?, ?, ?, ?, ? ,?, ?, ?, ?, ?, ?, ?)`;
+    const sql = `INSERT INTO user_address (user_id, name, phone, email, pincode , full_address, locality , city, state ,  billing_info_same_as_delivery_address	,address_type ) 
+                   VALUES (?, ?, ?,  ? ,?, ?, ?, ?, ?, ?, ?)`;
 
     // Execute the query with prepared statement
     await connect.query(sql, [
       userid,
       name,
-      phone,
-      alt_phone,
+      phone, 
       email,
-      address_title,
+      pincode ,
       address,
+      locality,
       city,
-      postcode,
-      country,
+      state, 
       sameAsDelivery,
-      radio1,
+      address_type,
     ]);
 
     // Redirect to the previous page or any other page
-    res.redirect("back");
+    res.redirect("/checkout");
   } catch (error) {
     console.error("Error:", error);
     res.status(500).send("Internal Server Error");
@@ -1273,17 +1271,106 @@ router.get("/my-orders", async (req, res) => {
 
     const ordersWithDetails = await Promise.all(orderDetailsPromises);
 
-    res.render("order-history", { user, orders: ordersWithDetails });
+    res.render("order-history", { user, orders: ordersWithDetails }); 
   } catch (error) {
     console.error(error);
-    res.status(500).send("Failed to retrieve orders");
+    res.status(500).send("Failed to retrieve orders"); 
   }
 });
 
-router.get("/order-detail", (req, res) => {
+router.get("/order-detail/:orderId", async(req, res) => {
+  const { orderId } = req.params;
   const user = req.session.user;
-  res.render("order-detail", { user });
+  const userId = user.id;
+
+  try {
+    const [orderRows] = await connect.query(
+      'SELECT * FROM orders WHERE order_id = ? AND user_id = ?',
+      [orderId, userId]
+    );
+
+    if (orderRows.length > 0) {
+      const order = orderRows[0];
+
+      // Fetch items for the order
+      const [orderItems] = await connect.query(
+        `SELECT oi.*, p.product_name, p.product_main_image
+         FROM order_items oi 
+         JOIN products p ON oi.product_id = p.id 
+         WHERE oi.order_id = ?`,
+        [orderId]
+      );
+
+      // Attach items to the order
+      // order.items = orderItems;
+
+      // Render the order details page
+      res.render('order-detail', { order , orderItems});
+    } else {
+      res.status(404).send('Order not found');
+    }
+    
+  }catch (error) {
+    console.error(error);
+    res.status(500).send('Server error');
+  }
+ 
 });
+
+router.post("/move-to-cart", async (req, res) => {
+  const user = req.session.user;
+  const userId = user.id;
+  const { product_id, selectedSize, quantity } = req.body;
+
+  try {
+    // Step 1: Add the product to the cart table
+    const addToCartQuery = `
+      INSERT INTO users_cart (user_id, product_id, selected_size , quantity)
+      VALUES (?, ?, ?, ?)
+    `;
+    const addToCartResult = await connect.query(addToCartQuery, [userId, product_id, selectedSize, quantity]);
+
+    // Step 2: Delete the product from the users_favorites table
+    const deleteFromFavoritesQuery = `
+      DELETE FROM users_favorites
+      WHERE user_id = ? AND product_id = ?
+    `;
+    const deleteFromFavoritesResult = await connect.query(deleteFromFavoritesQuery, [userId, product_id]);
+
+    res.redirect("/cart");
+  } catch (error) {
+    // If an error occurs during database operations, handle it
+    console.error("Error moving product to cart:", error);
+    res.status(500).json({ error: "Internal server error." });
+  }
+});
+
+
+router.post('/add-to-wishlist', async (req, res) => {
+  const user = req.session.user; // Assuming user is authenticated and session is used
+  if (!user) {
+    return res.redirect("/login"); // Redirect to the login page if the user is not logged in
+  }
+  const userId = user.id; // Assuming user id is stored in session
+
+  const { product_id } = req.body; // Extract productId from request body
+
+  try {
+    // Query to insert productId into userfav table
+    const addToWishlistQuery = `
+      INSERT INTO users_favorites (user_id, product_id)
+      VALUES (?, ?)
+    `;
+    await connect.query(addToWishlistQuery, [userId, product_id]);
+
+    // Redirect to my-wishlist page upon successful addition
+    res.redirect("/my-wishlist");
+  } catch (error) {
+    console.error('Error adding to wishlist:', error);
+    res.status(500).send({ error: 'Failed to add product to wishlist.' });
+  }
+});
+
 //
 router.get("/contact-us", (req, res) => {
   const user = req.session.user;

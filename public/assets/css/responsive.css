@@ -698,7 +698,8 @@
         justify-content: space-around;
      }
     .pro-cart-price {
-        text-align: center;
+        display: flex;
+        justify-content: center;
     }
     .product-cat-type .product-cat-list{
         flex-direction: row;
@@ -815,6 +816,55 @@
     }
     .addres-row .ad-md-9 {
         width: 70%;
+    }
+    .alfa-checkout-address .shiping-title {
+        margin: 0 0 0px;
+    }
+    .alfa-checkout-address .shiping-title h5 {
+       font-size: 17px;
+    }
+    .alfa-defaul-wrapper h6 {
+         font-size: 14px;
+    }
+    .alfa-defaul-wrapper {
+        height: 35px;
+    }
+    .address-content {
+        padding: 1px 15px 8px;
+    }
+    .shipper-name, .shipper-email {
+        margin: 6px 0 2px;
+    }
+    .shipper-name {
+         font-size: 15px;
+    }
+    .add-action-btn {
+        font-size: 12px;
+    }
+    .radio-input:checked + label:before, .radio-input:not(:checked) + label:before {
+        width: 16px;
+        height: 16px;
+    }
+    .radio-input:checked + label:after, .radio-input:not(:checked) + label:after {
+        width: 8px;
+        height: 8px;
+        top: 4px;
+        left: 4px;
+    }
+    .radio-input:checked + label, .radio-input:not(:checked) + label{
+        line-height: 16px;
+    }
+    .shipper-email p ,.shipper-address{
+         font-size: 14px;
+    }
+    .checkout-cont h4 {
+        font-size: 18px;
+    }
+    .checkout-rest-cont p{
+        font-size: 14px;
+    }
+    .move-to-wishlist{
+        position:static;
     }
 }
 

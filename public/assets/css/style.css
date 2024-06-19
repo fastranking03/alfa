@@ -1754,6 +1754,7 @@ a {
 }
 .shipping-address-display{
   border: 1px solid var(--primaryColor);
+  margin: 10px auto;
 }
 .checkout-item-wrapper{
   background: #F6F6F8;

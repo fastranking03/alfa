@@ -23,7 +23,9 @@
                       <div class="cart-tbody">
                         <% if (wishlistItems.length > 0) { %> <%
                         wishlistItems.forEach(item => { %>
+                          <form action="move-to-cart" method="post">
                             <div class="cart-tr cart-b-tr">
+                                 <input type="hidden" name="product_id" value="<%=item.id  %>">
                                 <div class="cart-td">
                                   <div class="cart-items-left">
                                 <div class="cart-delete" data-product-id="1" >
@@ -47,14 +49,14 @@
                                                 <% const numericSize = size.replace('size_', ''); %>
                                                 <% if (stock && numericSize.length > 0) { %>
                                                   <li>
-                                                    <input type="radio" id="size-<%= item.product_id %>-<%= numericSize %>" name="selectedSize-<%= item.product_id %>" value="<%= numericSize %>" <%= stock > 0 ? '' : 'disabled' %> required />
+                                                    <input type="radio" id="size-<%= item.product_id %>-<%= numericSize %>" name="selectedSize" value="<%= numericSize %>" <%= stock > 0 ? '' : 'disabled' %> required />
                                                     <label for="size-<%= item.product_id %>-<%= numericSize %>" class="size-item <%= stock > 0 ? '' : 'disabled' %>"><%= numericSize %></label>
                                                   </li>
                                                 <% } %>
                                               <% } else { %>
                                                 <% if (stock) { %>
                                                   <li>
-                                                    <input type="radio" id="size-<%= item.product_id %>-<%= size %>" name="selectedSize-<%= item.product_id %>" value="<%= size.toUpperCase() %>" <%= stock > 0 ? '' : 'disabled' %> required />
+                                                    <input type="radio" id="size-<%= item.product_id %>-<%= size %>" name="selectedSize" value="<%= size.toUpperCase() %>" <%= stock > 0 ? '' : 'disabled' %> required />
                                                     <label for="size-<%= item.product_id %>-<%= size %>" class="size-item <%= stock > 0 ? '' : 'disabled' %>"><%= size.toUpperCase() %></label>
                                                   </li>
                                                 <% } %>
@@ -74,7 +76,7 @@
                                             <span class="decrement"><i class="fa-solid fa-minus"></i></span>
                                           </div>
                                           <div class="cart-quantity">
-                                            <input type="text" value="1" class="cart-value" data-product-id="<%= item.product_id %>" readonly>
+                                            <input type="text" value="1" class="cart-value" name="quantity" data-product-id="<%= item.product_id %>" readonly>
                                           </div>
                                           <div class="right-input">
                                             <span class="increment"><i class="fa-solid fa-plus"></i></span>
@@ -107,13 +109,14 @@
                                       </h5>
                                   </div>
                                   <div class="move-to-wishlisst">
-                                    <button  type="button" class="cart-btn add-to-cart wishlist-addcart"data-action="addToCart" data-url="/add-to-cart">
+                                    <button  type="submit" class="cart-btn add-to-cart wishlist-addcart"data-action="addToCart" data-url="/add-to-cart">
                                         <span><i class="fa-solid fa-cart-shopping"></i></span>
                                         Add to Cart
                                       </button>
                                   </div>
                                 </div>
-                              </div>
+                               </div>
+                              </form>
                         <% }) %> <% } else { %>
                         <div class="wishlist-tr wishlist-b-tr">
                           <div class="wishlist-td" colspan="3">

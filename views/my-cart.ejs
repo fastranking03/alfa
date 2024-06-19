@@ -27,8 +27,7 @@
             <div class="checkout-title">
               <h3>Shopping Cart</h3>
             </div>
-            <div class="container mt-3">
-              <form id="orderForm" action="checkout" method="post">
+            <div class="container mt-3"> 
                 <input type="hidden" name="cartItemsviewpage" value='<%= JSON.stringify(cartItemsInStock) %>' />
                 <div class="row">
                   <div class="col-md-7">
@@ -112,17 +111,16 @@
                               <input type="hidden" name="products[<%=index%>][price]" value="<%= item.product_price %>" />
                               <div class="cart-td position-relative">
                                 <div class="pro-cart-price">
-
-                                  <h5>
-                                    <span class="mrp-price" style="font-size: 18px">£<%=item.product_price %></span>
+                                   <h5>
+                                    <span class="mrp-price">£<%=item.product_price %></span>
                                     <span class="final-prices">£<%= (item.product_price * (1 - (item.discount_on_product / 100))).toFixed(2) %></span>
-                                    <span class="discount-text" style="font-size: 16px">(<%=item.discount_on_product %>% OFF )</span>
+                                    <span class="discount-text">(<%=item.discount_on_product %>% OFF )</span>
                                   </h5>
+                                  <div class="move-to-wishlist">
+                                    <a href="">Move To Wishlist</a>
+                                  </div>
                                 </div>
-                                <div class="move-to-wishlist">
-                                  <a href="">Move To Wishlist</a>
-                                </div>
-                              </div>
+                               </div>
                             </div>
                           <% }); %>
 
@@ -231,16 +229,17 @@
                        value="<%= totalCost %>"
                      />
                        <div class="alfa-checkout-wrapper">
-                        <button type="submit" class="checkout-btn">
+                      
+                        <button type="button" class="checkout-btn" onclick="window.location.href='/checkout'">
                           Proceed to Checkout
                         </button>
+                        
                       </div>
                     </div>
                   </div>
                 </div>
 
-                 
-              </form>
+                  
             </div>
           </div>
         </div>
