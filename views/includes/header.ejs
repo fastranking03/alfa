@@ -197,15 +197,32 @@
                 <li><a href="/" class="m-item">Home</a></li>
                 <li><a href="/about-us" class="m-item">About Us</a></li>
                 <li><a href="/blogs" class="m-item">Blogs</a></li>
-                <li><a href="/product" class="m-item">Shop</a></li>
+                <li class="position-relative alfa-menu-li" style="color: #000;">
+                    <a href="/product" class="nav-item m-item">Shop <span class="icon-rotate"><i class="fa-solid fa-angle-down"></i></span></a>
+                    <div class="dropdown-menu-wrapper">
+                        <ul>
+                            <% categories.forEach(category => { %>
+                                <li><a href="/category/<%= category.category_name %>" class="menu-item "><%= category.category_name %></a></li>
+                            <% }); %>
+                        </ul>
+                    </div>
+                  </li>
+                  <li class="position-relative alfa-menu-li">
+                    <a href="/accessories" class="nav-item m-item">Accessories <span class="icon-rotate"><i class="fa-solid fa-angle-down"></i></span></a>
+                    <div class="dropdown-menu-wrapper">
+                        <ul>
+                            <li><a href="/accessories" class="menu-item">Belts</a></li>
+                            <li><a href="/accessories"  class="menu-item">Wallets</a></li>
+                            <li><a href="/accessories"  class="menu-item">Shoes</a></li>
+                        </ul>
+                    </div>
+                </li>
                 <li><a href="/contact-us" class="m-item">Contact Us</a></li>
             </ul>
         </div>
     </div>
 </div>
  
-
-
 <script>
     var onClickProfile = document.getElementById("onClickProfiles");
     var openProfileCards = document.getElementById("openProfileCards");
