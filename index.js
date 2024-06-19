@@ -56,6 +56,8 @@ app.use(async (req, res, next) => {
       req.session.wishlistCount = req.session.wishlist.length;
     }
 
+    
+
     res.locals.cartCount = req.session.cartCount || 0;
     res.locals.wishlistCount = req.session.wishlistCount || 0;
     res.locals.session = req.session;

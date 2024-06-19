@@ -66,7 +66,6 @@ router.get("/", async (req, res) => {
 });
 
 // Route for the product page
-
 router.post("/place-order", async (req, res) => {
   const user = req.session.user;
   const userId = user ? user.id : null;
@@ -106,54 +105,47 @@ router.post("/place-order", async (req, res) => {
     }
 
     // Insert new order
-    try {
-      const [insertOrderResult] = await connect.query(
-        "INSERT INTO orders (order_id, user_id, total_payable, vat, delivery_charges, sub_total, total_mrp, discount_amount, address_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-        [
-          newOrderId,
-          userId,
-          parseFloat(total_payable),
-          parseFloat(vat),
-          parseFloat(deliveryFee),
-          parseFloat(subtotal),
-          parseFloat(total_mrp),
-          parseFloat(discount_amount),
-          parseInt(address_id),
-        ]
-      );
+    const insertOrderQuery = `
+      INSERT INTO orders (order_id, user_id, total_payable, vat, delivery_charges, sub_total, total_mrp, discount_amount, address_id) 
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+    const insertOrderValues = [
+      newOrderId,
+      userId,
+      parseFloat(total_payable),
+      parseFloat(vat),
+      parseFloat(deliveryFee),
+      parseFloat(subtotal),
+      parseFloat(total_mrp),
+      parseFloat(discount_amount),
+      parseInt(address_id),
+    ];
 
-      // Check if insertion into orders table was successful
-      if (insertOrderResult.affectedRows !== 1) {
-        throw new Error("Failed to insert into orders table");
-      }
-    } catch (orderError) {
-      console.error("Error inserting order:", orderError);
-      await connect.query("ROLLBACK");
-      return res.status(500).send("Failed to place order");
+    const [insertOrderResult] = await connect.query(insertOrderQuery, insertOrderValues);
+
+    if (insertOrderResult.affectedRows !== 1) {
+      throw new Error("Failed to insert into orders table");
     }
 
-    // Insert order items
-    try {
-      const insertOrderItemsPromises = parsedCartItems.map(async (product) => {
-        await connect.query(
-          "INSERT INTO order_items (order_id, product_id, quantity, price, size, colour) VALUES (?, ?, ?, ?, ?, ?)",
-          [
-            newOrderId,
-            product.product_id,
-            product.quantity,
-            parseFloat(product.product_price),
-            product.selected_size,
-            product.colour,
-          ]
-        );
-      });
+    // Insert order items only if the order insertion is successful
+    for (const product of parsedCartItems) {
+      const insertOrderItemQuery = `
+        INSERT INTO order_items (order_id, product_id, quantity, price, size, colour) 
+        VALUES (?, ?, ?, ?, ?, ?)
+      `;
+      const insertOrderItemValues = [
+        newOrderId,
+        product.product_id,
+        product.quantity,
+        parseFloat(product.product_price),
+        product.selected_size,
+        product.colour,
+      ];
+      const [insertOrderItemResult] = await connect.query(insertOrderItemQuery, insertOrderItemValues);
 
-      // Execute all order item insertion queries
-      await Promise.all(insertOrderItemsPromises);
-    } catch (orderItemsError) {
-      console.error("Error inserting order items:", orderItemsError);
-      await connect.query("ROLLBACK");
-      return res.status(500).send("Failed to place order items");
+      if (insertOrderItemResult.affectedRows !== 1) {
+        throw new Error("Failed to insert order item");
+      }
     }
 
     // Commit the transaction after all queries succeed
@@ -161,7 +153,7 @@ router.post("/place-order", async (req, res) => {
 
     // Fetch order details and items for confirmation page
     const [orderDetails] = await connect.query(
-      `SELECT o.*, a.name, a.email, a.phone, a.address_title, a.full_address 
+      `SELECT o.*, a.name, a.email, a.phone, a.pincode, a.full_address 
        FROM orders o
        JOIN user_address a ON o.address_id = a.id
        WHERE o.order_id = ?`,
@@ -188,6 +180,7 @@ router.post("/place-order", async (req, res) => {
     res.status(500).send("Failed to place order");
   }
 });
+ 
 
 router.get("/product", async (req, res) => {
   const user = req.session.user;
@@ -774,7 +767,7 @@ router.post('/update-quantity', async (req, res) => {
       );
 
       // Process cart items to calculate totals
-      const cartItems = await Promise.all(cartResultAll.map(async (cartItem) => {
+      const cartItemPromises = await Promise.all(cartResultAll.map(async (cartItem) => {
         let sizes = {};
         if (cartItem.wear_type_bottom_or_top === 'top') {
           const [sizeRows] = await connect.query(
@@ -799,6 +792,9 @@ router.post('/update-quantity', async (req, res) => {
         };
       }));
 
+      
+      const cartItems = await Promise.all(cartItemPromises);
+
       // Calculate totals for items in stock
       let totalPrice = 0;
       let totalDiscount = 0;
@@ -807,14 +803,20 @@ router.post('/update-quantity', async (req, res) => {
         const price = parseFloat(item.product_price);
         const discount = parseFloat(item.discount_on_product) || 0;
         const quantity = parseInt(item.quantity);
-        totalPrice += price * quantity;
-        totalDiscount += (price * discount * quantity) / 100;
+        const stock = item.sizes;
+        if (stock) {
+          totalPrice += price * quantity;
+          totalDiscount += (price * discount * quantity) / 100;
+        }
+       
       });
 
-      const subtotal = totalPrice - totalDiscount;
-      const GST = subtotal * 0.2;
+ 
+      const subtotal = (totalPrice - totalDiscount).toFixed(2);
+      const GST = (subtotal * 0.2).toFixed(2);
       const deliveryFee = 25;
-      const totalCost = totalPrice + GST + deliveryFee - totalDiscount;
+      const totalCost =  ( parseFloat(totalPrice) +
+      parseFloat(GST) + deliveryFee - parseFloat(totalDiscount)).toFixed(2);
 
       // Send response with updated totals
       return res.status(200).json({
