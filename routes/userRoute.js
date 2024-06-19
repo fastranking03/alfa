@@ -193,50 +193,55 @@ router.post("/login", async (req, res) => {
     const productIdToAdd = req.session.productToWishlist;
     if (productIdToAdd) {
       // Clear product ID from session
-      req.session.productToWishlist = null;
+      console.log("jxasdgcsflkd");
+      console.log("id", productIdToAdd);
 
-      const checkIfExistsQuery = `
-            SELECT COUNT(*) AS count
-            FROM users_favorites
-            WHERE user_id = ? AND product_id = ?
-        `;
-      const result = await connect.query(checkIfExistsQuery, [
+      console.log("User:", user[0].id);
+      console.log("Product ID to Add:", productIdToAdd);
+ 
+
+        const checkIfExistsQuery = `
+          SELECT *
+          FROM users_favorites
+          WHERE user_id = ? AND product_id = ?
+          `;
+
+      const [existingProduct] = await connect.query(checkIfExistsQuery, [
         user[0].id,
         productIdToAdd,
       ]);
 
-      // Add product to wishlist
-      if (result[0].count === 0) {
+      if (existingProduct.length === 0) {
+        console.log("inserting");
         const addToWishlistQuery = `
               INSERT INTO users_favorites (user_id, product_id)
               VALUES (?, ?)
           `;
         await connect.query(addToWishlistQuery, [user[0].id, productIdToAdd]);
-
-        let cartCount;
-        let wishlistCount;
-
-        // If the user is logged in, fetch cart and wishlist counts
-
-        const [cartResult] = await connect.query(
-          "SELECT COUNT(*) AS cart_count FROM users_cart WHERE user_id = ?",
-          [user[0].id]
-        );
-        const [wishlistResult] = await connect.query(
-          "SELECT COUNT(*) AS wishlist_count FROM users_favorites WHERE user_id = ?",
-          [user[0].id]
-        );
-
-        cartCount = cartResult[0].cart_count;
-        wishlistCount = wishlistResult[0].wishlist_count;
-
-        // Update session variables
-        req.session.cartCount = cartCount;
-        req.session.wishlistCount = wishlistCount;
-
-        res.redirect(`/product-detail/${productIdToAdd}`);
       }
- 
+
+      let cartCount;
+      let wishlistCount;
+
+      const [cartResult] = await connect.query(
+        "SELECT COUNT(*) AS cart_count FROM users_cart WHERE user_id = ?",
+        [user[0].id]
+      );
+
+      const [wishlistResult] = await connect.query(
+        "SELECT COUNT(*) AS wishlist_count FROM users_favorites WHERE user_id = ?",
+        [user[0].id]
+      );
+
+      cartCount = cartResult[0].cart_count;
+      wishlistCount = wishlistResult[0].wishlist_count;
+
+      // Update session variables
+      req.session.cartCount = cartCount;
+      req.session.wishlistCount = wishlistCount;
+      req.session.productToWishlist = null;
+
+      return res.redirect(`/product-detail/${productIdToAdd}`);
     }
     // Redirect based on user status
     if (user[0].status === 1) {
