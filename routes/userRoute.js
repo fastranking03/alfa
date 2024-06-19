@@ -78,7 +78,7 @@ router.post("/signup", async (req, res) => {
       subject: "Password Reset OTP",
       text: `Your OTP for password reset is ${otp}`,
     });
-  
+
     res.render("verify-otp", { email }); // Render OTP verification page
   } catch (error) {
     console.error("Error registering user:", error);
@@ -86,28 +86,33 @@ router.post("/signup", async (req, res) => {
   }
 });
 
-
-
-router.post('/account-verification', async (req, res) => {
+router.post("/account-verification", async (req, res) => {
   const { email, otp } = req.body;
   try {
     // Check if the OTP matches
-    const checkOTPQuery = 'SELECT * FROM user_registration WHERE email = ? AND otp = ?';
+    const checkOTPQuery =
+      "SELECT * FROM user_registration WHERE email = ? AND otp = ?";
     const [user] = await connect.query(checkOTPQuery, [email, otp]);
 
     if (!user) {
-      return res.render('verify-otp', { email, error: 'Invalid OTP. Please try again.' });
+      return res.render("verify-otp", {
+        email,
+        error: "Invalid OTP. Please try again.",
+      });
     }
 
     // Update the verified status in the database
-    const updateVerifiedQuery = 'UPDATE user_registration SET verified = 1 WHERE email = ?';
+    const updateVerifiedQuery =
+      "UPDATE user_registration SET verified = 1 WHERE email = ?";
     await connect.query(updateVerifiedQuery, [email]);
 
     // Redirect to login page after successful verification
-    res.redirect('/login');
+    res.redirect("/login");
   } catch (error) {
-    console.error('Error verifying OTP:', error);
-    res.status(500).render('verify-otp', { email, error: 'Failed to verify OTP' });
+    console.error("Error verifying OTP:", error);
+    res
+      .status(500)
+      .render("verify-otp", { email, error: "Failed to verify OTP" });
   }
 });
 
@@ -126,7 +131,9 @@ router.post("/login", async (req, res) => {
 
     // Check if user is verified
     if (user[0].verified !== 1) {
-      return res.render("login", { error: "Account not verified. Please verify your account to login." });
+      return res.render("login", {
+        error: "Account not verified. Please verify your account to login.",
+      });
     }
 
     // Verify password
@@ -178,11 +185,59 @@ router.post("/login", async (req, res) => {
             quantity,
           ]);
         }
-      } 
+      }
       // Clear the session cart after saving to database
       req.session.cart = [];
     }
 
+    const productIdToAdd = req.session.productToWishlist;
+    if (productIdToAdd) {
+      // Clear product ID from session
+      req.session.productToWishlist = null;
+
+      const checkIfExistsQuery = `
+            SELECT COUNT(*) AS count
+            FROM users_favorites
+            WHERE user_id = ? AND product_id = ?
+        `;
+      const result = await connect.query(checkIfExistsQuery, [
+        user[0].id,
+        productIdToAdd,
+      ]);
+
+      // Add product to wishlist
+      if (result[0].count === 0) {
+        const addToWishlistQuery = `
+              INSERT INTO users_favorites (user_id, product_id)
+              VALUES (?, ?)
+          `;
+        await connect.query(addToWishlistQuery, [user[0].id, productIdToAdd]);
+
+        let cartCount;
+        let wishlistCount;
+
+        // If the user is logged in, fetch cart and wishlist counts
+
+        const [cartResult] = await connect.query(
+          "SELECT COUNT(*) AS cart_count FROM users_cart WHERE user_id = ?",
+          [user[0].id]
+        );
+        const [wishlistResult] = await connect.query(
+          "SELECT COUNT(*) AS wishlist_count FROM users_favorites WHERE user_id = ?",
+          [user[0].id]
+        );
+
+        cartCount = cartResult[0].cart_count;
+        wishlistCount = wishlistResult[0].wishlist_count;
+
+        // Update session variables
+        req.session.cartCount = cartCount;
+        req.session.wishlistCount = wishlistCount;
+
+        res.redirect(`/product-detail/${productIdToAdd}`);
+      }
+ 
+    }
     // Redirect based on user status
     if (user[0].status === 1) {
       res.redirect("/admin");
@@ -194,7 +249,6 @@ router.post("/login", async (req, res) => {
     res.render("login", { error: "Error in login" });
   }
 });
- 
 
 router.post("/forget-password", async (req, res) => {
   try {

@@ -1398,12 +1398,15 @@ router.post("/move-to-cart", async (req, res) => {
 
 router.post('/add-to-wishlist', async (req, res) => {
   const user = req.session.user; // Assuming user is authenticated and session is used
+  const { product_id } = req.body;
+
   if (!user) {
+    req.session.productToWishlist = product_id;
     return res.redirect("/login"); // Redirect to the login page if the user is not logged in
   }
   const userId = user.id; // Assuming user id is stored in session
 
-  const { product_id } = req.body; // Extract productId from request body
+ // Extract productId from request body
 
   try {
     // Query to insert productId into userfav table
