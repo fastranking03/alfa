@@ -27,8 +27,7 @@
             <div class="checkout-title">
               <h3>Shopping Cart</h3>
             </div>
-            <div class="container mt-3">
-              <form id="orderForm" action="checkout" method="post">
+            <div class="container mt-3"> 
                 <input type="hidden" name="cartItemsviewpage" value='<%= JSON.stringify(cartItemsInStock) %>' />
                 <div class="row">
                   <div class="col-md-7">
@@ -231,16 +230,17 @@
                        value="<%= totalCost %>"
                      />
                        <div class="alfa-checkout-wrapper">
-                        <button type="submit" class="checkout-btn">
+                      
+                        <button type="button" class="checkout-btn" onclick="window.location.href='/checkout'">
                           Proceed to Checkout
                         </button>
+                        
                       </div>
                     </div>
                   </div>
                 </div>
 
-                 
-              </form>
+                  
             </div>
           </div>
         </div>

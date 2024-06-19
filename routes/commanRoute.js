@@ -324,13 +324,13 @@ router.get("/product-detail/:id", async (req, res) => {
   }
 });
 
-router.get("/checkout", (req, res) => {
-  const user = req.session.user;
-  res.render("checkout", { user });
-});
+// router.get("/checkout", (req, res) => {
+//   const user = req.session.user;
+//   res.render("checkout", { user });
+// });
  
 
-router.post("/checkout", async (req, res) => {
+router.get("/checkout", async (req, res) => {
   const user = req.session.user;
   const userId = user.id;
   try {
@@ -918,43 +918,41 @@ router.post("/submit-address", async (req, res) => {
     const {
       userid,
       name,
-      phone,
-      alt_phone,
+      phone, 
       email,
-      address_title,
+      pincode , 
       address,
+      locality,
       city,
-      postcode,
-      country,
-      checkbox,
-      radio1,
+      state ,
+      address_type,
+      checkbox, 
     } = req.body;
 
     // Convert checkbox value to 1 if checked, 0 otherwise
     const sameAsDelivery = checkbox === "on" ? 1 : 0;
 
     // Your SQL query to insert the data
-    const sql = `INSERT INTO user_address (user_id, name, phone, alt_phone , email, address_title, full_address, city, postal_code , country , billing_info_same_as_delivery_address	, billing_type   ) 
-                   VALUES (?, ?, ?, ?, ? ,?, ?, ?, ?, ?, ?, ?)`;
+    const sql = `INSERT INTO user_address (user_id, name, phone, email, pincode , full_address, locality , city, state ,  billing_info_same_as_delivery_address	,address_type ) 
+                   VALUES (?, ?, ?,  ? ,?, ?, ?, ?, ?, ?, ?)`;
 
     // Execute the query with prepared statement
     await connect.query(sql, [
       userid,
       name,
-      phone,
-      alt_phone,
+      phone, 
       email,
-      address_title,
+      pincode ,
       address,
+      locality,
       city,
-      postcode,
-      country,
+      state, 
       sameAsDelivery,
-      radio1,
+      address_type,
     ]);
 
     // Redirect to the previous page or any other page
-    res.redirect("back");
+    res.redirect("/checkout");
   } catch (error) {
     console.error("Error:", error);
     res.status(500).send("Internal Server Error");
