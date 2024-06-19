@@ -432,6 +432,32 @@ router.get("/checkout", async (req, res) => {
 });
 
 
+router.get("/remove-address/:id", async (req, res) => {
+  const addressId = req.params.id;
+  try {
+    const deleteQuery = "DELETE FROM user_address WHERE id = ?";
+    await connect.query(deleteQuery, [addressId]);
+    res.redirect("back"); // Redirect back to the address page or a confirmation page
+  } catch (error) {
+    console.error("Error removing address:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+
+router.get("/edit-address/:id", async (req, res) => {
+  const addressId = req.params.id;
+  try {
+    const selectQuery = "SELECT * FROM user_address WHERE id = ?";
+    const [address] = await connect.query(selectQuery, [addressId]);
+    res.render("add-address", { address: address[0] }); // Assuming you have an edit-address view
+  } catch (error) {
+    console.error("Error fetching address:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+
 router.get("/cart", async (req, res) => {
   try {
     const user = req.session.user;
@@ -914,23 +940,46 @@ router.post("/update-product-size", async (req, res) => {
 //
 
 router.post("/submit-address", async (req, res) => {
-  try {
-    const {
-      userid,
-      name,
-      phone, 
-      email,
-      pincode , 
-      address,
-      locality,
-      city,
-      state ,
-      address_type,
-      checkbox, 
-    } = req.body;
+  const {
+    userid,
+    address_id,
+    name,
+    phone, 
+    email,
+    pincode , 
+    address,
+    locality,
+    city,
+    state ,
+    address_type,
+    checkbox, 
+  } = req.body;
 
-    // Convert checkbox value to 1 if checked, 0 otherwise
-    const sameAsDelivery = checkbox === "on" ? 1 : 0;
+  const sameAsDelivery = checkbox === "on" ? 1 : 0;
+
+  try {
+
+   if (address_id) {
+      // Update existing address
+      const updateSql = `
+        UPDATE user_address 
+        SET name = ?, phone = ?, email = ?, pincode = ?, full_address = ?,  locality = ?, city = ?, state =? ,  billing_info_same_as_delivery_address = ?, address_type = ?
+        WHERE id = ?
+      `;
+      await connect.query(updateSql, [
+        name,
+        phone,
+        email,
+        pincode,
+        address, 
+        locality,
+        city,
+        state, 
+        sameAsDelivery,
+        address_type,
+        address_id,
+      ]);
+    } else{
 
     // Your SQL query to insert the data
     const sql = `INSERT INTO user_address (user_id, name, phone, email, pincode , full_address, locality , city, state ,  billing_info_same_as_delivery_address	,address_type ) 
@@ -951,6 +1000,7 @@ router.post("/submit-address", async (req, res) => {
       address_type,
     ]);
 
+    } 
     // Redirect to the previous page or any other page
     res.redirect("/checkout");
   } catch (error) {
