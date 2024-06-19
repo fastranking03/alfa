@@ -2,6 +2,8 @@
 <html lang="en">
 
 <head>
+    
+    <base href="http://localhost:8081" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alfa Meanswear | Product Details</title>
@@ -16,7 +18,7 @@
                     <div class="container">
                         <div class="checkout-title text-center">
                             <h3>Order Information</h3>
-                            <h6>Order ID: 334902461</h6>
+                            <h6>Order ID: <%=order.order_id  %></h6>
                         </div>
                         <div class="row mt-5">
                             <div class="col-md-6">
@@ -98,44 +100,54 @@
                                      </div>
                                     <div class="checkout-cart-wrapper">
                                         <div class="checkout-wrapp">
+                                            <% orderItems.forEach(item => { %>
                                              <div class="check-item">
                                                 <div class="check-item-left">
                                                      <div class="check-item-image">
-                                                        <img src="https://assets.myntassets.com/h_720,q_90,w_540/v1/assets/images/8717979/2019/3/20/585db9fe-1df0-458d-b218-6f514eabb9601553068826233-Mast--Harbour-Men-Shirts-4141553068825026-1.jpg" class="check-image" alt="">
+                                                        <img src="../product_images/<%=item.product_main_image %>" class="check-image" alt="">
                                                      </div>
                                                      <div class="checkout-cont">
-                                                        <h4>test </h4>
+                                                        <h4><%=item.product_name %> </h4>
                                                         <div class="checkout-rest-cont">
-                                                            <p>Color : Blue</p>
-                                                            <p>Size : XL</p>
-                                                            <p>Qty :  1</p>
+                                                            <p>Color : <%=item.colour %></p>
+                                                            <p>Size : <%=item.size %></p>
+                                                            <p>Qty :  <%=item.quantity %></p>
                                                         </div>
                                                      </div>
                                                 </div>
                                                 <div class="check-item-right">
                                                     <div class="check-price">
-                                                        <h3>£ 90.00</h3>
+                                                        <h3>£ <%=item.price %></h3>
                                                     </div>
                                                 </div>
                                             </div>
+                                            <% }); %>
                                         </div>
                                          <div class="alfa-cart-total">
                                             <ul>
                                                 <li>
-                                                    <div class="alfa-text">Sub- Total</div>
-                                                    <div class="alfa-price"> £ 100.00</div>
+                                                    <div class="alfa-text">Total MRP </div>
+                                                    <div class="alfa-price"> £  <%=order.total_mrp %></div>
                                                 </li>
+
+                                                <li>
+                                                    <div class="alfa-text">Discount on MRP </div>
+                                                    <div class="alfa-price"> £ <%=order.discount_amount %></div>
+                                                </li>
+
+                                                <li>
+                                                    <div class="alfa-text">Sub Total</div>
+                                                    <div class="alfa-price"><%=order.sub_total  %></div>
+                                                </li>
+
                                                 <li>
                                                     <div class="alfa-text">Vat ( 20% )</div>
-                                                    <div class="alfa-price">£  56</div>
+                                                    <div class="alfa-price">£ <%=order.vat  %></div>
                                                 </li>
-                                                <li>
-                                                    <div class="alfa-text">Discount</div>
-                                                    <div class="alfa-price">- 20</div>
-                                                </li>
+                                                
                                                 <li>
                                                     <div class="alfa-text">Delivery Fee</div>
-                                                    <div class="alfa-price"> fdgfd</div>
+                                                    <div class="alfa-price"> <%=order.delivery_charges  %></div>
                                                 </li>
                                             </ul>
                                         </div>
@@ -143,7 +155,7 @@
                                             <ul>
                                                 <li>
                                                     <div class="alfa-text">Total Cost</div>
-                                                    <div class="alfa-price">£ 150.00</div>
+                                                    <div class="alfa-price">£ <%=order.total_payable  %></div>
                                                 </li>
                                             </ul>
                                         </div>
