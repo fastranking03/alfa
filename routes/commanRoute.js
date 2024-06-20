@@ -502,7 +502,7 @@ router.get("/cart", async (req, res) => {
     if (!user || !user.id) {
       // Guest user scenario
       const cartItems = req.session.cart || []; 
-
+  
       const promises = cartItems.map((cartItem) =>
         connect
           .query(`SELECT * FROM products WHERE id = ?`, [cartItem.product_id])
@@ -576,7 +576,7 @@ router.get("/cart", async (req, res) => {
       });
     } else {
       const userId = user.id;
-
+   
       const [cartResult] = await connect.query(
         "SELECT COUNT(*) AS cart_count FROM users_cart WHERE user_id = ?",
         [userId]

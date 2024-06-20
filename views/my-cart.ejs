@@ -17,7 +17,8 @@
       }
 
       .selected-size {
-        background-color: rgb(91 161 160);
+        background-color: #005d67;
+        color: antiquewhite;
       }
     </style>
   </head>
@@ -63,6 +64,7 @@
                                   alt=""
                                 />
                               </div>
+
                               <div class="pro-cart-contents">
                                 <div class="pro-cart-title">
                                   <h3><%= item.product_name %></h3>
@@ -71,8 +73,14 @@
 
                                 <div class="product-size-list">
                                   <span class="cart-short-text" data-cart-id="<%= item.cart_id %>" data-product-id="<%= item.product_id %>" data-selected-size="<%= item.selected_size %>">
-                                    Select Size : <%= item.selected_size %>
+                                    Select Size 
                                   </span>
+
+                                  <!-- <span class="cart-short-text-2" data-product-id-2="<%= item.product_id %>" ></span> -->
+<!--                                   
+                                  <input type="text" class="proIds" data-product-id="<%= item.product_id %>" value="<%= item.product_id %>"> -->
+
+
                                   <ul id="sizeList-<%= item.cart_id %>" class="size-list">
                                     <% if (item.sizes && Object.keys(item.sizes).length > 0) { %>
                                       <% for (const [size, stock] of Object.entries(item.sizes)) { %>
@@ -80,7 +88,7 @@
                                           <% const numericSize = size.replace('size_', ''); %>
                                           <% if (stock && numericSize.length > 0) { %>
                                             <li class="cart-li">
-                                              <input type="radio" id="size-<%= item.cart_id %>-<%= numericSize %>" name="selectedSize-<%= item.cart_id %>" value="<%= numericSize %>" <%= stock > 0 ? '' : 'disabled' %> <%= item.selected_size && item.selected_size.toLowerCase() === numericSize.toLowerCase() ? 'checked' : '' %> required />
+                                              <input type="radio" id="size-<%= item.cart_id %>-<%= numericSize %>" name="selectedSize-<%= item.cart_id %>-<%= item.product_id %>"  value="<%= numericSize %>" <%= stock > 0 ? '' : 'disabled' %> <%= item.selected_size && item.selected_size.toLowerCase() === numericSize.toLowerCase() ? 'checked' : '' %> required />
                                               <label id="label-<%= item.cart_id %>-<%= numericSize %>" style="<%= stock > 0 ? '' : 'opacity: 0.5;' %>" for="size-<%= item.cart_id %>-<%= numericSize %>" class="size-item card-s <%= stock > 0 ? '' : 'disabled' %>">
                                                 <span class="size"><%= numericSize %></span>
                                               </label>
@@ -89,7 +97,7 @@
                                         <% } else { %>
                                           <% if (stock) { %>
                                             <li class="cart-li">
-                                              <input type="radio" id="size-<%= item.cart_id %>-<%= size %>" name="selectedSize-<%= item.cart_id %>" value="<%= size.toUpperCase() %>" <%= stock > 0 ? '' : 'disabled' %> <%= item.selected_size && item.selected_size.toLowerCase() === size.toLowerCase() ? 'checked' : '' %> required />
+                                              <input type="radio" id="size-<%= item.cart_id %>-<%= size %>" name="selectedSize-<%= item.cart_id %>-<%= item.product_id %>"  value="<%= size.toUpperCase() %>" <%= stock > 0 ? '' : 'disabled' %> <%= item.selected_size && item.selected_size.toLowerCase() === size.toLowerCase() ? 'checked' : '' %> required />
                                               <label id="label-<%= item.cart_id %>-<%= size %>" style="<%= stock > 0 ? '' : 'opacity: 0.5;' %>" for="size-<%= item.cart_id %>-<%= size %>" class="card-s size-item <%= stock > 0 ? '' : 'disabled' %>">
                                                 <span class="size"><%= size.toUpperCase() %></span>
                                               </label>
