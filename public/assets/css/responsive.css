@@ -471,17 +471,21 @@
     .final-prices {
         font-size: 16px;
     }
-
+    .pro-detail-size-ul .size-item{
+        display: flex !important;
+    }
 }
 
 @media screen and (max-width:576px) {
     .alfa-user-title h3 {
         font-size: 20px;
     }
-
+    .alfa-detail-wrapper {
+         top: 0px;
+    }
     #hero-carousel .owl-nav .owl-prev,
     #hero-carousel .owl-nav .owl-next {
-        bottom: 292px;
+        bottom: 253px;
     }
 
     .alfa-hero-left-wrapper {
@@ -876,7 +880,12 @@
     .final-prices {
         font-size: 18px;
     }
-
+    .prod-dd{
+        font-size: 15px !important;
+    }
+    .discount-text.prod-dd{
+        font-size: 14px !important;
+    }
     .cart-short-text {
         font-size: 12px;
     }

@@ -30,7 +30,8 @@ a {
   position: fixed;
   width: 100%;
   z-index: 9999;
-  background: var(--whiteColor)
+  background: var(--whiteColor);
+  box-shadow: rgba(99, 99, 99, 0.1) 0px 1px 12px 0px;
 }
 
 .alfa-navbar ul {
@@ -925,8 +926,12 @@ a {
   font-weight: 500;
 }
 
-.add-to-cart:hover {}
-
+.add-to-cart:hover {
+  transform: translateY(-3px)
+}
+.buy-now:hover{
+     transform: translateY(-3px)
+}
 .product-rating ul {
   padding-left: 0;
   list-style: none;
@@ -1692,6 +1697,7 @@ a {
   display: inline-block;
   text-align: center;
   padding: 10px;
+  font-size: 15px;
   color: #000;
   transition: .3s ease-in-out;
 }
@@ -1700,7 +1706,7 @@ a {
 }
 .cart-btn.buy-now {
   background: var(--whiteColor);
-  border: 1px solid var(--primaryColor);
+  border: 1px solid #bcc0c1;
   color: var(--blackColor) !important;
 }
 
@@ -2106,9 +2112,12 @@ a {
   flex-direction:row !important;
  }
  .detail-ul .variant-img{
-    width: 100px;
-    height: 140px;
+    width: 70px;
+    height: 88px;
     object-fit: contain;
+ }
+ .pro--text{
+  margin: 25px 0 8px;
  }
  .detail-ul .product-color-item{
     width: 35px !important;
@@ -2215,6 +2224,7 @@ a {
     top: 18px;
     padding: 0;
     transition: .3s ease;
+    z-index: 999;
 }
 .dropdown-menu-wrapper ul{
     display: flex;
@@ -2639,12 +2649,31 @@ font-size: 14px;
  .cart-qw{
   padding: 1px 0 !important;
  }
-  .prod-dd{
-    font-size: 18px;
+   .prod-dd{
+    font-size: 18px !important;
   }
   .fn-price{
     font-size: 22px;
   }
   .product-item-2{
     width: 210px;
+  }
+  .size-selection{
+    color: #000000;
+    font-size: 14px;
+    text-transform: uppercase;
+  }
+  .pro-detail-size-ul .size-item{
+    width: 46px !important;
+    height: 42px;
+    align-items: center;
+    display: flex;
+  }
+  .pro-btn-flex{
+    display: flex;
+    width: 100%;
+    gap: 10px;
+  }
+  .size-list.pro-detail-size-ul{
+    gap: 18px !important;
   }
