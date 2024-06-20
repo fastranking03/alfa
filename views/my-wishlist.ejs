@@ -39,7 +39,12 @@
                                       <div class="pro-cart-title">
                                         <h3><%=item.product_name %></h3>
                                       </div>
-
+<style>
+  input[type="radio"] {
+    display: none;
+}
+ 
+</style>
                                       <div class="product-size-list">
                                         <span class="cart-short-text">Select Size</span>
                                         <ul>
@@ -49,14 +54,14 @@
                                                 <% const numericSize = size.replace('size_', ''); %>
                                                 <% if (stock && numericSize.length > 0) { %>
                                                   <li>
-                                                    <input type="radio" id="size-<%= item.product_id %>-<%= numericSize %>" name="selectedSize" value="<%= numericSize %>" <%= stock > 0 ? '' : 'disabled' %> required />
+                                                    <input class="size-radio"  type="radio" id="size-<%= item.product_id %>-<%= numericSize %>" name="selectedSize" value="<%= numericSize %>" <%= stock > 0 ? '' : 'disabled' %> required />
                                                     <label for="size-<%= item.product_id %>-<%= numericSize %>" class="size-item <%= stock > 0 ? '' : 'disabled' %>"><%= numericSize %></label>
                                                   </li>
                                                 <% } %>
                                               <% } else { %>
                                                 <% if (stock) { %>
                                                   <li>
-                                                    <input type="radio" id="size-<%= item.product_id %>-<%= size %>" name="selectedSize" value="<%= size.toUpperCase() %>" <%= stock > 0 ? '' : 'disabled' %> required />
+                                                    <input class="size-radio"  type="radio" id="size-<%= item.product_id %>-<%= size %>" name="selectedSize" value="<%= size.toUpperCase() %>" <%= stock > 0 ? '' : 'disabled' %> required />
                                                     <label for="size-<%= item.product_id %>-<%= size %>" class="size-item <%= stock > 0 ? '' : 'disabled' %>"><%= size.toUpperCase() %></label>
                                                   </li>
                                                 <% } %>
@@ -67,9 +72,7 @@
                                           <% } %>
                                         </ul>
                                       </div>
-                                      
-
-                                      <div class="new-cart-quantity">
+                                       <div class="new-cart-quantity">
                                         <span class="cart-short-text">Quantity</span>
                                         <div class="cart-quantity-wrapper cart-wrapper">
                                           <div class="left-input">
@@ -138,7 +141,27 @@
       <!-- End -->
     </div>
     <%- include('includes/foot') %>
-  
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+    const sizeRadios = document.querySelectorAll('.size-radio');
+
+    sizeRadios.forEach(function(radio) {
+        radio.addEventListener('change', function() {
+            // Remove 'selected' class from all size labels
+            document.querySelectorAll('.size-item').forEach(function(label) {
+                label.classList.remove('selected');
+            });
+
+            // Add 'selected' class to the associated label
+            const selectedLabel = document.querySelector(`label[for="${this.id}"]`);
+            if (selectedLabel) {
+                selectedLabel.classList.add('selected');
+            }
+        });
+    });
+});
+
+  </script>
     
   </body>
 </html>

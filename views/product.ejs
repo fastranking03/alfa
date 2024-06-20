@@ -15,7 +15,6 @@
         width: 0;
         height: 0;
       }
-
       .size-checkbox:checked + label {
         background-color: #005d67;
         border-color: #005d67;
@@ -83,14 +82,11 @@
                         <ul class="product-cat-list">
                           <% categories.forEach(category=> { %>
                           <li>
-                            <a href="category/<%= category.category_name %>"
-                              ><button class="cat-item">
+                            <a href="category/<%= category.category_name %>">
+                              <button class="cat-item">
                                 <%= category.category_name %>
-                                <span class="cat-span"
-                                  >( <%=category.product_count %> )</span
-                                >
-                              </button></a
-                            >
+                                <span class="cat-span" >( <%=category.product_count %> )</span >
+                              </button></a>
                           </li>
                           <% }); %>
                         </ul>
@@ -298,13 +294,7 @@
                   <div class="product-right-wrapper">
                     <div class="product-grid">
                       <% products.forEach(product=> { %>
-                      <div
-                        class="product-item"
-                        data-price="<%=(product.product_price * (1 -
-                                  (product.discount_on_product /
-                                  100))).toFixed(2) %>"
-                        data-color="<%= product.colour %>"
-                      >
+                      <div  class="product-item" data-price="<%=(product.product_price * (1 - (product.discount_on_product / 100))).toFixed(2) %>"  data-color="<%= product.colour %>">
                         <div class="produt-wrap">
                           <a href="/product-detail/<%= product.id %> ">
                             <img
@@ -806,16 +796,17 @@
     </div>
     <%- include('includes/foot') %>
     <script>
-      // document.addEventListener("DOMContentLoaded", function() {
-      //       const productGrid = document.querySelector(".product-grid");
-      //       const productItems = document.querySelectorAll(".product-item");
-      //       console.log(productItems.length)
-      //        if (productItems.length < 5) {
-      //           productGrid.style.justifyContent = "start";
-      //       } else {
-      //           productGrid.style.justifyContent = "space-between";
-      //       }
-      //   });
-    </script>
+        document.addEventListener("DOMContentLoaded", function() {
+        const productItems = document.querySelectorAll('.product-item');
+         
+        if (productItems.length >= 6) {
+          productItems.forEach((item, index) => {
+            if (index < 3 || index >= productItems.length - 3) {
+              item.classList.add('justify-start');
+            }
+          });
+        }
+      });
+     </script>
   </body>
 </html>

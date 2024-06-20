@@ -14,7 +14,9 @@ import CategoryRoutes from "./routes/categoryRoute.js";
 import inventoryRoute from "./routes/admin/inventoryRoute.js";
 import adminProductsRoute from "./routes/admin/productRoute.js";
 import placeOrderRoute from "./routes/placeOrderRoute.js";
-
+ 
+import blogRoute from './routes/admin/blogRoute.js';
+ 
 import session from "express-session";
 import slugify from "slugify";
 import { fileURLToPath } from "url";
@@ -85,6 +87,7 @@ app.use("/banner_images", express.static("banner_images"));
 app.use("/category_images", express.static("category_images"));
 
 app.use("/product_images", express.static("product_images"));
+app.use("/blog_images", express.static("blog_images"));
 
 // Routes
 
@@ -104,9 +107,15 @@ app.use("/admin/", categoryRoute);
 app.use("/admin/", inventoryRoute);
 app.use("/admin/", adminProductsRoute);
 app.use("/admin/", subcategoryRoute);
+app.use("/admin/", blogRoute);
+ 
 
-app.get("/accessories", (req, res) => {
-  return res.render("accessories");
+// app.get('/order-history',(req,res) =>{
+//   return res.render('order-history')
+// });
+
+app.get('/accessories',(req,res) =>{
+  return res.render('accessories')
 });
 
 app.get("/my-profile", async (req, res) => {

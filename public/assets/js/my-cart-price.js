@@ -70,40 +70,41 @@ $(document).ready(function () {
       success: function (response) {
         console.log("Quantity updated successfully:", response);
         // Optionally update UI or perform other actions on success
+
+        // Update Total MRP
         var totalPriceElement = document.getElementById("totalPrice-ajax");
         if (totalPriceElement) {
-          totalPriceElement.textContent = response.totalPrice.toFixed(2);
+          totalPriceElement.textContent = response.totalPrice;
         }
 
         // Update Total Discount
-        var totalDiscountElement =
-          document.getElementById("totalDiscount-ajax");
+        var totalDiscountElement = document.getElementById("totalDiscount-ajax");
         if (totalDiscountElement) {
-          totalDiscountElement.textContent = response.totalDiscount.toFixed(2);
+          totalDiscountElement.textContent = response.totalDiscount;
+        }
+
+        // Update Subtotal
+        var subtotalElement = document.getElementById("subtotal-ajax");
+        if (subtotalElement) {
+          subtotalElement.textContent = response.subtotal;
         }
 
         // Update GST
         var gstElement = document.getElementById("GST-ajax");
         if (gstElement) {
-          gstElement.textContent = response.GST.toFixed(2);
-        }
-
-        // Update subtotal
-        var subtotal = document.getElementById("subtotal-ajax");
-        if (subtotal) {
-          subtotal.textContent = response.subtotal.toFixed(2);
+          gstElement.textContent = response.GST;
         }
 
         // Update Delivery Fee
         var deliveryFeeElement = document.getElementById("Delivery-ajax");
         if (deliveryFeeElement) {
-          deliveryFeeElement.textContent = response.deliveryFee.toFixed(2);
+          deliveryFeeElement.textContent = response.deliveryFee;
         }
 
         // Update Total Cost
         var totalCostElement = document.getElementById("totalCost-ajax");
         if (totalCostElement) {
-          totalCostElement.textContent = response.totalCost.toFixed(2);
+          totalCostElement.textContent = response.totalCost;
         }
       },
       error: function (xhr, status, error) {

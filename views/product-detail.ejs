@@ -1,169 +1,172 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <base href="http://localhost:8081" />
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Alfa Meanswear | Product Details</title>
-    <%- include('includes/head') %>
-  </head>
-  <style>
-    .alfa-pro-detail-wrapper {
-      max-width: 600px;
-      margin: 0 auto;
-    }
 
-    .image-grid-wrapper {
-      overflow-x: auto;
-      white-space: nowrap;
-    }
+<head>
+  <base href="http://localhost:8081" />
+  <!-- <base href="https://diz5s9u.localto.net"> -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alfa Meanswear | Product Details</title>
+  <%- include('includes/head') %>
+</head>
+<style>
+  .alfa-pro-detail-wrapper {
+    max-width: 600px;
+    margin: 0 auto;
+  }
 
-    .images-grids {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      overflow: hidden;
-    }
+  .image-grid-wrapper {
+    overflow-x: auto;
+    white-space: nowrap;
+  }
 
-    .image-item {
-      flex: 1 1 calc(20% - 10px);
-      cursor: pointer;
-      cursor: pointer;
-      text-align: center;
-      align-items: center;
-      display: flex;
-      justify-content: center;
-      transition: 0.3s ease-in-out;
-      border: 2px solid #fff;
-    }
+  .images-grids {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    overflow: hidden;
+  }
 
-    .image-item:hover {
-      border: 2px solid #eee;
-    }
+  .image-item {
+    flex: 1 1 calc(20% - 10px);
+    cursor: pointer;
+    cursor: pointer;
+    text-align: center;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    transition: 0.3s ease-in-out;
+    border: 2px solid #fff;
+  }
 
-    .image-item img {
-      width: 100%;
-    }
+  .image-item img {
+    width: 100%;
+  }
 
-    input[type="radio"] {
-      display: none;
-    }
-    .accordion-items {
-      background-color: #fff;
-      color: #111;
-      margin: 1rem 0;
-      border-radius: 0.5rem;
-      border: 1px solid #eee;
-    }
+  input[type="radio"] {
+    display: none;
+  }
 
-    .accordion-item-header {
-      padding: 0.5rem 3rem 0.5rem 1rem;
-      min-height: 3.5rem;
-      line-height: 1.25rem;
-      display: flex;
-      align-items: center;
-      position: relative;
-      cursor: pointer;
-      font-size: 20px;
-    }
+  .accordion-items {
+    background-color: #fff;
+    color: #111;
+    margin: 1rem 0;
+    border-radius: 0.5rem;
+    border: 1px solid #eee;
+  }
 
-    .accordion-item-header::after {
-      content: "\002B";
-      font-size: 2rem;
-      position: absolute;
-      right: 1rem;
-    }
+  .accordion-item-header {
+    padding: 0.5rem 3rem 0.5rem 1rem;
+    min-height: 3.5rem;
+    line-height: 1.25rem;
+    display: flex;
+    align-items: center;
+    position: relative;
+    cursor: pointer;
+    font-size: 20px;
+  }
 
-    .accordion-item-header.active::after {
-      content: "\2212";
-    }
+  .accordion-item-header::after {
+    content: "\002B";
+    font-size: 2rem;
+    position: absolute;
+    right: 1rem;
+  }
 
-    .accordion-item-body {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.2s ease-out;
-    }
+  .accordion-item-header.active::after {
+    content: "\2212";
+  }
 
-    .accordion-item-body-content {
-      padding: 1rem;
-      line-height: 1.5rem;
-      border-top: 1px solid;
-      border-image: linear-gradient(to right, transparent, #34495e, transparent)
-        1;
-    }
-  </style>
+  .accordion-item-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.2s ease-out;
+  }
 
-  <body>
-    <div class="alfa-main-wraper">
-      <%- include('includes/header') %>
+  .accordion-item-body-content {
+    padding: 1rem;
+    line-height: 1.5rem;
+    border-top: 1px solid;
+    border-image: linear-gradient(to right, transparent, #34495e, transparent) 1;
+  }
+
+  .image-item img:hover {
+    border: 1px solid #005d67;
+  }
+
+  .image-item img.selected {
+    border: 1px solid #005d67;
+  }
+
+  .zoomContainer {
+    z-index: 9999 !important;
+  }
+
+  .pd-img {
+    cursor: zoom-in;
+  }
+</style>
+
+<body>
+  <div class="alfa-main-wraper">
+    <%- include('includes/header') %>
       <div class="mt-100">
         <div class="alfa-detail-sexction alfa-detail-wrapper">
           <div class="container">
             <div class="row">
               <div class="col-md-6">
-                <div class="row">
+                <div class="row product-detail-reverse">
                   <div class="col-md-2 paddingleft">
                     <div class="image-grid-wrapper">
                       <div class="images-grids">
-                        <% if (product_images.length> 0) { %> <%
-                        product_images.forEach(function(image, index) { %>
-                        <div class="image-item" data-index="<%= index %>">
-                          <img
-                            src="../product_images/<%=image.image_path  %>"
-                            class="d-img"
-                            alt=""
-                          />
-                        </div>
-                        <% }); %> <% } else { %>
-                        <div class="image-item" data-index="0">
-                          <img
-                            src="../product_images/<%= product.product_main_image %>"
-                            class="d-img"
-                            alt=""
-                          />
-                        </div>
-                        <% } %>
+                        <% if (product_images.length> 0) { %>
+                          <% product_images.forEach(function(image, index) { %>
+                            <div class="image-item" data-index="<%= index %>">
+                              <img src="../product_images/<%= image.image_path %>" class="d-img" alt="" />
+                            </div>
+                            <% }); %>
+                              <% } else { %>
+                                <div class="image-item" data-index="0">
+                                  <img src="../product_images/<%= product.product_main_image %>" class="d-img" alt="" />
+                                </div>
+                                <% } %>
                       </div>
                     </div>
                   </div>
                   <div class="col-md-10 paddingleft">
                     <div class="alfa-pro-detail-wrapper">
-                      <div
-                        id="product-detail-carousel"
-                        class="p-detail-wrap owl-carousel comman-nav owl-nav-display"
-                      >
-                        <% if (product_images.length> 0) { %> <%
-                        product_images.forEach(function(image, index) { %>
-                        <div class="d-item" data-index="<%= index %>">
-                          <img
-                            src="../product_images/<%=image.image_path  %>"
-                            class="pd-img"
-                            alt=""
-                          />
-                        </div>
-                        <% }); %> <% } else { %>
-                        <div class="d-item" data-index="0">
-                          <img
-                            src="../product_images/<%= product.product_main_image %>"
-                            alt=""
-                          />
-                        </div>
-                        <% } %>
+                      <div id="product-detail-carousel" class="p-detail-wrap owl-carousel comman-nav owl-nav-display">
+                        <% if (product_images.length> 0) { %>
+                          <% product_images.forEach(function(image, index) { %>
+                            <div class="d-item" data-index="<%= index %>">
+                              <img src="../product_images/<%= image.image_path %>"
+                                data-zoom-image="../product_images/<%= image.image_path %>" class="pd-img" alt="" />
+                            </div>
+                            <% }); %>
+                              <% } else { %>
+                                <div class="d-item" data-index="0">
+                                  <img src="../product_images/<%= product.product_main_image %>"
+                                    data-zoom-image="../product_images/<%= product.product_main_image %>" alt="" />
+                                </div>
+                                <% } %>
                       </div>
                     </div>
+
                   </div>
                 </div>
               </div>
               <div class="col-md-6">
                 <div class="pro-detail--wrapper">
                   <div class="d-title">
-                    <h2><%=product.product_name %></h2>
+                    <h2>
+                      <%=product.product_name %>
+                    </h2>
                     <p>
                       <%=product.product_description %> Setting the bar as one
-                      of the loudest speakers in its class, the Kilburn is a
-                      compact, stout-hearted hero with a well-balanced audio
-                      which boasts a clear midrange and extended highs for a
-                      sound.
+                        of the loudest speakers in its class, the Kilburn is a
+                        compact, stout-hearted hero with a well-balanced audio
+                        which boasts a clear midrange and extended highs for a
+                        sound.
                     </p>
                   </div>
                   <div class="product-detail-feat">
@@ -188,26 +191,11 @@
                     <div class="product-rating">
                       <ul>
                         <li>
-                          <a href=""
-                            ><span class="alfa-start"
-                              ><i class="fa-solid fa-star"></i></span
-                          ></a>
-                          <a href=""
-                            ><span class="alfa-start"
-                              ><i class="fa-solid fa-star"></i></span
-                          ></a>
-                          <a href=""
-                            ><span class="alfa-start"
-                              ><i class="fa-solid fa-star"></i></span
-                          ></a>
-                          <a href=""
-                            ><span class="alfa-start"
-                              ><i class="fa-solid fa-star"></i></span
-                          ></a>
-                          <a href=""
-                            ><span class="alfa-start"
-                              ><i class="fa-solid fa-star"></i></span
-                          ></a>
+                          <a href=""><span class="alfa-start"><i class="fa-solid fa-star"></i></span></a>
+                          <a href=""><span class="alfa-start"><i class="fa-solid fa-star"></i></span></a>
+                          <a href=""><span class="alfa-start"><i class="fa-solid fa-star"></i></span></a>
+                          <a href=""><span class="alfa-start"><i class="fa-solid fa-star"></i></span></a>
+                          <a href=""><span class="alfa-start"><i class="fa-solid fa-star"></i></span></a>
                           <div class="border-width"></div>
                           <span class="review-count"> 10 Customer Review</span>
                         </li>
@@ -215,35 +203,32 @@
                     </div>
                     <div class="product--price">
                       <h5>
-                        <span class="final-prices"
-                          >£<%=(product.product_price * (1 -
-                          (product.discount_on_product / 100))).toFixed(2) %> </span
-                        ><span class="mrp-price" style="font-size: 22px">
-                          £<%=product.product_price %></span
-                        >
-                        <span class="discount-text">
-                          (<%=product.discount_on_product %>% OFF )</span
-                        >
+                        <span class="final-prices fn-price">£<%=(product.product_price * (1 -
+                            (product.discount_on_product / 100))).toFixed(2) %> </span><span class="mrp-price prod-dd">
+                          £<%=product.product_price %></span>
+                        <span class="discount-text prod-dd">
+                          (<%=product.discount_on_product %>% OFF )</span>
                       </h5>
                     </div>
                   </div>
                   <div class="product-color-list product--color">
                     <div class="pro--text">
                       <h6 style="color: #9f9f9f; font-size: 13px">
-                         
+
                       </h6>
                     </div>
-                     
+
 
                     <ul class="detail-ul">
-                      <% variantProducts.forEach(variantProduct => { %>
-                          <li> 
-                            <a href="/product-detail/<%= variantProduct.id %>"> 
-                             <img class="variant-img" src="../product_images/<%=variantProduct.product_main_image %>" alt="">
-                            </a>
-                           </li>
-                      <% }) %>
-                  </ul>
+                      <% variantProducts.forEach(variantProduct=> { %>
+                        <li>
+                          <a href="/product-detail/<%= variantProduct.id %>">
+                            <img class="variant-img" src="../product_images/<%=variantProduct.product_main_image %>"
+                              alt="">
+                          </a>
+                        </li>
+                        <% }) %>
+                    </ul>
                   </div>
                   <form method="post" id="productForm">
                     <div class="product-size-list">
@@ -253,68 +238,48 @@
                         </h6>
                       </div>
                       <ul id="sizeList" class="size-list">
-                        <% if (sizes && Object.keys(sizes).length > 0) { %>
-                            <% const sizeEntries = Object.entries(sizes).slice(0, 5); %>
+                        <% if (sizes && Object.keys(sizes).length> 0) { %>
+                          <% const sizeEntries=Object.entries(sizes).slice(0, 5); %>
                             <% for (const [size, stock] of sizeEntries) { %>
-                                <% if (wearType === 'bottom') { %>
-                                    <% const numericSize = size.match(/\d+/); %>
-                                    <% if (numericSize && numericSize.length > 0) { %>
-                                        <li>
-                                            <input type="radio" id="size-<%= numericSize[0] %>" name="selectedSize" value="<%= numericSize[0] %>" <%= stock > 0 ? '' : 'disabled' %> required />
-                                            <label for="size-<%= numericSize[0] %>" class="size-item <%= stock > 0 ? '' : 'disabled' %>">
-                                                <span class="size"> <%= numericSize[0] %> </span>
-                                            </label>
-                                        </li>
-                                    <% } %>
-                                <% } else { %>
+                              <% if (wearType==='bottom' ) { %>
+                                <% const numericSize=size.match(/\d+/); %>
+                                  <% if (numericSize && numericSize.length> 0) { %>
                                     <li>
-                                        <input type="radio" id="size-<%= size %>" name="selectedSize" value="<%= size.toUpperCase() %>" <%= stock > 0 ? '' : 'disabled' %> required />
-                                        <label for="size-<%= size %>" class="size-item <%= stock > 0 ? '' : 'disabled' %>">
-                                            <span class="size"> <%= size.toUpperCase() %> </span>
-                                        </label>
+                                      <input type="radio" id="size-<%= numericSize[0] %>" name="selectedSize"
+                                        value="<%= numericSize[0] %>" <%=stock> 0 ? '' : 'disabled' %> required />
+                                      <label for="size-<%= numericSize[0] %>"
+                                        class="size-item <%= stock > 0 ? '' : 'disabled' %>">
+                                        <span class="size">
+                                          <%= numericSize[0] %>
+                                        </span>
+                                      </label>
                                     </li>
-                                <% } %>
-                            <% } %>
-                        <% } else { %>
-                            <p class="unavailableSize">Currently Out Of Stock</p>
-                        <% } %>
-                    </ul>
+                                    <% } %>
+                                      <% } else { %>
+                                        <li>
+                                          <input type="radio" id="size-<%= size %>" name="selectedSize" value="<%= size.toUpperCase() %>" <%=stock> 0 ? '' : 'disabled' %> required />
+                                          <label for="size-<%= size %>"
+                                            class="size-item <%= stock > 0 ? '' : 'disabled' %>">
+                                            <span class="size">
+                                              <%= size.toUpperCase() %>
+                                            </span>
+                                          </label>
+                                        </li>
+                                        <% } %>
+                                          <% } %>
+                                            <% } else { %>
+                                              <p class="unavailableSize">Currently Out Of Stock</p>
+                                              <% } %>
+                      </ul>
                     </div>
-                    <input
-                      type="hidden"
-                      name="product_id"
-                      value="<%= product.id %>"
-                    />
-                    <input
-                      type="hidden"
-                      name="product_name"
-                      value="<%= product.product_name %>"
-                    />
-                    <input
-                      type="hidden"
-                      name="finalPrice_after_discount"
-                      value="<%= (product.product_price * (1 - (product.discount_on_product / 100))).toFixed(2) %>"
-                    />
-                    <input
-                      type="hidden"
-                      name="discount_on_product"
-                      value="<%= product.discount_on_product %>"
-                    />
-                    <input
-                      type="hidden"
-                      name="actual_mrp_price"
-                      value="<%= product.product_price %>"
-                    />
-                    <input
-                      type="hidden"
-                      name="category"
-                      value="<%= product.category_name %>"
-                    />
-                    <input
-                      type="hidden"
-                      name="sub_category"
-                      value="<%= product.sub_category_name %>"
-                    />
+                    <input type="hidden" name="product_id" value="<%= product.id %>" />
+                    <input type="hidden" name="product_name" value="<%= product.product_name %>" />
+                    <input type="hidden" name="finalPrice_after_discount"
+                      value="<%= (product.product_price * (1 - (product.discount_on_product / 100))).toFixed(2) %>" />
+                    <input type="hidden" name="discount_on_product" value="<%= product.discount_on_product %>" />
+                    <input type="hidden" name="actual_mrp_price" value="<%= product.product_price %>" />
+                    <input type="hidden" name="category" value="<%= product.category_name %>" />
+                    <input type="hidden" name="sub_category" value="<%= product.sub_category_name %>" />
                     <div class="product--button-wrapper">
 
                       <div class="cart-quantity-wrapper">
@@ -328,13 +293,9 @@
                           <span class="increment"><i class="fa-solid fa-plus"></i></span>
                         </div>
                       </div>
-                      
-                      <button
-                        type="button"
-                        class="cart-btn add-to-cart"
-                        data-action="addToCart"
-                        data-url="/add-to-cart"
-                      >
+
+                      <button type="button" class="cart-btn add-to-cart" data-action="addToCart"
+                        data-url="/add-to-cart">
                         <span><i class="fa-solid fa-cart-shopping"></i></span>
                         Add to Cart
                       </button>
@@ -406,17 +367,10 @@
                 <div class="alfa-title" style="text-align: left">
                   <h3>You may also like</h3>
                 </div>
-                <div
-                  id="maylike-carousel"
-                  class="bestseller-wrapper owl-carousel comman-nav"
-                >
+                <div id="maylike-carousel" class="bestseller-wrapper owl-carousel comman-nav">
                   <div class="product-item">
                     <div class="produt-wrap">
-                      <img
-                        src="assets/images/alfa_products/shirt2.png"
-                        class="pro-img"
-                        alt=""
-                      />
+                      <img src="assets/images/alfa_products/shirt2.png" class="pro-img" alt="" />
                     </div>
                     <div class="product-details">
                       <div class="product-nameprice">
@@ -427,36 +381,11 @@
                         <div class="product-rating">
                           <ul>
                             <li>
-                              <a href=""
-                                ><img
-                                  src="assets/images/star.png"
-                                  class="star-icon"
-                                  alt=""
-                              /></a>
-                              <a href=""
-                                ><img
-                                  src="assets/images/star.png"
-                                  class="star-icon"
-                                  alt=""
-                              /></a>
-                              <a href=""
-                                ><img
-                                  src="assets/images/star.png"
-                                  class="star-icon"
-                                  alt=""
-                              /></a>
-                              <a href=""
-                                ><img
-                                  src="assets/images/star.png"
-                                  class="star-icon"
-                                  alt=""
-                              /></a>
-                              <a href=""
-                                ><img
-                                  src="assets/images/star.png"
-                                  class="star-icon"
-                                  alt=""
-                              /></a>
+                              <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
+                              <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
+                              <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
+                              <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
+                              <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
                             </li>
                           </ul>
                         </div>
@@ -470,11 +399,7 @@
                   </div>
                   <div class="product-item">
                     <div class="produt-wrap">
-                      <img
-                        src="assets/images/alfa_products/shirt2.png"
-                        class="pro-img"
-                        alt=""
-                      />
+                      <img src="assets/images/alfa_products/shirt2.png" class="pro-img" alt="" />
                     </div>
                     <div class="product-details">
                       <div class="product-nameprice">
@@ -485,36 +410,11 @@
                         <div class="product-rating">
                           <ul>
                             <li>
-                              <a href=""
-                                ><img
-                                  src="assets/images/star.png"
-                                  class="star-icon"
-                                  alt=""
-                              /></a>
-                              <a href=""
-                                ><img
-                                  src="assets/images/star.png"
-                                  class="star-icon"
-                                  alt=""
-                              /></a>
-                              <a href=""
-                                ><img
-                                  src="assets/images/star.png"
-                                  class="star-icon"
-                                  alt=""
-                              /></a>
-                              <a href=""
-                                ><img
-                                  src="assets/images/star.png"
-                                  class="star-icon"
-                                  alt=""
-                              /></a>
-                              <a href=""
-                                ><img
-                                  src="assets/images/star.png"
-                                  class="star-icon"
-                                  alt=""
-                              /></a>
+                              <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
+                              <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
+                              <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
+                              <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
+                              <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
                             </li>
                           </ul>
                         </div>
@@ -576,5 +476,67 @@
         });
       });
     </script>
-  </body>
+
+    <script>
+      $(document).ready(function () {
+        var $carousel = $('#product-detail-carousel');
+        var selectedItem = null;
+
+        // Initialize Owl Carousel
+        $carousel.owlCarousel({
+          items: 1,
+          nav: true,
+          dots: true,
+          loop: true
+        });
+
+        $('.image-item').on('click', function () {
+          var index = $(this).data('index');
+
+          if (selectedItem) {
+            selectedItem.find('img').removeClass('selected');
+          }
+
+          // Add the 'selected' class to the clicked image
+          $(this).find('img').addClass('selected');
+          selectedItem = $(this);
+
+          // Trigger the Owl Carousel to move to the selected item
+          $carousel.trigger('to.owl.carousel', [index, 300]);
+
+          // Change the zoom image source in the carousel
+          var zoomImage = $(this).find('img').attr('src');
+          var $currentCarouselImage = $carousel.find('.owl-item').eq(index).find('.pd-img');
+          $currentCarouselImage.attr('data-zoom-image', zoomImage).elevateZoom({
+            zoomType: "lens",
+            lensShape: "round",
+            lensSize: 500,
+            zIndex: 9999
+          });
+        });
+
+        // Initialize zoom for the first image in the carousel
+        $carousel.find('.pd-img').first().elevateZoom({
+          zoomType: "lens",
+          lensShape: "round",
+          lensSize: 500,
+          zIndex: 9999
+        });
+
+        $carousel.on('changed.owl.carousel', function (event) {
+          var current = $carousel.find('.owl-item').eq(event.item.index).find('.pd-img');
+          var zoomImage = current.attr('data-zoom-image');
+          $('.zoomContainer').remove();
+          current.elevateZoom({
+            zoomType: "lens",
+            lensShape: "round",
+            lensSize: 500,
+            zIndex: 9999
+          });
+        });
+      });
+
+    </script>
+</body>
+
 </html>

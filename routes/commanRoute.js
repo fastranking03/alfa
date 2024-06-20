@@ -501,7 +501,7 @@ router.get("/cart", async (req, res) => {
 
     if (!user || !user.id) {
       // Guest user scenario
-      const cartItems = req.session.cart || [];
+      const cartItems = req.session.cart || []; 
 
       const promises = cartItems.map((cartItem) =>
         connect
@@ -562,8 +562,7 @@ router.get("/cart", async (req, res) => {
       const subtotal = totalPrice - totalDiscount;
       const GST = subtotal * 0.2;
       const deliveryFee = 25;
-      const totalCost = totalPrice + GST + deliveryFee - totalDiscount;
-
+      const totalCost = totalPrice + GST + deliveryFee - totalDiscount; 
       res.render("my-cart", {
         user,
         cartItems: cartItemsWithSizes,
@@ -688,103 +687,7 @@ router.get("/cart", async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
-
-// router.post("/update-quantity", async (req, res) => {
-//   const { productId, quantity } = req.body;
-//   const userId = req.session.user.id;
-
-//   try {
-
-//     // Update quantity in the database
-//     const updateQuery = `
-//           UPDATE users_cart
-//           SET quantity = ?
-//           WHERE user_id = ? AND product_id = ?
-//       `;
-//     await connect.query(updateQuery, [quantity, userId, productId]);
-
-//     //  *******************************************
-//     const [cartResultAll] = await connect.query(
-//       `SELECT c.*, p.*, p.wear_type_bottom_or_top
-//     FROM users_cart c
-//     INNER JOIN products p ON c.product_id = p.id
-//     WHERE c.user_id = ?`,
-//       [userId]
-//     );
-
-//     const cartItemPromises = cartResultAll.map(async (cartItem) => {
-//       let sizes = {};
-//       if (cartItem.wear_type_bottom_or_top === "top") {
-//         const [sizeRows] = await connect.query(
-//           `SELECT xs, s, m, l, xl, xxl, xxxl, xxxxl
-//          FROM topwear_inventory_with_sizes
-//          WHERE product_id = ?`,
-//           [cartItem.product_id]
-//         );
-//         sizes = sizeRows[0];
-//       } else if (cartItem.wear_type_bottom_or_top === "bottom") {
-//         const [sizeRows] = await connect.query(
-//           `SELECT size_28, size_30, size_32, size_34, size_36, size_38, size_40, size_42, size_44, size_46
-//          FROM bottom_wear_inventory_with_sizes
-//          WHERE product_id = ?`,
-//           [cartItem.product_id]
-//         );
-//         sizes = sizeRows[0];
-//       }
-//       return {
-//         ...cartItem,
-//         sizes: sizes,
-//       };
-//     });
-
-//     const cartItems = await Promise.all(cartItemPromises);
-
-//     // Calculate totals for items in stock
-//     let totalPrice = 0;
-//     let totalDiscount = 0;
-//     let inStockItemCount = 0;
-
-//     cartItems.forEach((item) => {
-//       const price = parseFloat(item.product_price);
-//       const discount = parseFloat(item.discount_on_product) || 0;
-//       const quantity = parseInt(item.quantity);
-//       // Check stock availability
-//       const stock = item.sizes;
-//       if (stock) {
-//         // Ensure the stock is available
-//         totalPrice += price * quantity;
-//         // totalDiscount += (price * discount) / 100;
-//         totalDiscount += ((price * discount) / 100) * quantity;
-//         inStockItemCount++;
-//       }
-//     });
-
-//     const subtotal = totalPrice - totalDiscount;
-//     const GST = subtotal * 0.2;
-//     const deliveryFee = 25;
-//     const totalCost = totalPrice + GST + deliveryFee - totalDiscount;
-
-//     // *******************************************
-//     console.log(
-//       `Quantity updated successfully for product ${productId} to ${quantity}`
-//     );
-
-//     // Send response with updated totals
-//     res.status(200).json({
-//       message: "Quantity updated successfully",
-//       totalPrice: totalPrice,
-//       totalDiscount: totalDiscount,
-//       subtotal,
-//       GST: GST,
-//       deliveryFee: deliveryFee,
-//       totalCost: totalCost,
-//     });
-//   } catch (error) {
-//     console.error("Error updating quantity:", error);
-//     res.status(500).json({ error: "Failed to update quantity" });
-//   }
-// });
-
+ 
 router.post("/update-quantity", async (req, res) => {
   const { productId, quantity } = req.body;
 
@@ -953,11 +856,15 @@ router.post("/update-quantity", async (req, res) => {
 
 router.post("/update-product-size", async (req, res) => {
   try {
-    const { productId, newSize, oldSize } = req.body;
-    const user = req.session.user;
+    const { productId,cartId, newSize, oldSize } = req.body;
 
-    // console.log(newSize);
-    // console.log(oldSize);
+    console.log("productId:", productId);
+    console.log("cartId:", cartId);
+    console.log("newSize:", newSize);
+    console.log("oldSize:", oldSize);
+
+    const user = req.session.user;
+ 
 
     if (!user || !user.id) {
       // User is not logged in, update size in session cart
@@ -970,8 +877,8 @@ router.post("/update-product-size", async (req, res) => {
     } else {
       // User is logged in, update size in the database
       await connect.query(
-        "UPDATE users_cart SET selected_size = ? WHERE user_id = ? AND product_id = ?",
-        [newSize, user.id, productId]
+        "UPDATE users_cart SET selected_size = ? WHERE user_id = ? AND id = ?",
+        [newSize, user.id, cartId]
       );
     }
 
@@ -983,6 +890,9 @@ router.post("/update-product-size", async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
+
+
+
 
 //
 
@@ -1241,15 +1151,33 @@ router.post("/add-to-cart", async (req, res) => {
   const { product_id, selectedSize, product_quantity } = req.body;
   var selected_size = selectedSize;
   var quantity = product_quantity;
-  const cartItem = { product_id, selected_size, quantity };
+  const qty = parseInt(quantity);
+  const cartItem = { product_id, selected_size, quantity:qty };
 
   if (!user || !user.id) {
     // return res.status(401).send("User not authenticated");
 
-    req.session.cart = req.session.cart || [];
+    const cartItems = req.session.cart || [];
 
-    req.session.cart.push(cartItem);
+    const Itemincart = cartItems.find((item) => item.product_id === product_id);
+      if (Itemincart) {
+        Itemincart.selected_size = selectedSize;
+
+      }  else {
+      // Add new item to session cart if it doesn't exist
+      req.session.cart.push(cartItem);
+    }
+
+    req.session.cart = cartItems;
+
+    console.log(cartItem);
+
+    console.log("cartItem" , cartItem);
+    console.log("cartItems" , cartItems);
+
     req.session.cartCount = req.session.cart.length;
+
+    console.log("cartItem" , req.session.cartCount);
 
     res.redirect("/cart");
   } else {

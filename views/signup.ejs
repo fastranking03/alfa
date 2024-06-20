@@ -11,141 +11,184 @@
 <body>
   <div class="alfa-main-wraper">
     <%- include('includes/header') %>
-    <div class="mt-100">
-      <div class="user-container">
-        <div class="user-banner-wrapper">
-          <div class="t-banner">
-            <img src="assets/images/loginImg.png" alt="">
+      <div class="mt-100">
+        <div class="user-container">
+          <div class="user-banner-wrapper">
+            <div class="t-banner">
+              <img src="assets/images/loginImg.png" alt="">
+            </div>
           </div>
-        </div>
-        <div class="user-main-wrapper">
-          <div class="alfa-user-wrap">
+          <div class="user-main-wrapper">
+            <div class="alfa-user-wrap">
 
-            <div class="alfa-form-warpper">
-              <div class="alfa-user-title">
-                <h3>Create an Account</h3>
-                <p>Please complete the registration process to create an account</p>
-              </div>
-              <div class="user-login-option text-center">
-                <div class="option-text">
-                  <span>Continue with</span>
+              <div class="alfa-form-warpper">
+                <div class="alfa-user-title">
+                  <h3>Create an Account</h3>
+                  <p>Please complete the registration process to create an account</p>
                 </div>
-                
-                <div class="option-ul">
-                  <ul>
-                    <li>
-                      <a href=""><img src="assets/images/google.png" alt=""></a>
-                    </li>
-                    <li>
-                      <a href=""><img src="assets/images/fb.png" alt=""></a>
-                    </li>
-                    <li>
-                      <a href=""><img src="assets/images/apple.png" alt=""></a>
-                    </li>
-                  </ul>
-                </div>
-                <div class="user-else-option">
-                  <span>OR</span>
-                </div>
-              </div>
-              <div>
-                <div class="error-message" style="color: red;">
-                  <% if (typeof error !== 'undefined') { %>
-                  <p><%= error %></p>
-                  <% } %>
-                </div>
-                <div class="success-message" style="color: green;">
-                  <% if (typeof success !== 'undefined') { %>
-                  <p><%= success %></p>
-                  <% } %>
-                </div>
-              </div>
-              <div class="main-form">
-                <form action="/signup" method="post" id="loginForm">
-                  <div class="row">
-                    <div class="col-md-12">
-                      <div class="alfa-form-group">
-                        <label for="Email">Your Name</label>
-                        <input type="text" class="form-input" name="name" placeholder="Enter your Name" required>
-                      </div>
-                    </div>
-                    <div class="col-md-12">
-                      <div class="alfa-form-group">
-                        <label for="Email">Email ID</label>
-                        <input type="text" class="form-input" name="email" id="emailInput" placeholder="Enter your Email ID">
-                        <div id="emailError" style="color: red; display: none;">Please enter a valid email address.</div>
-                      </div>
-                    </div>
-                    <div class="col-md-12">
-                      <div class="alfa-form-group position-relative">
-                        <label for="Password">Password</label>
-                        <input type="password" class="form-input" name="password" id="passwordView" placeholder="Enter your Password">
-                        <span id="onEyeClick"><i id="eyeView" class="fa-regular fa-eye-slash"></i></span>
-                      </div>
-                    </div>
-                    <div class="col-md-12">
-                      <div class="user-button">
-                        <button class="user-btn" id="signUp">Register</button>
-                      </div>
-                    </div>
-                    <div class="col-md-12">
-                      <div class="user-about-account">
-                        <p>Don’t have an account <a href="/login">Login</a></p>
-                      </div>
-                    </div>
+                <div class="user-login-option text-center">
+                  <div class="option-text">
+                    <span>Continue with</span>
                   </div>
-                </form>
+
+                  <div class="option-ul">
+                    <ul>
+                      <li>
+                        <a href=""><img src="assets/images/google.png" alt=""></a>
+                      </li>
+                      <li>
+                        <a href=""><img src="assets/images/fb.png" alt=""></a>
+                      </li>
+                      <li>
+                        <a href=""><img src="assets/images/apple.png" alt=""></a>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="user-else-option">
+                    <span>OR</span>
+                  </div>
+                </div>
+                <div>
+                  <div class="error-message" style="color: red;">
+                    <% if (typeof error !=='undefined' ) { %>
+                      <p>
+                        <%= error %>
+                      </p>
+                      <% } %>
+                  </div>
+                  <div class="success-message" style="color: green;">
+                    <% if (typeof success !=='undefined' ) { %>
+                      <p>
+                        <%= success %>
+                      </p>
+                      <% } %>
+                  </div>
+                </div>
+                <div class="main-form">
+                  <form action="/signup" method="post" id="loginForm">
+                    <div class="row">
+                      <div class="col-md-12">
+                        <div class="alfa-form-group">
+                          <label for="Email">Your Name</label>
+                          <input type="text" class="form-input" name="name" placeholder="Enter your Name" required>
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                        <div class="alfa-form-group">
+                          <label for="Email">Email ID</label>
+                          <input type="text" class="form-input" name="email" id="emailInput"
+                            placeholder="Enter your Email ID">
+                          <div id="emailError" style="color: red; display: none;">Please enter a valid email address.
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                        <div class="alfa-form-group position-relative">
+                          <label for="Password">Password</label>
+                          <input type="password" class="form-input" name="password" id="passwordView"
+                            placeholder="Enter your Password">
+                          <span id="onEyeClick"><i id="eyeView" class="fa-regular fa-eye-slash"></i></span>
+                          <div class="passwordErr" style="position: absolute;color: red;"></div>
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                        <div class="user-button">
+                          <button class="user-btn" id="signUp">Register</button>
+                        </div>
+                      </div>
+                      <div class="col-md-12">
+                        <div class="user-about-account">
+                          <p>Don’t have an account <a href="/login">Login</a></p>
+                        </div>
+                      </div>
+                    </div>
+                  </form>
+                </div>
               </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
   </div>
   <script>
-    var onEyeClick = document.getElementById("onEyeClick");
-    var passwordView = document.getElementById("passwordView");
-    var eyeView = document.getElementById("eyeView");
+    document.addEventListener("DOMContentLoaded", function () {
 
-    onEyeClick.addEventListener('click', function() {
+      var onEyeClick = document.getElementById("onEyeClick");
+      var passwordView = document.getElementById("passwordView");
+      var eyeView = document.getElementById("eyeView");
+
+      onEyeClick.addEventListener('click', function () {
         if (passwordView.type == "text") {
-            passwordView.type = "password";
-            eyeView.classList.remove("fa-eye");
-            eyeView.classList.add("fa-eye-slash");
+          passwordView.type = "password";
+          eyeView.classList.remove("fa-eye");
+          eyeView.classList.add("fa-eye-slash");
         } else {
-            passwordView.type = "text";
-            eyeView.classList.remove("fa-eye-slash");
-            eyeView.classList.add("fa-eye");
+          passwordView.type = "text";
+          eyeView.classList.remove("fa-eye-slash");
+          eyeView.classList.add("fa-eye");
         }
-    });
-    
-     document.addEventListener("DOMContentLoaded", function () {
-            const emailInput = document.getElementById("emailInput");
-            const emailError = document.getElementById("emailError");
-            const loginForm = document.getElementById("loginForm");
+      });
 
-            emailInput.addEventListener("input", function () {
-                 const emailValue = emailInput.value;
-                if (validateEmail(emailValue)) {
-                    emailError.style.display = "none";
-                    document.getElementById("signUp").classList.add("user-btn-primary")
-                } else {
-                    emailError.style.display = "block";
-                    document.getElementById("signUp").classList.remove("user-btn-primary")
-                }
-            });
-            loginForm.addEventListener("submit", function (event) {
-                const emailValue = emailInput.value;
-                if (!validateEmail(emailValue)) {
-                    emailError.style.display = "block";
-                    event.preventDefault();
-                }
-            });
-            function validateEmail(email) {
-                const emailPattern = /^[A-Za-z0-9\._%+\-]+@[A-Za-z0-9\.\-]+\.[A-Za-z]{2,}$/;
-                return emailPattern.test(email);
-            }
-        });
+      const emailInput = document.getElementById("emailInput");
+      const emailError = document.getElementById("emailError");
+      const loginForm = document.getElementById("loginForm");
+
+      const passwordError = document.querySelector(".passwordErr");
+
+      emailInput.addEventListener("input", function () {
+        const emailValue = emailInput.value;
+
+        if (validateEmail(emailValue)) {
+          emailError.style.display = "none";
+          document.getElementById("login").classList.add("user-btn-primary")
+        } else {
+          emailError.style.display = "block";
+          document.getElementById("login").classList.remove("user-btn-primary")
+        }
+      });
+
+      passwordView.addEventListener("input", function () {
+        const passwordValue = passwordView.value;
+
+        if (validatePassword(passwordValue)) {
+          passwordError.style.display = "none";
+        } else {
+          passwordError.style.display = "block";
+          passwordError.textContent = "Password must be between 6 and 16 characters.";
+        }
+      });
+
+      loginForm.addEventListener("submit", function (event) {
+        const emailValue = emailInput.value;
+        const passwordValue = passwordInput.value;
+        let valid = true;
+
+        if (!validateEmail(emailValue)) {
+          emailError.style.display = "block";
+          valid = false;
+        }
+
+        if (!validatePassword(passwordValue)) {
+          passwordError.style.display = "block";
+          passwordError.textContent = "Password must be between 6 and 16 characters.";
+          valid = false;
+        }
+
+        if (!valid) {
+          event.preventDefault();
+        }
+      });
+
+      function validateEmail(email) {
+        const emailPattern = /^[A-Za-z0-9\._%+\-]+@[A-Za-z0-9\.\-]+\.[A-Za-z]{2,}$/;
+        return emailPattern.test(email);
+      }
+
+      function validatePassword(password) {
+        return password.length >= 6 && password.length <= 16;
+      }
+    });
+
   </script>
 </body>
 

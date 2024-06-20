@@ -1,9 +1,9 @@
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alfa Admin | Banner</title>
+    <title>Alfa Admin | Orders</title>
     <%- include('includes/head') %>
 </head>
 
@@ -13,163 +13,158 @@
             <div class="alfa-admin-wrapper">
                 <div class="admin-side-nav">
                     <%- include('includes/sidebar') %>
-                        <div class="admin-main-layout">
-                            <div class="admin-bradcrumb">
-                                <div class="admin-brudcrumb-title">
-                                    <h3>Order List</h3>
+                    <div class="admin-main-layout">
+                        <div class="admin-bradcrumb">
+                            <div class="admin-brudcrumb-title">
+                                <h3>Order List</h3>
+                            </div>
+                            <div class="adminRightWrapper">
+                                <div class="search-wrapper position-relative">
+                                    <span><i class="fa-solid fa-magnifying-glass"></i></span>
+                                    <input type="search" name="search" class="table-search" placeholder="Search" id="search">
                                 </div>
-                                <div class="adminRightWrapper">
-                                    <div class="search-wrapper position-relative">
-                                        <span><i class="fa-solid fa-magnifying-glass"></i></span>
-                                        <input type="search" name="search" class="table-search" placeholder="Search"
-                                            id="search">
+                                <div class="export-wrap">
+                                    <a href="#" class="admin-btn" id="export-btn">Export</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="product-list">
+                            <div class="table-list-head">
+                                <div class="alfa-data-search">
+                                    <div class="select-warpper">
+                                        <div class="table-selects">
+                                            <select name="" id="" class="table-select">
+                                                <option value="all">All</option>
+                                                <option value="">One</option>
+                                            </select>
+                                        </div>
                                     </div>
-                                    <div class="export-wrap">
-                                        <a href="" class="admin-btn">Export</a>
+                                </div>
+                                <div class="table-list-btn">
+                                    <div class="table-btn">
+                                        <a href="/admin/add-banner">Add Banner</a>
                                     </div>
                                 </div>
                             </div>
-                            <div class="product-list">
-                                <div class="table-list-head">
-                                    <div class="alfa-data-search">
-                                        <div class="select-warpper">
-                                            <div class="table-selects">
-                                                <select name="" id="" class="table-select">
-                                                    <option value="all">All</option>
-                                                    <option value="">One</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="table-list-btn">
-                                        <div class="table-btn">
-                                            <a href="/admin/add-banner">Add Banner</a>
-                                        </div>
-                                    </div>
+                            <div class="responsive-table">
+                                <table class="alfa-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Sr No</th>
+                                            <th>User Name</th>
+                                            <th>Order Id</th>
+                                            <th>Phone Number</th>
+                                            <th>Total Product</th>
+                                            <th>Price</th>
+                                            <th>Wishlist</th>
+                                            <th>Status</th>
+                                            <th>Action</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="order-tbody">
+                                        <tr>
+                                            <td>1</td>
+                                            <td>
+                                                <div class="user-detail-wrap">
+                                                    <div class="user-icon">
+                                                        <span>A</span>
+                                                    </div>
+                                                    <div class="user-name">
+                                                        <h6>Arif Khan</h6>
+                                                        <span>mason.co.uk</span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td><a href="order-details" class="order-id">ALFA658436</a></td>
+                                            <td>+44 202 265 2354</td>
+                                            <td>70</td>
+                                            <td>£68.00</td>
+                                            <td>5</td>
+                                            <td>
+                                                <div class="order-status-wrapper">
+                                                    <span class="order-status success">Completed</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="table-icons">
+                                                    <a href="" class="anchor-color"><span><i class="fa-regular fa-eye"></i></span></a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>2</td>
+                                            <td>
+                                                <div class="user-detail-wrap">
+                                                    <div class="user-icon">
+                                                        <span>A</span>
+                                                    </div>
+                                                    <div class="user-name">
+                                                        <h6>Arif Khan</h6>
+                                                        <span>mason.co.uk</span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td><a href="" class="order-id">ALFA658436</a></td>
+                                            <td>+44 202 265 2354</td>
+                                            <td>70</td>
+                                            <td>£68.00</td>
+                                            <td>5</td>
+                                            <td>
+                                                <div class="order-status-wrapper">
+                                                    <span class="order-status cancelled">Cancelled</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="table-icons">
+                                                    <a href="" class="anchor-color"><span><i class="fa-regular fa-eye"></i></span></a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>3</td>
+                                            <td>
+                                                <div class="user-detail-wrap">
+                                                    <div class="user-icon">
+                                                        <span>A</span>
+                                                    </div>
+                                                    <div class="user-name">
+                                                        <h6>Arif Khan</h6>
+                                                        <span>mason.co.uk</span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                            <td><a href="" class="order-id">ALFA658436</a></td>
+                                            <td>+44 202 265 2354</td>
+                                            <td>70</td>
+                                            <td>£68.00</td>
+                                            <td>5</td>
+                                            <td>
+                                                <div class="order-status-wrapper">
+                                                    <span class="order-status inprogress">In Progress</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="table-icons">
+                                                    <a href="" class="anchor-color"><span><i class="fa-regular fa-eye"></i></span></a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                            <div class="table-pagination-wrapper">
+                                <div class="table-pagination" id="pagination">
+                                    <a href="#" class="pagination-previous"><span><i class="fa-solid fa-angle-left"></i></span></a>
+                                    <a href="#" class="page-items active">1</a>
+                                    <a href="#" class="page-items">2</a>
+                                    <a href="#" class="pagination-next" style="color: #005D67;"><span><i class="fa-solid fa-angle-right"></i></span></a>
                                 </div>
-                                <div class="responsive-table">
-                                    <table class="alfa-table">
-                                        <thead>
-                                            <tr>
-                                                <th>Sr No</th>
-                                                <th>User Name</th>
-                                                <th>Order Id</th>
-                                                <th>Phone Number</th>
-                                                <th>Total Product</th>
-                                                <th>Price</th>
-                                                <th>Wishlist</th>
-                                                <th>Status</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>1</td>
-                                                <td>
-                                                    <div class="user-detail-wrap">
-                                                        <div class="user-icon">
-                                                            <span>A</span>
-                                                        </div>
-                                                        <div class="user-name">
-                                                            <h6>Arif Khan</h6>
-                                                            <span>mason.co.uk</span>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td><a href="order-details" class="order-id">ALFA658436</a></td>
-                                                <td>+44 202 265 2354</td>
-                                                <td>70</td>
-                                                <td>£68.00</td>
-                                                <td>5</td>
-                                                <td>
-                                                    <div class="order-status-wrapper">
-                                                        <span class="order-status success">Completed</span>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="table-icons">
-                                                        <a href="" class="anchor-color"><span><i
-                                                                    class="fa-regular fa-eye"></i></span></a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>2</td>
-                                                <td>
-                                                    <div class="user-detail-wrap">
-                                                        <div class="user-icon">
-                                                            <span>A</span>
-                                                        </div>
-                                                        <div class="user-name">
-                                                            <h6>Arif Khan</h6>
-                                                            <span>mason.co.uk</span>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td><a href="" class="order-id">ALFA658436</a></td>
-                                                <td>+44 202 265 2354</td>
-                                                <td>70</td>
-                                                <td>£68.00</td>
-                                                <td>5</td>
-                                                <td>
-                                                    <div class="order-status-wrapper">
-                                                        <span class="order-status cencelled">Cancelled</span>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="table-icons">
-                                                        <a href="" class="anchor-color"><span><i
-                                                                    class="fa-regular fa-eye"></i></span></a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td>3</td>
-                                                <td>
-                                                    <div class="user-detail-wrap">
-                                                        <div class="user-icon">
-                                                            <span>A</span>
-                                                        </div>
-                                                        <div class="user-name">
-                                                            <h6>Arif Khan</h6>
-                                                            <span>mason.co.uk</span>
-                                                        </div>
-                                                    </div>
-                                                </td>
-                                                <td><a href="" class="order-id">ALFA658436</a></td>
-                                                <td>+44 202 265 2354</td>
-                                                <td>70</td>
-                                                <td>£68.00</td>
-                                                <td>5</td>
-                                                <td>
-                                                    <div class="order-status-wrapper">
-                                                        <span class="order-status inprogress">In Progress</span>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <div class="table-icons">
-                                                        <a href="" class="anchor-color"><span><i
-                                                                    class="fa-regular fa-eye"></i></span></a>
-                                                    </div>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                                <div class="table-pagination-wrapper">
-                                    <div class="table-pagination">
-                                        <a href="#"><span><i class="fa-solid fa-angle-left"></i></span></a>
-                                        <a href="#" class="active page-items">1</a>
-                                        <a href="#" class="page-items">2</a>
-                                        <a href="#" style="color: #005D67;"><span><i
-                                                    class="fa-solid fa-angle-right"></i></span></a>
-                                    </div>
-                                </div>
-                             </div>
-                        </div>
+                            </div>
+                         </div>
+                    </div>
                 </div>
             </div>
     </div>
+    <%- include('includes/foot') %>
 </body>
-
 </html>

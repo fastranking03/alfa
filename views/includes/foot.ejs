@@ -173,13 +173,11 @@
         }
       }
     });
+   });
 
-    $('.image-item').on('click', function () {
-      var index = $(this).data('index');
-      $carousel.trigger('to.owl.carousel', [index, 300]);
-    });
-  });
 
+
+  
   const accordionItemHeaders = document.querySelectorAll(".accordion-item-header");
   accordionItemHeaders.forEach(accordionItemHeader => {
     accordionItemHeader.addEventListener("click", event => {

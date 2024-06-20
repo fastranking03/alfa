@@ -523,6 +523,9 @@
 
     .image-item .d-img {
         width: 55px;
+        height: 70px;
+        object-fit: cover;
+        object-position: top;
     }
 
     .address-wrapper {
@@ -698,7 +701,9 @@
         justify-content: space-around;
      }
     .pro-cart-price {
-        text-align: center;
+        display: flex;
+        justify-content: space-around;
+        align-items: center;
     }
     .product-cat-type .product-cat-list{
         flex-direction: row;
@@ -816,6 +821,71 @@
     .addres-row .ad-md-9 {
         width: 70%;
     }
+    .alfa-checkout-address .shiping-title {
+        margin: 0 0 0px;
+    }
+    .alfa-checkout-address .shiping-title h5 {
+       font-size: 17px;
+    }
+    .alfa-defaul-wrapper h6 {
+         font-size: 14px;
+    }
+    .alfa-defaul-wrapper {
+        height: 35px;
+    }
+    .address-content {
+        padding: 1px 15px 8px;
+    }
+    .shipper-name, .shipper-email {
+        margin: 6px 0 2px;
+    }
+    .shipper-name {
+         font-size: 15px;
+    }
+    .add-action-btn {
+        font-size: 12px;
+    }
+    .radio-input:checked + label:before, .radio-input:not(:checked) + label:before {
+        width: 16px;
+        height: 16px;
+    }
+    .radio-input:checked + label:after, .radio-input:not(:checked) + label:after {
+        width: 8px;
+        height: 8px;
+        top: 4px;
+        left: 4px;
+    }
+    .radio-input:checked + label, .radio-input:not(:checked) + label{
+        line-height: 16px;
+    }
+    .shipper-email p ,.shipper-address{
+         font-size: 14px;
+    }
+    .checkout-cont h4 {
+        font-size: 18px;
+    }
+    .checkout-rest-cont p{
+        font-size: 14px;
+    }
+    .move-to-wishlist{
+        position:static;
+    }
+    .card-s {
+        width: 28px !important;
+        font-size: 12px !important;
+     }
+     .size-list{
+        gap: 0px !important;
+        column-gap: 5px !important;
+        row-gap: 0 !important;
+     }
+     .product-detail-reverse{
+        flex-direction: column-reverse;
+        margin-bottom: 15px;
+     }
+     .price-review-warapper{
+        margin: 17px auto 0px;
+     }
 }
 
 @media screen and (max-width:376px) {

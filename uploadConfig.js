@@ -11,6 +11,10 @@ const storage = multer.diskStorage({
     } else if (req.originalUrl.includes("/new-category-submit")) {
       folder = "./category_images/";
     }
+    else if(req.originalUrl.includes("/add-blog")){
+      folder = "./blog_images/";
+    }
+
     cb(null, folder); // Folder to save images
   },
   
