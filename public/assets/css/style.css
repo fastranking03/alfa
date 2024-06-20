@@ -892,8 +892,14 @@ a {
   transition: .3s ease-in-out;
   position: relative;
   cursor: pointer;
-  width: 210px;
-  margin: 0 10px 30px;
+  /* width: 210px; */
+  width: 100%; 
+}
+.product-grid-start {
+   justify-content: start !important;
+}
+.product-grid-space-between {
+   justify-content: space-between !important;
 }
 .product-item:hover{
   box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
@@ -967,9 +973,9 @@ a {
 
 .produt-wrap .pro-img {
     width: 100%;
-    height: 280px;
+    height:280px;
     object-fit: cover;
-    object-position: top;
+    /* object-position: top; */
 }
 
 .product-details h6 {
@@ -1153,7 +1159,7 @@ a {
     padding: 0px 10px;
     height: 37px;
     width: 124px;
-    font-size: 15px;
+    font-size: 14px;
     font-weight: 500;
     display: flex;
     color: #000;
@@ -1183,7 +1189,9 @@ a {
 .product-search {
   position: relative;
 }
-
+.product-h4{
+  font-size: 20px;
+}
 .product-search .p-s-icon {
   position: absolute;
   top: 6px;
@@ -1191,11 +1199,13 @@ a {
 }
 
 .product-grid {
-  display: flex;
-  justify-content: space-between;
+  /* display: flex;
+  justify-content: space-between; */
+  display: grid;
+  grid-template-columns: auto auto auto auto auto;
   flex-wrap: wrap;
   align-content: stretch;
-  gap: 20px;
+  gap: 50px;
   width: 100%;
   -webkit-box-pack: justify;
   -webkit-box-orient: horizontal;
@@ -1325,7 +1335,7 @@ a {
 }
 
 .product-size-list ul .size-item {
-  padding: 3px 2px;
+  padding: 4px 2px;
   width: 35px;
   align-items: center;
   text-align: center;
@@ -1333,6 +1343,7 @@ a {
   border: 1px solid var(--primaryColor);
   color: #000;
   cursor: pointer;
+  font-size: 14px
 }
 
 .size-item.active {
@@ -2633,4 +2644,7 @@ font-size: 14px;
   }
   .fn-price{
     font-size: 22px;
+  }
+  .product-item-2{
+    width: 210px;
   }

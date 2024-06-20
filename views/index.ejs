@@ -145,7 +145,7 @@
               </div>
               <div class="arrival-wrapper">
                 <% lastProducts.forEach(product => { %>
-                  <div class="product-item" data-color="<%= product.color %>">
+                  <div class="product-item product-item-2" data-color="<%= product.color %>">
                     <div class="produt-wrap">
                       <a href="/product-detail/<%= product.id %>">
                         <img src="../product_images/<%= product.product_main_image %>" class="pro-img" alt="">
@@ -198,7 +198,7 @@
               </div>
               <div id="bestseller-carousel" class="bestseller-wrapper owl-carousel comman-nav">
                 <% bestSellers.forEach(product => { %>
-                  <div class="product-item">
+                  <div class="product-item product-item-2">
                     <div class="produt-wrap">
                       <img src="../product_images/<%= product.product_main_image %>" class="pro-img" alt="">
                      
