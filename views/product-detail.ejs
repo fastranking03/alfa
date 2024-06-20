@@ -338,7 +338,14 @@
                         <span><i class="fa-solid fa-cart-shopping"></i></span>
                         Add to Cart
                       </button>
-                      <button
+
+                     
+ 
+                        <% if (isInFavorites) { %>
+                          <!-- If product is already in favorites -->
+                          <button disabled>Already in Wishlist</button>
+                        <% } else { %>
+                          <button
                         type="button"
                         class="cart-btn buy-now"
                         data-action="buyNow" 
@@ -346,7 +353,10 @@
                       >
                         Add to Wishlist
                       </button>
+                        <% } %>
+                    
                       
+
                     </div>
                   </form>
                 </div>
@@ -527,44 +537,7 @@
       <!-- End -->
     </div>
     <%- include('includes/foot') %> 
-    <script>
-      $(document).ready(function () {
-        const maxQuantity = 10;
-    
-        // Handle increment button click
-        $('.increment').on('click', function () {
-          var $input = $(this).closest('.cart-quantity-wrapper').find('.cart-value');
-          var currentValue = parseInt($input.val());
-          if (!isNaN(currentValue) && currentValue < maxQuantity) {
-            $input.val(currentValue + 1);
-          } else {
-            $input.val(maxQuantity);
-          }
-        });
-    
-        // Handle decrement button click
-        $('.decrement').on('click', function () {
-          var $input = $(this).closest('.cart-quantity-wrapper').find('.cart-value');
-          var currentValue = parseInt($input.val());
-          if (!isNaN(currentValue) && currentValue > 1) {
-            $input.val(currentValue - 1);
-          } else {
-            $input.val(1);
-          }
-        });
-    
-        // Handle direct input change
-        $('.cart-value').on('change', function () {
-          var currentValue = parseInt($(this).val());
-          if (isNaN(currentValue) || currentValue < 1) {
-            $(this).val(1);
-          } else if (currentValue > maxQuantity) {
-            $(this).val(maxQuantity);
-          }
-        });
-      });
-    </script>
-
+     
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         const productForm = document.getElementById("productForm");

@@ -55,9 +55,7 @@ app.use(async (req, res, next) => {
       req.session.cartCount = req.session.cart.length;
       req.session.wishlistCount = req.session.wishlist.length;
     }
-
-    
-
+ 
     res.locals.cartCount = req.session.cartCount || 0;
     res.locals.wishlistCount = req.session.wishlistCount || 0;
     res.locals.session = req.session;
@@ -97,6 +95,7 @@ app.use("/", productsRoute);
 app.use("/", favoritesRoute);
 app.use("/", cartRoute);
 app.use("/", placeOrderRoute);
+
 app.use("/category/", CategoryRoutes);
 
 app.use("/admin/", adminRoute);

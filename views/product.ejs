@@ -715,15 +715,13 @@
 
       <!-- End -->
       <script>
-        // Add event listener to the "Add to Favorites" button
         document.addEventListener("DOMContentLoaded", function () {
-          const addToFavoritesButtons =
-            document.querySelectorAll(".add-to-favorites");
-
+          const addToFavoritesButtons = document.querySelectorAll(".add-to-favorites");
+      
           addToFavoritesButtons.forEach((button) => {
             button.addEventListener("click", function () {
               const productId = button.getAttribute("data-product-id");
-
+      
               // Send AJAX request to the server
               fetch(`/favorites/add/${productId}`, {
                 method: "GET",
@@ -742,34 +740,31 @@
                   if (data.success) {
                     // Show popup alert
                     alert(data.message);
-
+      
                     // Update wishlist count in the span
                     const wishlistLi = document.querySelector("#wishlist");
                     if (wishlistLi) {
-                      const countTextSpan =
-                        wishlistLi.querySelector(".count-text");
+                      const countTextSpan = wishlistLi.querySelector(".count-text");
                       if (countTextSpan) {
                         countTextSpan.textContent = data.favoritesCount;
                       }
                     }
-                  } else {
-                    alert(data.message);
+                  } else { 
+                    if (data.message === "Login First") {
+                      window.location.href = "/login"; // Redirect to login page if not logged in
+                    }
                   }
                 })
                 .catch((error) => {
-                  console.error(
-                    "There was a problem with the fetch operation:",
-                    error
-                  );
+                  console.error("There was a problem with the fetch operation:", error);
                   // Handle error
-                  alert(
-                    "An error occurred while adding the product to favorites"
-                  );
+                  alert("An error occurred while adding the product to favorites");
                 });
             });
           });
         });
       </script>
+      
 
       <script>
         document.addEventListener("DOMContentLoaded", () => {
