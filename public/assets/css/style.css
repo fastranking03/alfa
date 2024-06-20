@@ -1606,7 +1606,7 @@ a {
    margin: 0 auto 15px;
  }
  .alfa-pro-detail-wrapper .d-item img{
-  height: 650px;
+  height: 600px;
   object-fit: contain;
  }
  .alfa-pro-detail-wrapper .d-item .pd-img{
@@ -2657,6 +2657,9 @@ font-size: 14px;
   }
   .product-item-2{
     width: 210px;
+  }
+  .discount-text.prod-dd{
+    font-size: 16px !important;
   }
   .size-selection{
     color: #000000;
