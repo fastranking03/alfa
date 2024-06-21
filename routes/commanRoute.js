@@ -758,7 +758,7 @@ router.get("/cart", async (req, res) => {
 });
 
 router.post("/update-quantity", async (req, res) => {
-  const { productId, quantity } = req.body;
+  const { productId, quantity , cartId  } = req.body;
 
   try {
     if (req.session.user && req.session.user.id) {
@@ -767,9 +767,9 @@ router.post("/update-quantity", async (req, res) => {
       const updateQuery = `
         UPDATE users_cart
         SET quantity = ?
-        WHERE user_id = ? AND product_id = ?
+        WHERE user_id = ? AND product_id = ? AND id = ?
       `;
-      await connect.query(updateQuery, [quantity, userId, productId]);
+      await connect.query(updateQuery, [quantity, userId, productId , cartId]);
 
       const [cartResultAll] = await connect.query(
         `SELECT c.*, c.id AS cart_id,  p.*, p.wear_type_bottom_or_top

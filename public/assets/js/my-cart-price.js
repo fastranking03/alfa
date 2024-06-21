@@ -5,7 +5,8 @@ $(document).ready(function () {
   $(".increment").on("click", function () {
     var $input = $(this).closest(".cart-quantity-wrapper").find(".cart-value");
     var currentValue = parseInt($input.val());
-    var productId = $input.data("product-id"); // Retrieve product ID
+    var productId = $input.data("product-id"); // Retrieve product ID 
+
     var $quantityDisplay = $("#quantity-display-" + productId);
 
     if (!isNaN(currentValue) && currentValue < maxQuantity) {
@@ -24,7 +25,7 @@ $(document).ready(function () {
   $(".decrement").on("click", function () {
     var $input = $(this).closest(".cart-quantity-wrapper").find(".cart-value");
     var currentValue = parseInt($input.val());
-    var productId = $input.data("product-id"); // Retrieve product ID
+    var productId = $input.data("product-id"); // Retrieve product ID 
     var $quantityDisplay = $("#quantity-display-" + productId);
 
     if (!isNaN(currentValue) && currentValue > 1) {
@@ -42,7 +43,7 @@ $(document).ready(function () {
   $(".cart-value").on("change", function () {
     var $input = $(this);
     var currentValue = parseInt($input.val());
-    var productId = $input.data("product-id"); // Retrieve product ID
+    var productId = $input.data("product-id"); // Retrieve product ID 
     var $quantityDisplay = $("#quantity-display-" + productId);
     if (isNaN(currentValue) || currentValue < 1) {
       $input.val(1);
@@ -59,14 +60,18 @@ $(document).ready(function () {
   // Function to update quantity via AJAX
   function updateQuantity($input) {
     var productId = $input.attr("data-product-id");
+    var cartId = $input.attr("data-cart-id");
     var newQuantity = parseInt($input.val());
+
+    console.log(productId);
+    console.log(cartId);
 
     // AJAX request to update quantity on server
     $.ajax({
       url: "/update-quantity",
       method: "POST",
       contentType: "application/json",
-      data: JSON.stringify({ productId: productId, quantity: newQuantity }),
+      data: JSON.stringify({ productId: productId, quantity: newQuantity , cartId: cartId }),
       success: function (response) {
         console.log("Quantity updated successfully:", response);
         // Optionally update UI or perform other actions on success
