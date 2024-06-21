@@ -523,3 +523,18 @@
    width: 16px;
    height: 16px;
  }
+ .commanCircle{
+    width: 8px;
+    height: 8px;
+    display: inline-block;
+    border-radius: 50%;
+ }
+ .commanCircle.outstock{
+   background: red;
+ }
+ .commanCircle.instock{
+   background: green;
+ }
+ .commanCircle.limitedstock{
+   background: #9D9D9D;
+ }
