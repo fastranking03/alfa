@@ -325,6 +325,30 @@
       <!-- End -->
     </div>
     <%- include('includes/foot') %>
-   
+    
+    <script>
+      document.querySelector('.checkout-btn').addEventListener('click', function(event) {
+        // Get all cart items
+        const cartItems = document.querySelectorAll('.cart-td');
+    
+        for (const item of cartItems) {
+          // Get the product and cart IDs
+          const productId = item.querySelector('input[name="product_quantity"]').getAttribute('data-product-id');
+          const cartId = item.querySelector('input[name="product_quantity"]').getAttribute('data-cart-id');
+    
+          // Check if a size is selected for this product
+          const selectedSize = document.querySelector(`input[name="selectedSize-${cartId}-${productId}"]:checked`);
+          if (!selectedSize) {
+            // Alert the user if no size is selected for this product
+            alert(`Please select a size for product ID ${productId}`);
+            return;
+          }
+        }
+    
+        // If all items have a selected size, proceed to checkout
+        window.location.href = '/checkout';
+      });
+    </script>
+    
   </body>
 </html>
