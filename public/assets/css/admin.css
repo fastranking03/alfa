@@ -538,3 +538,47 @@
  .commanCircle.limitedstock{
    background: #9D9D9D;
  }
+ .customer-card-grid{
+    box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+    background: var(--whiteColor);
+    border-radius: 10px;
+    margin: 0 0 20px;
+ }
+ .customer-grid{
+    display: flex;
+    justify-content: space-between;
+    padding: 22px 30px;
+ }
+ .customer-grid .customer-item{
+   display: flex;
+   gap: 10px;
+ }
+ .customer-icon span{
+   width: 40px;
+    background: #E9EAE0;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+ }
+ .customer-detail .customer-label{
+   color: #929292;
+    font-weight: 400;
+    margin: 0;
+}
+.customer-detail h5{
+   margin: 0;
+   font-size: 17px;
+}
+.customer-grid.newsletter-wrapper{
+   padding: 15px 30px 0;
+}
+.customer-newsletter h4{
+   margin: 0;
+}
+.product-listss {
+   box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+   background: var(--whiteColor);
+   border-radius: 10px;
+ }
