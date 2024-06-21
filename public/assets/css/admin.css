@@ -517,5 +517,9 @@
  .admin-product{
     display: flex;
     align-items: baseline;
-    gap: 11px;
+    gap: 15px;
+ }
+ .product-checkbox input{
+   width: 16px;
+   height: 16px;
  }
