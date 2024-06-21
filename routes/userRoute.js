@@ -106,8 +106,10 @@ router.post("/account-verification", async (req, res) => {
       "UPDATE user_registration SET verified = 1 WHERE email = ?";
     await connect.query(updateVerifiedQuery, [email]);
 
+    // Store user data in session
+    req.session.user = user[0];
     // Redirect to login page after successful verification
-    res.redirect("/login");
+    res.redirect("/");
   } catch (error) {
     console.error("Error verifying OTP:", error);
     res
@@ -129,11 +131,31 @@ router.post("/login", async (req, res) => {
       return res.render("login", { error: "Email is not registered." });
     }
 
+    
     // Check if user is verified
     if (user[0].verified !== 1) {
-      return res.render("login", {
-        error: "Account not verified. Please verify your account to login.",
+       // Generate OTP
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    
+      // Nodemailer configuration
+      const transporter = nodemailer.createTransport({
+        host: "smtp.gmail.com", // SMTP server address for Gmail
+        port: 587,
+        auth: {
+          user: "jaydenmitchell0282@gmail.com",
+          pass: "rtcslwgbcgxkoibh",
+        },
       });
+
+      // Send email with OTP
+      await transporter.sendMail({
+        from: "fastranking08@gmail.com",
+        to: email,
+        subject: "Password Reset OTP",
+        text: `Your OTP for password reset is ${otp}`,
+      });
+
+      res.render("verify-otp", { email }); // Render OTP verification page
     }
 
     // Verify password
@@ -144,7 +166,6 @@ router.post("/login", async (req, res) => {
 
     // Store user data in session
     req.session.user = user[0];
-
 
     // Check if the user has items in the session cart
     if (req.session.cart && req.session.cart.length > 0) {
@@ -191,15 +212,15 @@ router.post("/login", async (req, res) => {
       req.session.cart = [];
     }
 
-    const redirectTo = req.session.redirectTo ;
+    const redirectTo = req.session.redirectTo;
     // console.log(redirectTo); // Default to homepage if no redirect path is stored
-    // console.log(req.session.redirectTo);  
+    // console.log(req.session.redirectTo);
     // Clear the stored redirect path from session storage
     delete req.session.redirectTo;
-    if (redirectTo==="/cart") {
+    if (redirectTo === "/cart") {
       return res.redirect(redirectTo);
     }
-    
+
     const productIdToAdd = req.session.productToWishlist;
     if (productIdToAdd) {
       // Clear product ID from session
@@ -208,9 +229,8 @@ router.post("/login", async (req, res) => {
 
       console.log("User:", user[0].id);
       console.log("Product ID to Add:", productIdToAdd);
- 
 
-        const checkIfExistsQuery = `
+      const checkIfExistsQuery = `
           SELECT *
           FROM users_favorites
           WHERE user_id = ? AND product_id = ?
