@@ -301,56 +301,35 @@
                         </div>
                         <div class="pro-btn-flex">
                           <button type="button" class="cart-btn add-to-cart" data-action="addToCart"
-                            data-url="/add-to-cart">
-                            <span><i class="fa-solid fa-cart-shopping"></i></span>
-                            Add to Cart
-                          </button>
+                          data-url="/add-to-cart">
+                          <span><i class="fa-solid fa-cart-shopping"></i></span>
+                          Add to Cart
+                        </button>
+   
                            <% if (isInFavorites) { %>
                             <!-- If product is already in favorites -->
-                            <button disabled>Already in Wishlist</button>
+                            <button type="button"
+                            class="cart-btn buy-now"
+                            data-action="buyNow" 
+                            data-url="/delete-from-wishlist" style="background-color: #e73535;"
+                            >Already in Wishlist</button>
                           <% } else { %>
-                            <button  type="button" class="cart-btn buy-now" data-action="buyNow"   data-url="/add-to-wishlist" >
-                              <span><i class="fa-regular fa-heart"></i></span> Add to Wishlist
-                         </button>
-                          <% } %>
-                        </div>
-<<<<<<< HEAD
-                       </div>
- 
-                     </div>
-=======
-                        <div class="right-input">
-                          <span class="increment"><i class="fa-solid fa-plus"></i></span>
-                        </div>
-                      </div>
-
-                      <button type="button" class="cart-btn add-to-cart" data-action="addToCart"
-                        data-url="/add-to-cart">
-                        <span><i class="fa-solid fa-cart-shopping"></i></span>
-                        Add to Cart
-                      </button>
- 
- 
-                        <% if (isInFavorites) { %>
-                          <!-- If product is already in favorites -->
-                          <button type="button"
+                            <button
+                          type="button"
                           class="cart-btn buy-now"
                           data-action="buyNow" 
-                          data-url="/delete-from-wishlist" style="background-color: #e73535;"
-                          >Already in Wishlist</button>
-                        <% } else { %>
-                          <button
-                        type="button"
-                        class="cart-btn buy-now"
-                        data-action="buyNow" 
-                        data-url="/add-to-wishlist"
-                      >
-                        Add to Wishlist
-                      </button>
-                        <% } %>
+                          data-url="/add-to-wishlist"
+                        >
+                          Add to Wishlist
+                        </button>
+                          <% } %>
+                        </div>
+                        
+                      </div>
+
+                    
                          
                     </div>
->>>>>>> ede5cc0a089f691530a562178f519842a8ee2337
                   </form>
                 </div>
               </div>

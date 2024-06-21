@@ -33,7 +33,7 @@
             <div class="table-list-head">
               <div class="product-status-grid">
                  <a href="" class="status-btn p-active">Active</a>
-                 <a href="" class="status-btn">Inactive</a>
+                 <a href="" class="status-btn">Draft</a>
               </div>
               <div class="table-list-btn">
                   <div class="table-btn">
@@ -46,34 +46,41 @@
               <table class="alfa-table">
                 <thead class="table-dark">
                   <tr>
+                    <th></th>
                     <th>ID</th>
                     <th>Product</th>
                     <th>Price</th>
                     <th>Discount</th>
                     <th>Category</th>
                     <th>Subcategory</th>
-                    <th>Created At</th>
+                    <th>Status</th>
+                    <!-- <th>Created At</th> -->
                     <th>Action</th>
                    </tr>
                 </thead>
                 <tbody id="order-tbody">
                   <% products.forEach(product => { %>
                   <tr>
-                    <td><%= product.id %></td>
+                    <td>
+                      <div class="product-checkbox">
+                        <input type="checkbox" name="checkbox">
+                     </div>
+                    </td>
+                    <td>
+                      <%= product.id %>
+                    </td>
                     <td>
                       <div class="admin-product">
-                          <div class="product-checkbox">
-                             <input type="checkbox" name="checkbox">
-                          </div>
-                          <span> <img src="../../product_images/<%= product.product_main_image %>" alt="" style="width: 40px; height: 40px;"></span>
+                           <span> <img src="../../product_images/<%= product.product_main_image %>" alt="" style="width: 40px; height: 40px;"></span>
                           <h6><%= product.product_name %></h6>
                       </div>
                     </td>
-                     <td><%= product.product_price %></td>
-                    <td><%= product.discount_on_product %></td>
+                     <td>£<%= product.product_price %></td>
+                    <td><%= product.discount_on_product %> %</td>
                     <td><%= product.category_name %></td>  
                     <td><%= product.subcategory_name	 %></td>  
-                    <td><%= product.created_at.toLocaleString()  %></td>
+                    <td></td>
+                    <!-- <td><%= product.created_at.toLocaleString()  %></td> -->
                     <td>
  
                       <a href="admin/edit/<%= product.id %>" class="btn-item btn-edit"><span><i class="fa-solid fa-pen-to-square"></i></span></a> 
