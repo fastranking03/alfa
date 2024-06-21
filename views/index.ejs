@@ -225,7 +225,7 @@
                       </div>
                       <div class="product-btn">
                         <div class="pro-whishlist">
-                          <a href="" class="add-to-favorites" data-product-id="<%= product.id %>">
+                          <a class="add-to-favorites" data-product-id="<%= product.id %>">
                             <i class="fa-regular fa-heart"></i>
                           </a>
                         </div>
@@ -417,5 +417,56 @@
     <%- include('includes/foot') %>
 
 </body>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const addToFavoritesButtons = document.querySelectorAll(".add-to-favorites");
+
+    addToFavoritesButtons.forEach((button) => {
+      button.addEventListener("click", function () {
+        const productId = button.getAttribute("data-product-id");
+
+        // Send AJAX request to the server
+        fetch(`/favorites/add/${productId}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "same-origin", // include cookies
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
+            }
+            return response.json();
+          })
+          .then((data) => {
+            if (data.success) {
+              // Show popup alert
+              alert(data.message);
+
+              // Update wishlist count in the span
+              const wishlistLi = document.querySelector("#wishlist");
+              if (wishlistLi) {
+                const countTextSpan = wishlistLi.querySelector(".count-text");
+                if (countTextSpan) {
+                  countTextSpan.textContent = data.favoritesCount;
+                }
+              }
+            } else { 
+              if (data.message === "Login First") {
+                window.location.href = "/login"; // Redirect to login page if not logged in
+              }
+            }
+          })
+          .catch((error) => {
+            console.error("There was a problem with the fetch operation:", error);
+            // Handle error
+            alert("An error occurred while adding the product to favorites");
+          });
+      });
+    });
+  });
+</script>
 
 </html>

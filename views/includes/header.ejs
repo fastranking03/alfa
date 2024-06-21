@@ -197,26 +197,27 @@
                 <li><a href="/" class="m-item">Home</a></li>
                 <li><a href="/about-us" class="m-item">About Us</a></li>
                 <li><a href="/blogs" class="m-item">Blogs</a></li>
-                <li class="position-relative alfa-menu-li" style="color: #000;">
-                    <a href="/#" class="nav-item m-item">Shop <span class="icon-rotate"><i class="fa-solid fa-angle-down"></i></span></a>
-                    <div class="dropdown-menu-wrapper">
+                 <li class="position-relative alfa-menu-lis" style="color: #000;">
+                    <a class="nav-item m-item">Shop <span class="icon-rotate"><i class="fa-solid fa-angle-down"></i></span></a>
+                    <div class="dropdown-menu-wrappers">
                         <ul>
                             <% categories.forEach(category => { %>
-                                <li><a href="/category/<%= category.category_name %>" class="menu-item "><%= category.category_name %></a></li>
+                                <li><a href="/category/<%= category.category_name %>" class="menu-item "><%= category.category_name %> <span><i class="fa-solid fa-arrow-right"></i></span></a></li>
                             <% }); %>
                         </ul>
                     </div>
                   </li>
-                  <li class="position-relative alfa-menu-li">
-                    <a href="/accessories" class="nav-item m-item">Accessories <span class="icon-rotate"><i class="fa-solid fa-angle-down"></i></span></a>
-                    <div class="dropdown-menu-wrapper">
+                  <li class="position-relative alfa-menu-lis" style="color: #000;">
+                    <a class="nav-item m-item">Accessories <span class="icon-rotate"><i class="fa-solid fa-angle-down"></i></span></a>
+                    <div class="dropdown-menu-wrappers">
                         <ul>
-                            <li><a href="/accessories" class="menu-item">Belts</a></li>
-                            <li><a href="/accessories"  class="menu-item">Wallets</a></li>
-                            <li><a href="/accessories"  class="menu-item">Shoes</a></li>
+                            <li><a href="/accessories" class="menu-item">Belts <span><i class="fa-solid fa-arrow-right"></i></span></a></li>
+                            <li><a href="/accessories"  class="menu-item">Wallets <span><i class="fa-solid fa-arrow-right"></i></span></a></li>
+                            <li><a href="/accessories"  class="menu-item">Shoes <span><i class="fa-solid fa-arrow-right"></i></span></a></li>
                         </ul>
                     </div>
-                </li>
+                  </li>
+                  
                 <li><a href="/contact-us" class="m-item">Contact Us</a></li>
             </ul>
         </div>
@@ -235,8 +236,7 @@
         else{
             cardOpen = true
             openProfileCards.style.display = "none";
-            
-        }
+         }
     })
 </script>
  

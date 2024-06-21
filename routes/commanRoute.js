@@ -65,8 +65,39 @@ router.get("/", async (req, res) => {
   }
 });
 
-// Route for the product page
 
+router.get("/delete-from-wishlist/:favoriteId", async (req, res) => {
+  try {
+    const userId = req.session.user.id; // Assuming you have user session data
+    const favoriteId = req.params.favoriteId;
+
+    // Delete the favorite item from the users_favorites table
+    const deleteQuery = "DELETE FROM users_favorites WHERE product_id = ? AND user_id = ?";
+    const [deleteResult] = await connect.query(deleteQuery, [favoriteId, userId]);
+
+    // Check if the deletion was successful
+    if (deleteResult.affectedRows > 0) {
+      // Fetch updated favorites count
+      const [[{ favoritesCount }]] = await connect.query(
+        "SELECT COUNT(*) AS favoritesCount FROM users_favorites WHERE user_id = ?",
+        [userId]
+      );
+
+      // Update session variable with new favorites count
+      req.session.wishlistCount = favoritesCount;
+
+      // Respond with success message and updated favorites count
+      return res.redirect("/my-wishlist");
+    }  
+  } catch (error) {
+    console.error("Error deleting product from favorites:", error);
+    res.status(500).json({ error: "Error deleting product from favorites" });
+  }
+});
+
+
+
+// Route for the product page
 router.post("/place-order", async (req, res) => {
   const user = req.session.user;
   const userId = user ? user.id : null;
@@ -106,54 +137,53 @@ router.post("/place-order", async (req, res) => {
     }
 
     // Insert new order
-    try {
-      const [insertOrderResult] = await connect.query(
-        "INSERT INTO orders (order_id, user_id, total_payable, vat, delivery_charges, sub_total, total_mrp, discount_amount, address_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)",
-        [
-          newOrderId,
-          userId,
-          parseFloat(total_payable),
-          parseFloat(vat),
-          parseFloat(deliveryFee),
-          parseFloat(subtotal),
-          parseFloat(total_mrp),
-          parseFloat(discount_amount),
-          parseInt(address_id),
-        ]
-      );
+    const insertOrderQuery = `
+      INSERT INTO orders (order_id, user_id, total_payable, vat, delivery_charges, sub_total, total_mrp, discount_amount, address_id) 
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
+    const insertOrderValues = [
+      newOrderId,
+      userId,
+      parseFloat(total_payable),
+      parseFloat(vat),
+      parseFloat(deliveryFee),
+      parseFloat(subtotal),
+      parseFloat(total_mrp),
+      parseFloat(discount_amount),
+      parseInt(address_id),
+    ];
 
-      // Check if insertion into orders table was successful
-      if (insertOrderResult.affectedRows !== 1) {
-        throw new Error("Failed to insert into orders table");
-      }
-    } catch (orderError) {
-      console.error("Error inserting order:", orderError);
-      await connect.query("ROLLBACK");
-      return res.status(500).send("Failed to place order");
+    const [insertOrderResult] = await connect.query(
+      insertOrderQuery,
+      insertOrderValues
+    );
+
+    if (insertOrderResult.affectedRows !== 1) {
+      throw new Error("Failed to insert into orders table");
     }
 
-    // Insert order items
-    try {
-      const insertOrderItemsPromises = parsedCartItems.map(async (product) => {
-        await connect.query(
-          "INSERT INTO order_items (order_id, product_id, quantity, price, size, colour) VALUES (?, ?, ?, ?, ?, ?)",
-          [
-            newOrderId,
-            product.product_id,
-            product.quantity,
-            parseFloat(product.product_price),
-            product.selected_size,
-            product.colour,
-          ]
-        );
-      });
+    // Insert order items only if the order insertion is successful
+    for (const product of parsedCartItems) {
+      const insertOrderItemQuery = `
+        INSERT INTO order_items (order_id, product_id, quantity, price, size, colour) 
+        VALUES (?, ?, ?, ?, ?, ?)
+      `;
+      const insertOrderItemValues = [
+        newOrderId,
+        product.product_id,
+        product.quantity,
+        parseFloat(product.product_price),
+        product.selected_size,
+        product.colour,
+      ];
+      const [insertOrderItemResult] = await connect.query(
+        insertOrderItemQuery,
+        insertOrderItemValues
+      );
 
-      // Execute all order item insertion queries
-      await Promise.all(insertOrderItemsPromises);
-    } catch (orderItemsError) {
-      console.error("Error inserting order items:", orderItemsError);
-      await connect.query("ROLLBACK");
-      return res.status(500).send("Failed to place order items");
+      if (insertOrderItemResult.affectedRows !== 1) {
+        throw new Error("Failed to insert order item");
+      }
     }
 
     // Commit the transaction after all queries succeed
@@ -161,7 +191,7 @@ router.post("/place-order", async (req, res) => {
 
     // Fetch order details and items for confirmation page
     const [orderDetails] = await connect.query(
-      `SELECT o.*, a.name, a.email, a.phone, a.address_title, a.full_address 
+      `SELECT o.*, a.name, a.email, a.phone, a.pincode, a.full_address 
        FROM orders o
        JOIN user_address a ON o.address_id = a.id
        WHERE o.order_id = ?`,
@@ -231,7 +261,6 @@ router.get("/blogs", async (req, res) => {
     res.status(500).send("Server Error");
   }
 });
-
 
 router.get("/product-detail/:id", async (req, res) => {
   try {
@@ -309,6 +338,17 @@ router.get("/product-detail/:id", async (req, res) => {
       [productId]
     );
 
+    let isInFavorites = false;
+    if (req.session.user) {
+      const [favoriteRows] = await connect.query(
+        "SELECT * FROM users_favorites WHERE user_id = ? AND product_id = ?",
+        [user.id, productId]
+      );
+      isInFavorites = favoriteRows.length > 0;
+    }else{
+      isInFavorites = false;
+    }
+
     // Render product detail page
     res.render("product-detail", {
       user,
@@ -317,6 +357,7 @@ router.get("/product-detail/:id", async (req, res) => {
       sizes,
       wearType,
       variantProducts,
+      isInFavorites,
     });
   } catch (error) {
     console.error(error);
@@ -328,7 +369,6 @@ router.get("/product-detail/:id", async (req, res) => {
 //   const user = req.session.user;
 //   res.render("checkout", { user });
 // });
- 
 
 router.get("/checkout", async (req, res) => {
   const user = req.session.user;
@@ -431,6 +471,29 @@ router.get("/checkout", async (req, res) => {
   }
 });
 
+router.get("/remove-address/:id", async (req, res) => {
+  const addressId = req.params.id;
+  try {
+    const deleteQuery = "DELETE FROM user_address WHERE id = ?";
+    await connect.query(deleteQuery, [addressId]);
+    res.redirect("back"); // Redirect back to the address page or a confirmation page
+  } catch (error) {
+    console.error("Error removing address:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
+
+router.get("/edit-address/:id", async (req, res) => {
+  const addressId = req.params.id;
+  try {
+    const selectQuery = "SELECT * FROM user_address WHERE id = ?";
+    const [address] = await connect.query(selectQuery, [addressId]);
+    res.render("add-address", { address: address[0] }); // Assuming you have an edit-address view
+  } catch (error) {
+    console.error("Error fetching address:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
 
 router.get("/cart", async (req, res) => {
   try {
@@ -438,8 +501,8 @@ router.get("/cart", async (req, res) => {
 
     if (!user || !user.id) {
       // Guest user scenario
-      const cartItems = req.session.cart || [];
-
+      const cartItems = req.session.cart || []; 
+  
       const promises = cartItems.map((cartItem) =>
         connect
           .query(`SELECT * FROM products WHERE id = ?`, [cartItem.product_id])
@@ -492,16 +555,14 @@ router.get("/cart", async (req, res) => {
         const quantity = parseInt(item.quantity);
         // Calculate totals for items in cart
         totalPrice += price * quantity;
-        totalDiscount +=  ((price * discount) / 100) * quantity;
+        totalDiscount += ((price * discount) / 100) * quantity;
         inStockItemCount++; // For guest user, treat all items as in stock
       });
 
       const subtotal = totalPrice - totalDiscount;
-    const GST = subtotal * 0.2;
-    const deliveryFee = 25;
-    const totalCost = totalPrice + GST + deliveryFee - totalDiscount;
-
-
+      const GST = subtotal * 0.2;
+      const deliveryFee = 25;
+      const totalCost = totalPrice + GST + deliveryFee - totalDiscount; 
       res.render("my-cart", {
         user,
         cartItems: cartItemsWithSizes,
@@ -515,7 +576,7 @@ router.get("/cart", async (req, res) => {
       });
     } else {
       const userId = user.id;
-
+   
       const [cartResult] = await connect.query(
         "SELECT COUNT(*) AS cart_count FROM users_cart WHERE user_id = ?",
         [userId]
@@ -537,7 +598,7 @@ router.get("/cart", async (req, res) => {
       req.session.wishlistCount = wishlistCount;
 
       const [cartResultAll] = await connect.query(
-        `SELECT c.*, p.*, p.wear_type_bottom_or_top
+        `SELECT c.*, c.id AS cart_id,  p.*, p.wear_type_bottom_or_top
         FROM users_cart c
         INNER JOIN products p ON c.product_id = p.id
         WHERE c.user_id = ?`,
@@ -626,105 +687,8 @@ router.get("/cart", async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
-
-// router.post("/update-quantity", async (req, res) => {
-//   const { productId, quantity } = req.body;
-//   const userId = req.session.user.id;
-
-//   try {
-
-//     // Update quantity in the database
-//     const updateQuery = `
-//           UPDATE users_cart
-//           SET quantity = ?
-//           WHERE user_id = ? AND product_id = ?
-//       `;
-//     await connect.query(updateQuery, [quantity, userId, productId]);
-
-//     //  *******************************************
-//     const [cartResultAll] = await connect.query(
-//       `SELECT c.*, p.*, p.wear_type_bottom_or_top
-//     FROM users_cart c
-//     INNER JOIN products p ON c.product_id = p.id
-//     WHERE c.user_id = ?`,
-//       [userId]
-//     );
-
-//     const cartItemPromises = cartResultAll.map(async (cartItem) => {
-//       let sizes = {};
-//       if (cartItem.wear_type_bottom_or_top === "top") {
-//         const [sizeRows] = await connect.query(
-//           `SELECT xs, s, m, l, xl, xxl, xxxl, xxxxl 
-//          FROM topwear_inventory_with_sizes 
-//          WHERE product_id = ?`,
-//           [cartItem.product_id]
-//         );
-//         sizes = sizeRows[0];
-//       } else if (cartItem.wear_type_bottom_or_top === "bottom") {
-//         const [sizeRows] = await connect.query(
-//           `SELECT size_28, size_30, size_32, size_34, size_36, size_38, size_40, size_42, size_44, size_46 
-//          FROM bottom_wear_inventory_with_sizes 
-//          WHERE product_id = ?`,
-//           [cartItem.product_id]
-//         );
-//         sizes = sizeRows[0];
-//       }
-//       return {
-//         ...cartItem,
-//         sizes: sizes,
-//       };
-//     });
-
-//     const cartItems = await Promise.all(cartItemPromises);
-
-//     // Calculate totals for items in stock
-//     let totalPrice = 0;
-//     let totalDiscount = 0;
-//     let inStockItemCount = 0;
-
-//     cartItems.forEach((item) => {
-//       const price = parseFloat(item.product_price);
-//       const discount = parseFloat(item.discount_on_product) || 0;
-//       const quantity = parseInt(item.quantity);
-//       // Check stock availability
-//       const stock = item.sizes;
-//       if (stock) {
-//         // Ensure the stock is available
-//         totalPrice += price * quantity;
-//         // totalDiscount += (price * discount) / 100;
-//         totalDiscount += ((price * discount) / 100) * quantity;
-//         inStockItemCount++;
-//       }
-//     });
-
-//     const subtotal = totalPrice - totalDiscount;
-//     const GST = subtotal * 0.2;
-//     const deliveryFee = 25;
-//     const totalCost = totalPrice + GST + deliveryFee - totalDiscount;
-
-//     // *******************************************
-//     console.log(
-//       `Quantity updated successfully for product ${productId} to ${quantity}`
-//     );
-
-//     // Send response with updated totals
-//     res.status(200).json({
-//       message: "Quantity updated successfully",
-//       totalPrice: totalPrice,
-//       totalDiscount: totalDiscount,
-//       subtotal,
-//       GST: GST,
-//       deliveryFee: deliveryFee,
-//       totalCost: totalCost,
-//     });
-//   } catch (error) {
-//     console.error("Error updating quantity:", error);
-//     res.status(500).json({ error: "Failed to update quantity" });
-//   }
-// });
-
-
-router.post('/update-quantity', async (req, res) => {
+ 
+router.post("/update-quantity", async (req, res) => {
   const { productId, quantity } = req.body;
 
   try {
@@ -748,30 +712,34 @@ router.post('/update-quantity', async (req, res) => {
       );
 
       // Process cart items to calculate totals
-      const cartItems = await Promise.all(cartResultAll.map(async (cartItem) => {
-        let sizes = {};
-        if (cartItem.wear_type_bottom_or_top === 'top') {
-          const [sizeRows] = await connect.query(
-            `SELECT xs, s, m, l, xl, xxl, xxxl, xxxxl 
+      const cartItemPromises = await Promise.all(
+        cartResultAll.map(async (cartItem) => {
+          let sizes = {};
+          if (cartItem.wear_type_bottom_or_top === "top") {
+            const [sizeRows] = await connect.query(
+              `SELECT xs, s, m, l, xl, xxl, xxxl, xxxxl 
              FROM topwear_inventory_with_sizes 
              WHERE product_id = ?`,
-            [cartItem.product_id]
-          );
-          sizes = sizeRows[0];
-        } else if (cartItem.wear_type_bottom_or_top === 'bottom') {
-          const [sizeRows] = await connect.query(
-            `SELECT size_28, size_30, size_32, size_34, size_36, size_38, size_40, size_42, size_44, size_46 
+              [cartItem.product_id]
+            );
+            sizes = sizeRows[0];
+          } else if (cartItem.wear_type_bottom_or_top === "bottom") {
+            const [sizeRows] = await connect.query(
+              `SELECT size_28, size_30, size_32, size_34, size_36, size_38, size_40, size_42, size_44, size_46 
              FROM bottom_wear_inventory_with_sizes 
              WHERE product_id = ?`,
-            [cartItem.product_id]
-          );
-          sizes = sizeRows[0];
-        }
-        return {
-          ...cartItem,
-          sizes: sizes,
-        };
-      }));
+              [cartItem.product_id]
+            );
+            sizes = sizeRows[0];
+          }
+          return {
+            ...cartItem,
+            sizes: sizes,
+          };
+        })
+      );
+
+      const cartItems = await Promise.all(cartItemPromises);
 
       // Calculate totals for items in stock
       let totalPrice = 0;
@@ -781,18 +749,26 @@ router.post('/update-quantity', async (req, res) => {
         const price = parseFloat(item.product_price);
         const discount = parseFloat(item.discount_on_product) || 0;
         const quantity = parseInt(item.quantity);
-        totalPrice += price * quantity;
-        totalDiscount += (price * discount * quantity) / 100;
+        const stock = item.sizes;
+        if (stock) {
+          totalPrice += price * quantity;
+          totalDiscount += (price * discount * quantity) / 100;
+        }
       });
 
-      const subtotal = totalPrice - totalDiscount;
-      const GST = subtotal * 0.2;
+      const subtotal = (totalPrice - totalDiscount).toFixed(2);
+      const GST = (subtotal * 0.2).toFixed(2);
       const deliveryFee = 25;
-      const totalCost = totalPrice + GST + deliveryFee - totalDiscount;
+      const totalCost = (
+        parseFloat(totalPrice) +
+        parseFloat(GST) +
+        deliveryFee -
+        parseFloat(totalDiscount)
+      ).toFixed(2);
 
       // Send response with updated totals
       return res.status(200).json({
-        message: 'Quantity updated successfully',
+        message: "Quantity updated successfully",
         totalPrice: totalPrice,
         totalDiscount: totalDiscount,
         subtotal,
@@ -805,21 +781,20 @@ router.post('/update-quantity', async (req, res) => {
       const cartItems = req.session.cart || [];
 
       // Log productId and quantity received
-console.log('Received productId:', productId);
-console.log('Received quantity:', quantity);
-
-      
+      console.log("Received productId:", productId);
+      console.log("Received quantity:", quantity);
 
       // Fetch product details for each item in the session cart
       const promises = cartItems.map((cartItem) =>
         connect
-          .query('SELECT * FROM products WHERE id = ?', [cartItem.product_id])
+          .query("SELECT * FROM products WHERE id = ?", [cartItem.product_id])
           .then(([product]) => ({
             ...cartItem,
             product_name: product[0].product_name,
             product_main_image: product[0].product_main_image,
             product_price: parseFloat(product[0].product_price), // Ensure price is float
-            discount_on_product: parseFloat(product[0].discount_on_product) || 0, // Ensure discount is float or default to 0
+            discount_on_product:
+              parseFloat(product[0].discount_on_product) || 0, // Ensure discount is float or default to 0
             wear_type_bottom_or_top: product[0].wear_type_bottom_or_top,
           }))
       );
@@ -851,19 +826,20 @@ console.log('Received quantity:', quantity);
         totalPrice += price * itemQuantity;
         totalDiscount += (price * discount * itemQuantity) / 100;
       });
-      
-      console.log('Updated session cart:', updatedCart);
-      
+
+      console.log("Updated session cart:", updatedCart);
+
       // Calculate other totals with maximum two decimal places
       const subtotal = parseFloat((totalPrice - totalDiscount).toFixed(2));
       const GST = parseFloat((totalPrice * 0.2).toFixed(2));
-      const deliveryFee = parseFloat(25.00.toFixed(2)); // Fixed delivery fee
-      const totalCost = parseFloat((totalPrice + GST + deliveryFee - totalDiscount).toFixed(2));
-      
+      const deliveryFee = parseFloat((25.0).toFixed(2)); // Fixed delivery fee
+      const totalCost = parseFloat(
+        (totalPrice + GST + deliveryFee - totalDiscount).toFixed(2)
+      );
 
       // Send response with updated cart or totals
       return res.status(200).json({
-        message: 'Quantity updated successfully in session',
+        message: "Quantity updated successfully in session",
         totalPrice: totalPrice,
         totalDiscount: totalDiscount,
         subtotal,
@@ -873,18 +849,22 @@ console.log('Received quantity:', quantity);
       });
     }
   } catch (error) {
-    console.error('Error updating quantity:', error);
-    res.status(500).json({ error: 'Failed to update quantity' });
+    console.error("Error updating quantity:", error);
+    res.status(500).json({ error: "Failed to update quantity" });
   }
 });
- 
+
 router.post("/update-product-size", async (req, res) => {
   try {
-    const { productId, newSize, oldSize } = req.body;
-    const user = req.session.user;
+    const { productId,cartId, newSize, oldSize } = req.body;
 
-    // console.log(newSize);
-    // console.log(oldSize);
+    console.log("productId:", productId);
+    console.log("cartId:", cartId);
+    console.log("newSize:", newSize);
+    console.log("oldSize:", oldSize);
+
+    const user = req.session.user;
+ 
 
     if (!user || !user.id) {
       // User is not logged in, update size in session cart
@@ -897,8 +877,8 @@ router.post("/update-product-size", async (req, res) => {
     } else {
       // User is logged in, update size in the database
       await connect.query(
-        "UPDATE users_cart SET selected_size = ? WHERE user_id = ? AND product_id = ?",
-        [newSize, user.id, productId]
+        "UPDATE users_cart SET selected_size = ? WHERE user_id = ? AND id = ?",
+        [newSize, user.id, cartId]
       );
     }
 
@@ -911,46 +891,70 @@ router.post("/update-product-size", async (req, res) => {
   }
 });
 
+
+
+
 //
 
 router.post("/submit-address", async (req, res) => {
+  const {
+    userid,
+    address_id,
+    name,
+    phone,
+    email,
+    pincode,
+    address,
+    locality,
+    city,
+    state,
+    address_type,
+    checkbox,
+  } = req.body;
+
+  const sameAsDelivery = checkbox === "on" ? 1 : 0;
+
   try {
-    const {
-      userid,
-      name,
-      phone, 
-      email,
-      pincode , 
-      address,
-      locality,
-      city,
-      state ,
-      address_type,
-      checkbox, 
-    } = req.body;
-
-    // Convert checkbox value to 1 if checked, 0 otherwise
-    const sameAsDelivery = checkbox === "on" ? 1 : 0;
-
-    // Your SQL query to insert the data
-    const sql = `INSERT INTO user_address (user_id, name, phone, email, pincode , full_address, locality , city, state ,  billing_info_same_as_delivery_address	,address_type ) 
+    if (address_id) {
+      // Update existing address
+      const updateSql = `
+        UPDATE user_address 
+        SET name = ?, phone = ?, email = ?, pincode = ?, full_address = ?,  locality = ?, city = ?, state =? ,  billing_info_same_as_delivery_address = ?, address_type = ?
+        WHERE id = ?
+      `;
+      await connect.query(updateSql, [
+        name,
+        phone,
+        email,
+        pincode,
+        address,
+        locality,
+        city,
+        state,
+        sameAsDelivery,
+        address_type,
+        address_id,
+      ]);
+    } else {
+      // Your SQL query to insert the data
+      const sql = `INSERT INTO user_address (user_id, name, phone, email, pincode , full_address, locality , city, state ,  billing_info_same_as_delivery_address	,address_type ) 
                    VALUES (?, ?, ?,  ? ,?, ?, ?, ?, ?, ?, ?)`;
 
-    // Execute the query with prepared statement
-    await connect.query(sql, [
-      userid,
-      name,
-      phone, 
-      email,
-      pincode ,
-      address,
-      locality,
-      city,
-      state, 
-      sameAsDelivery,
-      address_type,
-    ]);
-
+      // Execute the query with prepared statement
+      await connect.query(sql, [
+        userid,
+        name,
+        phone,
+        email,
+        pincode,
+        address,
+        locality,
+        city,
+        state,
+        sameAsDelivery,
+        address_type,
+      ]);
+    }
     // Redirect to the previous page or any other page
     res.redirect("/checkout");
   } catch (error) {
@@ -960,8 +964,8 @@ router.post("/submit-address", async (req, res) => {
 });
 router.get("/add-address", (req, res) => {
   const user = req.session.user;
-
-  res.render("add-address", { user });
+ const address = null;
+  res.render("add-address", { user , address});
 });
 
 // router.get("/my-wishlist", (req, res) => {
@@ -969,8 +973,7 @@ router.get("/add-address", (req, res) => {
 //   res.render("my-wishlist", { user });
 // });
 router.get("/my-wishlist", async (req, res) => {
-  const user = req.session.user;
-
+  const user = req.session.user; 
   if (!user) {
     // Redirect to login page if user is not logged in
     return res.redirect("/login");
@@ -1014,6 +1017,16 @@ router.get("/my-wishlist", async (req, res) => {
       });
 
       const resolvedWishlistItems = await Promise.all(wishlistItemPromises);
+
+      
+      const [wishlistResult] = await connect.query(
+        "SELECT COUNT(*) AS wishlist_count FROM users_favorites WHERE user_id = ?",
+        [user.id]
+      );
+ 
+      const wishlistCount = wishlistResult[0].wishlist_count;
+ 
+      req.session.wishlistCount = wishlistCount;
 
       // Render the my-wishlist page with the user's favorite products
       return res.render("my-wishlist", {
@@ -1138,15 +1151,33 @@ router.post("/add-to-cart", async (req, res) => {
   const { product_id, selectedSize, product_quantity } = req.body;
   var selected_size = selectedSize;
   var quantity = product_quantity;
-  const cartItem = { product_id, selected_size, quantity };
+  const qty = parseInt(quantity);
+  const cartItem = { product_id, selected_size, quantity:qty };
 
   if (!user || !user.id) {
     // return res.status(401).send("User not authenticated");
 
-    req.session.cart = req.session.cart || [];
+    const cartItems = req.session.cart || [];
 
-    req.session.cart.push(cartItem);
+    const Itemincart = cartItems.find((item) => item.product_id === product_id);
+      if (Itemincart) {
+        Itemincart.selected_size = selectedSize;
+
+      }  else {
+      // Add new item to session cart if it doesn't exist
+      req.session.cart.push(cartItem);
+    }
+
+    req.session.cart = cartItems;
+
+    console.log(cartItem);
+
+    console.log("cartItem" , cartItem);
+    console.log("cartItems" , cartItems);
+
     req.session.cartCount = req.session.cart.length;
+
+    console.log("cartItem" , req.session.cartCount);
 
     res.redirect("/cart");
   } else {
@@ -1167,13 +1198,25 @@ router.post("/add-to-cart", async (req, res) => {
       } = req.body;
 
       const checkQuery =
-        "SELECT * FROM users_cart WHERE user_id = ? AND product_id = ?";
+        "SELECT * FROM users_cart WHERE user_id = ? AND product_id = ? AND selected_size = ?";
       const [existingProduct] = await connect.query(checkQuery, [
         userId,
         product_id,
+        selectedSize,
       ]);
       if (existingProduct.length > 0) {
-        // Send a JSON response indicating that the product already exists in the cart
+        if (existingProduct[0].quantity !== product_quantity) {
+          const updateQuantityQuery = `
+            UPDATE users_cart SET quantity = ? WHERE user_id = ? AND product_id = ? AND selected_size = ?
+          `;
+          await connect.query(updateQuantityQuery, [
+            product_quantity,
+            userId,
+            product_id,
+            selectedSize,
+          ]);
+          return res.redirect("/cart");
+        }
       } else {
         const insertQuery =
           "INSERT INTO users_cart (user_id, product_id , selected_size , quantity) VALUES (?, ? , ? , ?)";
@@ -1183,8 +1226,9 @@ router.post("/add-to-cart", async (req, res) => {
           selectedSize,
           product_quantity,
         ]);
+
+        return res.redirect("/cart");
       }
-      res.redirect("/cart");
     } catch (error) {
       console.error("Error adding product to cart:", error);
       res.status(500).send("Error adding product to cart");
@@ -1192,22 +1236,22 @@ router.post("/add-to-cart", async (req, res) => {
   }
 });
 
-router.get("/delete-product/:product_id", async (req, res) => {
+router.get("/delete-product/:cart_id", async (req, res) => {
   try {
-    const productId = req.params.product_id; // Accessing product ID from the request params
+    const cartId = req.params.cart_id; // Accessing product ID from the request params
     const userId = req.session.user.id; // Assuming you have the user's ID in the session
 
     // Query to delete the product from the cart
     const deleteProductQuery = `
       DELETE FROM users_cart 
-      WHERE user_id = ? AND product_id = ?
+      WHERE user_id = ? AND id = ?
     `;
 
     // Execute the query
-    await connect.query(deleteProductQuery, [userId, productId]);
+    await connect.query(deleteProductQuery, [userId, cartId]);
 
     // Redirect back to the cart page after deletion
-    res.redirect("/cart");
+    return res.redirect("/cart");
   } catch (error) {
     console.error("Error deleting product:", error);
     // Send an error status (500) without any response body
@@ -1271,21 +1315,21 @@ router.get("/my-orders", async (req, res) => {
 
     const ordersWithDetails = await Promise.all(orderDetailsPromises);
 
-    res.render("order-history", { user, orders: ordersWithDetails }); 
+    res.render("order-history", { user, orders: ordersWithDetails });
   } catch (error) {
     console.error(error);
-    res.status(500).send("Failed to retrieve orders"); 
+    res.status(500).send("Failed to retrieve orders");
   }
 });
 
-router.get("/order-detail/:orderId", async(req, res) => {
+router.get("/order-detail/:orderId", async (req, res) => {
   const { orderId } = req.params;
   const user = req.session.user;
   const userId = user.id;
 
   try {
     const [orderRows] = await connect.query(
-      'SELECT * FROM orders WHERE order_id = ? AND user_id = ?',
+      "SELECT * FROM orders WHERE order_id = ? AND user_id = ?",
       [orderId, userId]
     );
 
@@ -1305,16 +1349,14 @@ router.get("/order-detail/:orderId", async(req, res) => {
       // order.items = orderItems;
 
       // Render the order details page
-      res.render('order-detail', { order , orderItems});
+      res.render("order-detail", { order, orderItems });
     } else {
-      res.status(404).send('Order not found');
+      res.status(404).send("Order not found");
     }
-    
-  }catch (error) {
+  } catch (error) {
     console.error(error);
-    res.status(500).send('Server error');
+    res.status(500).send("Server error");
   }
- 
 });
 
 router.post("/move-to-cart", async (req, res) => {
@@ -1328,14 +1370,22 @@ router.post("/move-to-cart", async (req, res) => {
       INSERT INTO users_cart (user_id, product_id, selected_size , quantity)
       VALUES (?, ?, ?, ?)
     `;
-    const addToCartResult = await connect.query(addToCartQuery, [userId, product_id, selectedSize, quantity]);
+    const addToCartResult = await connect.query(addToCartQuery, [
+      userId,
+      product_id,
+      selectedSize,
+      quantity,
+    ]);
 
     // Step 2: Delete the product from the users_favorites table
     const deleteFromFavoritesQuery = `
       DELETE FROM users_favorites
       WHERE user_id = ? AND product_id = ?
     `;
-    const deleteFromFavoritesResult = await connect.query(deleteFromFavoritesQuery, [userId, product_id]);
+    const deleteFromFavoritesResult = await connect.query(
+      deleteFromFavoritesQuery,
+      [userId, product_id]
+    );
 
     res.redirect("/cart");
   } catch (error) {
@@ -1345,15 +1395,88 @@ router.post("/move-to-cart", async (req, res) => {
   }
 });
 
+// Move item to wishlist route
+router.get('/move-to-wishlist/:cart_id', async (req, res) => {
+  const user = req.session.user;
+  const cartId = req.params.cart_id;
 
-router.post('/add-to-wishlist', async (req, res) => {
-  const user = req.session.user; // Assuming user is authenticated and session is used
   if (!user) {
+    return res.redirect("/login"); // Redirect to login if user is not authenticated
+  }
+
+  const userId = user.id;
+
+  try {
+    // Start a transaction
+    await connect.query("START TRANSACTION");
+
+    // Get the cart item details
+    const [cartItemResult] = await connect.query(
+      "SELECT * FROM users_cart WHERE id = ? AND user_id = ?",
+      [cartId, userId]
+    );
+
+    if (cartItemResult.length === 0) {
+      await connect.query("ROLLBACK");
+      return res.redirect("/cart");
+    }
+
+    const cartItem = cartItemResult[0];
+    const { product_id } = cartItem;
+
+    // Check if the item already exists in the wishlist
+    const [wishlistResult] = await connect.query(
+      "SELECT * FROM users_favorites WHERE user_id = ? AND product_id = ?",
+      [userId, product_id]
+    );
+
+    if (wishlistResult.length === 0) {
+      // Add the item to the wishlist if it doesn't exist
+      await connect.query(
+        "INSERT INTO users_favorites (user_id, product_id) VALUES (?, ?)",
+        [userId, product_id]
+      );
+    }
+
+    // Remove the item from the cart
+    await connect.query("DELETE FROM users_cart WHERE id = ? AND user_id = ?", [cartId, userId]);
+
+
+    const [[cartCountResult]] = await connect.query(
+      "SELECT COUNT(*) AS cart_count FROM users_cart WHERE user_id = ?",
+      [userId]
+    );
+    const [[wishlistCountResult]] = await connect.query(
+      "SELECT COUNT(*) AS wishlist_count FROM users_favorites WHERE user_id = ?",
+      [userId]
+    );
+
+    req.session.cartCount = cartCountResult.cart_count;
+    req.session.wishlistCount = wishlistCountResult.wishlist_count;
+
+    // Commit the transaction
+    await connect.query("COMMIT");
+
+    // Redirect to the wishlist page or cart page
+    res.redirect("/my-wishlist");
+  } catch (error) {
+    console.error("Error moving item to wishlist:", error);
+    await connect.query("ROLLBACK");
+    res.status(500).send("Failed to move item to wishlist");
+  }
+});
+
+router.post("/add-to-wishlist", async (req, res) => {
+  const user = req.session.user; // Assuming user is authenticated and session is used
+  const { product_id } = req.body;
+
+  if (!user) {
+    req.session.productToWishlist = product_id;
     return res.redirect("/login"); // Redirect to the login page if the user is not logged in
   }
   const userId = user.id; // Assuming user id is stored in session
 
-  const { product_id } = req.body; // Extract productId from request body
+  // Extract productId from request body
 
   try {
     // Query to insert productId into userfav table
@@ -1366,8 +1489,8 @@ router.post('/add-to-wishlist', async (req, res) => {
     // Redirect to my-wishlist page upon successful addition
     res.redirect("/my-wishlist");
   } catch (error) {
-    console.error('Error adding to wishlist:', error);
-    res.status(500).send({ error: 'Failed to add product to wishlist.' });
+    console.error("Error adding to wishlist:", error);
+    res.status(500).send({ error: "Failed to add product to wishlist." });
   }
 });
 

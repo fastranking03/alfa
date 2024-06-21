@@ -1,143 +1,82 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
+
+<head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Alfa Meanswear | My Cart</title>
     <%- include('includes/head') %>
-  </head>
+</head>
 
-  <body>
+<body>
     <div class="alfa-main-wraper">
-      <%- include('includes/header') %>
-      <div class="mt-100 mt-150">
-        <div class="checkout-wrapper margin-160">
-          <div class="container">
-            <div class="checkout-title text-center">
-              <h3>Order History</h3>
-              <h6>Martha Peterson</h6>
-            </div>
-            <div class="container mt-3">
-              <div class="row">
-                <div class="col-md-12">
-                  <div class="alfa-cart-items cart-right-wrap">
-                    <div class="cart-table">
-                      <div class="order-history-wrapper">
-                        <% if (orders && orders.length > 0) { %>
-                          <% orders.forEach(order => { %>
-                            <div class="history-wrapper">
-                              <div class="history-item">
-                                <div class="history-left-wrap">
-                                  <div class="history-content">
-                                    <div class="order-id">
-                                      <a href="order-detail?orderId=<%= order.order_id %>">
-                                        <span class="idtxt">Order ID:</span> <%= order.order_id %>
-                                      </a>
-                                    </div>
-                                    <h6><%= order.status %></h6>
-                                    <% if (order.items && order.items.length > 0) { %>
-                                      <% const item = order.items[0]; %>
-                                      <div class="history-item-product">
-                                        <div class="history-image">
-                                          <img src="../product_images/<%= item.product_main_image %>" alt="<%= item.product_name %>" />
+        <%- include('includes/header') %>
+            <div class="mt-100 mt-150">
+                <div class="checkout-wrapper margin-160">
+                    <div class="container">
+                        <div class="checkout-title text-center">
+                            <h3>Order History</h3>
+                            <h6>Martha Peterson</h6>
+                        </div>
+                        <div class="containers mt-3">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="alfa-cart-items cart-right-wrap">
+                                        <div class="cart-table">
+                                             <div class="order-history-wrapper">
+                                                <% if (orders && orders.length > 0) { %>
+                                                    <% orders.forEach(order => { %>
+                                                <div class="history-wrappper">
+                                                    <div class="history-item">
+                                                      <% if (order.items && order.items.length > 0) { %>
+                                                        <% const item = order.items[0]; %>
+                                                        <div class="history-left-wrap">
+                                                            <div class="history-image">
+                                                                <img src="../product_images/<%= item.product_main_image %>" alt="<%= item.product_name %>" />
+                                                            </div>
+                                                            
+                                                            <div class="history-content">
+                                                                <div class="order-id">
+                                                                    <a href="order-detail?orderId=<%= order.order_id %>">
+                                                                        <span class="idtxt">Order ID:</span> <%= order.order_id %>
+                                                                      </a>
+                                                                </div>
+                                                                <h6>Preparing shipment</h6>
+                                                                <h3><%= item.product_name %></h3>
+                                                                 <p><%= item.product_description %> | Size : <%= item.size %> | Quantity : <%= item.quantity %> | Price : £<%= item.price %></p>
+                                                                <div class="order-status">
+                                                                    <div class="sts">Status: <span class="status-type success"><%= order.status %></span> </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <% } %>
+                                                        <div class="history-links">
+                                                            <a href="/order-detail/<%= order.order_id %>">Order Detail</a>
+                                                            <span>|</span>
+                                                            <a href="">Buy again</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <% }) %>
+                                                <% } else { %>
+                                                  <p>No orders found.</p>
+                                                <% } %>
+                                             </div>
                                         </div>
-                                        <div class="history-product-content">
-                                          <h3><%= item.product_name %></h3>
-                                          <p>
-                                            <%= item.product_description %> | Size : <%= item.size %> | Quantity : <%= item.quantity %> | Price : £<%= item.price %>
-                                          </p>
-                                        </div>
-                                      </div>
-                                    <% } %>
-                                    <div class="order-status">
-                                      <div class="sts">
-                                        Status: <span class="status-type success"><%= order.status %></span>
-                                      </div>
+                                        
                                     </div>
-                                  </div>
                                 </div>
-                                <div class="history-links">
-                                  <a href="/order-detail/<%= order.order_id %>">Order Detail</a>
-                                  <span>|</span>
-                                  <a href="">Buy again</a>
-                                </div>
-                              </div>
+                                
                             </div>
-                          <% }) %>
-                        <% } else { %>
-                          <p>No orders found.</p>
-                        <% } %>
-                      </div>
-                      
-                      
+                        </div>
                     </div>
-                  </div>
                 </div>
-              </div>
             </div>
-          </div>
-        </div>
-      </div>
-      <!-- Footer -->
-      <%- include('includes/footer') %>
-      <!-- End -->
+            <!-- Footer -->
+            <%- include('includes/footer') %>
+                <!-- End -->
     </div>
     <%- include('includes/foot') %>
-  </body>
+</body>
+
 </html>
-
-<!-- full order details -->
-<!-- <div class="order-history-wrapper">
-  <% if (orders && orders.length > 0) { %> <%
-  orders.forEach(order => { %> 
-  <div class="history-wrappper">
-    <div class="history-item">
-      <div class="history-left-wrap">
-        <div class="history-content">
-          <div class="order-id">
-            <a href="order-detail"
-              ><span class="idtxt">Order ID:</span> <%=
-              order.order_id %></a
-            >
-          </div>
-          <h6><%= order.status %></h6>
-          <% order.items.forEach(item => { %>
-          <div class="history-item-product">
-            <div class="history-image">
-              <img
-                src="../product_images/<%= item.product_main_image %>"
-                alt="<%= item.product_name %>"
-              />
-            </div>
-
-            <div class="history-product-content">
-              <h3><%= item.product_name %></h3>
-              <p>
-                <%= item.product_description %> | Size : <%= item.size %> | Quantity : <%=
-                item.quantity %> | Price : £<%= item.price
-                %>
-              </p>
-            </div>
-          </div>
-          <% }); %>
-          <div class="order-status">
-            <div class="sts">
-              Status:
-              <span class="status-type success"
-                ><%= order.status %></span
-              >
-            </div>
-          </div>
-        </div>
-      </div>
-      <div class="history-links">
-        <a href="order-detail">Order Detail</a>
-        <span>|</span>
-        <a href="">Buy again</a>
-      </div>
-    </div>
-  </div>
-  <% }) %> <% } else { %>
-  <p>No orders found.</p>
-  <% } %>
-</div> -->

@@ -15,7 +15,7 @@
             <div class="checkout-title">
               <h3>Shoping Cart</h3>
             </div>
-            <div class="container mt-3">
+            <div class="containers mt-3">
               <div class="row">
                 <div class="col-md-12">
                   <div class="alfa-cart-items cart-right-wrap">
@@ -29,7 +29,7 @@
                                 <div class="cart-td">
                                   <div class="cart-items-left">
                                 <div class="cart-delete" data-product-id="1" >
-                                      <a href="#" class="delete-product" ><span><i
+                                      <a href="delete-from-wishlist/<%=item.id%>" class="delete-product" ><span><i
                                             class="fa-regular fa-circle-xmark"></i></span ></a>
                                     </div>  
                                      <div class="cart-image">
@@ -68,7 +68,7 @@
                                               <% } %>
                                             <% }); %>
                                           <% } else { %>
-                                            <li>Currently Out Of Stock</li>
+                                            <li class="product-ofs">Currently Out Of Stock</li>
                                           <% } %>
                                         </ul>
                                       </div>
@@ -89,17 +89,15 @@
                                           <span></span>
                                         </div>
                                       </div>
-                                      
-
-                                    </div>
+                                     </div>
                                   </div>
                                 </div>
                                 <input type="hidden" name="products[0][productId]" value="1">
                                 <input type="hidden" name="products[0][price]" value="100">
                                 <div class="cart-td position-relative">
-                                  <div class="pro-cart-price">
+                                  <div class="pro-cart-price wishlist-cart-price">
                                     <h5>
-                                        <span class="mrp-price">
+                                        <span class="mrp-price whishlist-p">
                                           £<%=item.product_price %></span
                                         >
                                         <span class="final-prices"
@@ -107,7 +105,7 @@
                                           (item.discount_on_product /
                                           100))).toFixed(2) %>
                                         </span>
-                                        <span class="discount-text"  >
+                                        <span class="discount-text whishlist-p"  >
                                           (<%=item.discount_on_product %>% OFF )</span>
                                       </h5>
                                   </div>

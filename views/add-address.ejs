@@ -2,6 +2,7 @@
 <html lang="en">
 
 <head>
+    <base href="http://localhost:8081/">
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alfa Meanswear | Product Details</title>
@@ -14,11 +15,11 @@
             <div class="mt-100 mt-150">
                 <div class="container margin-160">
                     <div class="row">
-                       
                         
                         <div class="address-wrapper">
                              <div class="address-form">
                                 <form action="submit-address" method="post">
+                                    
                                     <input type="hidden" name="userid" value="<%=user.id %>">
                                     <div class="row">
                                         <div class="address-form-title">
@@ -27,7 +28,7 @@
                                         <div class="col-md-12">
                                             <div class="address-form-group">
                                                 <label for="Name" class="address-label">Name*</label>
-                                                <input type="text" name="name" class="address-input" placeholder="Enter Name">
+                                                <input type="text" name="name" value="<%= address ? address.name : '' %>" class="address-input" placeholder="Enter Name">
                                             </div>
                                         </div>
                                         <div class="col-md-12">
@@ -41,7 +42,7 @@
                                                 <div class="ad-md-9">
                                                     <div class="address-form-group">
                                                         <label for="Name" class="address-label">Phone Number*</label>
-                                                        <input type="text" name="phone" class="address-input" placeholder="Enter Phone">
+                                                        <input type="text" name="phone"  value="<%= address ? address.phone : '' %>" class="address-input" placeholder="Enter Phone">
                                                     </div>  
                                                 </div>
                                              </div>
@@ -49,7 +50,7 @@
                                         <div class="col-md-12">
                                             <div class="address-form-group">
                                                 <label for="Name" class="address-label">Email Address*</label>
-                                                <input type="text" name="email" class="address-input" placeholder="Enter Email">
+                                                <input type="text" name="email"  value="<%= address ? address.email : '' %>" class="address-input" placeholder="Enter Email">
                                             </div>
                                         </div>
                                     </div>
@@ -60,19 +61,19 @@
                                         <div class="col-md-12">
                                             <div class="address-form-group">
                                                 <label for="Name" class="address-label">Pin Code*</label>
-                                                <input type="text" name="pincode" class="address-input" placeholder="Pin Code ">
+                                                <input type="text" name="pincode" value="<%= address ? address.pincode : '' %>" class="address-input" placeholder="Pin Code ">
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="address-form-group">
                                                 <label for="Name" class="address-label">Address (House No, Building, Street, Aera)*</label>
-                                                <input type="text" name="address" class="address-input" placeholder="Enter Full Address">
+                                                <input type="text" name="address" value="<%= address ? address.full_address : '' %>" class="address-input" placeholder="Enter Full Address">
                                             </div>
                                         </div>
                                         <div class="col-md-12">
                                             <div class="address-form-group">
                                                 <label for="Name" class="address-label">Locality*</label>
-                                                <input type="text" name="locality" class="address-input" placeholder="Enter City">
+                                                <input type="text" name="locality"  value="<%= address ? address.locality : '' %>"  class="address-input" placeholder="Enter City">
                                             </div>
                                         </div>
                                         <div class="col-md-12">
@@ -80,23 +81,23 @@
                                                 <div class="col-md-6">
                                                     <div class="address-form-group">
                                                         <label for="Name" class="address-label">City*</label>
-                                                         <select name="city" id="" class="address-input" required>
+                                                        <select name="city" class="address-input" required>
                                                             <option value="">-Select-</option>
-                                                            <option value="London">London</option>
-                                                            <option value="Birmingham">Birmingham</option>
-                                                            <option value="Bristol">Bristol</option>
-                                                        </select>
+                                                            <option value="London" <%= address && address.city === "London" ? "selected" : "" %>>London</option>
+                                                            <option value="Birmingham" <%= address && address.city === "Birmingham" ? "selected" : "" %>>Birmingham</option>
+                                                            <option value="Bristol" <%= address && address.city === "Bristol" ? "selected" : "" %>>Bristol</option>
+                                                          </select>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-6">
                                                     <div class="address-form-group">
                                                         <label for="Name" class="address-label">State*</label>
-                                                         <select name="state" id="" class="address-input" required>
+                                                        <select name="state" class="address-input" required>
                                                             <option value="">-Select-</option>
-                                                            <option value="London">London</option>
-                                                            <option value="Birmingham">Birmingham</option>
-                                                            <option value="Bristol">Bristol</option>
-                                                        </select>
+                                                            <option value="London" <%= address && address.state === "London" ? "selected" : "" %>>London</option>
+                                                            <option value="Birmingham" <%= address && address.state === "Birmingham" ? "selected" : "" %>>Birmingham</option>
+                                                            <option value="Bristol" <%= address && address.state === "Bristol" ? "selected" : "" %>>Bristol</option>
+                                                          </select>
                                                     </div>
                                                 </div>
                                             </div>
@@ -108,27 +109,28 @@
                                          <div class="billing-type">
                                             <h5>Save Address as</h5>
                                          </div>
+                                         <%=address.address_type  %>
                                          <div class="address-radio-flex">
                                              <div class="input-radio">
-                                                <input type="radio" class="radio-input" id="radio1" name="address-type" value="Personal" checked>
+                                                <input type="radio" class="radio-input" id="radio1" name="address-type" value="Personal" <%= (address.address_type == "Personal") ? "checked" : "" %> >
                                                 <label for="radio1">Personal</label>
                                              </div>
                                              <div class="input-radio">
-                                                <input type="radio" class="radio-input" id="radio2" name="address-type" value="Commercial">
+                                                <input type="radio" class="radio-input" id="radio2" name="address-type" value="Commercial" <%= (address.address_type == "Commercial") ? "checked" : "" %> >
                                                 <label for="radio2">Commercial</label>
                                              </div>
                                          </div>
                                     </div>
                                     <div class="col-md-12 mt-4">
                                         <div class="address-form-group">
-                                             <input type="checkbox" name="checkbox" class="checkbox-inputs">
+                                             <input type="checkbox" name="checkbox" class="checkbox-inputs" <%= (address && address.billing_info_same_as_delivery_address) ? "checked" : "" %>>
                                              <label for="Name" class="address-checkbox-label" style="color: #000;">Make this my default address</label>
                                         </div>
                                     </div>
                                     <div class="col-md-12 mt-5">
                                         <div class="add-address-button">
                                             <button class="address-btn">Change</button>
-                                            <button class="address-btn address-black">Submit</button>
+                                            <button class="address-btn address-black"><%= address && address.id ? 'Update' : 'Submit' %></button>
                                         </div>
                                     </div>
                                  </div>

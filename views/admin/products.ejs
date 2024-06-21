@@ -31,19 +31,13 @@
         </div>
           <div class="product-list">
             <div class="table-list-head">
-              <div class="alfa-data-search">
-                  <div class="select-warpper">
-                      <div class="table-selects">
-                          <select name="" id="" class="table-select">
-                              <option value="all">All</option>
-                              <option value="">One</option>
-                          </select>
-                      </div>
-                  </div>
+              <div class="product-status-grid">
+                 <a href="" class="status-btn p-active">Active</a>
+                 <a href="" class="status-btn">Inactive</a>
               </div>
               <div class="table-list-btn">
                   <div class="table-btn">
-                      <a href="/admin/add-product">Add product</a>
+                      <a href="/admin/add-product"><span><i class="fa-solid fa-plus"></i></span> Add product</a>
                   </div>
               </div>
           </div>
@@ -53,8 +47,7 @@
                 <thead class="table-dark">
                   <tr>
                     <th>ID</th>
-                    <th>Name</th>
-                    <th>Image</th>
+                    <th>Product</th>
                     <th>Price</th>
                     <th>Discount</th>
                     <th>Category</th>
@@ -67,12 +60,16 @@
                   <% products.forEach(product => { %>
                   <tr>
                     <td><%= product.id %></td>
-                    <td><%= product.product_name %></td>
                     <td>
-                      <img src="../../product_images/<%= product.product_main_image %>" alt="" style="width: 50px; height: 50px;">
-                  </td>
-                  
-                    <td><%= product.product_price %></td>
+                      <div class="admin-product">
+                          <div class="product-checkbox">
+                             <input type="checkbox" name="checkbox">
+                          </div>
+                          <span> <img src="../../product_images/<%= product.product_main_image %>" alt="" style="width: 40px; height: 40px;"></span>
+                          <h6><%= product.product_name %></h6>
+                      </div>
+                    </td>
+                     <td><%= product.product_price %></td>
                     <td><%= product.discount_on_product %></td>
                     <td><%= product.category_name %></td>  
                     <td><%= product.subcategory_name	 %></td>  

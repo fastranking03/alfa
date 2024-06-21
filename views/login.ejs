@@ -109,6 +109,7 @@
                 eyeView.classList.add("fa-eye");
             }
         });
+
         document.addEventListener("DOMContentLoaded", function () {
             const emailInput = document.getElementById("emailInput");
             const emailError = document.getElementById("emailError");
@@ -124,6 +125,7 @@
                     document.getElementById("login").classList.remove("user-btn-primary")
                 }
             });
+            
             loginForm.addEventListener("submit", function (event) {
                 const emailValue = emailInput.value;
                 if (!validateEmail(emailValue)) {
