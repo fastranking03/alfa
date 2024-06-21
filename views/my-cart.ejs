@@ -87,7 +87,7 @@
                                         <% if (item.wear_type_bottom_or_top === 'bottom') { %>
                                           <% const numericSize = size.replace('size_', ''); %>
                                           <% if (numericSize.length > 0) { %>
-                                            <% if (stock) { %>
+                                            <% if (stock) { %> 
                                               <li class="cart-li">
                                                 <input type="radio" id="size-<%= item.cart_id %>-<%= numericSize %>" name="selectedSize-<%= item.cart_id %>-<%= item.product_id %>" value="<%= numericSize %>" <%= stock > 0 ? '' : 'disabled' %> <%= item.selected_size && item.selected_size.toLowerCase() === numericSize.toLowerCase() ? 'checked' : '' %> required />
                                                 <label id="label-<%= item.cart_id %>-<%= numericSize %>" style="<%= stock > 0 ? '' : 'opacity: 0.5;' %>" for="size-<%= item.cart_id %>-<%= numericSize %>" class="size-item card-s <%= stock > 0 ? '' : 'disabled' %>">

@@ -312,10 +312,10 @@ router.get("/product-detail/:id", async (req, res) => {
     const product_varient_name = productRows[0].varient_name;
 
     const queryVariantProducts = `
-    SELECT * 
-    FROM products 
-    WHERE varient_name = ?;
-`;
+      SELECT * 
+      FROM products 
+      WHERE varient_name = ?;
+    `;
 
     const [variantProducts] = await connect.query(queryVariantProducts, [
       product_varient_name,
@@ -397,11 +397,6 @@ router.get("/product-detail/:id", async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
-
-// router.get("/checkout", (req, res) => {
-//   const user = req.session.user;
-//   res.render("checkout", { user });
-// });
 
 router.get("/checkout", async (req, res) => {
   const user = req.session.user;
