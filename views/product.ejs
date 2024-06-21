@@ -1,14 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-  <base href="http://localhost:8081" />
-  <!-- <base href="https://diz5s9u.localto.net/"> -->
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Alfa Meanswear | Product</title>
-  <meta name="robots" content="noindex" />
-  <%- include('includes/head') %>
+  <head>
+    <base href="http://localhost:8081" />
+    <!-- <base href="https://diz5s9u.localto.net/"> -->
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Alfa Meanswear | Product</title>
+    <meta name="robots" content="noindex" />
+    <%- include('includes/head') %>
     <style>
       /* Hide the default checkbox */
       .size-checkbox {
@@ -17,13 +16,13 @@
         width: 0;
         height: 0;
       }
-      .size-checkbox:checked+label {
+      .size-checkbox:checked + label {
         background-color: #005d67;
         border-color: #005d67;
         color: #fff !important;
       }
       /* Style the label text */
-      .size-checkbox+label::after {
+      .size-checkbox + label::after {
         content: "";
         display: block;
         width: 100%;
@@ -33,12 +32,12 @@
         background-repeat: no-repeat;
         background-position: center;
       }
-     </style>
-</head>
+    </style>
+  </head>
 
-<body>
-  <div class="alfa-main-wraper">
-    <%- include('includes/header') %>
+  <body>
+    <div class="alfa-main-wraper">
+      <%- include('includes/header') %>
       <div class="mt-100 mt-700">
         <div class="product-banner">
           <div class="container">
@@ -63,9 +62,16 @@
                         <h4 class="product-h4">Search Products</h4>
                       </div>
                       <div class="product-search">
-                        <span class="p-s-icon"><img src="assets/images/search.png" alt="" /></span>
-                        <input type="search" name="search" class="product-search-control"
-                          placeholder="Search for products" id="" />
+                        <span class="p-s-icon"
+                          ><img src="assets/images/search.png" alt=""
+                        /></span>
+                        <input
+                          type="search"
+                          name="search"
+                          class="product-search-control"
+                          placeholder="Search for products"
+                          id=""
+                        />
                       </div>
                     </div>
                     <div class="product-category mt-4">
@@ -75,14 +81,17 @@
                       <div class="product-cat-type">
                         <ul class="product-cat-list">
                           <% categories.forEach(category=> { %>
-                            <li>
-                              <a href="category/<%= category.category_name %>">
-                                <button class="cat-item">
-                                  <%= category.category_name %>
-                                    <span class="cat-span">( <%=category.product_count %> )</span>
-                                </button></a>
-                            </li>
-                            <% }); %>
+                          <li>
+                            <a href="category/<%= category.category_name %>">
+                              <button class="cat-item">
+                                <%= category.category_name %>
+                                <span class="cat-span"
+                                  >( <%=category.product_count %> )</span
+                                >
+                              </button></a
+                            >
+                          </li>
+                          <% }); %>
                         </ul>
                       </div>
                     </div>
@@ -95,51 +104,93 @@
                         <ul>
                           <li>
                             <div class="prouduct-checkout">
-                              <input type="checkbox" class="cat-checkbox" id="blueCheckbox" value="blue"
-                                data-colour="colour" />
+                              <input
+                                type="checkbox"
+                                class="cat-checkbox"
+                                id="blueCheckbox"
+                                value="blue"
+                                data-colour="colour"
+                              />
                               <a class="product-color-item color1"> </a>
-                              <label for="blueCheckbox" class="color-label">Blue</label>
+                              <label for="blueCheckbox" class="color-label"
+                                >Blue</label
+                              >
                             </div>
                           </li>
                           <li>
                             <div class="prouduct-checkout">
-                              <input type="checkbox" class="cat-checkbox" id="whiteCheckbox" value="white"
-                                data-colour="colour" />
+                              <input
+                                type="checkbox"
+                                class="cat-checkbox"
+                                id="whiteCheckbox"
+                                value="white"
+                                data-colour="colour"
+                              />
                               <a href="" class="product-color-item color4"> </a>
-                              <label for="whiteCheckbox" class="color-label">White</label>
+                              <label for="whiteCheckbox" class="color-label"
+                                >White</label
+                              >
                             </div>
                           </li>
                           <li>
                             <div class="prouduct-checkout">
-                              <input type="checkbox" class="cat-checkbox" id="purpleCheckbox" value="purple"
-                                data-colour="colour" />
+                              <input
+                                type="checkbox"
+                                class="cat-checkbox"
+                                id="purpleCheckbox"
+                                value="purple"
+                                data-colour="colour"
+                              />
                               <a href="" class="product-color-item color3"> </a>
-                              <label for="purpleCheckbox" class="color-label">Purple</label>
+                              <label for="purpleCheckbox" class="color-label"
+                                >Purple</label
+                              >
                             </div>
                           </li>
 
                           <li>
                             <div class="prouduct-checkout">
-                              <input type="checkbox" class="cat-checkbox" id="pinkCheckbox" value="pink"
-                                data-colour="colour" />
+                              <input
+                                type="checkbox"
+                                class="cat-checkbox"
+                                id="pinkCheckbox"
+                                value="pink"
+                                data-colour="colour"
+                              />
                               <a href="" class="product-color-item color4"> </a>
-                              <label for="pinkCheckbox" class="color-label">Pink</label>
+                              <label for="pinkCheckbox" class="color-label"
+                                >Pink</label
+                              >
                             </div>
                           </li>
                           <li>
                             <div class="prouduct-checkout">
-                              <input type="checkbox" class="cat-checkbox" id="yellowCheckbox" value="yellow"
-                                data-colour="colour" />
+                              <input
+                                type="checkbox"
+                                class="cat-checkbox"
+                                id="yellowCheckbox"
+                                value="yellow"
+                                data-colour="colour"
+                              />
                               <a href="" class="product-color-item color4"> </a>
-                              <label for="yellowCheckbox" class="color-label">Yellow</label>
+                              <label for="yellowCheckbox" class="color-label"
+                                >Yellow</label
+                              >
                             </div>
                           </li>
                           <li>
                             <div class="prouduct-checkout">
-                              <input type="checkbox" class="cat-checkbox" id="brownCheckbox" value="brown"
-                                data-colour="colour" />
+                              <input
+                                type="checkbox"
+                                class="cat-checkbox"
+                                id="brownCheckbox"
+                                value="brown"
+                                data-colour="colour"
+                              />
                               <a href="" class="product-color-item color4"> </a>
-                              <label for="brownCheckbox" class="color-label">Brown</label>
+                              <label for="brownCheckbox" class="color-label"
+                                >Brown</label
+                              >
                             </div>
                           </li>
                         </ul>
@@ -154,31 +205,56 @@
                         <ul id="sizeFilters">
                           <li>
                             <div class="product-checkout">
-                              <input type="checkbox" class="size-checkbox" id="sizeS" value="S" />
+                              <input
+                                type="checkbox"
+                                class="size-checkbox"
+                                id="sizeS"
+                                value="S"
+                              />
                               <label for="sizeS" class="size-item">S</label>
                             </div>
                           </li>
                           <li>
                             <div class="product-checkout">
-                              <input type="checkbox" class="size-checkbox" id="sizeM" value="M" />
+                              <input
+                                type="checkbox"
+                                class="size-checkbox"
+                                id="sizeM"
+                                value="M"
+                              />
                               <label for="sizeM" class="size-item">M</label>
                             </div>
                           </li>
                           <li>
                             <div class="product-checkout">
-                              <input type="checkbox" class="size-checkbox" id="sizeL" value="L" />
+                              <input
+                                type="checkbox"
+                                class="size-checkbox"
+                                id="sizeL"
+                                value="L"
+                              />
                               <label for="sizeL" class="size-item">L</label>
                             </div>
                           </li>
                           <li>
                             <div class="product-checkout">
-                              <input type="checkbox" class="size-checkbox" id="sizeXL" value="XL" />
+                              <input
+                                type="checkbox"
+                                class="size-checkbox"
+                                id="sizeXL"
+                                value="XL"
+                              />
                               <label for="sizeXL" class="size-item">XL</label>
                             </div>
                           </li>
                           <li>
                             <div class="product-checkout">
-                              <input type="checkbox" class="size-checkbox" id="sizeXXL" value="XXL" />
+                              <input
+                                type="checkbox"
+                                class="size-checkbox"
+                                id="sizeXXL"
+                                value="XXL"
+                              />
                               <label for="sizeXXL" class="size-item">XXL</label>
                             </div>
                           </li>
@@ -195,8 +271,22 @@
                           <div class="price-range-slider">
                             Price:
                             <span class="rangeValues"> </span>
-                            <input value="10" min="10" max="100" step="10" class="price-range-input" type="range" />
-                            <input value="100" min="10" max="100" step="10" class="price-range-input" type="range" />
+                            <input
+                              value="10"
+                              min="10"
+                              max="100"
+                              step="10"
+                              class="price-range-input"
+                              type="range"
+                            />
+                            <input
+                              value="100"
+                              min="10"
+                              max="100"
+                              step="10"
+                              class="price-range-input"
+                              type="range"
+                            />
                           </div>
                         </div>
                       </div>
@@ -207,53 +297,70 @@
                   <div class="product-right-wrapper">
                     <div id="productGrid" class="product-grid">
                       <% products.forEach(product=> { %>
-                        <div class="product-item"
-                          data-price="<%=(product.product_price * (1 - (product.discount_on_product / 100))).toFixed(2) %>"
-                          data-color="<%= product.colour %>">
-                          <div class="produt-wrap">
-                            <a href="/product-detail/<%= product.id %> ">
-                              <img src="../product_images/<%= product.product_main_image%> %>" class="pro-img" alt="" />
+                      <div
+                        class="product-item"
+                        data-price="<%=(product.product_price * (1 - (product.discount_on_product / 100))).toFixed(2) %>"
+                        data-color="<%= product.colour %>"
+                      >
+                        <div class="produt-wrap">
+                          <a href="/product-detail/<%= product.id %> ">
+                            <img
+                              src="../product_images/<%= product.product_main_image%> %>"
+                              class="pro-img"
+                              alt=""
+                            />
+                          </a>
+                        </div>
+                        <div class="product-add-to-card-wrap">
+                          <button
+                            class="add-to-cart"
+                            data-product-id="<%= product.id %>"
+                          >
+                            <span
+                              ><i class="fa-solid fa-cart-shopping"></i
+                            ></span>
+                            Add to Cart
+                          </button>
+                        </div>
+                        <div class="product-details shop-content">
+                          <div class="product-nameprice">
+                            <a href="/product-detail/<%= product.id %>">
+                              <h6><%= product.product_name %></h6>
+                              <p class="product-short-desc">
+                                Lorem ipsum dolor sit...
+                              </p>
                             </a>
-                          </div>
-                          <div class="product-add-to-card-wrap">
-                            <button class="add-to-cart" data-product-id="<%= product.id %>">
-                              <span><i class="fa-solid fa-cart-shopping"></i></span>
-                              Add to Cart
-                            </button>
-                          </div>
-                          <div class="product-details shop-content">
-                            <div class="product-nameprice">
-                              <a href="/product-detail/<%= product.id %>">
-                                <h6>
-                                  <%= product.product_name %>
-                                </h6>
-                                <p class="product-short-desc">
-                                  Lorem ipsum dolor sit...
-                                </p>
-                              </a>
 
-                              <div class="product-price">
-                                <h5>
-                                  <span class="final-price">£<%=(product.product_price * (1 -
-                                      (product.discount_on_product / 100))).toFixed(2) %></span>
-                                  <span class="mrp-price">
-                                    £<%=product.product_price %></span>
-                                  <span class="discount-text">
-                                    (<%=product.discount_on_product %>% OFF
-                                      )</span>
-                                </h5>
-                              </div>
+                            <div class="product-price">
+                              <h5>
+                                <span class="final-price"
+                                  >£<%=(product.product_price * (1 -
+                                  (product.discount_on_product /
+                                  100))).toFixed(2) %></span
+                                >
+                                <span class="mrp-price">
+                                  £<%=product.product_price %></span
+                                >
+                                <span class="discount-text">
+                                  (<%=product.discount_on_product %>% OFF
+                                  )</span
+                                >
+                              </h5>
                             </div>
-                            <div class="product-btn">
-                              <div class="pro-whishlist">
-                                <a class="add-to-favorites" data-product-id="<%= product.id %>">
-                                  <i class="fa-regular fa-heart"></i>
-                                </a>
-                              </div>
+                          </div>
+                          <div class="product-btn">
+                            <div class="pro-whishlist">
+                              <a
+                                class="add-to-favorites"
+                                data-product-id="<%= product.id %>"
+                              >
+                                <i class="fa-regular fa-heart"></i>
+                              </a>
                             </div>
                           </div>
                         </div>
-                        <% }); %>
+                      </div>
+                      <% }); %>
                     </div>
                   </div>
                 </div>
@@ -266,24 +373,44 @@
       <!-- Mobile Product Filter -->
       <div class="mobile-filter-wrapper">
         <div class="mobile-filter">
-          <button data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom">
+          <button
+            data-bs-toggle="offcanvas"
+            data-bs-target="#offcanvasBottom"
+            aria-controls="offcanvasBottom"
+          >
             <span><i class="fa-solid fa-filter"></i></span> Filter
           </button>
         </div>
       </div>
-      <div class="offcanvas offcanvas-bottom custom-offcanvas-bottom" tabindex="-1" id="offcanvasBottom"
-        aria-labelledby="offcanvasBottomLabel">
+      <div
+        class="offcanvas offcanvas-bottom custom-offcanvas-bottom"
+        tabindex="-1"
+        id="offcanvasBottom"
+        aria-labelledby="offcanvasBottomLabel"
+      >
         <div class="offcanvas-header">
           <h5 class="offcanvas-title" id="offcanvasBottomLabel">Filter</h5>
-          <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+          <button
+            type="button"
+            class="btn-close text-reset"
+            data-bs-dismiss="offcanvas"
+            aria-label="Close"
+          ></button>
         </div>
         <div class="offcanvas-body custom-filter-body">
           <div class="product-left-wrapper">
             <div class="product-search">
               <div class="product-search">
-                <span class="p-s-icon"><img src="assets/images/search.png" alt="" /></span>
-                <input type="search" name="search" class="product-search-control" placeholder="Search for products"
-                  id="" />
+                <span class="p-s-icon"
+                  ><img src="assets/images/search.png" alt=""
+                /></span>
+                <input
+                  type="search"
+                  name="search"
+                  class="product-search-control"
+                  placeholder="Search for products"
+                  id=""
+                />
               </div>
             </div>
             <div class="product-category mt-4">
@@ -293,31 +420,39 @@
               <div class="product-cat-type">
                 <ul class="product-cat-list">
                   <li>
-                    <a href="category/Shirts"><button class="cat-item">
+                    <a href="category/Shirts"
+                      ><button class="cat-item">
                         Shirts
                         <span class="cat-span">( 4 )</span>
-                      </button></a>
+                      </button></a
+                    >
                   </li>
 
                   <li>
-                    <a href="category/Jeans"><button class="cat-item">
+                    <a href="category/Jeans"
+                      ><button class="cat-item">
                         Jeans
                         <span class="cat-span">( 2 )</span>
-                      </button></a>
+                      </button></a
+                    >
                   </li>
 
                   <li>
-                    <a href="category/Trouser "><button class="cat-item">
+                    <a href="category/Trouser "
+                      ><button class="cat-item">
                         Trouser
                         <span class="cat-span">( 4 )</span>
-                      </button></a>
+                      </button></a
+                    >
                   </li>
 
                   <li>
-                    <a href="category/Tshirts"><button class="cat-item">
+                    <a href="category/Tshirts"
+                      ><button class="cat-item">
                         Tshirts
                         <span class="cat-span">( 9 )</span>
-                      </button></a>
+                      </button></a
+                    >
                   </li>
                 </ul>
               </div>
@@ -331,49 +466,89 @@
                 <ul>
                   <li>
                     <div class="prouduct-checkout">
-                      <input type="checkbox" class="cat-checkbox" id="blueCheckbox" value="blue" data-colour="colour" />
+                      <input
+                        type="checkbox"
+                        class="cat-checkbox"
+                        id="blueCheckbox"
+                        value="blue"
+                        data-colour="colour"
+                      />
                       <a class="product-color-item color1"> </a>
                       <label for="blueCheckbox" class="color-label">Blue</label>
                     </div>
                   </li>
                   <li>
                     <div class="prouduct-checkout">
-                      <input type="checkbox" class="cat-checkbox" id="whiteCheckbox" value="white"
-                        data-colour="colour" />
+                      <input
+                        type="checkbox"
+                        class="cat-checkbox"
+                        id="whiteCheckbox"
+                        value="white"
+                        data-colour="colour"
+                      />
                       <a href="" class="product-color-item color4"> </a>
-                      <label for="whiteCheckbox" class="color-label">White</label>
+                      <label for="whiteCheckbox" class="color-label"
+                        >White</label
+                      >
                     </div>
                   </li>
                   <li>
                     <div class="prouduct-checkout">
-                      <input type="checkbox" class="cat-checkbox" id="purpleCheckbox" value="purple"
-                        data-colour="colour" />
+                      <input
+                        type="checkbox"
+                        class="cat-checkbox"
+                        id="purpleCheckbox"
+                        value="purple"
+                        data-colour="colour"
+                      />
                       <a href="" class="product-color-item color3"> </a>
-                      <label for="purpleCheckbox" class="color-label">Purple</label>
+                      <label for="purpleCheckbox" class="color-label"
+                        >Purple</label
+                      >
                     </div>
                   </li>
 
                   <li>
                     <div class="prouduct-checkout">
-                      <input type="checkbox" class="cat-checkbox" id="pinkCheckbox" value="pink" data-colour="colour" />
+                      <input
+                        type="checkbox"
+                        class="cat-checkbox"
+                        id="pinkCheckbox"
+                        value="pink"
+                        data-colour="colour"
+                      />
                       <a href="" class="product-color-item color4"> </a>
                       <label for="pinkCheckbox" class="color-label">Pink</label>
                     </div>
                   </li>
                   <li>
                     <div class="prouduct-checkout">
-                      <input type="checkbox" class="cat-checkbox" id="yellowCheckbox" value="yellow"
-                        data-colour="colour" />
+                      <input
+                        type="checkbox"
+                        class="cat-checkbox"
+                        id="yellowCheckbox"
+                        value="yellow"
+                        data-colour="colour"
+                      />
                       <a href="" class="product-color-item color4"> </a>
-                      <label for="yellowCheckbox" class="color-label">Yellow</label>
+                      <label for="yellowCheckbox" class="color-label"
+                        >Yellow</label
+                      >
                     </div>
                   </li>
                   <li>
                     <div class="prouduct-checkout">
-                      <input type="checkbox" class="cat-checkbox" id="brownCheckbox" value="brown"
-                        data-colour="colour" />
+                      <input
+                        type="checkbox"
+                        class="cat-checkbox"
+                        id="brownCheckbox"
+                        value="brown"
+                        data-colour="colour"
+                      />
                       <a href="" class="product-color-item color4"> </a>
-                      <label for="brownCheckbox" class="color-label">Brown</label>
+                      <label for="brownCheckbox" class="color-label"
+                        >Brown</label
+                      >
                     </div>
                   </li>
                 </ul>
@@ -388,31 +563,56 @@
                 <ul id="sizeFilters">
                   <li>
                     <div class="product-checkout">
-                      <input type="checkbox" class="size-checkbox" id="sizeS" value="S" />
+                      <input
+                        type="checkbox"
+                        class="size-checkbox"
+                        id="sizeS"
+                        value="s"
+                      />
                       <label for="sizeS" class="size-item">S</label>
                     </div>
                   </li>
                   <li>
                     <div class="product-checkout">
-                      <input type="checkbox" class="size-checkbox" id="sizeM" value="M" />
+                      <input
+                        type="checkbox"
+                        class="size-checkbox"
+                        id="sizeM"
+                        value="m"
+                      />
                       <label for="sizeM" class="size-item">M</label>
                     </div>
                   </li>
                   <li>
                     <div class="product-checkout">
-                      <input type="checkbox" class="size-checkbox" id="sizeL" value="L" />
+                      <input
+                        type="checkbox"
+                        class="size-checkbox"
+                        id="sizeL"
+                        value="l"
+                      />
                       <label for="sizeL" class="size-item">L</label>
                     </div>
                   </li>
                   <li>
                     <div class="product-checkout">
-                      <input type="checkbox" class="size-checkbox" id="sizeXL" value="XL" />
+                      <input
+                        type="checkbox"
+                        class="size-checkbox"
+                        id="sizeXL"
+                        value="xl"
+                      />
                       <label for="sizeXL" class="size-item">XL</label>
                     </div>
                   </li>
                   <li>
                     <div class="product-checkout">
-                      <input type="checkbox" class="size-checkbox" id="sizeXXL" value="XXL" />
+                      <input
+                        type="checkbox"
+                        class="size-checkbox"
+                        id="sizeXXL"
+                        value="xxl"
+                      />
                       <label for="sizeXXL" class="size-item">XXL</label>
                     </div>
                   </li>
@@ -429,8 +629,22 @@
                   <div class="price-range-slider">
                     Price:
                     <span class="rangeValues">$10 - $100</span>
-                    <input value="10" min="10" max="100" step="10" class="price-range-input" type="range" />
-                    <input value="100" min="10" max="100" step="10" class="price-range-input" type="range" />
+                    <input
+                      value="10"
+                      min="10"
+                      max="100"
+                      step="10"
+                      class="price-range-input"
+                      type="range"
+                    />
+                    <input
+                      value="100"
+                      min="10"
+                      max="100"
+                      step="10"
+                      class="price-range-input"
+                      type="range"
+                    />
                   </div>
                 </div>
               </div>
@@ -442,169 +656,167 @@
       <!-- Footer -->
       <%- include('includes/footer') %>
 
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-        <script>
-          $(document).ready(function () {
-            // Price Range Filter
-            const priceInputs = document.querySelectorAll(".price-range-input");
-            const productItems = $(".product-item");
-            const rangeValues = document.querySelectorAll(".rangeValues");
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+      <script>
+        $(document).ready(function () {
+          // Price Range Filter
+          const priceInputs = document.querySelectorAll(".price-range-input");
+          const productItems = $(".product-item");
+          const rangeValues = document.querySelectorAll(".rangeValues");
 
-            priceInputs.forEach((input) => {
-              input.addEventListener("input", applyFilters);
-            });
-
-            // Color Filter
-            const colorCheckboxes = $(".cat-checkbox");
-
-            colorCheckboxes.on("change", applyFilters);
-
-            function applyFilters() {
-              const minPrice = parseInt(priceInputs[0].value);
-              const maxPrice = parseInt(priceInputs[1].value);
-
-              rangeValues.forEach((rangeValue) => {
-                rangeValue.textContent = `$${minPrice} - $${maxPrice}`;
-              });
-
-              var selectedColors = []; // Array to store selected colors
-
-              // Loop through all checkboxes to find selected colors
-              colorCheckboxes.each(function () {
-                if ($(this).is(":checked")) {
-                  selectedColors.push($(this).val()); // Add selected color to array
-                }
-              });
-
-              productItems.each(function () {
-                const productPrice = parseFloat($(this).data("price"));
-                const productColor = $(this).data("color");
-
-                // Show products if they match both price and color criteria
-                if (
-                  (selectedColors.length === 0 ||
-                    selectedColors.includes(productColor)) &&
-                  productPrice >= minPrice &&
-                  productPrice <= maxPrice
-                ) {
-                  $(this).show(); // Show the product item using jQuery
-                } else {
-                  $(this).hide(); // Hide the product item using jQuery
-                }
-              });
-            }
+          priceInputs.forEach((input) => {
+            input.addEventListener("input", applyFilters);
           });
-        </script>
 
-        <!-- End -->
-        <script>
-          // Add event listener to the "Add to Favorites" button
-          document.addEventListener("DOMContentLoaded", function () {
-            const addToFavoritesButtons =
-              document.querySelectorAll(".add-to-favorites");
+          // Color Filter
+          const colorCheckboxes = $(".cat-checkbox");
 
-            addToFavoritesButtons.forEach((button) => {
-              button.addEventListener("click", function () {
-                const productId = button.getAttribute("data-product-id");
+          colorCheckboxes.on("change", applyFilters);
 
-                // Send AJAX request to the server
-                fetch(`/favorites/add/${productId}`, {
-                  method: "GET",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  credentials: "same-origin", // include cookies
-                })
-                  .then((response) => {
-                    if (!response.ok) {
-                      throw new Error("Network response was not ok");
-                    }
-                    return response.json();
-                  })
-                  .then((data) => {
-                    if (data.success) {
-                      // Show popup alert
-                      alert(data.message);
+          function applyFilters() {
+            const minPrice = parseInt(priceInputs[0].value);
+            const maxPrice = parseInt(priceInputs[1].value);
 
-                      // Update wishlist count in the span
-                      const wishlistLi = document.querySelector("#wishlist");
-                      if (wishlistLi) {
-                        const countTextSpan =
-                          wishlistLi.querySelector(".count-text");
-                        if (countTextSpan) {
-                          countTextSpan.textContent = data.favoritesCount;
-                        }
-                      }
-                    } else {
-                      alert(data.message);
-                    }
-                  })
-                  .catch((error) => {
-                    console.error(
-                      "There was a problem with the fetch operation:",
-                      error
-                    );
-                    // Handle error
-                    alert(
-                      "An error occurred while adding the product to favorites"
-                    );
-                  });
-              });
-            });
-          });
-        </script>
-        <script>
-          document.addEventListener("DOMContentLoaded", () => {
-            const addToCartButtons = document.querySelectorAll(".add-to-cart");
-
-            addToCartButtons.forEach((button) => {
-              button.addEventListener("click", addToCart);
+            rangeValues.forEach((rangeValue) => {
+              rangeValue.textContent = `$${minPrice} - $${maxPrice}`;
             });
 
-            async function addToCart(event) {
-              const productId =
-                event.currentTarget.getAttribute("data-product-id");
-              try {
-                const response = await fetch(`/cart/add/${productId}`, {
-                  method: "GET",
-                });
-                const result = await response.json();
-                if (result.success) {
-                  alert(result.message);
-                  // Update cart count in the span
-                  const cartLi = document.querySelector("#cart");
-                  if (cartLi) {
-                    const countTextSpan = cartLi.querySelector(".product-count");
-                    if (countTextSpan) {
-                      // countTextSpan.textContent = data.favoritesCount;
-                      countTextSpan.textContent = result.CartCount;
-                    }
-                  }
-                } else {
-                  alert(result.message);
-                }
-              } catch (error) {
-                console.error("Error:", error);
-                alert("An error occurred while adding the product to cart");
+            var selectedColors = []; // Array to store selected colors
+
+            // Loop through all checkboxes to find selected colors
+            colorCheckboxes.each(function () {
+              if ($(this).is(":checked")) {
+                selectedColors.push($(this).val()); // Add selected color to array
               }
-            }
-          });
-        </script>
-        <script>
-          document.addEventListener("DOMContentLoaded", function () {
-            var productGrid = document.getElementById("productGrid");
-            var productItems = productGrid.getElementsByClassName("product-item");
-            console.log(productItems.length - 3)
-            if (productItems.length <= 3) {
-              productGrid.classList.add("product-grid-start");
-            } else {
-              productGrid.classList.add("product-grid-space-between");
-            }
-          });
-        </script>
-  </div>
-  <%- include('includes/foot') %>
+            });
 
-</body>
+            productItems.each(function () {
+              const productPrice = parseFloat($(this).data("price"));
+              const productColor = $(this).data("color");
 
+              // Show products if they match both price and color criteria
+              if (
+                (selectedColors.length === 0 ||
+                  selectedColors.includes(productColor)) &&
+                productPrice >= minPrice &&
+                productPrice <= maxPrice
+              ) {
+                $(this).show(); // Show the product item using jQuery
+              } else {
+                $(this).hide(); // Hide the product item using jQuery
+              }
+            });
+          }
+        });
+      </script>
+
+      <!-- End -->
+      <script>
+        // Add event listener to the "Add to Favorites" button
+        document.addEventListener("DOMContentLoaded", function () {
+          const addToFavoritesButtons =
+            document.querySelectorAll(".add-to-favorites");
+
+          addToFavoritesButtons.forEach((button) => {
+            button.addEventListener("click", function () {
+              const productId = button.getAttribute("data-product-id");
+
+              // Send AJAX request to the server
+              fetch(`/favorites/add/${productId}`, {
+                method: "GET",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                credentials: "same-origin", // include cookies
+              })
+                .then((response) => {
+                  if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                  }
+                  return response.json();
+                })
+                .then((data) => {
+                  if (data.success) {
+                    // Show popup alert
+                    alert(data.message);
+
+                    // Update wishlist count in the span
+                    const wishlistLi = document.querySelector("#wishlist");
+                    if (wishlistLi) {
+                      const countTextSpan =
+                        wishlistLi.querySelector(".count-text");
+                      if (countTextSpan) {
+                        countTextSpan.textContent = data.favoritesCount;
+                      }
+                    }
+                  } else {
+                    alert(data.message);
+                  }
+                })
+                .catch((error) => {
+                  console.error(
+                    "There was a problem with the fetch operation:",
+                    error
+                  );
+                  // Handle error
+                  alert(
+                    "An error occurred while adding the product to favorites"
+                  );
+                });
+            });
+          });
+        });
+      </script>
+      <script>
+        document.addEventListener("DOMContentLoaded", () => {
+          const addToCartButtons = document.querySelectorAll(".add-to-cart");
+
+          addToCartButtons.forEach((button) => {
+            button.addEventListener("click", addToCart);
+          });
+
+          async function addToCart(event) {
+            const productId =
+              event.currentTarget.getAttribute("data-product-id");
+            try {
+              const response = await fetch(`/cart/add/${productId}`, {
+                method: "GET",
+              });
+              const result = await response.json();
+              if (result.success) {
+                alert(result.message);
+                // Update cart count in the span
+                const cartLi = document.querySelector("#cart");
+                if (cartLi) {
+                  const countTextSpan = cartLi.querySelector(".product-count");
+                  if (countTextSpan) {
+                    // countTextSpan.textContent = data.favoritesCount;
+                    countTextSpan.textContent = result.CartCount;
+                  }
+                }
+              } else {
+                alert(result.message);
+              }
+            } catch (error) {
+              console.error("Error:", error);
+              alert("An error occurred while adding the product to cart");
+            }
+          }
+        });
+      </script>
+      <script>
+        document.addEventListener("DOMContentLoaded", function () {
+          var productGrid = document.getElementById("productGrid");
+          var productItems = productGrid.getElementsByClassName("product-item");
+          console.log(productItems.length - 3);
+          if (productItems.length <= 3) {
+            productGrid.classList.add("product-grid-start");
+          } else {
+            productGrid.classList.add("product-grid-space-between");
+          }
+        });
+      </script>
+    </div>
+    <%- include('includes/foot') %>
+  </body>
 </html>
