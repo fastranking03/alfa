@@ -65,6 +65,37 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.post("/delete-from-wishlist", async (req, res) => {
+  const user = req.session.user;
+
+  try {
+    if (!user) {
+      return res.redirect("/login");
+    } else {
+      const productId = req.body.product_id;
+
+      const deleteQuery =
+        "DELETE FROM users_favorites WHERE product_id = ? AND user_id = ?";
+      const [deleteResult] = await connect.query(deleteQuery, [
+        productId,
+        user.id,
+      ]);
+      if (deleteResult.affectedRows > 0) {
+        // Fetch updated favorites count
+        const [[{ favoritesCount }]] = await connect.query(
+          "SELECT COUNT(*) AS favoritesCount FROM users_favorites WHERE user_id = ?",
+          [user.id]
+        );
+
+        // Update session variable with new favorites count
+        req.session.wishlistCount = favoritesCount;
+
+        // Respond with success message and updated favorites count
+        return res.redirect(`/product-detail/${productId}`);
+      }
+    }
+  } catch (error) {}
+});
 
 router.get("/delete-from-wishlist/:favoriteId", async (req, res) => {
   try {
@@ -72,8 +103,12 @@ router.get("/delete-from-wishlist/:favoriteId", async (req, res) => {
     const favoriteId = req.params.favoriteId;
 
     // Delete the favorite item from the users_favorites table
-    const deleteQuery = "DELETE FROM users_favorites WHERE product_id = ? AND user_id = ?";
-    const [deleteResult] = await connect.query(deleteQuery, [favoriteId, userId]);
+    const deleteQuery =
+      "DELETE FROM users_favorites WHERE product_id = ? AND user_id = ?";
+    const [deleteResult] = await connect.query(deleteQuery, [
+      favoriteId,
+      userId,
+    ]);
 
     // Check if the deletion was successful
     if (deleteResult.affectedRows > 0) {
@@ -88,14 +123,12 @@ router.get("/delete-from-wishlist/:favoriteId", async (req, res) => {
 
       // Respond with success message and updated favorites count
       return res.redirect("/my-wishlist");
-    }  
+    }
   } catch (error) {
     console.error("Error deleting product from favorites:", error);
     res.status(500).json({ error: "Error deleting product from favorites" });
   }
 });
-
-
 
 // Route for the product page
 router.post("/place-order", async (req, res) => {
@@ -345,7 +378,7 @@ router.get("/product-detail/:id", async (req, res) => {
         [user.id, productId]
       );
       isInFavorites = favoriteRows.length > 0;
-    }else{
+    } else {
       isInFavorites = false;
     }
 
@@ -372,11 +405,18 @@ router.get("/product-detail/:id", async (req, res) => {
 
 router.get("/checkout", async (req, res) => {
   const user = req.session.user;
+
+  if (!user) {
+    // User is not logged in, redirect to login page
+    req.session.redirectTo = "/cart";
+    return res.redirect("/login"); // Redirect to login with a redirect query parameter
+  }
+
   const userId = user.id;
   try {
     // Extract pricing details from request body
     const [cartResultAll] = await connect.query(
-      `SELECT c.*, p.*, p.wear_type_bottom_or_top
+      `SELECT c.*, c.id AS cart_id,  p.*, p.wear_type_bottom_or_top
       FROM users_cart c
       INNER JOIN products p ON c.product_id = p.id
       WHERE c.user_id = ?`,
@@ -419,10 +459,20 @@ router.get("/checkout", async (req, res) => {
       const price = parseFloat(item.product_price);
       const discount = parseFloat(item.discount_on_product) || 0;
       const quantity = parseInt(item.quantity);
-      // Check stock availability
-      const stock = item.sizes;
-      if (stock) {
-        // Ensure the stock is available
+      const selectedSize = item.selected_size;
+      // Determine the stock for the selected size
+      let stock = null;
+      if (item.wear_type_bottom_or_top === "top") {
+        const selectedSizeLowerCase = selectedSize.toLowerCase();
+        stock = item.sizes ? item.sizes[selectedSizeLowerCase] : null;
+      } else if (item.wear_type_bottom_or_top === "bottom") {
+        const sizeKey = `size_${selectedSize}`;
+        const sizeKeyLowerCase = sizeKey.toLowerCase();
+        stock = item.sizes ? item.sizes[sizeKeyLowerCase] : null;
+      }
+
+      if (stock && stock > 0) {
+        // Include in calculations only if stock is available and greater than 0
         totalPrice += price * quantity;
         totalDiscount += ((price * discount) / 100) * quantity;
         inStockItemCount++;
@@ -431,20 +481,30 @@ router.get("/checkout", async (req, res) => {
 
     const vatRate = 0.2; // 20% VAT rate
     const subtotal = (totalPrice - totalDiscount).toFixed(2);
-    const vat = (subtotal * vatRate).toFixed(2);
+    const GST = (subtotal * vatRate).toFixed(2);
     const deliveryFee = 25;
     const totalCost = (
       parseFloat(totalPrice) +
-      parseFloat(vat) +
+      parseFloat(GST) +
       deliveryFee -
       parseFloat(totalDiscount)
     ).toFixed(2);
 
     // Filter items where stock is available
-    const cartItemsInStock = cartItems.filter((item) => {
-      const stock = item.sizes;
-      return stock && Object.values(stock).some((value) => value > 0);
-    });
+   // Filter items where stock is available for the selected size
+const cartItemsInStock = cartItems.filter((item) => {
+  const selectedSize = item.selected_size;
+  let stock = null;
+  if (item.wear_type_bottom_or_top === "top") {
+    const selectedSizeLowerCase = selectedSize.toLowerCase();
+    stock = item.sizes ? item.sizes[selectedSizeLowerCase] : null;
+  } else if (item.wear_type_bottom_or_top === "bottom") {
+    const sizeKey = `size_${selectedSize}`;
+    const sizeKeyLowerCase = sizeKey.toLowerCase();
+    stock = item.sizes ? item.sizes[sizeKeyLowerCase] : null;
+  }
+  return stock && stock > 0;
+});
 
     // Query to get user addresses
     const addressSql = "SELECT * FROM user_address WHERE user_id = ?";
@@ -457,7 +517,7 @@ router.get("/checkout", async (req, res) => {
     res.render("checkout", {
       totalPrice: totalPrice.toFixed(2),
       totalDiscount: totalDiscount.toFixed(2),
-      vat,
+      vat:GST,
       deliveryFee: deliveryFee.toFixed(2),
       totalCost,
       subtotal,
@@ -501,8 +561,8 @@ router.get("/cart", async (req, res) => {
 
     if (!user || !user.id) {
       // Guest user scenario
-      const cartItems = req.session.cart || []; 
-  
+      const cartItems = req.session.cart || [];
+
       const promises = cartItems.map((cartItem) =>
         connect
           .query(`SELECT * FROM products WHERE id = ?`, [cartItem.product_id])
@@ -562,7 +622,7 @@ router.get("/cart", async (req, res) => {
       const subtotal = totalPrice - totalDiscount;
       const GST = subtotal * 0.2;
       const deliveryFee = 25;
-      const totalCost = totalPrice + GST + deliveryFee - totalDiscount; 
+      const totalCost = totalPrice + GST + deliveryFee - totalDiscount;
       res.render("my-cart", {
         user,
         cartItems: cartItemsWithSizes,
@@ -576,7 +636,7 @@ router.get("/cart", async (req, res) => {
       });
     } else {
       const userId = user.id;
-   
+
       const [cartResult] = await connect.query(
         "SELECT COUNT(*) AS cart_count FROM users_cart WHERE user_id = ?",
         [userId]
@@ -641,12 +701,21 @@ router.get("/cart", async (req, res) => {
         const price = parseFloat(item.product_price);
         const discount = parseFloat(item.discount_on_product) || 0;
         const quantity = parseInt(item.quantity);
-        // Check stock availability
-        const stock = item.sizes;
-        if (stock) {
-          // Ensure the stock is available
+        const selectedSize = item.selected_size;
+        // Determine the stock for the selected size
+        let stock = null;
+        if (item.wear_type_bottom_or_top === "top") {
+          const selectedSizeLowerCase = selectedSize.toLowerCase();
+          stock = item.sizes ? item.sizes[selectedSizeLowerCase] : null;
+        } else if (item.wear_type_bottom_or_top === "bottom") {
+          const sizeKey = `size_${selectedSize}`;
+          const sizeKeyLowerCase = sizeKey.toLowerCase();
+          stock = item.sizes ? item.sizes[sizeKeyLowerCase] : null;
+        }
+
+        if (stock && stock > 0) {
+          // Include in calculations only if stock is available and greater than 0
           totalPrice += price * quantity;
-          // totalDiscount += (price * discount) / 100;
           totalDiscount += ((price * discount) / 100) * quantity;
           inStockItemCount++;
         }
@@ -687,9 +756,9 @@ router.get("/cart", async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
- 
+
 router.post("/update-quantity", async (req, res) => {
-  const { productId, quantity } = req.body;
+  const { productId, quantity , cartId  } = req.body;
 
   try {
     if (req.session.user && req.session.user.id) {
@@ -698,66 +767,78 @@ router.post("/update-quantity", async (req, res) => {
       const updateQuery = `
         UPDATE users_cart
         SET quantity = ?
-        WHERE user_id = ? AND product_id = ?
+        WHERE user_id = ? AND product_id = ? AND id = ?
       `;
-      await connect.query(updateQuery, [quantity, userId, productId]);
+      await connect.query(updateQuery, [quantity, userId, productId , cartId]);
 
-      // Fetch updated cart items for the user
       const [cartResultAll] = await connect.query(
-        `SELECT c.*, p.*, p.wear_type_bottom_or_top
-         FROM users_cart c
-         INNER JOIN products p ON c.product_id = p.id
-         WHERE c.user_id = ?`,
+        `SELECT c.*, c.id AS cart_id,  p.*, p.wear_type_bottom_or_top
+        FROM users_cart c
+        INNER JOIN products p ON c.product_id = p.id
+        WHERE c.user_id = ?`,
         [userId]
       );
 
-      // Process cart items to calculate totals
-      const cartItemPromises = await Promise.all(
-        cartResultAll.map(async (cartItem) => {
-          let sizes = {};
-          if (cartItem.wear_type_bottom_or_top === "top") {
-            const [sizeRows] = await connect.query(
-              `SELECT xs, s, m, l, xl, xxl, xxxl, xxxxl 
+      const cartItemPromises = cartResultAll.map(async (cartItem) => {
+        let sizes = {};
+        if (cartItem.wear_type_bottom_or_top === "top") {
+          const [sizeRows] = await connect.query(
+            `SELECT xs, s, m, l, xl, xxl, xxxl, xxxxl 
              FROM topwear_inventory_with_sizes 
              WHERE product_id = ?`,
-              [cartItem.product_id]
-            );
-            sizes = sizeRows[0];
-          } else if (cartItem.wear_type_bottom_or_top === "bottom") {
-            const [sizeRows] = await connect.query(
-              `SELECT size_28, size_30, size_32, size_34, size_36, size_38, size_40, size_42, size_44, size_46 
+            [cartItem.product_id]
+          );
+          sizes = sizeRows[0];
+        } else if (cartItem.wear_type_bottom_or_top === "bottom") {
+          const [sizeRows] = await connect.query(
+            `SELECT size_28, size_30, size_32, size_34, size_36, size_38, size_40, size_42, size_44, size_46 
              FROM bottom_wear_inventory_with_sizes 
              WHERE product_id = ?`,
-              [cartItem.product_id]
-            );
-            sizes = sizeRows[0];
-          }
-          return {
-            ...cartItem,
-            sizes: sizes,
-          };
-        })
-      );
+            [cartItem.product_id]
+          );
+          sizes = sizeRows[0];
+        }
+        return {
+          ...cartItem,
+          sizes: sizes,
+        };
+      });
 
       const cartItems = await Promise.all(cartItemPromises);
 
       // Calculate totals for items in stock
       let totalPrice = 0;
       let totalDiscount = 0;
+      let inStockItemCount = 0;
 
       cartItems.forEach((item) => {
         const price = parseFloat(item.product_price);
         const discount = parseFloat(item.discount_on_product) || 0;
         const quantity = parseInt(item.quantity);
-        const stock = item.sizes;
-        if (stock) {
+        const selectedSize = item.selected_size;
+        // Determine the stock for the selected size
+        let stock = null;
+        if (item.wear_type_bottom_or_top === "top") { 
+          
+          const selectedSizeLowerCase = selectedSize.toLowerCase();
+          stock = item.sizes ? item.sizes[selectedSizeLowerCase] : null;
+        } else if (item.wear_type_bottom_or_top === "bottom") {
+          const sizeKey = `size_${selectedSize}`;
+          const sizeKeyLowerCase = sizeKey.toLowerCase();
+          stock = item.sizes ? item.sizes[sizeKeyLowerCase] : null;
+        }
+
+        if (stock && stock > 0) {
+          // Include in calculations only if stock is available and greater than 0
           totalPrice += price * quantity;
-          totalDiscount += (price * discount * quantity) / 100;
+          totalDiscount += ((price * discount) / 100) * quantity;
+          inStockItemCount++;
         }
       });
 
+      const vatRate = 0.2; // 20% VAT rate
       const subtotal = (totalPrice - totalDiscount).toFixed(2);
-      const GST = (subtotal * 0.2).toFixed(2);
+      const GST = (subtotal * vatRate).toFixed(2);
       const deliveryFee = 25;
       const totalCost = (
         parseFloat(totalPrice) +
@@ -766,6 +847,7 @@ router.post("/update-quantity", async (req, res) => {
         parseFloat(totalDiscount)
       ).toFixed(2);
 
+ 
       // Send response with updated totals
       return res.status(200).json({
         message: "Quantity updated successfully",
@@ -831,7 +913,8 @@ router.post("/update-quantity", async (req, res) => {
 
       // Calculate other totals with maximum two decimal places
       const subtotal = parseFloat((totalPrice - totalDiscount).toFixed(2));
-      const GST = parseFloat((totalPrice * 0.2).toFixed(2));
+
+      const GST = parseFloat((subtotal * 0.2).toFixed(2));
       const deliveryFee = parseFloat((25.0).toFixed(2)); // Fixed delivery fee
       const totalCost = parseFloat(
         (totalPrice + GST + deliveryFee - totalDiscount).toFixed(2)
@@ -856,7 +939,7 @@ router.post("/update-quantity", async (req, res) => {
 
 router.post("/update-product-size", async (req, res) => {
   try {
-    const { productId,cartId, newSize, oldSize } = req.body;
+    const { productId, cartId, newSize, oldSize } = req.body;
 
     console.log("productId:", productId);
     console.log("cartId:", cartId);
@@ -864,7 +947,6 @@ router.post("/update-product-size", async (req, res) => {
     console.log("oldSize:", oldSize);
 
     const user = req.session.user;
- 
 
     if (!user || !user.id) {
       // User is not logged in, update size in session cart
@@ -891,15 +973,12 @@ router.post("/update-product-size", async (req, res) => {
   }
 });
 
-
-
-
 //
 
 router.post("/submit-address", async (req, res) => {
   const {
     userid,
-    address_id,
+    address_id_exist,
     name,
     phone,
     email,
@@ -915,7 +994,7 @@ router.post("/submit-address", async (req, res) => {
   const sameAsDelivery = checkbox === "on" ? 1 : 0;
 
   try {
-    if (address_id) {
+    if (address_id_exist) {
       // Update existing address
       const updateSql = `
         UPDATE user_address 
@@ -933,7 +1012,7 @@ router.post("/submit-address", async (req, res) => {
         state,
         sameAsDelivery,
         address_type,
-        address_id,
+        address_id_exist,
       ]);
     } else {
       // Your SQL query to insert the data
@@ -964,8 +1043,8 @@ router.post("/submit-address", async (req, res) => {
 });
 router.get("/add-address", (req, res) => {
   const user = req.session.user;
- const address = null;
-  res.render("add-address", { user , address});
+  const address = {};
+  res.render("add-address", { user, address });
 });
 
 // router.get("/my-wishlist", (req, res) => {
@@ -973,7 +1052,7 @@ router.get("/add-address", (req, res) => {
 //   res.render("my-wishlist", { user });
 // });
 router.get("/my-wishlist", async (req, res) => {
-  const user = req.session.user; 
+  const user = req.session.user;
   if (!user) {
     // Redirect to login page if user is not logged in
     return res.redirect("/login");
@@ -1018,14 +1097,13 @@ router.get("/my-wishlist", async (req, res) => {
 
       const resolvedWishlistItems = await Promise.all(wishlistItemPromises);
 
-      
       const [wishlistResult] = await connect.query(
         "SELECT COUNT(*) AS wishlist_count FROM users_favorites WHERE user_id = ?",
         [user.id]
       );
- 
+
       const wishlistCount = wishlistResult[0].wishlist_count;
- 
+
       req.session.wishlistCount = wishlistCount;
 
       // Render the my-wishlist page with the user's favorite products
@@ -1152,7 +1230,6 @@ router.post("/add-to-cart", async (req, res) => {
   var selected_size = selectedSize;
   var quantity = product_quantity;
   const qty = parseInt(quantity);
-  const cartItem = { product_id, selected_size, quantity:qty };
 
   if (!user || !user.id) {
     // return res.status(401).send("User not authenticated");
@@ -1160,24 +1237,26 @@ router.post("/add-to-cart", async (req, res) => {
     const cartItems = req.session.cart || [];
 
     const Itemincart = cartItems.find((item) => item.product_id === product_id);
-      if (Itemincart) {
-        Itemincart.selected_size = selectedSize;
-
-      }  else {
+    if (Itemincart) {
+      Itemincart.selected_size = selectedSize;
+    } else {
       // Add new item to session cart if it doesn't exist
+      const cartItem = {
+        cart_id: cartItems.length + 1,
+        product_id,
+        selected_size,
+        quantity: qty,
+      };
       req.session.cart.push(cartItem);
     }
 
     req.session.cart = cartItems;
 
-    console.log(cartItem);
-
-    console.log("cartItem" , cartItem);
-    console.log("cartItems" , cartItems);
+    console.log("cartItems", cartItems);
 
     req.session.cartCount = req.session.cart.length;
 
-    console.log("cartItem" , req.session.cartCount);
+    console.log("cartItem", req.session.cartCount);
 
     res.redirect("/cart");
   } else {
@@ -1396,7 +1475,7 @@ router.post("/move-to-cart", async (req, res) => {
 });
 
 // Move item to wishlist route
-router.get('/move-to-wishlist/:cart_id', async (req, res) => {
+router.get("/move-to-wishlist/:cart_id", async (req, res) => {
   const user = req.session.user;
   const cartId = req.params.cart_id;
 
@@ -1439,8 +1518,10 @@ router.get('/move-to-wishlist/:cart_id', async (req, res) => {
     }
 
     // Remove the item from the cart
-    await connect.query("DELETE FROM users_cart WHERE id = ? AND user_id = ?", [cartId, userId]);
-
+    await connect.query("DELETE FROM users_cart WHERE id = ? AND user_id = ?", [
+      cartId,
+      userId,
+    ]);
 
     const [[cartCountResult]] = await connect.query(
       "SELECT COUNT(*) AS cart_count FROM users_cart WHERE user_id = ?",

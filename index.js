@@ -41,6 +41,7 @@ app.use(
 );
  
 
+
 app.use(async (req, res, next) => {
   try {
     const [categories] = await connect.query("SELECT * FROM category");
@@ -62,6 +63,14 @@ app.use(async (req, res, next) => {
     res.locals.wishlistCount = req.session.wishlistCount || 0;
     res.locals.session = req.session;
     res.locals.user = req.session.user;
+
+
+    if (req.session.productToWishlist) {
+      res.locals.productToWishlist = req.session.productToWishlist;
+    }
+    if (req.session.redirectTo) {
+      res.locals.redirectTo = req.session.redirectTo;
+    } 
 
     res.locals.categories = categories; // Make categories available globally
     res.locals.content = contentArray[0]; // Assign the first (and only) row of content  

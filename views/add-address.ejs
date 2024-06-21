@@ -19,6 +19,10 @@
                         <div class="address-wrapper">
                              <div class="address-form">
                                 <form action="submit-address" method="post">
+
+                                    <% if (address && address.id) { %>
+                                        <input type="hidden" name="address_id_exist" value="<%= address.id %>">
+                                      <% } %> 
                                     
                                     <input type="hidden" name="userid" value="<%=user.id %>">
                                     <div class="row">
