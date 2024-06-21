@@ -14,6 +14,23 @@
     margin: 0 auto;
   }
 
+  /* Style for disabled sizes */
+.size-list .size-item.disabled {
+  opacity: 0.5; /* Adjust opacity as desired */
+  cursor: not-allowed; /* Change cursor to indicate disabled state */
+}
+
+.size-list .size-item.disabled input[type="radio"] {
+  pointer-events: none; /* Prevent interaction with disabled inputs */
+}
+
+/* Additional styling for unavailable size message */
+.size-list .unavailableSize {
+  color: red; /* Example color for out of stock message */
+  font-style: italic; /* Example italic style */
+}
+
+
   .image-grid-wrapper {
     overflow-x: auto;
     white-space: nowrap;
@@ -235,47 +252,40 @@
                   <form method="post" id="productForm">
                     <div class="product-size-list">
                       <div class="pro--text">
-                        <h6 class="size-selection">
-                          Select Size
-                        </h6>
+                        <h6 class="size-selection">Select Size</h6>
                       </div>
                       <ul id="sizeList" class="size-list pro-detail-size-ul">
-                        <% if (sizes && Object.keys(sizes).length> 0) { %>
-                          <% const sizeEntries=Object.entries(sizes).slice(0, 5); %>
-                            <% for (const [size, stock] of sizeEntries) { %>
-                              <% if (wearType==='bottom' ) { %>
-                                <% const numericSize=size.match(/\d+/); %>
-                                  <% if (numericSize && numericSize.length> 0) { %>
-                                    <li>
-                                      <input type="radio" id="size-<%= numericSize[0] %>" name="selectedSize"
-                                        value="<%= numericSize[0] %>" <%=stock> 0 ? '' : 'disabled' %> required />
-                                      <label for="size-<%= numericSize[0] %>"
-                                        class="size-item <%= stock > 0 ? '' : 'disabled' %>">
-                                        <span class="size">
-                                          <%= numericSize[0] %>
-                                        </span>
-                                      </label>
-                                    </li>
-                                    <% } %>
-                                      <% } else { %>
-                                        <li>
-                                          <input type="radio" id="size-<%= size %>" name="selectedSize"
-                                            value="<%= size.toUpperCase() %>" <%=stock> 0 ? '' : 'disabled' %> required
-                                          />
-                                          <label for="size-<%= size %>"
-                                            class="size-item <%= stock > 0 ? '' : 'disabled' %>">
-                                            <span class="size">
-                                              <%= size.toUpperCase() %>
-                                            </span>
-                                          </label>
-                                        </li>
-                                        <% } %>
-                                          <% } %>
-                                            <% } else { %>
-                                              <p class="unavailableSize">Currently Out Of Stock</p>
-                                              <% } %>
+                        <% if (sizes && Object.keys(sizes).length > 0) { %>
+                          <% for (const [size, stock] of Object.entries(sizes)) { %>
+                            <% if (wearType === 'bottom') { %>
+                              <% const numericSize = size.match(/\d+/); %>
+                              <% if (numericSize && numericSize.length > 0) { %>
+                                <li>
+                                  <input type="radio" id="size-<%= numericSize[0] %>" name="selectedSize"
+                                    value="<%= numericSize[0] %>" <%= stock > 0 ? '' : 'disabled' %> required />
+                                  <label for="size-<%= numericSize[0] %>"
+                                    class="size-item <%= stock > 0 ? '' : 'disabled' %>">
+                                    <span class="size"><%= numericSize[0] %></span>
+                                  </label>
+                                </li>
+                              <% } %>
+                            <% } else { %>
+                              <li>
+                                <input type="radio" id="size-<%= size %>" name="selectedSize"
+                                  value="<%= size.toUpperCase() %>" <%= stock > 0 ? '' : 'disabled' %> required />
+                                <label for="size-<%= size %>"
+                                  class="size-item <%= stock > 0 ? '' : 'disabled' %>">
+                                  <span class="size"><%= size.toUpperCase() %></span>
+                                </label>
+                              </li>
+                            <% } %>
+                          <% } %>
+                        <% } else { %>
+                          <p class="unavailableSize">Currently Out Of Stock</p>
+                        <% } %>
                       </ul>
                     </div>
+                  
                     <input type="hidden" name="product_id" value="<%= product.id %>" />
                     <input type="hidden" name="product_name" value="<%= product.product_name %>" />
                     <input type="hidden" name="finalPrice_after_discount"
@@ -284,52 +294,40 @@
                     <input type="hidden" name="actual_mrp_price" value="<%= product.product_price %>" />
                     <input type="hidden" name="category" value="<%= product.category_name %>" />
                     <input type="hidden" name="sub_category" value="<%= product.sub_category_name %>" />
+                  
                     <div class="product--button-wrapper">
-
-                       
-                        <div class="cart-quantity-wrapper">
-                          <div class="left-input">
-                            <span class="decrement"><i class="fa-solid fa-minus"></i></span>
-                          </div>
-                          <div class="cart-quantity">
-                            <input type="text" name="product_quantity" value="1" class="cart-value" />
-                          </div>
-                          <div class="right-input">
-                            <span class="increment"><i class="fa-solid fa-plus"></i></span>
-                          </div>
+                      <div class="cart-quantity-wrapper">
+                        <div class="left-input">
+                          <span class="decrement"><i class="fa-solid fa-minus"></i></span>
                         </div>
-                        <div class="pro-btn-flex">
-                          <button type="button" class="cart-btn add-to-cart" data-action="addToCart"
-                          data-url="/add-to-cart">
+                        <div class="cart-quantity">
+                          <input type="text" name="product_quantity" value="1" class="cart-value" />
+                        </div>
+                        <div class="right-input">
+                          <span class="increment"><i class="fa-solid fa-plus"></i></span>
+                        </div>
+                      </div>
+                  
+                      <div class="pro-btn-flex">
+                        <button type="button" class="cart-btn add-to-cart" data-action="addToCart" data-url="/add-to-cart" <%= sizes && Object.values(sizes).some(stock => stock > 0) ? '' : 'disabled' %>>
                           <span><i class="fa-solid fa-cart-shopping"></i></span>
                           Add to Cart
                         </button>
-   
-                           <% if (isInFavorites) { %>
-                            <!-- If product is already in favorites -->
-                            <button type="button"
-                            class="cart-btn buy-now"
-                            data-action="buyNow" 
-                            data-url="/delete-from-wishlist" style="background-color: #e73535;"
-                            >Already in Wishlist</button>
-                          <% } else { %>
-                            <button
-                          type="button"
-                          class="cart-btn buy-now"
-                          data-action="buyNow" 
-                          data-url="/add-to-wishlist"
-                        >
-                          Add to Wishlist
-                        </button>
-                          <% } %>
-                        </div>
-                        
+                  
+                        <% if (isInFavorites) { %>
+                          <!-- If product is already in favorites -->
+                          <button type="button" class="cart-btn buy-now" data-action="buyNow" data-url="/delete-from-wishlist" style="background-color: #e73535;">
+                            Already in Wishlist
+                          </button>
+                        <% } else { %>
+                          <button type="button" class="cart-btn buy-now" data-action="buyNow" data-url="/add-to-wishlist">
+                            Add to Wishlist
+                          </button>
+                        <% } %>
                       </div>
-
-                    
-                         
                     </div>
                   </form>
+                  
                 </div>
               </div>
             </div>
