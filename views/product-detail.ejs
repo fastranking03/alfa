@@ -299,12 +299,15 @@
                         <span><i class="fa-solid fa-cart-shopping"></i></span>
                         Add to Cart
                       </button>
-
-                     
+ 
  
                         <% if (isInFavorites) { %>
                           <!-- If product is already in favorites -->
-                          <button disabled>Already in Wishlist</button>
+                          <button type="button"
+                          class="cart-btn buy-now"
+                          data-action="buyNow" 
+                          data-url="/delete-from-wishlist" style="background-color: #e73535;"
+                          >Already in Wishlist</button>
                         <% } else { %>
                           <button
                         type="button"
@@ -315,9 +318,7 @@
                         Add to Wishlist
                       </button>
                         <% } %>
-                    
-                      
-
+                         
                     </div>
                   </form>
                 </div>
@@ -447,15 +448,14 @@
           button.addEventListener("click", function () {
             const action = button.getAttribute("data-action");
             const url = button.getAttribute("data-url");
-
-            // Check if a size is selected
-            const selectedSize = productForm.querySelector(
-              'input[name="selectedSize"]:checked'
-            );
-            if (!selectedSize) {
-              alert("Please select a size.");
-              return; // Stop execution if no size is selected
-            }
+ 
+            if (action === "addToCart") {
+                    const selectedSize = productForm.querySelector('input[name="selectedSize"]:checked');
+                    if (!selectedSize) {
+                        alert("Please select a size.");
+                        return; // Stop execution if no size is selected
+                    }
+                }
 
             // Update the form action and submit the form
             productForm.action = url;

@@ -145,6 +145,7 @@ router.post("/login", async (req, res) => {
     // Store user data in session
     req.session.user = user[0];
 
+
     // Check if the user has items in the session cart
     if (req.session.cart && req.session.cart.length > 0) {
       for (const item of req.session.cart) {
@@ -190,6 +191,15 @@ router.post("/login", async (req, res) => {
       req.session.cart = [];
     }
 
+    const redirectTo = req.session.redirectTo ;
+    // console.log(redirectTo); // Default to homepage if no redirect path is stored
+    // console.log(req.session.redirectTo);  
+    // Clear the stored redirect path from session storage
+    delete req.session.redirectTo;
+    if (redirectTo==="/cart") {
+      return res.redirect(redirectTo);
+    }
+    
     const productIdToAdd = req.session.productToWishlist;
     if (productIdToAdd) {
       // Clear product ID from session

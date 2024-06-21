@@ -65,6 +65,37 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.post("/delete-from-wishlist" , async(req, res)=>{
+  const user = req.session.user;
+
+try {
+  if(!user){
+    return res.redirect("/login");
+  }else{
+     const productId = req.body.product_id;
+       
+     const deleteQuery = "DELETE FROM users_favorites WHERE product_id = ? AND user_id = ?";
+    const [deleteResult] = await connect.query(deleteQuery, [productId, user.id]);
+    if (deleteResult.affectedRows > 0) {
+      // Fetch updated favorites count
+      const [[{ favoritesCount }]] = await connect.query(
+        "SELECT COUNT(*) AS favoritesCount FROM users_favorites WHERE user_id = ?",
+        [user.id]
+      );
+
+      // Update session variable with new favorites count
+      req.session.wishlistCount = favoritesCount;
+
+      // Respond with success message and updated favorites count
+      return res.redirect(`/product-detail/${productId}`);
+    }  
+     
+  }
+  
+} catch (error) {
+  
+}
+});
 
 router.get("/delete-from-wishlist/:favoriteId", async (req, res) => {
   try {
@@ -372,6 +403,14 @@ router.get("/product-detail/:id", async (req, res) => {
 
 router.get("/checkout", async (req, res) => {
   const user = req.session.user;
+
+ 
+  if (!user) {
+    // User is not logged in, redirect to login page
+    req.session.redirectTo = "/cart";
+    return res.redirect("/login");   // Redirect to login with a redirect query parameter
+  }
+
   const userId = user.id;
   try {
     // Extract pricing details from request body
@@ -831,7 +870,8 @@ router.post("/update-quantity", async (req, res) => {
 
       // Calculate other totals with maximum two decimal places
       const subtotal = parseFloat((totalPrice - totalDiscount).toFixed(2));
-      const GST = parseFloat((totalPrice * 0.2).toFixed(2));
+      
+      const GST = parseFloat((subtotal * 0.2).toFixed(2));
       const deliveryFee = parseFloat((25.0).toFixed(2)); // Fixed delivery fee
       const totalCost = parseFloat(
         (totalPrice + GST + deliveryFee - totalDiscount).toFixed(2)
@@ -899,7 +939,7 @@ router.post("/update-product-size", async (req, res) => {
 router.post("/submit-address", async (req, res) => {
   const {
     userid,
-    address_id,
+    address_id_exist,
     name,
     phone,
     email,
@@ -915,7 +955,7 @@ router.post("/submit-address", async (req, res) => {
   const sameAsDelivery = checkbox === "on" ? 1 : 0;
 
   try {
-    if (address_id) {
+    if (address_id_exist) {
       // Update existing address
       const updateSql = `
         UPDATE user_address 
@@ -933,7 +973,7 @@ router.post("/submit-address", async (req, res) => {
         state,
         sameAsDelivery,
         address_type,
-        address_id,
+        address_id_exist,
       ]);
     } else {
       // Your SQL query to insert the data
@@ -964,7 +1004,7 @@ router.post("/submit-address", async (req, res) => {
 });
 router.get("/add-address", (req, res) => {
   const user = req.session.user;
- const address = null;
+  const address = {};
   res.render("add-address", { user , address});
 });
 
@@ -1148,11 +1188,11 @@ router.post("/order-confirm", async (req, res) => {
 router.post("/add-to-cart", async (req, res) => {
   const user = req.session.user;
 
-  const { product_id, selectedSize, product_quantity } = req.body;
+  const {product_id, selectedSize, product_quantity } = req.body;
   var selected_size = selectedSize;
   var quantity = product_quantity;
   const qty = parseInt(quantity);
-  const cartItem = { product_id, selected_size, quantity:qty };
+  
 
   if (!user || !user.id) {
     // return res.status(401).send("User not authenticated");
@@ -1165,14 +1205,13 @@ router.post("/add-to-cart", async (req, res) => {
 
       }  else {
       // Add new item to session cart if it doesn't exist
+      const cartItem = { cart_id: cartItems.length + 1,  product_id, selected_size, quantity:qty };
       req.session.cart.push(cartItem);
     }
 
     req.session.cart = cartItems;
-
-    console.log(cartItem);
-
-    console.log("cartItem" , cartItem);
+ 
+ 
     console.log("cartItems" , cartItems);
 
     req.session.cartCount = req.session.cart.length;
