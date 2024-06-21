@@ -34,9 +34,11 @@ router.get("/:categoryName", async (req, res) => {
     let total_product_count = productRows.length;
 
     if (productRows.length === 0) {
-      return res
-        .status(404)
-        .json({ message: "No products found in this category" });
+      res.render("product", { 
+        products: productRows,
+        categories: categories,
+        product_count : total_product_count,
+      });
     }
 
     // res.render('products', { products: productRows });
