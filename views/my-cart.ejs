@@ -86,20 +86,34 @@
                                       <% for (const [size, stock] of Object.entries(item.sizes)) { %>
                                         <% if (item.wear_type_bottom_or_top === 'bottom') { %>
                                           <% const numericSize = size.replace('size_', ''); %>
-                                          <% if (stock && numericSize.length > 0) { %>
-                                            <li class="cart-li">
-                                              <input type="radio" id="size-<%= item.cart_id %>-<%= numericSize %>" name="selectedSize-<%= item.cart_id %>-<%= item.product_id %>"  value="<%= numericSize %>" <%= stock > 0 ? '' : 'disabled' %> <%= item.selected_size && item.selected_size.toLowerCase() === numericSize.toLowerCase() ? 'checked' : '' %> required />
-                                              <label id="label-<%= item.cart_id %>-<%= numericSize %>" style="<%= stock > 0 ? '' : 'opacity: 0.5;' %>" for="size-<%= item.cart_id %>-<%= numericSize %>" class="size-item card-s <%= stock > 0 ? '' : 'disabled' %>">
-                                                <span class="size"><%= numericSize %></span>
-                                              </label>
-                                            </li>
+                                          <% if (numericSize.length > 0) { %>
+                                            <% if (stock) { %>
+                                              <li class="cart-li">
+                                                <input type="radio" id="size-<%= item.cart_id %>-<%= numericSize %>" name="selectedSize-<%= item.cart_id %>-<%= item.product_id %>" value="<%= numericSize %>" <%= stock > 0 ? '' : 'disabled' %> <%= item.selected_size && item.selected_size.toLowerCase() === numericSize.toLowerCase() ? 'checked' : '' %> required />
+                                                <label id="label-<%= item.cart_id %>-<%= numericSize %>" style="<%= stock > 0 ? '' : 'opacity: 0.5;' %>" for="size-<%= item.cart_id %>-<%= numericSize %>" class="size-item card-s <%= stock > 0 ? '' : 'disabled' %>">
+                                                  <span class="size"><%= numericSize %></span>
+                                                </label>
+                                              </li>
+                                            <% } else { %>
+                                              <li class="cart-li">
+                                                <label class="size-item card-s disabled" style="opacity: 0.5;">
+                                                  <span class="size"><%= numericSize %> </span>
+                                                </label>
+                                              </li>
+                                            <% } %>
                                           <% } %>
                                         <% } else { %>
                                           <% if (stock) { %>
                                             <li class="cart-li">
-                                              <input type="radio" id="size-<%= item.cart_id %>-<%= size %>" name="selectedSize-<%= item.cart_id %>-<%= item.product_id %>"  value="<%= size.toUpperCase() %>" <%= stock > 0 ? '' : 'disabled' %> <%= item.selected_size && item.selected_size.toLowerCase() === size.toLowerCase() ? 'checked' : '' %> required />
+                                              <input type="radio" id="size-<%= item.cart_id %>-<%= size %>" name="selectedSize-<%= item.cart_id %>-<%= item.product_id %>" value="<%= size.toUpperCase() %>" <%= stock > 0 ? '' : 'disabled' %> <%= item.selected_size && item.selected_size.toLowerCase() === size.toLowerCase() ? 'checked' : '' %> required />
                                               <label id="label-<%= item.cart_id %>-<%= size %>" style="<%= stock > 0 ? '' : 'opacity: 0.5;' %>" for="size-<%= item.cart_id %>-<%= size %>" class="card-s size-item <%= stock > 0 ? '' : 'disabled' %>">
                                                 <span class="size"><%= size.toUpperCase() %></span>
+                                              </label>
+                                            </li>
+                                          <% } else { %>
+                                            <li class="cart-li">
+                                              <label class="size-item card-s disabled" style="opacity: 0.5;">
+                                                <span class="size"><%= size.toUpperCase() %> </span>
                                               </label>
                                             </li>
                                           <% } %>
@@ -109,6 +123,7 @@
                                       <p>Currently Out Of Stock</p>
                                     <% } %>
                                   </ul>
+                                   
                                 </div>
                                 
                                 <div class="new-cart-quantity">
