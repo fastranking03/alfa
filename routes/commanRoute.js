@@ -219,6 +219,14 @@ router.post("/place-order", async (req, res) => {
       }
     }
 
+     // Delete items from the cart after placing the order
+     const cartIds = parsedCartItems.map(item => item.cart_id);
+     await connect.query(
+       "DELETE FROM users_cart WHERE user_id = ? AND id IN (?)",
+       [userId, cartIds]
+     );
+
+
     // Commit the transaction after all queries succeed
     await connect.query("COMMIT");
 
@@ -706,13 +714,14 @@ router.get("/cart", async (req, res) => {
         const selectedSize = item.selected_size;
         // Determine the stock for the selected size
         let stock = null;
-        if (item.wear_type_bottom_or_top === "top") {
-          const selectedSizeLowerCase = selectedSize.toLowerCase();
-          stock = item.sizes ? item.sizes[selectedSizeLowerCase] : null;
-        } else if (item.wear_type_bottom_or_top === "bottom") {
-          const sizeKey = `size_${selectedSize}`;
-          const sizeKeyLowerCase = sizeKey.toLowerCase();
-          stock = item.sizes ? item.sizes[sizeKeyLowerCase] : null;
+        if (selectedSize) {
+          if (item.wear_type_bottom_or_top === "top") {
+            const selectedSizeLowerCase = selectedSize.toLowerCase();
+            stock = item.sizes ? item.sizes[selectedSizeLowerCase] : null;
+          } else if (item.wear_type_bottom_or_top === "bottom") {
+            const numericSize = selectedSize.replace('size_', '');
+            stock = item.sizes ? item.sizes[numericSize] : null;
+          }
         }
 
         if (stock && stock > 0) {

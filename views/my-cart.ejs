@@ -43,7 +43,7 @@
                   <div class="alfa-cart-items cart-right-wrap">
                     <div class="cart-table">
                       <div class="cart-tbody" id="cart-pricing">
-                        <% cartItems.forEach((item, index) => { %>
+                        <% cartItemsInStock.forEach((item, index) => { %>
                         <div class="cart-tr cart-b-tr">
                           <div class="cart-td">
                             <div class="cart-items-left">
@@ -305,8 +305,7 @@
                     <div class="alfa-checkout-wrapper">
                       <button
                         type="button"
-                        class="checkout-btn"
-                        onclick="window.location.href='/checkout'"
+                        class="checkout-btn" 
                       >
                         Proceed to Checkout
                       </button>
@@ -329,26 +328,31 @@
     <script>
       document.querySelector('.checkout-btn').addEventListener('click', function(event) {
         // Get all cart items
-        const cartItems = document.querySelectorAll('.cart-td');
+        const cartItemsInStock = document.querySelectorAll('.cart-tr');
     
-        for (const item of cartItems) {
+        for (const item of cartItemsInStock) {
           // Get the product and cart IDs
-          const productId = item.querySelector('input[name="product_quantity"]').getAttribute('data-product-id');
-          const cartId = item.querySelector('input[name="product_quantity"]').getAttribute('data-cart-id');
+          const productQuantityInput = item.querySelector('input[name="product_quantity"]');
+          if (!productQuantityInput) continue;
+          
+          const productId = productQuantityInput.getAttribute('data-product-id');
+          const cartId = productQuantityInput.getAttribute('data-cart-id');
     
           // Check if a size is selected for this product
           const selectedSize = document.querySelector(`input[name="selectedSize-${cartId}-${productId}"]:checked`);
           if (!selectedSize) {
             // Alert the user if no size is selected for this product
             alert(`Please select a size for product ID ${productId}`);
+            event.preventDefault();
             return;
           }
         }
-    
+        
         // If all items have a selected size, proceed to checkout
         window.location.href = '/checkout';
       });
     </script>
+    
     
   </body>
 </html>
