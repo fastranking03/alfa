@@ -1,183 +1,210 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    
-    <base href="http://localhost:8081" /> 
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <base href="http://localhost:8081" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Alfa Meanswear | Product Details</title>
     <%- include('includes/head') %>
-</head>
- 
-<body>
+  </head>
+
+  <body>
     <div class="alfa-main-wraper">
-        <%- include('includes/header') %>
-            <div class="mt-100 mt-150">
-                <div class="checkout-wrapper margin-180">
-                    <div class="container">
-                        <div class="checkout-title text-center">
-                            <h3>Order Information</h3>
-                            <h6>Order ID: <%=order.order_id  %></h6>
+      <%- include('includes/header') %>
+      <div class="mt-100 mt-150">
+        <div class="checkout-wrapper margin-180">
+          <div class="container">
+            <div class="checkout-title text-center">
+              <h3>Order Information</h3>
+              <h6>Order ID: <%=order.order_id %></h6>
+            </div>
+
+            <div class="checkout-title text-left">
+              <h3>Order Status</h3>
+              <h6><%=order.order_status %></h6>
+            </div>
+
+            <div class="row mt-5">
+              <div class="col-md-6">
+                <div class="alfa-checkout-address">
+                  <div class="order-proccess-wrapper">
+                    <div class="process-wrapper">
+                      <div class="process-item process-active">
+                        <div class="proccess-text-center">
+                          <div>
+                            <span
+                              ><i class="fa-solid fa-file-invoice"></i
+                            ></span>
+                            <h6 class="order-placed">Order Placed</h6>
+                          </div>
                         </div>
-                        <div class="row mt-5">
-                            <div class="col-md-6">
-                                 <div class="alfa-checkout-address">
-                                    <div class="order-proccess-wrapper">
-                                        <div class="process-wrapper">
-                                            <div class="process-item process-active">
-                                               <div class="proccess-text-center">
-                                                  <div>
-                                                    <span><i class="fa-solid fa-file-invoice"></i></span>
-                                                    <h6 class="order-placed">Order Placed</h6>
-                                                  </div>
-                                               </div>
-                                            </div>
-                                            <div class="process-item process-active">
-                                                <div class="proccess-text-center">
-                                                    <span><i class="fa-solid fa-cube"></i></span>
-                                                    <h6 class="processing">Processing</h6>
-                                                </div>
-                                            </div>
-                                            <div class="process-item">
-                                                <div class="proccess-text-center">
-                                                    <span><i class="fa-solid fa-truck"></i></span>
-                                                    <h6 class="on-road">On The Road</h6>
-                                                </div>
-                                            </div>
-                                            <div class="process-item">
-                                                <div class="proccess-text-center">
-                                                    <span><i class="fa-regular fa-handshake"></i></span>
-                                                    <h6 class="delivered">Delivered</h6>
-                                                </div>
-                                             </div>
-                                        </div>
-                                     </div>
-                                     <div class="shiping-title">
-                                        <h5>Delivery Address</h5>
-                                    </div>
-                                    <div class="shipping-address">
-                                         <div class="shipping-address-display">
-                                            <div class="address-content">
-                                                <div class="shipper-name"> Jeremy John Lawson </div>
-                                                <div class="shipper-email">
-                                                    <p>sales@alfa-menswear.com </p>
-                                                    <p>+44 1202 292 895 </p>
-                                                </div>
-                                                <div class="shipper-address">
-                                                    33 Westover Road, Bournemouth, Dorset, BH1 2BZ
-                                                </div>
-                                            </div>
-                                         </div>
-                                    </div>
-                                </div>
-                                <div class="alfa-checkout-address mt-5">
-                                    <div class="shiping-title">
-                                       <h5>Billing Address</h5>
-                                   </div>
-                                   <div class="shipping-address">
-                                        <div class="shipping-address-display">
-                                           <div class="address-content">
-                                               <div class="shipper-name"> Jeremy John Lawson </div>
-                                               <div class="shipper-email">
-                                                   <p>sales@alfa-menswear.com </p>
-                                                   <p>+44 1202 292 895 </p>
-                                               </div>
-                                               <div class="shipper-address">
-                                                   33 Westover Road, Bournemouth, Dorset, BH1 2BZ
-                                               </div>
-                                           </div>
-                                        </div>
-                                   </div>
-                               </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="checkout-item-wrapper">
-                                    <div class="item-counts">
-                                        <div class="counts">
-                                            <h6>2 Item </h6>
-                                        </div>
-                                     </div>
-                                    <div class="checkout-cart-wrapper">
-                                        <div class="checkout-wrapp">
-                                            <% orderItems.forEach(item => { %>
-                                             <div class="check-item">
-                                                <div class="check-item-left">
-                                                     <div class="check-item-image">
-                                                        <img src="../product_images/<%=item.product_main_image %>" class="check-image" alt="">
-                                                     </div>
-                                                     <div class="checkout-cont">
-                                                        <h4><%=item.product_name %> </h4>
-                                                        <div class="checkout-rest-cont">
-                                                            <p>Color : <%=item.colour %></p>
-                                                            <p>Size : <%=item.size %></p>
-                                                            <p>Qty :  <%=item.quantity %></p>
-                                                        </div>
-                                                     </div>
-                                                </div>
-                                                <div class="check-item-right">
-                                                    <div class="check-price">
-                                                        <h3>£ <%=item.price %></h3>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <% }); %>
-                                        </div>
-                                         <div class="alfa-cart-total">
-                                            <ul>
-                                                <li>
-                                                    <div class="alfa-text">Total MRP </div>
-                                                    <div class="alfa-price"> £  <%=order.total_mrp %></div>
-                                                </li>
-
-                                                <li>
-                                                    <div class="alfa-text">Discount on MRP </div>
-                                                    <div class="alfa-price"> £ <%=order.discount_amount %></div>
-                                                </li>
-
-                                                <li>
-                                                    <div class="alfa-text">Sub Total</div>
-                                                    <div class="alfa-price"><%=order.sub_total  %></div>
-                                                </li>
-
-                                                <li>
-                                                    <div class="alfa-text">Vat ( 20% )</div>
-                                                    <div class="alfa-price">£ <%=order.vat  %></div>
-                                                </li>
-                                                
-                                                <li>
-                                                    <div class="alfa-text">Delivery Fee</div>
-                                                    <div class="alfa-price"> <%=order.delivery_charges  %></div>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div class="alfa-cart-total">
-                                            <ul>
-                                                <li>
-                                                    <div class="alfa-text">Total Cost</div>
-                                                    <div class="alfa-price">£ <%=order.total_payable  %></div>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                        <div class="alfa-checkout-wrapper">
-                                            <a href="/product">
-                                                <button type="button" class="checkout-btn">Continue Shopping</button>
-                                            </a>
-                                            <button type="button" class="checkout-btn cencle-order d-none">Continue Shopping</button>
-                                         </div>
-                                    </div>
-                                </div>
-                            </div>
+                      </div>
+                      <div class="process-item process-active">
+                        <div class="proccess-text-center">
+                          <span><i class="fa-solid fa-cube"></i></span>
+                          <h6 class="processing">Processing</h6>
                         </div>
+                      </div>
+                      <div class="process-item">
+                        <div class="proccess-text-center">
+                          <span><i class="fa-solid fa-truck"></i></span>
+                          <h6 class="on-road">On The Road</h6>
+                        </div>
+                      </div>
+                      <div class="process-item">
+                        <div class="proccess-text-center">
+                          <span><i class="fa-regular fa-handshake"></i></span>
+                          <h6 class="delivered">Delivered</h6>
+                        </div>
+                      </div>
                     </div>
+                  </div>
+                  <div class="shiping-title">
+                    <h5>Delivery Address</h5>
+                  </div>
+                  <div class="shipping-address">
+                    <div class="shipping-address-display">
+                      <div class="address-content">
+                        <div class="shipper-name">Jeremy John Lawson</div>
+                        <div class="shipper-email">
+                          <p>sales@alfa-menswear.com</p>
+                          <p>+44 1202 292 895</p>
+                        </div>
+                        <div class="shipper-address">
+                          33 Westover Road, Bournemouth, Dorset, BH1 2BZ
+                        </div>
+                      </div>
+                    </div>
+                  </div>
                 </div>
-             </div>
-            <!-- Footer -->
-            <%- include('includes/footer') %>
-            <!-- End -->
+                <div class="alfa-checkout-address mt-5">
+                  <div class="shiping-title">
+                    <h5>Billing Address</h5>
+                  </div>
+                  <div class="shipping-address">
+                    <div class="shipping-address-display">
+                      <div class="address-content">
+                        <div class="shipper-name">Jeremy John Lawson</div>
+                        <div class="shipper-email">
+                          <p>sales@alfa-menswear.com</p>
+                          <p>+44 1202 292 895</p>
+                        </div>
+                        <div class="shipper-address">
+                          33 Westover Road, Bournemouth, Dorset, BH1 2BZ
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="checkout-item-wrapper">
+                  <div class="item-counts">
+                    <div class="counts">
+                      <h6><%= orderItems.length %>Item</h6>
+                    </div>
+                  </div>
+                  <div class="checkout-cart-wrapper">
+                    <div class="checkout-wrapp">
+                      <% orderItems.forEach(item => { %>
+                      <div class="check-item">
+                        <div class="check-item-left">
+                          <div class="check-item-image">
+                            <img
+                              src="../product_images/<%=item.product_main_image %>"
+                              class="check-image"
+                              alt=""
+                            />
+                          </div>
+                          <div class="checkout-cont">
+                            <h4><%=item.product_name %></h4>
+                            <div class="checkout-rest-cont">
+                              <p>Color : <%=item.colour %></p>
+                              <p>Size : <%=item.size %></p>
+                              <p>Qty : <%=item.quantity %></p>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="check-item-right">
+                          <div class="check-price">
+                            <h3>£ <%=item.price %></h3>
+                          </div>
+                        </div>
+                      </div>
+                      <% }); %>
+                    </div>
+                    <div class="alfa-cart-total">
+                      <ul>
+                        <li>
+                          <div class="alfa-text">Total MRP</div>
+                          <div class="alfa-price">£ <%=order.total_mrp %></div>
+                        </li>
+
+                        <li>
+                          <div class="alfa-text">Discount on MRP</div>
+                          <div class="alfa-price">
+                            £ <%=order.discount_amount %>
+                          </div>
+                        </li>
+
+                        <li>
+                          <div class="alfa-text">Sub Total</div>
+                          <div class="alfa-price"><%=order.sub_total %></div>
+                        </li>
+
+                        <li>
+                          <div class="alfa-text">Vat ( 20% )</div>
+                          <div class="alfa-price">£ <%=order.vat %></div>
+                        </li>
+
+                        <li>
+                          <div class="alfa-text">Delivery Fee</div>
+                          <div class="alfa-price">
+                            <%=order.delivery_charges %>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+
+                    <div class="alfa-cart-total">
+                      <ul>
+                        <li>
+                          <div class="alfa-text">Total Cost</div>
+                          <div class="alfa-price">
+                            £ <%=order.total_payable %>
+                          </div>
+                        </li>
+                      </ul>
+                    </div>
+
+                    <div class="alfa-checkout-wrapper">
+                      <a href="/cancel-order/<%=order.order_id  %>">
+                        <button type="button" class="checkout-btn">
+                          CANCEL ORDER
+                        </button>
+                      </a>
+                    </div>
+                    
+                    <br />
+
+                    <div class="alfa-checkout-wrapper">
+                      <a href="/return-order/<%=order.order_id  %>">
+                        <button type="button" class="checkout-btn">
+                          RETURN ORDER
+                        </button>
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Footer -->
+      <%- include('includes/footer') %>
+      <!-- End -->
     </div>
     <%- include('includes/foot') %>
-
-</body>
-
+  </body>
 </html>
