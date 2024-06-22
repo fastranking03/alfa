@@ -300,8 +300,8 @@
                       <div
                         class="product-item"
                         data-price="<%=(product.product_price * (1 - (product.discount_on_product / 100))).toFixed(2) %>"
-                        data-color="<%= product.colour %>" 
-                        
+                        data-color="<%= product.colour %>"
+                        data-size="<%= product.sizes %>"
                       >
                         <div class="produt-wrap">
                           <a href="/product-detail/<%= product.id %> ">
@@ -671,8 +671,10 @@
 
           // Color Filter
           const colorCheckboxes = $(".cat-checkbox");
+          const sizeCheckboxes = $(".size-checkbox");
 
           colorCheckboxes.on("change", applyFilters);
+          sizeCheckboxes.on("change", applyFilters);
 
           function applyFilters() {
             const minPrice = parseInt(priceInputs[0].value);
@@ -682,29 +684,42 @@
               rangeValue.textContent = `$${minPrice} - $${maxPrice}`;
             });
 
-            var selectedColors = []; // Array to store selected colors
-
-            // Loop through all checkboxes to find selected colors
+            const selectedColors = [];
             colorCheckboxes.each(function () {
               if ($(this).is(":checked")) {
-                selectedColors.push($(this).val()); // Add selected color to array
+                selectedColors.push($(this).val().toLowerCase());
+              }
+            });
+
+            const selectedSizes = [];
+            sizeCheckboxes.each(function () {
+              if ($(this).is(":checked")) {
+                selectedSizes.push($(this).val().toLowerCase());
               }
             });
 
             productItems.each(function () {
               const productPrice = parseFloat($(this).data("price"));
-              const productColor = $(this).data("color");
+              const productColor = $(this).data("color").toLowerCase();
+              const productSizes = $(this)
+                .data("size")
+                .toLowerCase()
+                .split(":")
+                .filter((_, i) => i % 2 === 0); // Get sizes only
 
-              // Show products if they match both price and color criteria
-              if (
-                (selectedColors.length === 0 ||
-                  selectedColors.includes(productColor)) &&
-                productPrice >= minPrice &&
-                productPrice <= maxPrice
-              ) {
-                $(this).show(); // Show the product item using jQuery
+              const matchesPrice =
+                productPrice >= minPrice && productPrice <= maxPrice;
+              const matchesColor =
+                selectedColors.length === 0 ||
+                selectedColors.includes(productColor);
+              const matchesSize =
+                selectedSizes.length === 0 ||
+                selectedSizes.some((size) => productSizes.includes(size));
+
+              if (matchesPrice && matchesColor && matchesSize) {
+                $(this).show();
               } else {
-                $(this).hide(); // Hide the product item using jQuery
+                $(this).hide();
               }
             });
           }
