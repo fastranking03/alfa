@@ -20,6 +20,12 @@
                             <h3>Order Information</h3>
                             <h6>Order ID: <%=order.order_id  %></h6>
                         </div>
+
+                        <div class="checkout-title text-left">
+                            <h3>Order Status</h3>
+                            <h6><%=order.order_status %></h6>
+                        </div>
+ 
                         <div class="row mt-5">
                             <div class="col-md-6">
                                  <div class="alfa-checkout-address">
@@ -95,7 +101,7 @@
                                 <div class="checkout-item-wrapper">
                                     <div class="item-counts">
                                         <div class="counts">
-                                            <h6>2 Item </h6>
+                                            <h6> <%= orderItems.length %>Item </h6>
                                         </div>
                                      </div>
                                     <div class="checkout-cart-wrapper">
@@ -151,6 +157,7 @@
                                                 </li>
                                             </ul>
                                         </div>
+
                                         <div class="alfa-cart-total">
                                             <ul>
                                                 <li>
@@ -160,10 +167,11 @@
                                             </ul>
                                         </div>
                                         <div class="alfa-checkout-wrapper">
-                                            <a href="/product">
-                                                <button type="button" class="checkout-btn">Continue Shopping</button>
+                                            <a href="/cancel-order/<%=order.order_id  %>">
+                                                <button type="button" class="checkout-btn">CANCEL ORDER</button>
                                             </a>
                                             <button type="button" class="checkout-btn cencle-order d-none">Continue Shopping</button>
+
                                          </div>
                                     </div>
                                 </div>

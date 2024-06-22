@@ -41,7 +41,7 @@
                                                                         <span class="idtxt">Order ID:</span> <%= order.order_id %>
                                                                       </a>
                                                                 </div>
-                                                                <h6>Preparing shipment</h6>
+                                                                <h6><%= order.order_status %></h6>
                                                                 <h3><%= item.product_name %></h3>
                                                                  <p><%= item.product_description %> | Size : <%= item.size %> | Quantity : <%= item.quantity %> | Price : £<%= item.price %></p>
                                                                 <div class="order-status">
