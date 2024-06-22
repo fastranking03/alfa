@@ -704,6 +704,7 @@
         width: 105px;
         height: 32px;
         font-size: 14px;
+        margin: auto;
     }
 
     .offer-percentage h3 {
@@ -741,7 +742,7 @@
     }
 
     .bestseller-wrapper .owl-nav {
-        top: -33px;
+        top: -38px;
     }
 
     .testimonial-content h4 {
