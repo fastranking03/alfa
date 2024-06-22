@@ -273,7 +273,6 @@ router.get("/product", async (req, res) => {
   LEFT JOIN bottom_wear_inventory_with_sizes bw ON p.id = bw.product_id AND p.wear_type_bottom_or_top = 'bottom'
   GROUP BY p.id;
 `;
- 
 
   const querycategoryList = `
       SELECT c.*, COUNT(p.id) AS product_count
@@ -730,8 +729,9 @@ router.get("/cart", async (req, res) => {
             const selectedSizeLowerCase = selectedSize.toLowerCase();
             stock = item.sizes ? item.sizes[selectedSizeLowerCase] : null;
           } else if (item.wear_type_bottom_or_top === "bottom") {
-            const numericSize = selectedSize.replace("size_", "");
-            stock = item.sizes ? item.sizes[numericSize] : null;
+            const sizeKey = `size_${selectedSize}`;
+            const sizeKeyLowerCase = sizeKey.toLowerCase();
+            stock = item.sizes ? item.sizes[sizeKeyLowerCase] : null;
           }
         }
 
@@ -1470,8 +1470,6 @@ router.get("/order-detail/:orderId", async (req, res) => {
   }
 });
 
-
-
 router.post("/move-to-cart", async (req, res) => {
   const user = req.session.user;
   const userId = user.id;
@@ -1633,32 +1631,76 @@ router.post("/save-profile", async (req, res) => {
   }
 });
 
+
 // Route to handle cancellation of an order
-router.get('/cancel-order/:orderId', async (req, res) => {
+router.get("/cancel-order/:orderId", async (req, res) => {
   const user = req.session.user; // Assuming user ID is stored in session
   const orderId = req.params.orderId;
 
   if (!user) {
-      return res.status(401).send('Unauthorized'); // Ensure user is authenticated
+    return res.status(401).send("Unauthorized"); // Ensure user is authenticated
   }
 
   try {
-      // Check if the order exists and belongs to the logged-in user
-      const [result] = await connect.query('SELECT * FROM orders WHERE order_id = ? AND user_id = ?', [orderId, user.id]);
+    // Check if the order exists and belongs to the logged-in user
+    const [result] = await connect.query(
+      "SELECT * FROM orders WHERE order_id = ? AND user_id = ?",
+      [orderId, user.id]
+    );
 
-      if (result.length === 0) {
-          return res.status(404).send(`Order with ID ${orderId} not found or does not belong to the user.`);
-      }
+    if (result.length === 0) {
+      return res
+        .status(404)
+        .send(
+          `Order with ID ${orderId} not found or does not belong to the user.`
+        );
+    }
 
-      // Update the order status to 'cancelled'
-      await connect.query('UPDATE orders SET order_status = ? WHERE order_id = ? AND user_id = ?', ['cancelled by User', orderId , user.id]);
+    // Update the order status to 'cancelled'
+    await connect.query(
+      "UPDATE orders SET order_status = ? WHERE order_id = ? AND user_id = ?",
+      ["cancelled by User", orderId, user.id]
+    );
 
-      res.redirect("/my-orders");
+    res.redirect("/my-orders");
   } catch (error) {
-      console.error('Error cancelling order:', error);
-      res.status(500).send('Internal Server Error');
+    console.error("Error cancelling order:", error);
+    res.status(500).send("Internal Server Error");
   }
 });
 
+router.get("/return-order/:orderId", async (req, res) => {
+  const user = req.session.user; // Assuming user ID is stored in session
+  const orderId = req.params.orderId;
 
+  if (!user) {
+    return res.status(401).send("Unauthorized"); // Ensure user is authenticated
+  }
+
+  try {
+    // Check if the order exists and belongs to the logged-in user
+    const [result] = await connect.query(
+      "SELECT * FROM orders WHERE order_id = ? AND user_id = ?",
+      [orderId, user.id]
+    );
+
+    if (result.length === 0) {
+      return res
+        .status(404)
+        .send(
+          `Order with ID ${orderId} not found or does not belong to the user.`
+        );
+    }
+
+    // Update the order status to 'cancelled'
+    await connect.query(
+      "UPDATE orders SET order_status = ? WHERE order_id = ? AND user_id = ?",
+      ["Returned by User", orderId, user.id]
+    );
+    res.redirect("/my-orders");
+  } catch (error) {
+    console.error("Error cancelling order:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
 export default router;
