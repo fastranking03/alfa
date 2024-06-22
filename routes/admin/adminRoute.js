@@ -118,13 +118,44 @@ router.get("/user-detailed-view/:userId", async (req, res) => {
 
 // Static Routes
 router.get('/orders',(req,res) =>{
-  return res.render('admin/orders')
-})
+  return res.render('admin/orders');
+});
 router.get('/order-details',(req,res) =>{
-  res.render("admin/order-details")
-})
+  res.render("admin/order-details");
+});
 router.get('/',(req,res) =>{
-  res.render("admin/index")
-})
+  res.render("admin/index");
+});
+
+router.get('/varients', async (req, res) => {
+  try {
+    const [variants] = await connect.query('SELECT * FROM varients');
+    res.render('admin/varient', { variants });
+  } catch (err) {
+    console.error('Error fetching variants:', err);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+
+router.get('/admin/add-product-in/:variant_name', async (req, res) => {
+  const { variant_name } = req.params;
+
+  try {
+    const [products_in_varient] = await pool.query(
+      'SELECT * FROM products WHERE variant_name = ?',
+      [variant_name]
+    );
+
+    const [all_products ] = await pool.query(
+      'SELECT * FROM products' 
+    );
+
+    res.render('admin/product-list', { products_in_varient, variant_name  , all_products});
+  } catch (err) {
+    console.error('Error fetching products for variant:', err);
+    res.status(500).send('Internal Server Error');
+  }
+});
 
 export default router;

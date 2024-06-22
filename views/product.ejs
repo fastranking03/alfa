@@ -301,6 +301,7 @@
                         class="product-item"
                         data-price="<%=(product.product_price * (1 - (product.discount_on_product / 100))).toFixed(2) %>"
                         data-color="<%= product.colour %>" 
+                        
                       >
                         <div class="produt-wrap">
                           <a href="/product-detail/<%= product.id %> ">

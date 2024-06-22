@@ -206,6 +206,7 @@
                         <!-- Display total calculations -->
                       </div>
 
+                      <% if (isLoggedIn) { %>
                       <div>
                         <h3>Out Of Stock Products</h3>
                         <% cartItemsOutOfStock.forEach((item, index) => { %>
@@ -284,7 +285,7 @@
                           </div>
                           <% }); %>
                       </div>
-                      
+                      <% }  %>
                     </div>
                   </div>
                 </div>

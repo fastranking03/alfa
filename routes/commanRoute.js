@@ -260,32 +260,33 @@ router.post("/place-order", async (req, res) => {
   }
 });
 
-router.get("/product", async (req, res) => {
-  const user = req.session.user;
-  const queryProduct = `
-  SELECT  * 
-  FROM products ; 
-`;
+      router.get("/product", async (req, res) => {
+        const user = req.session.user;
+        const queryProduct = `
+        SELECT  * 
+        FROM products ; 
+      `;
 
-  const querycategoryList = `
-SELECT c.*, COUNT(p.id) AS product_count
-FROM category c
-LEFT JOIN products p ON c.id = p.category_id 
-GROUP BY c.id;
-`;
-  try {
-    const [results] = await connect.query(queryProduct);
-    const [categories] = await connect.query(querycategoryList);
+        const querycategoryList = `
+      SELECT c.*, COUNT(p.id) AS product_count
+      FROM category c
+      LEFT JOIN products p ON c.id = p.category_id 
+      GROUP BY c.id;
+      `;
+      
+      try {
+        const [results] = await connect.query(queryProduct);
+        const [categories] = await connect.query(querycategoryList);
 
-    res.render("product", {
-      user,
-      products: results,
-      categories: categories,
-    });
-  } catch (error) {
-    console.error("Database query error:", error);
-    res.status(500).send("Internal Server Error");
-  }
+        res.render("product", {
+          user,
+          products: results,
+          categories: categories,
+        });
+      } catch (error) {
+        console.error("Database query error:", error);
+        res.status(500).send("Internal Server Error");
+      }
 });
 
 router.get("/blogs", async (req, res) => {
@@ -643,6 +644,8 @@ router.get("/cart", async (req, res) => {
         deliveryFee,
         totalCost,
         cartItemsInStock: cartItemsWithSizes, // For guest user, all items are considered in stock
+        cartItemsOutOfStock :cartItemsWithSizes,
+        isLoggedIn: !!user,
       });
     } else {
       const userId = user.id;
@@ -767,6 +770,7 @@ router.get("/cart", async (req, res) => {
         totalCost,
         cartItemsInStock,
         cartItemsOutOfStock,
+        isLoggedIn: !!user,
       });
     }
   } catch (error) {
