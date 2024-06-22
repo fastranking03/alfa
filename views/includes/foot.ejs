@@ -8,8 +8,15 @@
 <script src="assets/js/change-size.js"></script>
 
 <script> 
-  var openProfileCard = document.getElementById("openProfileCard");
+// Loader
 
+  $(window).on('load',function(){
+    setTimeout(function(){  
+    $('.page-loader').fadeOut('slow');
+    },2000);
+  });
+
+  var openProfileCard = document.getElementById("openProfileCard");
   // Initial state (assuming the card is hidden by default)
   var onClickProfile = document.getElementById("onClickProfile");
   var isCardHidden = true;

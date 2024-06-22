@@ -40,7 +40,15 @@
                                         </div>
                                     </div>
                                 </div>
-                                <div class="table-list-btn">
+                                <div class="table-list-btn d-flex" style="gap: 10px;">
+                                    <div class="table-selects">
+                                        <select name="" id="" class="table-select">
+                                            <option value="">Select</option>
+                                            <option value="Completed">Completed</option>
+                                            <option value="Cancelled">Cancelled</option>
+                                            <option value="In Progress">In Progress</option>
+                                        </select>
+                                    </div>
                                     <div class="table-btn">
                                         <a href="/admin/add-banner">Add Banner</a>
                                     </div>
@@ -50,6 +58,7 @@
                                 <table class="alfa-table">
                                     <thead>
                                         <tr>
+                                            <th></th>
                                             <th>Sr No</th>
                                             <th>User Name</th>
                                             <th>Order Id</th>
@@ -63,6 +72,11 @@
                                     </thead>
                                     <tbody id="order-tbody">
                                         <tr>
+                                            <td>
+                                                <div class="product-checkbox">
+                                                    <input type="checkbox" name="checkbox">
+                                                </div>
+                                            </td>
                                             <td>1</td>
                                             <td>
                                                 <div class="user-detail-wrap">
@@ -92,6 +106,11 @@
                                             </td>
                                         </tr>
                                         <tr>
+                                            <td>
+                                                <div class="product-checkbox">
+                                                    <input type="checkbox" name="checkbox">
+                                                </div>
+                                            </td>
                                             <td>2</td>
                                             <td>
                                                 <div class="user-detail-wrap">
@@ -121,6 +140,11 @@
                                             </td>
                                         </tr>
                                         <tr>
+                                            <td>
+                                                <div class="product-checkbox">
+                                                    <input type="checkbox" name="checkbox">
+                                                </div>
+                                            </td>
                                             <td>3</td>
                                             <td>
                                                 <div class="user-detail-wrap">
