@@ -138,20 +138,20 @@ router.get('/varients', async (req, res) => {
 });
 
 
-router.get('/admin/add-product-in/:variant_name', async (req, res) => {
+router.get('/add-product-in/:variant_name', async (req, res) => {
   const { variant_name } = req.params;
 
   try {
-    const [products_in_varient] = await pool.query(
-      'SELECT * FROM products WHERE variant_name = ?',
+    const [products_in_varient] = await connect.query(
+      'SELECT * FROM products WHERE varient_name = ?',
       [variant_name]
     );
 
-    const [all_products ] = await pool.query(
+    const [all_products ] = await connect.query(
       'SELECT * FROM products' 
     );
 
-    res.render('admin/product-list', { products_in_varient, variant_name  , all_products});
+    res.render('admin/add-products-in-varient', { products_in_varient, variant_name  , all_products});
   } catch (err) {
     console.error('Error fetching products for variant:', err);
     res.status(500).send('Internal Server Error');

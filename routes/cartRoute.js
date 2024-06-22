@@ -25,10 +25,17 @@ router.get("/cart/add/:productId", async (req, res) => {
     // return res.status(401).send("User not authenticated");
     let product_id = req.params.productId;
     let selected_size = null;
-
-    const cartItem = { product_id, selected_size ,  };
-
+    let qty = 1;
+ 
     req.session.cart = req.session.cart || [];
+
+    const cartItems = req.session.cart || [];
+
+    const cartItem = { 
+    cart_id: cartItems.length + 1,
+    product_id,
+    selected_size,
+    quantity: qty, };
 
     const itemExists = req.session.cart.some(
       (item) => item.product_id === product_id
