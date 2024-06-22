@@ -749,6 +749,12 @@ router.get("/cart", async (req, res) => {
         return stock && Object.values(stock).some((value) => value > 0);
       });
 
+       // Filter items where all sizes are out of stock
+       const cartItemsOutOfStock = cartItems.filter((item) => {
+        const stock = item.sizes;
+        return !stock || Object.values(stock).every((value) => value <= 0);
+      });
+
       res.render("my-cart", {
         user,
         cartItems,
@@ -760,6 +766,7 @@ router.get("/cart", async (req, res) => {
         deliveryFee,
         totalCost,
         cartItemsInStock,
+        cartItemsOutOfStock,
       });
     }
   } catch (error) {
