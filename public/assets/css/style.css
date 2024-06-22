@@ -922,8 +922,8 @@ a {
   border: 1px solid var(--primaryColor);
   height: 42px;
   display: none;
-  font-size: 14px;
-  padding: 6px 10px;
+  font-size: 13px;
+  padding: 2px 7px;
   font-weight: 500;
 }
 
