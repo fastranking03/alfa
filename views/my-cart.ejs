@@ -43,7 +43,7 @@
                   <div class="alfa-cart-items cart-right-wrap">
                     <div class="cart-table">
                       <div class="cart-tbody" id="cart-pricing">
-                        <% cartItems.forEach((item, index) => { %>
+                        <% cartItemsInStock.forEach((item, index) => { %>
                         <div class="cart-tr cart-b-tr">
                           <div class="cart-td">
                             <div class="cart-items-left">
@@ -205,6 +205,86 @@
 
                         <!-- Display total calculations -->
                       </div>
+
+                      <div>
+                        <h3>Out Of Stock Products</h3>
+                        <% cartItemsOutOfStock.forEach((item, index) => { %>
+                          <div class=" ">
+                            <div class=" ">
+                              <div class="cart-items-left">
+                                <div class="cart-delete">
+                                  <a
+                                    href="/delete-product/<%= item.cart_id %>"
+                                    class="delete-product"
+                                  >
+                                    <span
+                                      ><i class="fa-regular fa-circle-xmark"></i
+                                    ></span>
+                                  </a>
+                                </div>
+                                <div class="cart-image">
+                                  <img
+                                    src="../product_images/<%=item.product_main_image %>"
+                                    class="cart-img"
+                                    alt=""
+                                  />
+                                </div>
+  
+                                <div class="pro-cart-contents">
+                                  <div class="pro-cart-title">
+                                    <h3><%= item.product_name %></h3>
+                                  </div>
+                                  
+  
+                                  <div class="product-size-list">
+                                    <p style="color: #ff2020;">Currently Out Of Stock</p>
+   
+                                     
+                                  </div>
+                               
+                                </div>
+                              </div>
+                            </div>
+  
+                            <input
+                              type="hidden"
+                              name="products[<%=index%>][productId]"
+                              value="<%= item.product_id %>"
+                            />
+                            <input
+                              type="hidden"
+                              name="products[<%=index%>][price]"
+                              value="<%= item.product_price %>"
+                            />
+                            <div class="cart-td position-relative">
+                              <div class="pro-cart-price">
+                                <h5>
+                                  <span class="mrp-price"
+                                    >£<%=item.product_price %></span
+                                  >
+                                  <span class="final-prices"
+                                    >£<%= (item.product_price * (1 -
+                                    (item.discount_on_product / 100))).toFixed(2)
+                                    %></span
+                                  >
+                                  <span class="discount-text"
+                                    >(<%=item.discount_on_product %>% OFF )</span
+                                  >
+                                </h5>
+                                <div class="move-to-wishlist">
+                                  <a href="">Move To Wishlist</a>
+                                </div>
+                              </div>
+                              <div class="move-to-wishlist">
+                                <a href="/move-to-wishlist/<%= item.cart_id %>"
+                                  >Move To Wishlist</a
+                                >
+                              </div>
+                            </div>
+                          </div>
+                          <% }); %>
+                      </div>
+                      
                     </div>
                   </div>
                 </div>
@@ -303,14 +383,15 @@
                       value="<%= totalCost %>"
                     />
                     <div class="alfa-checkout-wrapper">
-                      <button
-                        type="button"
-                        class="checkout-btn"
-                        onclick="window.location.href='/checkout'"
-                      >
-                        Proceed to Checkout
-                      </button>
+                      <% if (cartItemsInStock.length > 0) { %>
+                        <button type="button" class="checkout-btn">Proceed to Checkout</button>
+                      <% } else { %>
+                        <button type="button" class="checkout-btn" disabled>No Products Available for Checkout</button>
+
+                        <button class="checkout-btn" > <a href="/products">Add Products In Cart </a></button>
+                      <% } %>
                     </div>
+                    
                   </div>
                 </div>
               </div>
@@ -329,26 +410,31 @@
     <script>
       document.querySelector('.checkout-btn').addEventListener('click', function(event) {
         // Get all cart items
-        const cartItems = document.querySelectorAll('.cart-td');
+        const cartItemsInStock = document.querySelectorAll('.cart-tr');
     
-        for (const item of cartItems) {
+        for (const item of cartItemsInStock) {
           // Get the product and cart IDs
-          const productId = item.querySelector('input[name="product_quantity"]').getAttribute('data-product-id');
-          const cartId = item.querySelector('input[name="product_quantity"]').getAttribute('data-cart-id');
+          const productQuantityInput = item.querySelector('input[name="product_quantity"]');
+          if (!productQuantityInput) continue;
+          
+          const productId = productQuantityInput.getAttribute('data-product-id');
+          const cartId = productQuantityInput.getAttribute('data-cart-id');
     
           // Check if a size is selected for this product
           const selectedSize = document.querySelector(`input[name="selectedSize-${cartId}-${productId}"]:checked`);
           if (!selectedSize) {
             // Alert the user if no size is selected for this product
             alert(`Please select a size for product ID ${productId}`);
+            event.preventDefault();
             return;
           }
         }
-    
+        
         // If all items have a selected size, proceed to checkout
         window.location.href = '/checkout';
       });
     </script>
+    
     
   </body>
 </html>

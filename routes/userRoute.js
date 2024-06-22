@@ -28,18 +28,24 @@ router.get("/otp-verify", async (req, res) => {
 router.get("/reset-password", async (req, res) => {
   res.render("reset-password");
 });
-
-// router.get("/otp-verification", async (req, res) => {
-//   const user = req.session.user;
-//   res.render("otp-verification", { user });
-// });
-
-// User Registration
-// Signup route with OTP generation and sending
+ 
 router.post("/signup", async (req, res) => {
   const { name, email, password } = req.body;
+   
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(email)) {
+    return res.render("signup", {
+      error: "Invalid email format. Please provide a valid email address.",
+    });
+  }
+
+    if (password.length < 6 || password.length > 16) {
+      return res.render("signup", {
+        error: "Password must be between 6 and 16 characters long.",
+      });
+    }
   try {
-    // Check if the email is already registered
+    
     const checkEmailQuery =
       "SELECT email FROM user_registration WHERE email = ?";
     const [existingUser] = await connect.query(checkEmailQuery, [email]);
@@ -136,7 +142,7 @@ router.post("/login", async (req, res) => {
     if (user[0].verified !== 1) {
        // Generate OTP
     const otp = Math.floor(100000 + Math.random() * 900000).toString();
-    
+
       // Nodemailer configuration
       const transporter = nodemailer.createTransport({
         host: "smtp.gmail.com", // SMTP server address for Gmail

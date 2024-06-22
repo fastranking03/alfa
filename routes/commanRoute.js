@@ -219,6 +219,14 @@ router.post("/place-order", async (req, res) => {
       }
     }
 
+     // Delete items from the cart after placing the order
+     const cartIds = parsedCartItems.map(item => item.cart_id);
+     await connect.query(
+       "DELETE FROM users_cart WHERE user_id = ? AND id IN (?)",
+       [userId, cartIds]
+     );
+
+
     // Commit the transaction after all queries succeed
     await connect.query("COMMIT");
 
@@ -486,20 +494,20 @@ router.get("/checkout", async (req, res) => {
     ).toFixed(2);
 
     // Filter items where stock is available
-   // Filter items where stock is available for the selected size
-const cartItemsInStock = cartItems.filter((item) => {
-  const selectedSize = item.selected_size;
-  let stock = null;
-  if (item.wear_type_bottom_or_top === "top") {
-    const selectedSizeLowerCase = selectedSize.toLowerCase();
-    stock = item.sizes ? item.sizes[selectedSizeLowerCase] : null;
-  } else if (item.wear_type_bottom_or_top === "bottom") {
-    const sizeKey = `size_${selectedSize}`;
-    const sizeKeyLowerCase = sizeKey.toLowerCase();
-    stock = item.sizes ? item.sizes[sizeKeyLowerCase] : null;
-  }
-  return stock && stock > 0;
-});
+    // Filter items where stock is available for the selected size
+    const cartItemsInStock = cartItems.filter((item) => {
+      const selectedSize = item.selected_size;
+      let stock = null;
+      if (item.wear_type_bottom_or_top === "top") {
+        const selectedSizeLowerCase = selectedSize.toLowerCase();
+        stock = item.sizes ? item.sizes[selectedSizeLowerCase] : null;
+      } else if (item.wear_type_bottom_or_top === "bottom") {
+        const sizeKey = `size_${selectedSize}`;
+        const sizeKeyLowerCase = sizeKey.toLowerCase();
+        stock = item.sizes ? item.sizes[sizeKeyLowerCase] : null;
+      }
+      return stock && stock > 0;
+    });
 
     // Query to get user addresses
     const addressSql = "SELECT * FROM user_address WHERE user_id = ?";
@@ -512,7 +520,7 @@ const cartItemsInStock = cartItems.filter((item) => {
     res.render("checkout", {
       totalPrice: totalPrice.toFixed(2),
       totalDiscount: totalDiscount.toFixed(2),
-      vat:GST,
+      vat: GST,
       deliveryFee: deliveryFee.toFixed(2),
       totalCost,
       subtotal,
@@ -614,10 +622,17 @@ router.get("/cart", async (req, res) => {
         inStockItemCount++; // For guest user, treat all items as in stock
       });
 
-      const subtotal = totalPrice - totalDiscount;
-      const GST = subtotal * 0.2;
+      const vatRate = 0.2; // 20% VAT rate
+      const subtotal = (totalPrice - totalDiscount).toFixed(2);
+      const GST = (subtotal * vatRate).toFixed(2);
       const deliveryFee = 25;
-      const totalCost = totalPrice + GST + deliveryFee - totalDiscount;
+      const totalCost = (
+        parseFloat(totalPrice) +
+        parseFloat(GST) +
+        deliveryFee -
+        parseFloat(totalDiscount)
+      ).toFixed(2);
+
       res.render("my-cart", {
         user,
         cartItems: cartItemsWithSizes,
@@ -699,13 +714,14 @@ router.get("/cart", async (req, res) => {
         const selectedSize = item.selected_size;
         // Determine the stock for the selected size
         let stock = null;
-        if (item.wear_type_bottom_or_top === "top") {
-          const selectedSizeLowerCase = selectedSize.toLowerCase();
-          stock = item.sizes ? item.sizes[selectedSizeLowerCase] : null;
-        } else if (item.wear_type_bottom_or_top === "bottom") {
-          const sizeKey = `size_${selectedSize}`;
-          const sizeKeyLowerCase = sizeKey.toLowerCase();
-          stock = item.sizes ? item.sizes[sizeKeyLowerCase] : null;
+        if (selectedSize) {
+          if (item.wear_type_bottom_or_top === "top") {
+            const selectedSizeLowerCase = selectedSize.toLowerCase();
+            stock = item.sizes ? item.sizes[selectedSizeLowerCase] : null;
+          } else if (item.wear_type_bottom_or_top === "bottom") {
+            const numericSize = selectedSize.replace('size_', '');
+            stock = item.sizes ? item.sizes[numericSize] : null;
+          }
         }
 
         if (stock && stock > 0) {
@@ -733,6 +749,12 @@ router.get("/cart", async (req, res) => {
         return stock && Object.values(stock).some((value) => value > 0);
       });
 
+       // Filter items where all sizes are out of stock
+       const cartItemsOutOfStock = cartItems.filter((item) => {
+        const stock = item.sizes;
+        return !stock || Object.values(stock).every((value) => value <= 0);
+      });
+
       res.render("my-cart", {
         user,
         cartItems,
@@ -744,6 +766,7 @@ router.get("/cart", async (req, res) => {
         deliveryFee,
         totalCost,
         cartItemsInStock,
+        cartItemsOutOfStock,
       });
     }
   } catch (error) {
@@ -753,7 +776,7 @@ router.get("/cart", async (req, res) => {
 });
 
 router.post("/update-quantity", async (req, res) => {
-  const { productId, quantity , cartId  } = req.body;
+  const { productId, quantity, cartId } = req.body;
 
   try {
     if (req.session.user && req.session.user.id) {
@@ -764,7 +787,7 @@ router.post("/update-quantity", async (req, res) => {
         SET quantity = ?
         WHERE user_id = ? AND product_id = ? AND id = ?
       `;
-      await connect.query(updateQuery, [quantity, userId, productId , cartId]);
+      await connect.query(updateQuery, [quantity, userId, productId, cartId]);
 
       const [cartResultAll] = await connect.query(
         `SELECT c.*, c.id AS cart_id,  p.*, p.wear_type_bottom_or_top
@@ -813,8 +836,7 @@ router.post("/update-quantity", async (req, res) => {
         const selectedSize = item.selected_size;
         // Determine the stock for the selected size
         let stock = null;
-        if (item.wear_type_bottom_or_top === "top") { 
-          
+        if (item.wear_type_bottom_or_top === "top") {
           const selectedSizeLowerCase = selectedSize.toLowerCase();
           stock = item.sizes ? item.sizes[selectedSizeLowerCase] : null;
         } else if (item.wear_type_bottom_or_top === "bottom") {
@@ -842,7 +864,6 @@ router.post("/update-quantity", async (req, res) => {
         parseFloat(totalDiscount)
       ).toFixed(2);
 
- 
       // Send response with updated totals
       return res.status(200).json({
         message: "Quantity updated successfully",
@@ -909,11 +930,17 @@ router.post("/update-quantity", async (req, res) => {
       // Calculate other totals with maximum two decimal places
       const subtotal = parseFloat((totalPrice - totalDiscount).toFixed(2));
 
-      const GST = parseFloat((subtotal * 0.2).toFixed(2));
-      const deliveryFee = parseFloat((25.0).toFixed(2)); // Fixed delivery fee
-      const totalCost = parseFloat(
-        (totalPrice + GST + deliveryFee - totalDiscount).toFixed(2)
-      );
+      const GST = (subtotal * 0.2).toFixed(2);
+      const deliveryFee = 25; // Fixed delivery fee
+
+      const totalCost = (
+        parseFloat(totalPrice) +
+        parseFloat(GST) +
+        deliveryFee -
+        parseFloat(totalDiscount)
+      ).toFixed(2);
+ 
+       
 
       // Send response with updated cart or totals
       return res.status(200).json({
