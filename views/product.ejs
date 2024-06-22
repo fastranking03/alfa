@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <base href="http://localhost:8081" />
+  <!-- <base href="http://localhost:8081" /> -->
   <base href="https://diz5s9u.localto.net/">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -17,11 +17,13 @@
         width: 0;
         height: 0;
       }
+
       .size-checkbox:checked+label {
         background-color: #005d67;
         border-color: #005d67;
         color: #fff !important;
       }
+
       /* Style the label text */
       .size-checkbox+label::after {
         content: "";
@@ -33,10 +35,49 @@
         background-repeat: no-repeat;
         background-position: center;
       }
-     </style>
+
+      @keyframes slideInRight {
+        from {
+          right: -20px;
+          opacity: 0;
+        }
+        to {
+          right: 18px;
+          opacity: 1;
+        }
+      }
+
+      .comman-message .message-alert h6 {
+        position: fixed;
+        z-index: 10000;
+        top: 75px;
+        right: 10px;  
+        background: #005d67;
+        color: #fff;
+        height: 40px;
+        padding: 10px 22px;
+        border-radius: 10px;
+        font-weight: 400px;
+        font-size: 15px;
+        display: none;
+        opacity: 0;
+        transition: right 0.5s ease, opacity 0.5s ease; 
+      }
+
+      .comman-message .message-alert h6.show {
+        display: none;
+        animation: slideInRight 0.5s forwards;  
+      }
+
+    </style>
 </head>
 
 <body>
+  <div class="comman-message">
+    <div class="message-alert">
+      <h6 class="show" id="productAddedInCart"></h6>
+    </div>
+  </div>
   <div class="alfa-main-wraper">
     <%- include('includes/header') %>
       <div class="mt-100 mt-700">
@@ -557,6 +598,8 @@
           document.addEventListener("DOMContentLoaded", () => {
             const addToCartButtons = document.querySelectorAll(".add-to-cart");
 
+            var cartMessage = document.getElementById("productAddedInCart");
+
             addToCartButtons.forEach((button) => {
               button.addEventListener("click", addToCart);
             });
@@ -570,7 +613,12 @@
                 });
                 const result = await response.json();
                 if (result.success) {
-                  alert(result.message);
+                  cartMessage.textContent = result.message;
+                  cartMessage.style.display = "block";
+                  setTimeout(() => {
+                     cartMessage.style.display = "none"
+                  }, 2000)
+
                   // Update cart count in the span
                   const cartLi = document.querySelector("#cart");
                   if (cartLi) {
@@ -581,11 +629,21 @@
                     }
                   }
                 } else {
-                  alert(result.message);
+                   
+                  cartMessage.textContent = result.message;
+                  cartMessage.style.display = "block";
+                  setTimeout(() => {
+                     cartMessage.style.display = "none"
+                  }, 2000)
                 }
               } catch (error) {
                 console.error("Error:", error);
-                alert("An error occurred while adding the product to cart");
+                cartMessage.textContent = 'An error occurred while adding the product to cart';
+                  cartMessage.style.display = "block";
+                  setTimeout(() => {
+                     cartMessage.style.display = "none"
+                  }, 2000)
+                
               }
             }
           });
