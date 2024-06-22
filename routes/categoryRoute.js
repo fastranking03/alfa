@@ -31,6 +31,11 @@ router.get("/:categoryName", async (req, res) => {
       [categoryId]
     );
 
+    const colorlist = `
+      SELECT * FROM colors;
+      `;
+      const [color_list] = await connect.query(colorlist);
+
     let total_product_count = productRows.length;
 
     if (productRows.length === 0) {
@@ -47,6 +52,7 @@ router.get("/:categoryName", async (req, res) => {
       products: productRows,
       categories: categories,
       product_count : total_product_count,
+      color_list: color_list ,
     });
   } catch (err) {
     res.status(500).json({ message: err.message });
