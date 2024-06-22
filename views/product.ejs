@@ -246,7 +246,8 @@
                       <div
                         class="product-item"
                         data-price="<%=(product.product_price * (1 - (product.discount_on_product / 100))).toFixed(2) %>"
-                        data-color="<%= product.colour %>" 
+                        data-color="<%= product.colour %>"
+                        data-size="<%= product.sizes %>"
                       >
                         <div class="produt-wrap">
                           <a href="/product-detail/<%= product.id %> ">
@@ -495,21 +496,138 @@
             const productItems = $(".product-item");
             const rangeValues = document.querySelectorAll(".rangeValues");
 
-            priceInputs.forEach((input) => {
-              input.addEventListener("input", applyFilters);
+          priceInputs.forEach((input) => {
+            input.addEventListener("input", applyFilters);
+          });
+
+          // Color Filter
+          const colorCheckboxes = $(".cat-checkbox");
+          const sizeCheckboxes = $(".size-checkbox");
+
+          colorCheckboxes.on("change", applyFilters);
+          sizeCheckboxes.on("change", applyFilters);
+
+          function applyFilters() {
+            const minPrice = parseInt(priceInputs[0].value);
+            const maxPrice = parseInt(priceInputs[1].value);
+
+            rangeValues.forEach((rangeValue) => {
+              rangeValue.textContent = `$${minPrice} - $${maxPrice}`;
             });
 
-            // Color Filter
-            const colorCheckboxes = $(".cat-checkbox");
+            const selectedColors = [];
+            colorCheckboxes.each(function () {
+              if ($(this).is(":checked")) {
+                selectedColors.push($(this).val().toLowerCase());
+              }
+            });
 
-            colorCheckboxes.on("change", applyFilters);
+            const selectedSizes = [];
+            sizeCheckboxes.each(function () {
+              if ($(this).is(":checked")) {
+                selectedSizes.push($(this).val().toLowerCase());
+              }
+            });
 
-            function applyFilters() {
-              const minPrice = parseInt(priceInputs[0].value);
-              const maxPrice = parseInt(priceInputs[1].value);
+            productItems.each(function () {
+              const productPrice = parseFloat($(this).data("price"));
+              const productColor = $(this).data("color").toLowerCase();
+              const productSizes = $(this)
+                .data("size")
+                .toLowerCase()
+                .split(":")
+                .filter((_, i) => i % 2 === 0); // Get sizes only
 
-              rangeValues.forEach((rangeValue) => {
-                rangeValue.textContent = `$${minPrice} - $${maxPrice}`;
+              const matchesPrice =
+                productPrice >= minPrice && productPrice <= maxPrice;
+              const matchesColor =
+                selectedColors.length === 0 ||
+                selectedColors.includes(productColor);
+              const matchesSize =
+                selectedSizes.length === 0 ||
+                selectedSizes.some((size) => productSizes.includes(size));
+
+              if (matchesPrice && matchesColor && matchesSize) {
+                $(this).show();
+              } else {
+                $(this).hide();
+              }
+            });
+          }
+        });
+      </script>
+
+      <!-- End -->
+      <script>
+        // Add event listener to the "Add to Favorites" button
+        document.addEventListener("DOMContentLoaded", function () {
+          const addToFavoritesButtons =
+            document.querySelectorAll(".add-to-favorites");
+
+          addToFavoritesButtons.forEach((button) => {
+            button.addEventListener("click", function () {
+              const productId = button.getAttribute("data-product-id");
+
+              // Send AJAX request to the server
+              fetch(`/favorites/add/${productId}`, {
+                method: "GET",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                credentials: "same-origin", // include cookies
+              })
+                .then((response) => {
+                  if (!response.ok) {
+                    throw new Error("Network response was not ok");
+                  }
+                  return response.json();
+                })
+                .then((data) => {
+                  if (data.success) {
+                    // Show popup alert
+                    alert(data.message);
+
+                    // Update wishlist count in the span
+                    const wishlistLi = document.querySelector("#wishlist");
+                    if (wishlistLi) {
+                      const countTextSpan =
+                        wishlistLi.querySelector(".count-text");
+                      if (countTextSpan) {
+                        countTextSpan.textContent = data.favoritesCount;
+                      }
+                    }
+                  } else {
+                    alert(data.message);
+                  }
+                })
+                .catch((error) => {
+                  console.error(
+                    "There was a problem with the fetch operation:",
+                    error
+                  );
+                  // Handle error
+                  alert(
+                    "An error occurred while adding the product to favorites"
+                  );
+                });
+            });
+          });
+        });
+      </script>
+      <script>
+        document.addEventListener("DOMContentLoaded", () => {
+          const addToCartButtons = document.querySelectorAll(".add-to-cart");
+
+          addToCartButtons.forEach((button) => {
+            button.addEventListener("click", addToCart);
+          });
+
+          async function addToCart(event) {
+            const productId =
+              event.currentTarget.getAttribute("data-product-id");
+            try {
+              const response = await fetch(`/cart/add/${productId}`, {
+                method: "GET",
               });
 
               var selectedColors = []; // Array to store selected colors

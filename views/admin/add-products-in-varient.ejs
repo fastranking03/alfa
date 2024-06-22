@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    
     <base href="http://localhost:8081" target="" />
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -58,89 +57,91 @@
               <H1>ALREADY EXIST IN VARIENT</H1>
               <div class="responsive-table">
                 <table class="alfa-table">
-                    <thead class="table-dark">
-                      <tr>
-                        <th></th>
-                        <th>ID</th>
-                        <th>Product</th>
-                        <th>Price</th>
-                        <th>Discount</th> 
-                        <th>Created At</th>
-                        
-                       </tr>
-                    </thead>
-                    <tbody id="order-tbody">
-                      <% products_in_varient.forEach(product => { %>
-                      <tr>
-                        <td>
-                          <div class="product-checkbox">
-                            <input type="checkbox" name="checkbox">
-                         </div>
-                        </td>
-                        <td>
-                          <%= product.id %>
-                        </td>
-                        <td>
-                          <div class="admin-product">
-                               <span> <img src="../../product_images/<%= product.product_main_image %>" alt="" style="width: 40px; height: 40px;"></span>
-                              <h6><%= product.product_name %></h6>
-                          </div>
-                        </td>
-                         <td>£<%= product.product_price %></td>
-                        <td><%= product.discount_on_product %> %</td> 
-                        <td><%= product.created_at.toLocaleString()  %></td>
-                   
-                       </tr>
-                      <% }); %>
-                    </tbody>
-                  </table>
+                  <thead class="table-dark">
+                    <tr>
+                      <th></th>
+                      <th>ID</th>
+                      <th>Product</th>
+                      <th>Price</th>
+                      <th>Discount</th>
+                      <th>Created At</th>
+                    </tr>
+                  </thead>
+                  <tbody id="order-tbody">
+                    <% products_in_varient.forEach(product => { %>
+                    <tr>
+                      <td>
+                        <div class="product-checkbox">
+                          <input type="checkbox" name="checkbox" />
+                        </div>
+                      </td>
+                      <td><%= product.id %></td>
+                      <td>
+                        <div class="admin-product">
+                          <span>
+                            <img
+                              src="../../product_images/<%= product.product_main_image %>"
+                              alt=""
+                              style="width: 40px; height: 40px"
+                          /></span>
+                          <h6><%= product.product_name %></h6>
+                        </div>
+                      </td>
+                      <td>£<%= product.product_price %></td>
+                      <td><%= product.discount_on_product %> %</td>
+                      <td><%= product.created_at.toLocaleString() %></td>
+                    </tr>
+                    <% }); %>
+                  </tbody>
+                </table>
               </div>
-
-              <hr>
-
+              <br />
+              <hr />
+              <br />
               <h1>ADD NEW</h1>
               <div class="responsive-table">
                 <div class="table-responsive">
-                    <table class="alfa-table">
-                      <thead class="table-dark">
-                        <tr>
-                          <th></th>
-                          <th>ID</th>
-                          <th>Product</th>
-                          <th>Price</th>
-                          <th>Discount</th> 
-                          <th>Created At</th> 
-                         </tr>
-                      </thead>
-                      <tbody id="order-tbody">
-                        <% all_products.forEach(product => { %>
-                        <tr>
-                          <td>
-                            <div class="product-checkbox">
-                              <input type="checkbox" name="checkbox">
-                           </div>
-                          </td>
-                          <td>
-                            <%= product.id %>
-                          </td>
-                          <td>
-                            <div class="admin-product">
-                                 <span> <img src="../../product_images/<%= product.product_main_image %>" alt="" style="width: 40px; height: 40px;"></span>
-                                <h6><%= product.product_name %></h6>
-                            </div>
-                          </td>
-                           <td>£<%= product.product_price %></td>
-                          <td><%= product.discount_on_product %> %</td> 
-                          <td><%= product.created_at.toLocaleString()  %></td>
-                          <!-- <td>
-       
-                            <a href="admin/edit/<%= product.id %>" class="btn-item btn-edit"><span><i class="fa-solid fa-pen-to-square"></i></span></a> 
-                           </td>  -->
-                         </tr>
-                        <% }); %>
-                      </tbody>
-                    </table>
-                  </div>
+                    <form action="/admin/add-product-in-varient" method="post">
+                        <input type="hidden" name="variantName" value="<%=variant_name  %>" id="">
+                        <table class="alfa-table">
+                          <thead class="table-dark">
+                            <tr>
+                              <th></th>
+                              <th>ID</th>
+                              <th>Product</th>
+                              <th>Price</th>
+                              <th>Discount</th>
+                              <th>Created At</th>
+                            </tr>
+                          </thead>
+                          <tbody id="order-tbody">
+                            <% all_products.forEach(product => { %>
+                              <tr>
+                                <td>
+                                  <div class="product-checkbox">
+                                    <input type="checkbox" name="selectedProducts" id="product<%= product.id %>" value="<%= product.id %>" />
+                                  </div>
+                                </td>
+                                <td><%= product.id %></td>
+                                <td>
+                                  <div class="admin-product">
+                                    <span>
+                                      <img src="../../product_images/<%= product.product_main_image %>" alt="" style="width: 40px; height: 40px" />
+                                    </span>
+                                    <h6><%= product.product_name %></h6>
+                                  </div>
+                                </td>
+                                <td>£<%= product.product_price %></td>
+                                <td><%= product.discount_on_product %> %</td>
+                                <td><%= product.created_at.toLocaleString() %></td>
+                              </tr>
+                            <% }); %>
+                          </tbody>
+                        </table>
+                        <button type="submit">Add Products to Variant</button>
+                      </form>
+                      
+                </div>
               </div>
               <div class="table-pagination-wrapper">
                 <div class="table-pagination" id="pagination">

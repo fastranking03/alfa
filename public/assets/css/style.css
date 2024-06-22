@@ -913,7 +913,7 @@ a {
 .product-add-to-card-wrap {
   position: absolute;
   margin-top: -54px;
-  left: 21%;
+  left: 24%;
 }
 
 .add-to-cart {
@@ -2688,7 +2688,7 @@ font-size: 14px;
     gap: 10px;
   }
   .size-list.pro-detail-size-ul{
-    gap: 18px !important;
+    gap: 10px !important;
   }
   .mrp-price.whishlist-p{
     font-size: 16px;

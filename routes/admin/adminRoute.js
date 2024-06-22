@@ -127,6 +127,11 @@ router.get('/',(req,res) =>{
   res.render("admin/index");
 });
 
+router.get('/add-new-varient',(req,res) =>{
+  res.render("admin/add-new-varient");
+});
+
+
 router.get('/varients', async (req, res) => {
   try {
     const [variants] = await connect.query('SELECT * FROM varients');
@@ -154,6 +159,66 @@ router.get('/add-product-in/:variant_name', async (req, res) => {
     res.render('admin/add-products-in-varient', { products_in_varient, variant_name  , all_products});
   } catch (err) {
     console.error('Error fetching products for variant:', err);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+router.post('/add-product-in-varient', async (req, res) => {
+  try {
+    const { selectedProducts, variantName } = req.body;
+    console.log(selectedProducts);
+    console.log(variantName);
+
+    // Handle selectedProducts array which contains IDs of products to be updated in variant
+    if (!selectedProducts || !Array.isArray(selectedProducts)) {
+      return res.status(400).send('Invalid selected products data');
+    }
+
+    // Example of updating products with the specified variantName in your database
+    const promises = selectedProducts.map(productId => {
+      // Perform your database operations to update each product's variant
+      return connect.query(
+        'UPDATE products SET varient_name = ? WHERE  id = ?',
+        [variantName, productId]
+      );
+    });
+
+    await Promise.all(promises);
+
+    res.redirect('/admin/varients'); // Redirect back to the variants page or wherever you need to go
+  } catch (err) {
+    console.error('Error updating products in variant:', err);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+
+
+
+
+
+router.post('/add-varient', async (req, res) => {
+  try {
+    const { varient_name } = req.body;
+
+    // Validate input (ensure varient_name is not empty)
+    if (!varient_name) {
+      return res.status(400).send('Variant name is required');
+    }
+
+    // Perform database insertion
+    const insertQuery = 'INSERT INTO varients (varient_name) VALUES (?)';
+    const [insertResult] = await connect.query(insertQuery, [varient_name]);
+
+    // Check if insertion was successful
+    if (insertResult && insertResult.affectedRows > 0) {
+      console.log(`New variant '${varient_name}' added successfully`);
+      res.redirect('/admin/varients'); // Redirect to variants page or wherever appropriate
+    } else {
+      throw new Error('Failed to add new variant');
+    }
+  } catch (error) {
+    console.error('Error adding new variant:', error);
     res.status(500).send('Internal Server Error');
   }
 });

@@ -219,13 +219,12 @@ router.post("/place-order", async (req, res) => {
       }
     }
 
-     // Delete items from the cart after placing the order
-     const cartIds = parsedCartItems.map(item => item.cart_id);
-     await connect.query(
-       "DELETE FROM users_cart WHERE user_id = ? AND id IN (?)",
-       [userId, cartIds]
-     );
-
+    // Delete items from the cart after placing the order
+    const cartIds = parsedCartItems.map((item) => item.cart_id);
+    await connect.query(
+      "DELETE FROM users_cart WHERE user_id = ? AND id IN (?)",
+      [userId, cartIds]
+    );
 
     // Commit the transaction after all queries succeed
     await connect.query("COMMIT");
@@ -260,33 +259,42 @@ router.post("/place-order", async (req, res) => {
   }
 });
 
-      router.get("/product", async (req, res) => {
-        const user = req.session.user;
-        const queryProduct = `
-        SELECT  * 
-        FROM products ; 
-      `;
+router.get("/product", async (req, res) => {
+  const user = req.session.user;
 
-        const querycategoryList = `
+  const queryProduct = `
+  SELECT p.*,
+    CASE
+      WHEN p.wear_type_bottom_or_top = 'top' THEN GROUP_CONCAT(CONCAT_WS(':', 'xs', tw.xs, 's', tw.s, 'm', tw.m, 'l', tw.l, 'xl', tw.xl, 'xxl', tw.xxl, 'xxxl', tw.xxxl, 'xxxxl', tw.xxxxl))
+      WHEN p.wear_type_bottom_or_top = 'bottom' THEN GROUP_CONCAT(CONCAT_WS(':', '28', bw.size_28, '30', bw.size_30, '32', bw.size_32, '34', bw.size_34, '36', bw.size_36, '38', bw.size_38, '40', bw.size_40, '42', bw.size_42, '44', bw.size_44, '46', bw.size_46))
+    END AS sizes
+  FROM products p
+  LEFT JOIN topwear_inventory_with_sizes tw ON p.id = tw.product_id AND p.wear_type_bottom_or_top = 'top'
+  LEFT JOIN bottom_wear_inventory_with_sizes bw ON p.id = bw.product_id AND p.wear_type_bottom_or_top = 'bottom'
+  GROUP BY p.id;
+`;
+ 
+
+  const querycategoryList = `
       SELECT c.*, COUNT(p.id) AS product_count
       FROM category c
       LEFT JOIN products p ON c.id = p.category_id 
       GROUP BY c.id;
       `;
-      
-      try {
-        const [results] = await connect.query(queryProduct);
-        const [categories] = await connect.query(querycategoryList);
 
-        res.render("product", {
-          user,
-          products: results,
-          categories: categories,
-        });
-      } catch (error) {
-        console.error("Database query error:", error);
-        res.status(500).send("Internal Server Error");
-      }
+  try {
+    const [results] = await connect.query(queryProduct);
+    const [categories] = await connect.query(querycategoryList);
+
+    res.render("product", {
+      user,
+      products: results,
+      categories: categories,
+    });
+  } catch (error) {
+    console.error("Database query error:", error);
+    res.status(500).send("Internal Server Error");
+  }
 });
 
 router.get("/blogs", async (req, res) => {
@@ -644,7 +652,7 @@ router.get("/cart", async (req, res) => {
         deliveryFee,
         totalCost,
         cartItemsInStock: cartItemsWithSizes, // For guest user, all items are considered in stock
-        cartItemsOutOfStock :cartItemsWithSizes,
+        cartItemsOutOfStock: cartItemsWithSizes,
         isLoggedIn: !!user,
       });
     } else {
@@ -722,7 +730,7 @@ router.get("/cart", async (req, res) => {
             const selectedSizeLowerCase = selectedSize.toLowerCase();
             stock = item.sizes ? item.sizes[selectedSizeLowerCase] : null;
           } else if (item.wear_type_bottom_or_top === "bottom") {
-            const numericSize = selectedSize.replace('size_', '');
+            const numericSize = selectedSize.replace("size_", "");
             stock = item.sizes ? item.sizes[numericSize] : null;
           }
         }
@@ -752,8 +760,8 @@ router.get("/cart", async (req, res) => {
         return stock && Object.values(stock).some((value) => value > 0);
       });
 
-       // Filter items where all sizes are out of stock
-       const cartItemsOutOfStock = cartItems.filter((item) => {
+      // Filter items where all sizes are out of stock
+      const cartItemsOutOfStock = cartItems.filter((item) => {
         const stock = item.sizes;
         return !stock || Object.values(stock).every((value) => value <= 0);
       });
@@ -943,8 +951,6 @@ router.post("/update-quantity", async (req, res) => {
         deliveryFee -
         parseFloat(totalDiscount)
       ).toFixed(2);
- 
-       
 
       // Send response with updated cart or totals
       return res.status(200).json({

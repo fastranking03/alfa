@@ -15,6 +15,7 @@ import inventoryRoute from "./routes/admin/inventoryRoute.js";
 import adminProductsRoute from "./routes/admin/productRoute.js";
 import placeOrderRoute from './routes/placeOrderRoute.js';
 import blogRoute from './routes/admin/blogRoute.js';
+import contentRoute from './routes/admin/contentRoute.js';
  
 import session from "express-session";
 import slugify from "slugify";
@@ -103,6 +104,7 @@ app.use("/admin/", inventoryRoute);
 app.use("/admin/", adminProductsRoute);
 app.use("/admin/", subcategoryRoute);
 app.use("/admin/", blogRoute);
+app.use("/admin/", contentRoute);
  
 
 app.get('/order-history',(req,res) =>{
