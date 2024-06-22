@@ -281,14 +281,20 @@ router.get("/product", async (req, res) => {
       GROUP BY c.id;
       `;
 
+  const colorlist = `
+      SELECT * FROM colors;
+      `;
+
   try {
     const [results] = await connect.query(queryProduct);
     const [categories] = await connect.query(querycategoryList);
+    const [color_list] = await connect.query(colorlist);
 
     res.render("product", {
       user,
       products: results,
       categories: categories,
+      color_list: color_list ,
     });
   } catch (error) {
     console.error("Database query error:", error);
@@ -1630,7 +1636,6 @@ router.post("/save-profile", async (req, res) => {
     res.status(500).json({ error: "Failed to update profile" });
   }
 });
-
 
 // Route to handle cancellation of an order
 router.get("/cancel-order/:orderId", async (req, res) => {
