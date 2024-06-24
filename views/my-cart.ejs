@@ -48,29 +48,18 @@
                           <div class="cart-td">
                             <div class="cart-items-left">
                               <div class="cart-delete">
-                                <a
-                                  href="/delete-product/<%= item.cart_id %>"
-                                  class="delete-product"
-                                >
-                                  <span
-                                    ><i class="fa-regular fa-circle-xmark"></i
-                                  ></span>
+                                <a  href="/delete-product/<%= item.cart_id %>"  class="delete-product" >
+                                  <span><i class="fa-regular fa-circle-xmark"></i></span>
                                 </a>
                               </div>
                               <div class="cart-image">
-                                <img
-                                  src="../product_images/<%=item.product_main_image %>"
-                                  class="cart-img"
-                                  alt=""
-                                />
+                                <img src="../product_images/<%=item.product_main_image %>" class="cart-img" alt=""/>
                               </div>
 
                               <div class="pro-cart-contents">
                                 <div class="pro-cart-title">
                                   <h3><%= item.product_name %></h3>
                                 </div>
-                                
-
                                 <div class="product-size-list">
                                   <span class="cart-short-text" data-cart-id="<%= item.cart_id %>" data-product-id="<%= item.product_id %>" data-selected-size="<%= item.selected_size %>">
                                     Select Size 
@@ -79,7 +68,6 @@
                                   <!-- <span class="cart-short-text-2" data-product-id-2="<%= item.product_id %>" ></span> -->
 <!--                                   
                                   <input type="text" class="proIds" data-product-id="<%= item.product_id %>" value="<%= item.product_id %>"> -->
-
 
                                   <ul id="sizeList-<%= item.cart_id %>" class="size-list">
                                     <% if (item.sizes && Object.keys(item.sizes).length > 0) { %>
@@ -165,39 +153,21 @@
                             </div>
                           </div>
 
-                          <input
-                            type="hidden"
-                            name="products[<%=index%>][productId]"
-                            value="<%= item.product_id %>"
-                          />
-                          <input
-                            type="hidden"
-                            name="products[<%=index%>][price]"
-                            value="<%= item.product_price %>"
-                          />
+                          <input  type="hidden" name="products[<%=index%>][productId]" value="<%= item.product_id %>" />
+                          <input type="hidden" name="products[<%=index%>][price]"  value="<%= item.product_price %>" />
                           <div class="cart-td position-relative">
                             <div class="pro-cart-price">
                               <h5>
-                                <span class="mrp-price"
-                                  >£<%=item.product_price %></span
-                                >
-                                <span class="final-prices"
-                                  >£<%= (item.product_price * (1 -
-                                  (item.discount_on_product / 100))).toFixed(2)
-                                  %></span
-                                >
-                                <span class="discount-text"
-                                  >(<%=item.discount_on_product %>% OFF )</span
-                                >
+                                <span class="mrp-price cart-mrp">£<%=item.product_price %></span>
+                                <span class="final-prices cart-final" >£<%= (item.product_price * (1 -  (item.discount_on_product / 100))).toFixed(2) %></span>
+                                <span class="discount-text cart-discount" >(<%=item.discount_on_product %>% OFF )</span >
                               </h5>
                               <div class="move-to-wishlist">
-                                <a href="">Move To Wishlist</a>
+                                <a href="/move-to-wishlist/<%= item.cart_id %>">Move To Wishlist</a>
                               </div>
                             </div>
-                            <div class="move-to-wishlist">
-                              <a href="/move-to-wishlist/<%= item.cart_id %>"
-                                >Move To Wishlist</a
-                              >
+                            <div class="move-to-wishlist d-none">
+                              <a href="/move-to-wishlist/<%= item.cart_id %>" >Move To Wishlist</a >
                             </div>
                           </div>
                         </div>
@@ -207,43 +177,32 @@
                       </div>
 
                       <% if (isLoggedIn) { %>
-                      <div>
+                      <div class="mt-4">
                       
                         <% cartItemsOutOfStock.forEach((item, index) => { %>
-                          <h3>Out Of Stock Products</h3>
-                          <div class=" ">
+                          
+                          <div class="checkout-title mt-3">
+                            <h3>Out Of Stock Products</h3>
+                          </div>
+                          <div class="cart-tr cart-b-tr">
                             <div class=" ">
                               <div class="cart-items-left">
                                 <div class="cart-delete">
-                                  <a
-                                    href="/delete-product/<%= item.cart_id %>"
-                                    class="delete-product"
-                                  >
-                                    <span
-                                      ><i class="fa-regular fa-circle-xmark"></i
-                                    ></span>
+                                  <a href="/delete-product/<%= item.cart_id %>" class="delete-product" >
+                                    <span ><i class="fa-regular fa-circle-xmark"></i ></span>
                                   </a>
                                 </div>
                                 <div class="cart-image">
-                                  <img
-                                    src="../product_images/<%=item.product_main_image %>"
-                                    class="cart-img"
-                                    alt=""
-                                  />
+                                  <img src="../product_images/<%=item.product_main_image %>" class="cart-img" alt=""/>
                                 </div>
   
                                 <div class="pro-cart-contents">
                                   <div class="pro-cart-title">
                                     <h3><%= item.product_name %></h3>
                                   </div>
-                                  
-  
                                   <div class="product-size-list">
-                                    <p style="color: #ff2020;">Currently Out Of Stock</p>
-   
-                                     
+                                    <p style="color: #ff2020;font-size: 13px;">Currently Out Of Stock</p>
                                   </div>
-                               
                                 </div>
                               </div>
                             </div>
@@ -274,10 +233,10 @@
                                   >
                                 </h5>
                                 <div class="move-to-wishlist">
-                                  <a href="">Move To Wishlist</a>
+                                  <a href="/move-to-wishlist/<%= item.cart_id %>">Move To Wishlist</a>
                                 </div>
                               </div>
-                              <div class="move-to-wishlist">
+                              <div class="move-to-wishlist d-none">
                                 <a href="/move-to-wishlist/<%= item.cart_id %>"
                                   >Move To Wishlist</a
                                 >
