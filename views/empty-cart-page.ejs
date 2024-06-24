@@ -1,0 +1,29 @@
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alfa Meanswear | My Cart</title>
+    <%- include('includes/head') %>
+</head>
+
+<body>
+    <div class="alfa-main-wraper">
+        <%- include('includes/header') %>
+         <div class="empty-cart-wrapper mt-100">
+            <div class="empty-cart">
+                <div class="empty-icon">
+                    <img src="assets/images/empty-cart.svg" alt="">
+                </div>
+                <div class="empty-cart-content">
+                    <h4>Hey, it feels so light!</h4>
+                    <p>There is nothing in your bag.Lets add some items.</p>
+                    <a href="/product"  class="empty-cart-btn">Add item from wishlist</a>
+                </div>
+            </div>
+         </div>
+    </div>
+    <%- include('includes/foot') %>
+</body>
+
+</html>

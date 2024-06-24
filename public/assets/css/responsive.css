@@ -1271,6 +1271,12 @@
     .alfa-menu-lis:hover .dropdown-menu-wrappers{
         display: block;
     }
+    .breadcrubm-text h2{
+        font-size: 20px;
+    }
+    .contact-info ,.contact-us-wrapper {
+        padding: 0 10px;
+    }
 }
 
 @media screen and (max-width:376px) {

@@ -580,6 +580,13 @@ router.get("/cart", async (req, res) => {
       // Guest user scenario
       const cartItems = req.session.cart || [];
 
+      if (cartItems.length === 0) {
+        // Redirect to another page if cartItems is empty
+        return res.render('empty-cart-page');
+      }
+       
+      
+
       const promises = cartItems.map((cartItem) =>
         connect
           .query(`SELECT * FROM products WHERE id = ?`, [cartItem.product_id])
@@ -690,6 +697,13 @@ router.get("/cart", async (req, res) => {
         WHERE c.user_id = ?`,
         [userId]
       );
+
+      if (cartResultAll.length === 0) {
+        // Redirect to another page if cartResultAll is empty
+        return res.render('empty-cart-page');
+      }
+
+
 
       const cartItemPromises = cartResultAll.map(async (cartItem) => {
         let sizes = {};
