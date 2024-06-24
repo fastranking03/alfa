@@ -127,6 +127,7 @@ router.get('/',(req,res) =>{
   res.render("admin/index");
 });
 
+
 router.get('/add-new-varient',(req,res) =>{
   res.render("admin/add-new-varient");
 });
