@@ -9,11 +9,13 @@
 
 <script> 
 // Loader
-
-  $(window).on('load',function(){
-    setTimeout(function(){  
-    $('.page-loader').fadeOut('slow');
-    },2000);
+  document.addEventListener("DOMContentLoaded", function() {
+    var loader = document.getElementById('loader');
+    var content = document.getElementById('web-content');
+    setTimeout(function() {
+      loader.style.display = 'none';
+      content.style.display = 'block';
+    }, 2000);
   });
 
   var openProfileCard = document.getElementById("openProfileCard");

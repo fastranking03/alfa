@@ -78,6 +78,17 @@
     .alfa-navbar ul a {
         font-size: 14px;
     }
+    .alfa-pro-detail-wrapper .d-item img {
+        height: 520px;
+     }
+     .image-item .d-img {
+        width: 60px;
+        height: auto;
+    }
+    .detail-ul .variant-img {
+        width: 50px;
+        height: 55px;
+     }
 }
 
 @media (max-width: 1300px) {
@@ -166,7 +177,18 @@
     .testimonial-content {
         margin: 0 50px;
     }
-
+    .alfa-pro-detail-wrapper .d-item img {
+        height: 370px;
+        object-fit: scale-down;
+    }
+    .image-item .d-img {
+        width: 33px;
+        height: auto;
+    }
+    .pro-detail-size-ul .size-item {
+        width: 34px !important;
+        height: 34px; 
+    }
     .product-grid {
         grid-template-columns: auto auto auto;
     }

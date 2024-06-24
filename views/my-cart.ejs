@@ -28,7 +28,7 @@
       <%- include('includes/header') %>
       <div class="mt-100 mt-150">
         <div class="checkout-wrapper margin-160">
-          <div class="container">
+          <div class="custom-container">
             <div class="checkout-title">
               <h3>Shopping Cart</h3>
             </div>
@@ -39,7 +39,7 @@
                 value="<%= JSON.stringify(cartItemsInStock) %>"
               />
               <div class="row">
-                <div class="col-md-7">
+                <div class="col-md-8">
                   <div class="alfa-cart-items cart-right-wrap">
                     <div class="cart-table">
                       <div class="cart-tbody" id="cart-pricing">
@@ -64,12 +64,9 @@
                                   <span class="cart-short-text" data-cart-id="<%= item.cart_id %>" data-product-id="<%= item.product_id %>" data-selected-size="<%= item.selected_size %>">
                                     Select Size 
                                   </span>
-
                                   <!-- <span class="cart-short-text-2" data-product-id-2="<%= item.product_id %>" ></span> -->
-<!--                                   
-                                  <input type="text" class="proIds" data-product-id="<%= item.product_id %>" value="<%= item.product_id %>"> -->
-
-                                  <ul id="sizeList-<%= item.cart_id %>" class="size-list">
+                                  <!-- <input type="text" class="proIds" data-product-id="<%= item.product_id %>" value="<%= item.product_id %>"> -->
+                                   <ul id="sizeList-<%= item.cart_id %>" class="size-list">
                                     <% if (item.sizes && Object.keys(item.sizes).length > 0) { %>
                                       <% for (const [size, stock] of Object.entries(item.sizes)) { %>
                                         <% if (item.wear_type_bottom_or_top === 'bottom') { %>
@@ -249,7 +246,7 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-md-5">
+                <div class="col-md-4">
                   <div class="alfa-offcanvas-footer cart-left-wrap">
                     <div class="checkout-title">
                       <h4>Order Summary</h4>

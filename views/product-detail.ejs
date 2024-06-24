@@ -3,7 +3,7 @@
 
 <head>
   <!-- <base href="https://diz5s9u.localto.net/"> -->
-  <base href="http://localhost:8081" /> 
+  <base href="http://localhost:8081" />
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Alfa Meanswear | Product Details</title>
@@ -14,36 +14,27 @@
     max-width: 600px;
     margin: 0 auto;
   }
-
-  /* Style for disabled sizes */
-.size-list .size-item.disabled {
-  opacity: 0.5; /* Adjust opacity as desired */
-  cursor: not-allowed; /* Change cursor to indicate disabled state */
-}
-
-.size-list .size-item.disabled input[type="radio"] {
-  pointer-events: none; /* Prevent interaction with disabled inputs */
-}
-
-/* Additional styling for unavailable size message */
-.size-list .unavailableSize {
-  color: red; /* Example color for out of stock message */
-  font-style: italic; /* Example italic style */
-}
-
-
+  .size-list .size-item.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  .size-list .size-item.disabled input[type="radio"] {
+    pointer-events: none;
+  }
+  .size-list .unavailableSize {
+    color: red;
+    font-style: italic;
+  }
   .image-grid-wrapper {
     overflow-x: auto;
     white-space: nowrap;
   }
-
   .images-grids {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
     overflow: hidden;
   }
-
   .image-item {
     flex: 1 1 calc(20% - 10px);
     cursor: pointer;
@@ -55,15 +46,12 @@
     transition: 0.3s ease-in-out;
     border: 2px solid #fff;
   }
-
   .image-item img {
     width: 100%;
   }
-
   input[type="radio"] {
     display: none;
   }
-
   .accordion-items {
     background-color: #fff;
     color: #111;
@@ -71,7 +59,6 @@
     border-radius: 0.5rem;
     border: 1px solid #eee;
   }
-
   .accordion-item-header {
     padding: 0.5rem 3rem 0.5rem 1rem;
     min-height: 3.5rem;
@@ -82,55 +69,52 @@
     cursor: pointer;
     font-size: 20px;
   }
-
   .accordion-item-header::after {
     content: "\002B";
     font-size: 2rem;
     position: absolute;
     right: 1rem;
   }
-
   .accordion-item-header.active::after {
     content: "\2212";
   }
-
   .accordion-item-body {
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.2s ease-out;
   }
-
   .accordion-item-body-content {
     padding: 1rem;
     line-height: 1.5rem;
     border-top: 1px solid;
     border-image: linear-gradient(to right, transparent, #34495e, transparent) 1;
   }
-
   .image-item img:hover {
     border: 1px solid #005d67;
   }
-
   .image-item img.selected {
     border: 1px solid #005d67;
   }
-
   .zoomContainer {
     z-index: 9999 !important;
   }
-
   .pd-img {
     cursor: zoom-in;
   }
-  .pro-btn-flex button:disabled{
+  .pro-btn-flex button:disabled {
     background: #b3b9b3;
     border: 1px solid #b3b9b3;
     cursor: not-allowed;
   }
 </style>
-
 <body>
-  <div class="alfa-main-wraper">
+    <!-- Loader -->
+    <div class="page-loader" id="loader">
+      <div class="spinner">
+         <div class="inner"></div>
+      </div>
+     </div>
+  <div class="alfa-main-wraper" id="web-content">
     <%- include('includes/header') %>
       <div class="mt-100">
         <div class="alfa-detail-sexction alfa-detail-wrapper">
@@ -240,12 +224,12 @@
                       </h6>
                     </div>
                     <div class="pro--text">
-                    <h6 class="size-selection">
-                      MORE COLORs
-                    </h6>
-                  </div>
+                      <h6 class="size-selection">
+                        MORE COLORs
+                      </h6>
+                    </div>
                     <ul class="detail-ul">
-                       <% variantProducts.forEach(variantProduct=> { %>
+                      <% variantProducts.forEach(variantProduct=> { %>
                         <li>
                           <a href="/product-detail/<%= variantProduct.id %>">
                             <img class="variant-img" src="../product_images/<%=variantProduct.product_main_image %>"
@@ -261,37 +245,41 @@
                         <h6 class="size-selection">Select Size</h6>
                       </div>
                       <ul id="sizeList" class="size-list pro-detail-size-ul">
-                        <% if (sizes && Object.keys(sizes).length > 0) { %>
+                        <% if (sizes && Object.keys(sizes).length> 0) { %>
                           <% for (const [size, stock] of Object.entries(sizes)) { %>
-                            <% if (wearType === 'bottom') { %>
-                              <% const numericSize = size.match(/\d+/); %>
-                              <% if (numericSize && numericSize.length > 0) { %>
-                                <li>
-                                  <input type="radio" id="size-<%= numericSize[0] %>" name="selectedSize"
-                                    value="<%= numericSize[0] %>" <%= stock > 0 ? '' : 'disabled' %> required />
-                                  <label for="size-<%= numericSize[0] %>"
-                                    class="size-item <%= stock > 0 ? '' : 'disabled' %>">
-                                    <span class="size"><%= numericSize[0] %></span>
-                                  </label>
-                                </li>
-                              <% } %>
-                            <% } else { %>
-                              <li>
-                                <input type="radio" id="size-<%= size %>" name="selectedSize"
-                                  value="<%= size.toUpperCase() %>" <%= stock > 0 ? '' : 'disabled' %> required />
-                                <label for="size-<%= size %>"
-                                  class="size-item <%= stock > 0 ? '' : 'disabled' %>">
-                                  <span class="size"><%= size.toUpperCase() %></span>
-                                </label>
-                              </li>
-                            <% } %>
-                          <% } %>
-                        <% } else { %>
-                          <p class="unavailableSize">Currently Out Of Stock</p>
-                        <% } %>
+                            <% if (wearType==='bottom' ) { %>
+                              <% const numericSize=size.match(/\d+/); %>
+                                <% if (numericSize && numericSize.length> 0) { %>
+                                  <li>
+                                    <input type="radio" id="size-<%= numericSize[0] %>" name="selectedSize"
+                                      value="<%= numericSize[0] %>" <%=stock> 0 ? '' : 'disabled' %> required />
+                                    <label for="size-<%= numericSize[0] %>"
+                                      class="size-item <%= stock > 0 ? '' : 'disabled' %>">
+                                      <span class="size">
+                                        <%= numericSize[0] %>
+                                      </span>
+                                    </label>
+                                  </li>
+                                  <% } %>
+                                    <% } else { %>
+                                      <li>
+                                        <input type="radio" id="size-<%= size %>" name="selectedSize"
+                                          value="<%= size.toUpperCase() %>" <%=stock> 0 ? '' : 'disabled' %> required />
+                                        <label for="size-<%= size %>"
+                                          class="size-item <%= stock > 0 ? '' : 'disabled' %>">
+                                          <span class="size">
+                                            <%= size.toUpperCase() %>
+                                          </span>
+                                        </label>
+                                      </li>
+                                      <% } %>
+                                        <% } %>
+                                          <% } else { %>
+                                            <p class="unavailableSize">Currently Out Of Stock</p>
+                                            <% } %>
                       </ul>
                     </div>
-                  
+
                     <input type="hidden" name="product_id" value="<%= product.id %>" />
                     <input type="hidden" name="product_name" value="<%= product.product_name %>" />
                     <input type="hidden" name="finalPrice_after_discount"
@@ -300,7 +288,7 @@
                     <input type="hidden" name="actual_mrp_price" value="<%= product.product_price %>" />
                     <input type="hidden" name="category" value="<%= product.category_name %>" />
                     <input type="hidden" name="sub_category" value="<%= product.sub_category_name %>" />
-                  
+
                     <div class="product--button-wrapper">
                       <div class="cart-quantity-wrapper">
                         <div class="left-input">
@@ -313,27 +301,31 @@
                           <span class="increment"><i class="fa-solid fa-plus"></i></span>
                         </div>
                       </div>
-                  
+
                       <div class="pro-btn-flex">
-                        <button type="button" class="cart-btn add-to-cart" data-action="addToCart" data-url="/add-to-cart" <%= sizes && Object.values(sizes).some(stock => stock > 0) ? '' : 'disabled' %>>
+                        <button type="button" class="cart-btn add-to-cart" data-action="addToCart"
+                          data-url="/add-to-cart" <%=sizes && Object.values(sizes).some(stock=> stock > 0) ? '' :
+                          'disabled' %>>
                           <span><i class="fa-solid fa-cart-shopping"></i></span>
                           Add to Cart
                         </button>
-                  
+
                         <% if (isInFavorites) { %>
                           <!-- If product is already in favorites -->
-                          <button type="button" class="cart-btn buy-now" data-action="buyNow" data-url="/delete-from-wishlist" style="background:#e1e1e1;color: #a19797 !important;">
-                               Wishlisted
+                          <button type="button" class="cart-btn buy-now" data-action="buyNow"
+                            data-url="/delete-from-wishlist" style="background:#e1e1e1;color: #a19797 !important;">
+                            Wishlisted
                           </button>
-                        <% } else { %>
-                          <button type="button" class="cart-btn buy-now" data-action="buyNow" data-url="/add-to-wishlist">
-                            Add to Wishlist
-                          </button>
-                        <% } %>
+                          <% } else { %>
+                            <button type="button" class="cart-btn buy-now" data-action="buyNow"
+                              data-url="/add-to-wishlist">
+                              Add to Wishlist
+                            </button>
+                            <% } %>
                       </div>
                     </div>
                   </form>
-                  
+
                 </div>
               </div>
             </div>
@@ -448,10 +440,10 @@
       </div>
       <!-- Footer -->
       <%- include('includes/footer') %>
-      <!-- End -->
-    </div>
-    <%- include('includes/foot') %> 
-     
+        <!-- End -->
+  </div>
+  <%- include('includes/foot') %>
+
     <script>
       document.addEventListener("DOMContentLoaded", function () {
         const productForm = document.getElementById("productForm");
@@ -461,14 +453,14 @@
           button.addEventListener("click", function () {
             const action = button.getAttribute("data-action");
             const url = button.getAttribute("data-url");
- 
+
             if (action === "addToCart") {
-                    const selectedSize = productForm.querySelector('input[name="selectedSize"]:checked');
-                    if (!selectedSize) {
-                        alert("Please select a size.");
-                        return; // Stop execution if no size is selected
-                    }
-                }
+              const selectedSize = productForm.querySelector('input[name="selectedSize"]:checked');
+              if (!selectedSize) {
+                alert("Please select a size.");
+                return; // Stop execution if no size is selected
+              }
+            }
 
             // Update the form action and submit the form
             productForm.action = url;
