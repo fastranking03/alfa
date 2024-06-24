@@ -23,8 +23,8 @@
 
       <label for="category_id">Category ID:</label>
       <input type="number" name="category_id" required />
-      <label for="subcategory_id">Subcategory ID:</label>
-      <input type="number" name="subcategory_id" value="1" required />
+      <!-- <label for="subcategory_id">Subcategory ID:</label> -->
+      <input type="hidden" name="subcategory_id" value="1" required />
 
       <hr />
 
@@ -37,7 +37,6 @@
           <input type="text" name="common_product_title" required />
           <label>Product Description:</label>
           <input type="text" name="common_product_description" required />
-          
         </div>
       </div>
 
@@ -56,7 +55,6 @@
             <input type="text" name="product_image[]" required />
             <label>Product colour:</label>
             <input type="text" name="product_colour[]" required />
- 
 
             <div class="size">
               <p>Size Details:</p>
