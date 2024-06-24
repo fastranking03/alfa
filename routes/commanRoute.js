@@ -579,6 +579,10 @@ router.get("/cart", async (req, res) => {
     if (!user || !user.id) {
       // Guest user scenario
       const cartItems = req.session.cart || [];
+      if (cartItems.length === 0) {
+        // Redirect to another page if cartItems is empty
+        return res.render('empty-cart-page');
+      }
 
       if (cartItems.length === 0) {
         // Redirect to another page if cartItems is empty
@@ -702,7 +706,6 @@ router.get("/cart", async (req, res) => {
         // Redirect to another page if cartResultAll is empty
         return res.render('empty-cart-page');
       }
-
 
 
       const cartItemPromises = cartResultAll.map(async (cartItem) => {
