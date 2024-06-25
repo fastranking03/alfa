@@ -21,6 +21,32 @@ router.get("/add-product", async (req, res) => {
   }
 });
 
+router.get("/add-product/:category_name", async (req, res) => {
+  const categoryName = req.params.category_name;
+
+  try { 
+    const [categoryResult] = await connect.query("SELECT id FROM category WHERE category_name = ?", [categoryName]);
+    
+    if (categoryResult.length === 0) {
+      // Handle the case where the category is not found
+      return res.status(404).send("Category not found");
+    } 
+    const categoryId = categoryResult[0].id;
+
+    // Pass the weartype variable based on the category, you might need to determine this dynamically
+    const weartype = "top"; // Example weartype, adjust this as needed
+
+    res.render("admin/add-product-new", {
+      categories,
+      subcategories,
+      weartype,
+      selectedCategory: categoryName
+    });
+  } catch (error) {
+    console.error("Error loading add-product page:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
 
 
 router.post("/addProducts", async (req, res) => {
@@ -41,6 +67,9 @@ router.post("/addProducts", async (req, res) => {
       discount: req.body.product_discount[index],
       colour: req.body.product_colour[index],
       image_url: req.body.product_image[index],
+      product_info : req.body.product_info[index],
+      shipping_info : req.body.Shipping_info[index],
+      return_policy :  req.body.return_policy[index], 
     };
 
     if (productType === "top") {
@@ -76,7 +105,7 @@ router.post("/addProducts", async (req, res) => {
     INSERT INTO products (
       category_id, subcategory_id, product_name, product_price, 
       discount_on_product, product_title, product_description, wear_type_bottom_or_top, 
-      colour, unique_batch_id 
+      colour, unique_batch_id , product_information , shipping_information , return_policy
     ) 
     VALUES ?;
   `;
@@ -92,6 +121,9 @@ router.post("/addProducts", async (req, res) => {
     productType,
     product.colour,
     uniqueBatchId,
+    product.product_info,
+    product.shipping_info,
+    product.return_policy, 
   ]);
 
   try {
