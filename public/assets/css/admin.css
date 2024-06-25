@@ -153,7 +153,7 @@
  .btn-submit{
     text-decoration: none;
     color: #fff;
-    background: #000;
+    background:var(--primaryColor);
     height: 40px;
     display: flex;
     align-items: center;
