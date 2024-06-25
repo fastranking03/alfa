@@ -19,7 +19,8 @@
       -webkit-appearance: none;
       margin: 0;
     }
-    .product-cart-wrap{
+
+    .product-cart-wrap {
       border: 1px solid #cccccc;
       border-radius: 10px;
       padding: 24px 20px 35px;
@@ -75,10 +76,40 @@
                       </div>
                     </div>
 
+                    <div class="row mt-3">
+                      <div class="product-cart-wraps">
+                        <div class="product-title-text ">
+                          <h4>Information</h4>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-12">
+                            <div class="from-group">
+                              <label for="Catename">Product Information</label>
+                              <textarea class="form-control" name="product_info[]" id=""></textarea>
+                            </div>
+                          </div>
+                          <div class="col-md-12">
+                            <div class="from-group">
+                              <label for="Catename">Shipping Information</label>
+                              <textarea class="form-control" name="Shipping_info[]" id=""></textarea>
+                            </div>
+                          </div>
+                          <div class="col-md-12">
+                            <div class="from-group">
+                              <label for="Catename">Return Policy</label>
+                              <textarea class="form-control" name="return_policy[]" id=""></textarea>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="product-title-text mt-3">
+                      <h4>Pricing</h4>
+                    </div>
                     <div class="product-detail product" id="products">
                       <div class="">
                       </div>
-                      <div class="row mt-4">
+                      <div class="row mt-2">
                         <div class="col-md-3">
                           <div class="from-group">
                             <label for="Catename">MRP</label>
@@ -236,81 +267,78 @@
                                   <div class="row">
                                     <div class="col-md-12">
                                       <div class="from-group">
-                                        <label for="Catename">Product Image</label>
-                                        <input type="file" name="product-image[]" class="form-control" required>
+                                        <label class="picture main-picture" for="picture__input" tabIndex="0">
+                                          <span class="picture__image"><i class="fa-solid fa-arrow-up"></i> </span>
+                                        </label>
+                                        <input type="file" name="picture__input[]" id="picture__input">
                                       </div>
                                     </div>
-                                    <div class="col-md-4">
-                                      <div class="from-group">
-                                        <label for="Catename">Product Image</label>
-                                        <input type="file" name="product-image1[]" class="form-control" required>
+                                  </div>
+                                  <div class="row">
+                                    <div class="product-grid-image">
+                                      <div class="p-grid">
+                                        <div class="from-group">
+                                          <label class="picture" for="picture__input1" tabIndex="0">
+                                            <span class="picture__image"><i class="fa-solid fa-image"></i></span>
+                                          </label>
+                                          <input type="file" name="picture__input[]" id="picture__input1"
+                                            class="picture__input">
+                                          <img id="preview1" class="image-preview" style="display:none;" />
+                                        </div>
+                                      </div>
+                                      <div class="p-grid">
+                                        <div class="from-group">
+                                          <label class="picture" for="picture__input2" tabIndex="0">
+                                            <span class="picture__image"><i class="fa-solid fa-image"></i></span>
+                                          </label>
+                                          <input type="file" name="picture__input[]" id="picture__input2"
+                                            class="picture__input">
+                                          <img id="preview2" class="image-preview" style="display:none;" />
+                                        </div>
+                                      </div>
+                                      <div class="p-grid">
+                                        <div class="from-group">
+                                          <label class="picture" for="picture__input3" tabIndex="0">
+                                            <span class="picture__image"><i class="fa-solid fa-image"></i></span>
+                                          </label>
+                                          <input type="file" name="picture__input[]" id="picture__input3"
+                                            class="picture__input">
+                                          <img id="preview3" class="image-preview" style="display:none;" />
+                                        </div>
+                                      </div>
+                                      <div class="p-grid">
+                                        <div class="from-group">
+                                          <label class="picture" for="picture__input4" tabIndex="0">
+                                            <span class="picture__image"><i class="fa-solid fa-image"></i></span>
+                                          </label>
+                                          <input type="file" name="picture__input[]" id="picture__input4"
+                                            class="picture__input">
+                                          <img id="preview4" class="image-preview" style="display:none;" />
+                                        </div>
+                                      </div>
+                                      <div class="p-grid">
+                                        <div class="from-group">
+                                          <label class="picture" for="picture__input5" tabIndex="0">
+                                            <span class="picture__image"><i class="fa-solid fa-image"></i></span>
+                                          </label>
+                                          <input type="file" name="picture__input[]" id="picture__input5"
+                                            class="picture__input">
+                                          <img id="preview5" class="image-preview" style="display:none;" />
+                                        </div>
                                       </div>
                                     </div>
-                                    <div class="col-md-4">
-                                      <div class="from-group">
-                                        <label for="Catename">Product Image</label>
-                                        <input type="file" name="product-image2[]" class="form-control" required>
-                                      </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                      <div class="from-group">
-                                        <label for="Catename">Product Image</label>
-                                        <input type="file" name="product-image3[]" class="form-control" required>
-                                      </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                      <div class="from-group">
-                                        <label for="Catename">Product Image</label>
-                                        <input type="file" name="product-image4[]" class="form-control" required>
-                                      </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                      <div class="from-group">
-                                        <label for="Catename">Product Image</label>
-                                        <input type="file" name="product-image5[]" class="form-control" required>
-                                      </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                      <div class="from-group">
-                                        <label for="Catename">Product Image</label>
-                                        <input type="file" name="product-image" class="form-control" required>
-                                      </div>
-                                    </div>
+
                                   </div>
                                 </div>
                               </div>
                               <div class="col-md-6">
-                                <div class="product-cart-wrap">
-                                  <div class="product-title-text ">
-                                    <h4>Information</h4>
-                                  </div>
-                                  <div class="row">
-                                    <div class="col-md-12">
-                                      <div class="from-group">
-                                        <label for="Catename">Product Information</label>
-                                        <textarea class="form-control" name="product_info[]" id=""></textarea>
-                                      </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                      <div class="from-group">
-                                        <label for="Catename">Shipping Information</label>
-                                        <textarea class="form-control" name="Shipping_info[]" id=""></textarea>
-                                      </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                      <div class="from-group">
-                                        <label for="Catename">Return Policy</label>
-                                        <textarea class="form-control" name="return_policy[]" id=""></textarea>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
+
                               </div>
                             </div>
-                            <div class="mt-2" style="display: flex; justify-content: end;">
-                              <button type="button" class="btn-submit" onclick="addProductForm()">Add More
-                                Product</button>
-                            </div>
+                          <div class="mt-2" style="display: flex; justify-content: end;">
+                            <button type="button" class="btn-submit" onclick="addProductForm()">Add More
+                              Product</button>
+                          </div>
                     </div>
                     <div class="row mt-3">
                       <div class="admin-submit-btn d-flex" style="gap: 10px;">
@@ -325,12 +353,43 @@
         </div>
       </div>
   </div>
-  <script>
-    let productIndex = 1;
+  <%- include('includes/foot') %>
+    <script>
+      const inputFile = document.querySelector("#picture__input");
+      const pictureImage = document.querySelector(".picture__image");
+      const pictureImageTxt = "Upload Image";
+      pictureImage.innerHTML = pictureImageTxt;
 
-    function addProductForm() {
-      const productsContainer = document.getElementById("products");
-      const productTemplate = `
+      inputFile.addEventListener("change", function (e) {
+        const inputTarget = e.target;
+        const file = inputTarget.files[0];
+
+        if (file) {
+          const reader = new FileReader();
+
+          reader.addEventListener("load", function (e) {
+            const readerTarget = e.target;
+
+            const img = document.createElement("img");
+            img.src = readerTarget.result;
+            img.classList.add("picture__img");
+
+            pictureImage.innerHTML = "";
+            pictureImage.appendChild(img);
+          });
+
+          reader.readAsDataURL(file);
+        } else {
+          pictureImage.innerHTML = pictureImageTxt;
+        }
+      });
+
+    </script>
+    <script>
+      let productIndex = 1;
+      function addProductForm() {
+        const productsContainer = document.getElementById("products");
+        const productTemplate = `
                      <div class="product-detail product" id="products">
                       <div class="">
                        </div>
@@ -476,7 +535,7 @@
                             </div>
                           </div>
                           <% } %>
-                            <div class="row mt-3">
+                          <div class="row mt-3">
                               <div class="col-md-6">
                                 <div class="product-cart-wrap">
                                   <div class="product-title-text">
@@ -485,75 +544,67 @@
                                   <div class="row">
                                     <div class="col-md-12">
                                       <div class="from-group">
-                                        <label for="Catename">Product Image</label>
-                                        <input type="file" name="product-image[]" class="form-control" required>
+                                         <label class="picture main-picture" for="picture__input" tabIndex="0">
+                                          <span class="picture__image"><i class="fa-solid fa-arrow-up"></i> </span>
+                                        </label>
+                                        <input type="file" name="picture__input[]" id="picture__input">
                                       </div>
                                     </div>
-                                    <div class="col-md-4">
-                                      <div class="from-group">
-                                        <label for="Catename">Product Image</label>
-                                        <input type="file" name="product-image1[]" class="form-control" required>
+                                  </div>
+                                   <div class="row">
+                                    <div class="product-grid-image">
+                                      <div class="p-grid">
+                                        <div class="from-group">
+                                          <label class="picture" for="picture__input1" tabIndex="0">
+                                            <span class="picture__image"><i class="fa-solid fa-image"></i></span>
+                                          </label>
+                                          <input type="file" name="picture__input[]" id="picture__input1" class="picture__input">
+                                          <img id="preview1" class="image-preview" style="display:none;" />
+                                        </div>
+                                      </div>
+                                      <div class="p-grid">
+                                        <div class="from-group">
+                                          <label class="picture" for="picture__input2" tabIndex="0">
+                                            <span class="picture__image"><i class="fa-solid fa-image"></i></span>
+                                          </label>
+                                          <input type="file" name="picture__input[]" id="picture__input2" class="picture__input">
+                                          <img id="preview2" class="image-preview" style="display:none;" />
+                                        </div>
+                                      </div>
+                                      <div class="p-grid">
+                                        <div class="from-group">
+                                          <label class="picture" for="picture__input3" tabIndex="0">
+                                            <span class="picture__image"><i class="fa-solid fa-image"></i></span>
+                                          </label>
+                                          <input type="file" name="picture__input[]" id="picture__input3" class="picture__input">
+                                          <img id="preview3" class="image-preview" style="display:none;" />
+                                        </div>
+                                      </div>
+                                      <div class="p-grid">
+                                        <div class="from-group">
+                                          <label class="picture" for="picture__input4" tabIndex="0">
+                                            <span class="picture__image"><i class="fa-solid fa-image"></i></span>
+                                          </label>
+                                          <input type="file" name="picture__input[]" id="picture__input4" class="picture__input">
+                                          <img id="preview4" class="image-preview" style="display:none;" />
+                                        </div>
+                                      </div>
+                                      <div class="p-grid">
+                                        <div class="from-group">
+                                          <label class="picture" for="picture__input5" tabIndex="0">
+                                            <span class="picture__image"><i class="fa-solid fa-image"></i></span>
+                                          </label>
+                                          <input type="file" name="picture__input[]" id="picture__input5" class="picture__input">
+                                          <img id="preview5" class="image-preview" style="display:none;" />
+                                        </div>
                                       </div>
                                     </div>
-                                    <div class="col-md-4">
-                                      <div class="from-group">
-                                        <label for="Catename">Product Image</label>
-                                        <input type="file" name="product-image2[]" class="form-control" required>
-                                      </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                      <div class="from-group">
-                                        <label for="Catename">Product Image</label>
-                                        <input type="file" name="product-image3[]" class="form-control" required>
-                                      </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                      <div class="from-group">
-                                        <label for="Catename">Product Image</label>
-                                        <input type="file" name="product-image4[]" class="form-control" required>
-                                      </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                      <div class="from-group">
-                                        <label for="Catename">Product Image</label>
-                                        <input type="file" name="product-image5[]" class="form-control" required>
-                                      </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                      <div class="from-group">
-                                        <label for="Catename">Product Image</label>
-                                        <input type="file" name="product-image" class="form-control" required>
-                                      </div>
-                                    </div>
+                                    
                                   </div>
                                 </div>
                               </div>
                               <div class="col-md-6">
-                                <div class="product-cart-wrap">
-                                  <div class="product-title-text ">
-                                    <h4>Information</h4>
-                                  </div>
-                                  <div class="row">
-                                    <div class="col-md-12">
-                                      <div class="from-group">
-                                        <label for="Catename">Product Information</label>
-                                        <textarea class="form-control" name="product_info[]" id=""></textarea>
-                                      </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                      <div class="from-group">
-                                        <label for="Catename">Shipping Information</label>
-                                        <textarea class="form-control" name="Shipping_info[]" id=""></textarea>
-                                      </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                      <div class="from-group">
-                                        <label for="Catename">Return Policy</label>
-                                        <textarea class="form-control" name="return_policy[]" id=""></textarea>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
+                               
                               </div>
                             </div>
                           <div class="mt-2" style="display: flex; justify-content: end;">
@@ -561,18 +612,18 @@
                           </div>
                     </div>
       `;
-      const productNode = document.createElement("div");
-      productNode.innerHTML = productTemplate.trim();
-      productsContainer.appendChild(productNode.firstChild);
+        const productNode = document.createElement("div");
+        productNode.innerHTML = productTemplate.trim();
+        productsContainer.appendChild(productNode.firstChild);
 
-      productIndex++;
-    }
+        productIndex++;
+      }
 
-    function removeProduct(button) {
-      const productDiv = button.closest(".product");
-      productDiv.remove();
-    }
-  </script>
+      function removeProduct(button) {
+        const productDiv = button.closest(".product");
+        productDiv.remove();
+      }
+    </script>
 </body>
 
 </html>
