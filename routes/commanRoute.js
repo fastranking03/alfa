@@ -94,7 +94,7 @@ router.post("/delete-from-wishlist", async (req, res) => {
         return res.redirect(`/product-detail/${productId}`);
       }
     }
-  } catch (error) {}
+  } catch (error) { }
 });
 
 router.get("/delete-from-wishlist/:favoriteId", async (req, res) => {
@@ -197,6 +197,7 @@ router.post("/place-order", async (req, res) => {
 
     // Insert order items only if the order insertion is successful
     for (const product of parsedCartItems) {
+      const product_type = product.wear_type_bottom_or_top;
       const insertOrderItemQuery = `
         INSERT INTO order_items (order_id, product_id, quantity, price, size, colour) 
         VALUES (?, ?, ?, ?, ?, ?)
@@ -216,6 +217,27 @@ router.post("/place-order", async (req, res) => {
 
       if (insertOrderItemResult.affectedRows !== 1) {
         throw new Error("Failed to insert order item");
+      }
+      // updating inventory
+
+      if (product_type === 'top') {
+        const sizeColumn = product.selected_size.toLowerCase();
+        const updateInventoryQuery = `
+          UPDATE topwear_inventory_with_sizes
+          SET ${sizeColumn} = ${sizeColumn} - ? 
+          WHERE product_id = ?
+        `;
+        await connect.query(updateInventoryQuery, [product.quantity, product.product_id]);
+      } else if (product_type === 'bottom') {
+        const sizeColumn = `size_${product.selected_size}`;
+        const updateInventoryQuery = `
+          UPDATE bottom_wear_inventory_with_sizes
+          SET ${sizeColumn} = ${sizeColumn} - ? 
+          WHERE product_id = ?
+        `;
+        await connect.query(updateInventoryQuery, [product.quantity, product.product_id]);
+      } else {
+        throw new Error("Unknown product type");
       }
     }
 
@@ -259,6 +281,7 @@ router.post("/place-order", async (req, res) => {
   }
 });
 
+
 router.get("/product", async (req, res) => {
   const user = req.session.user;
 
@@ -294,13 +317,15 @@ router.get("/product", async (req, res) => {
       user,
       products: results,
       categories: categories,
-      color_list: color_list ,
+      color_list: color_list,
     });
   } catch (error) {
     console.error("Database query error:", error);
     res.status(500).send("Internal Server Error");
   }
 });
+
+
 
 router.get("/blogs", async (req, res) => {
   try {
@@ -588,8 +613,8 @@ router.get("/cart", async (req, res) => {
         // Redirect to another page if cartItems is empty
         return res.render('empty-cart-page');
       }
-       
-      
+
+
 
       const promises = cartItems.map((cartItem) =>
         connect
@@ -1371,21 +1396,39 @@ router.post("/add-to-cart", async (req, res) => {
 });
 
 router.get("/delete-product/:cart_id", async (req, res) => {
+  const user = req.session.user; 
+  const cartId = parseInt(req.params.cart_id, 10);
+  // Assuming you have the user's ID in the session
   try {
-    const cartId = req.params.cart_id; // Accessing product ID from the request params
-    const userId = req.session.user.id; // Assuming you have the user's ID in the session
+    if (!user) { 
+      const cartItems = req.session.cart || [];
 
-    // Query to delete the product from the cart
-    const deleteProductQuery = `
-      DELETE FROM users_cart 
-      WHERE user_id = ? AND id = ?
-    `;
+      const itemIndex = cartItems.findIndex((item) => item.cart_id === cartId);
+      if (itemIndex !== -1) {
+        // Remove the item if it exists
+        cartItems.splice(itemIndex, 1);
+      }
+  
+      req.session.cart = cartItems; 
+      req.session.cartCount = req.session.cart.length;
+   
+      return res.redirect("/cart");
+    } else {
+      const userId = req.session.user.id; 
+      const deleteProductQuery = `
+                DELETE FROM users_cart 
+                WHERE user_id = ? AND id = ?
+                `;
 
-    // Execute the query
-    await connect.query(deleteProductQuery, [userId, cartId]);
+      // Execute the query
+      await connect.query(deleteProductQuery, [userId, cartId]);
 
-    // Redirect back to the cart page after deletion
-    return res.redirect("/cart");
+      // Redirect back to the cart page after deletion
+      return res.redirect("/cart");
+    }
+
+
+
   } catch (error) {
     console.error("Error deleting product:", error);
     // Send an error status (500) without any response body
