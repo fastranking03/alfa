@@ -281,6 +281,7 @@ router.post("/place-order", async (req, res) => {
   }
 });
 
+
 router.get("/product", async (req, res) => {
   const user = req.session.user;
 
@@ -323,6 +324,8 @@ router.get("/product", async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
+
+
 
 router.get("/blogs", async (req, res) => {
   try {
@@ -1393,21 +1396,39 @@ router.post("/add-to-cart", async (req, res) => {
 });
 
 router.get("/delete-product/:cart_id", async (req, res) => {
+  const user = req.session.user; 
+  const cartId = parseInt(req.params.cart_id, 10);
+  // Assuming you have the user's ID in the session
   try {
-    const cartId = req.params.cart_id; // Accessing product ID from the request params
-    const userId = req.session.user.id; // Assuming you have the user's ID in the session
+    if (!user) { 
+      const cartItems = req.session.cart || [];
 
-    // Query to delete the product from the cart
-    const deleteProductQuery = `
-      DELETE FROM users_cart 
-      WHERE user_id = ? AND id = ?
-    `;
+      const itemIndex = cartItems.findIndex((item) => item.cart_id === cartId);
+      if (itemIndex !== -1) {
+        // Remove the item if it exists
+        cartItems.splice(itemIndex, 1);
+      }
+  
+      req.session.cart = cartItems; 
+      req.session.cartCount = req.session.cart.length;
+   
+      return res.redirect("/cart");
+    } else {
+      const userId = req.session.user.id; 
+      const deleteProductQuery = `
+                DELETE FROM users_cart 
+                WHERE user_id = ? AND id = ?
+                `;
 
-    // Execute the query
-    await connect.query(deleteProductQuery, [userId, cartId]);
+      // Execute the query
+      await connect.query(deleteProductQuery, [userId, cartId]);
 
-    // Redirect back to the cart page after deletion
-    return res.redirect("/cart");
+      // Redirect back to the cart page after deletion
+      return res.redirect("/cart");
+    }
+
+
+
   } catch (error) {
     console.error("Error deleting product:", error);
     // Send an error status (500) without any response body
