@@ -94,7 +94,7 @@ router.post("/delete-from-wishlist", async (req, res) => {
         return res.redirect(`/product-detail/${productId}`);
       }
     }
-  } catch (error) {}
+  } catch (error) { }
 });
 
 router.get("/delete-from-wishlist/:favoriteId", async (req, res) => {
@@ -197,6 +197,7 @@ router.post("/place-order", async (req, res) => {
 
     // Insert order items only if the order insertion is successful
     for (const product of parsedCartItems) {
+      const product_type = product.wear_type_bottom_or_top;
       const insertOrderItemQuery = `
         INSERT INTO order_items (order_id, product_id, quantity, price, size, colour) 
         VALUES (?, ?, ?, ?, ?, ?)
@@ -216,6 +217,27 @@ router.post("/place-order", async (req, res) => {
 
       if (insertOrderItemResult.affectedRows !== 1) {
         throw new Error("Failed to insert order item");
+      }
+      // updating inventory
+
+      if (product_type === 'top') {
+        const sizeColumn = product.selected_size.toLowerCase();
+        const updateInventoryQuery = `
+          UPDATE topwear_inventory_with_sizes
+          SET ${sizeColumn} = ${sizeColumn} - ? 
+          WHERE product_id = ?
+        `;
+        await connect.query(updateInventoryQuery, [product.quantity, product.product_id]);
+      } else if (product_type === 'bottom') {
+        const sizeColumn = `size_${product.selected_size}`;
+        const updateInventoryQuery = `
+          UPDATE bottom_wear_inventory_with_sizes
+          SET ${sizeColumn} = ${sizeColumn} - ? 
+          WHERE product_id = ?
+        `;
+        await connect.query(updateInventoryQuery, [product.quantity, product.product_id]);
+      } else {
+        throw new Error("Unknown product type");
       }
     }
 
@@ -294,7 +316,7 @@ router.get("/product", async (req, res) => {
       user,
       products: results,
       categories: categories,
-      color_list: color_list ,
+      color_list: color_list,
     });
   } catch (error) {
     console.error("Database query error:", error);
@@ -588,8 +610,8 @@ router.get("/cart", async (req, res) => {
         // Redirect to another page if cartItems is empty
         return res.render('empty-cart-page');
       }
-       
-      
+
+
 
       const promises = cartItems.map((cartItem) =>
         connect
