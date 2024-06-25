@@ -7,8 +7,17 @@
   <title>Alfa Admin | Add Banner</title>
   <%- include('includes/head') %>
 </head>
-
 <body>
+  <style>
+    .from-group{
+      margin-bottom: 10px;
+    }
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+  </style>
   <div class="main-admin-warpper">
     <%- include('includes/header') %>
       <div class="alfa-admin-wrapper">
@@ -210,9 +219,57 @@
                             </div>
                           </div>
                           <% } %>
-                          <div class="mt-2" style="display: flex; justify-content: end;">
-                             <button type="button" class="btn-submit" onclick="addProductForm()">Add  More Product</button>
+
+                          <div class="product-title-text mt-4">
+                            <h4>Media</h4>
                           </div>
+                          <div class="row">
+                            <div class="col-md-12">
+                              <div class="from-group">
+                                <label for="Catename">Product Image</label>
+                                <input type="file" name="product-image[]" class="form-control" required>
+                              </div>
+                            </div>
+                            <div class="col-md-2">
+                              <div class="from-group">
+                                <label for="Catename">Product Image</label>
+                                <input type="file" name="product-image1[]" class="form-control" required>
+                              </div>
+                            </div>
+                            <div class="col-md-2">
+                              <div class="from-group">
+                                <label for="Catename">Product Image</label>
+                                <input type="file" name="product-image2[]" class="form-control" required>
+                              </div>
+                            </div>
+                            <div class="col-md-2">
+                              <div class="from-group">
+                                <label for="Catename">Product Image</label>
+                                <input type="file" name="product-image3[]" class="form-control" required>
+                              </div>
+                            </div>
+                            <div class="col-md-2">
+                              <div class="from-group">
+                                <label for="Catename">Product Image</label>
+                                <input type="file" name="product-image4[]" class="form-control" required>
+                              </div>
+                            </div>
+                            <div class="col-md-2">
+                              <div class="from-group">
+                                <label for="Catename">Product Image</label>
+                                <input type="file" name="product-image5[]" class="form-control" required>
+                              </div>
+                            </div>
+                            <div class="col-md-2">
+                              <div class="from-group">
+                                <label for="Catename">Product Image</label>
+                                <input type="file" name="product-image" class="form-control" required>
+                              </div>
+                            </div>
+                          </div>
+                        <div class="mt-2" style="display: flex; justify-content: end;">
+                            <button type="button" class="btn-submit" onclick="addProductForm()">Add  More Product</button>
+                        </div>
                     </div>
                     <div class="row mt-3">
                       <div class="admin-submit-btn d-flex" style="gap: 10px;">
@@ -378,6 +435,53 @@
                             </div>
                           </div>
                           <% } %>
+                           <div class="product-title-text mt-4">
+                            <h4>Media</h4>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-12">
+                              <div class="from-group">
+                                <label for="Catename">Product Image</label>
+                                <input type="file" name="product-image[]" class="form-control" required>
+                              </div>
+                            </div>
+                            <div class="col-md-2">
+                              <div class="from-group">
+                                <label for="Catename">Product Image</label>
+                                <input type="file" name="product-image1[]" class="form-control" required>
+                              </div>
+                            </div>
+                            <div class="col-md-2">
+                              <div class="from-group">
+                                <label for="Catename">Product Image</label>
+                                <input type="file" name="product-image2[]" class="form-control" required>
+                              </div>
+                            </div>
+                            <div class="col-md-2">
+                              <div class="from-group">
+                                <label for="Catename">Product Image</label>
+                                <input type="file" name="product-image3[]" class="form-control" required>
+                              </div>
+                            </div>
+                            <div class="col-md-2">
+                              <div class="from-group">
+                                <label for="Catename">Product Image</label>
+                                <input type="file" name="product-image4[]" class="form-control" required>
+                              </div>
+                            </div>
+                            <div class="col-md-2">
+                              <div class="from-group">
+                                <label for="Catename">Product Image</label>
+                                <input type="file" name="product-image5[]" class="form-control" required>
+                              </div>
+                            </div>
+                            <div class="col-md-2">
+                              <div class="from-group">
+                                <label for="Catename">Product Image</label>
+                                <input type="file" name="product-image" class="form-control" required>
+                              </div>
+                            </div>
+                          </div>
                           <div class="mt-2" style="display: flex; justify-content: end;">
                              <button type="button" class="btn-submit btn-danger" onclick="removeProduct(this)">Remove</button>
                           </div>
