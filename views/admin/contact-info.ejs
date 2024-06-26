@@ -1,0 +1,95 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alfa Admin |  Contact Info</title>
+  <%- include('includes/head') %>
+</head>
+
+<body>
+  <div class="main-admin-warpper">
+    <%- include('includes/header') %>
+    <div class="alfa-admin-wrapper">
+      <div class="admin-side-nav">
+        <%- include('includes/sidebar') %>
+        <div class="admin-main-layout">
+          <div class="admin-bradcrumb">
+            <div class="admin-brudcrumb-title">
+              <h4>Contact Information</h4>
+            </div>
+          </div>
+          <div class="admin-card" style="border: 1px solid #ccc; border-radius: 10px;">
+            <form action="" method="post" enctype="multipart/form-data">
+              <div class="admin-from">
+                <div class="row">
+                    <div class="contact-info">
+                        <div class="contact-text">
+                            <h5>Basic Information</h5>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-4">
+                                <div>
+                                    <label for="product_name" class="form-label">Customer Care Number:</label>
+                                    <input type="text" id="number" name="number" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div>
+                                    <label for="product_name" class="form-label">Email ID:</label>
+                                    <input type="text" id="number" name="emai;" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div>
+                                    <label for="product_name" class="form-label">Address:</label>
+                                    <input type="text" id="number" name="emai;" class="form-control" required>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="contact-text mt-5 mb-4">
+                            <h5>Other ways to connect with us</h5>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div>
+                                    <label for="product_name" class="form-label">Instagram Link <span><i class="fa-brands fa-instagram"></i></span></label>
+                                    <input type="text" id="number" name="instagram" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div>
+                                    <label for="product_name" class="form-label">Facebook Link <span><i class="fa-brands fa-facebook-f"></i></span></label>
+                                    <input type="text" id="number" name="facebook" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div>
+                                    <label for="product_name" class="form-label">Twitter Link <span><i class="fa-brands fa-x-twitter"></i></span></label>
+                                    <input type="text" id="number" name="twitter" class="form-control" required>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="mt-4">
+                                    <label for="product_name" class="form-label">Linkdin Link <span><i class="fa-brands fa-linkedin"></i></span></label>
+                                    <input type="text" id="number" name="linkdin" class="form-control" required>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                 </div>
+                <div class="row mt-3">
+                  <div class="admin-submit-btn d-flex" style="justify-content: end;">
+                    <button class="btn-submit">Submit</button>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

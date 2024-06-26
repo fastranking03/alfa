@@ -9,5 +9,8 @@ const router = express.Router();
  router.get('/contact-inquiry',(req,res) =>{
     return res.render('admin/contact-inquiry');
  })
-
+ router.get('/contact-info',(req,res) =>{
+   return res.render('admin/contact-info');
+})
+ 
 export default router;
