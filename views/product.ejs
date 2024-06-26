@@ -66,8 +66,7 @@
         background: #005d67;
         color: #fff;
         height: 40px;
-        padding: 10px 22px;
-        border-radius: 10px;
+        padding: 10px 12px;
         display: none;
         opacity: 0;
         font-weight: 400;
@@ -744,7 +743,7 @@
                   cartMessage.style.display = "block";
                   setTimeout(() => {
                     cartMessage.style.display = "none"
-                  }, 2000)
+                  }, 4000)
 
                   // Update cart count in the span
                   const cartLi = document.querySelector("#cart");
@@ -761,7 +760,7 @@
                   cartMessage.style.display = "block";
                   setTimeout(() => {
                     cartMessage.style.display = "none"
-                  }, 2000)
+                  }, 4000)
                 }
               } catch (error) {
                 console.error("Error:", error);
@@ -769,7 +768,7 @@
                 cartMessage.style.display = "block";
                 setTimeout(() => {
                   cartMessage.style.display = "none"
-                }, 2000)
+                }, 4000)
 
               }
             }
