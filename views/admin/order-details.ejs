@@ -1,6 +1,7 @@
 <html lang="en">
 
 <head>
+    <base href="http://localhost:8081" />
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alfa Admin | Order Details</title>
@@ -32,11 +33,16 @@
                                         <div class="od-left-wrapper">
                                             <div class="od-header">
                                                 <div class="od-left">
-                                                    <h4>Order Id 658436</h4>
-                                                    <p>10 June 2024, 12:25 PM</p>
+                                                    <h4>Order Id <%=order.order_id %>
+                                                    </h4>
+                                                    <p>
+                                                        <%=formattedDateTime %>
+                                                    </p>
                                                 </div>
                                                 <div class="od-status order-status-wrapper">
-                                                    <span class="order-status success">Success</span>
+                                                    <span class="order-status success">
+                                                        <%=order.order_status %>
+                                                    </span>
                                                 </div>
                                             </div>
                                             <hr style="margin: 0;">
@@ -44,64 +50,71 @@
                                                 <div class="od-item-text">
                                                     <h5>Order Item</h5>
                                                 </div>
-                                                <div class="od-items">
-                                                    <div class="od-items-left">
-                                                        <div class="od-item-img">
-                                                            <img class="od-img"
-                                                                src="../assets/images/alfa_products/shirt2.png" alt="">
+                                                <% orderItems.forEach( (item , index)=> {%>
+                                                    <div class="od-items">
+                                                        <div class="od-items-left">
+                                                            <div class="od-item-img">
+                                                                <img class="od-img"
+                                                                    src="/product_images/<%= item.product_main_image %>"
+                                                                    alt="">
+                                                            </div>
+                                                            <div class="od-product-text">
+                                                                <h6>
+                                                                    <%= item.product_name %>
+                                                                </h6>
+                                                                <span>Qty: <%=item.quantity %></span>
+                                                            </div>
                                                         </div>
-                                                        <div class="od-product-text">
-                                                            <h6>Menswear Trouser</h6>
-                                                            <span>Qty: 1</span>
+                                                        <div class="od-items-right">
+                                                            <h5>( <%= (item.price * (1 - (item.discount_on_product /
+                                                                    100))).toFixed(2) %> * <%= item.quantity %> ) : £
+                                                                        <%= (item.price * (1 - (item.discount_on_product
+                                                                            / 100)) * item.quantity).toFixed(2) %>
+                                                            </h5>
+
+
                                                         </div>
                                                     </div>
-                                                    <div class="od-items-right">
-                                                        <h5>£60.00</h5>
-                                                    </div>
-                                                </div>
-                                                <div class="od-items">
-                                                    <div class="od-items-left">
-                                                        <div class="od-item-img">
-                                                            <img class="od-img"
-                                                                src="../assets/images/alfa_products/shirt2.png" alt="">
-                                                        </div>
-                                                        <div class="od-product-text">
-                                                            <h6>Menswear Trouser</h6>
-                                                            <span>Qty: 1</span>
-                                                        </div>
-                                                    </div>
-                                                    <div class="od-items-right">
-                                                        <h5>£60.00</h5>
-                                                    </div>
-                                                </div>
+                                                    <% }); %>
+
                                             </div>
                                             <hr style="margin: 0;">
                                             <div class="od-alfa-total">
                                                 <ul>
                                                     <li>
+                                                        <div class="alfa-text">Total MRP</div>
+                                                        <div class="alfa-price">
+                                                            <span id="totalPrice-ajax"> £ <%=order.total_mrp %></span>
+                                                        </div>
+                                                    </li>
+
+
+                                                    <li>
                                                         <div class="alfa-text">Sub-Total</div>
                                                         <div class="alfa-price">
-                                                             <span id="totalPrice-ajax">  £425.00</span>
+                                                            <span id="totalPrice-ajax"> £ <%=order.sub_total %></span>
                                                         </div>
                                                     </li>
 
                                                     <li>
                                                         <div class="alfa-text">Total Discount</div>
                                                         <div class="alfa-price">
-                                                             <span id="totalDiscount-ajax">  £109.00</span>
+                                                            <span id="totalDiscount-ajax"> - £ <%=order.discount_amount
+                                                                    %></span>
                                                         </div>
                                                     </li>
 
                                                     <li>
-                                                        <div class="alfa-text">GST</div>
+                                                        <div class="alfa-text">VAT</div>
                                                         <div class="alfa-price">
-                                                          <span id="GST-ajax"> £85.00</span>
+                                                            <span id="GST-ajax"> £ <%= order.vat %></span>
                                                         </div>
                                                     </li>
                                                     <li>
                                                         <div class="alfa-text">Delivery Fee</div>
                                                         <div class="alfa-price">
-                                                             <span id="Delivery-ajax"> £25.00</span>
+                                                            <span id="Delivery-ajax"> £ <%=order.delivery_charges %>
+                                                                    </span>
                                                         </div>
                                                     </li>
                                                 </ul>
@@ -112,17 +125,18 @@
                                                     <li>
                                                         <div class="alfa-text">Total Cost</div>
                                                         <div class="alfa-price">
-                                                             <span id="totalPrice-ajax"> £425.00</span>
+                                                            <span id="totalPrice-ajax"> £ <%=order.total_payable %>
+                                                                    </span>
                                                         </div>
                                                     </li>
-                                                 </ul>
+                                                </ul>
                                             </div>
                                         </div>
                                         <div class="od-left-wrapper mt-3">
                                             <div class="od-header">
                                                 <div class="od-left">
                                                     <h4 style="font-size: 20px;">Order Status</h4>
-                                                 </div>
+                                                </div>
                                                 <div class="od-status order-status-wrapper">
                                                     <span class="shipped">Shipped on 23rd May 2024</span>
                                                 </div>
@@ -131,8 +145,8 @@
                                             <div class="order-proccess-wrapper">
                                                 <div class="process-wrapper">
                                                     <div class="process-item process-active">
-                                                       <div class="proccess-text-center">
-                                                             <span><i class="fa-solid fa-file-invoice"></i></span>
+                                                        <div class="proccess-text-center">
+                                                            <span><i class="fa-solid fa-file-invoice"></i></span>
                                                             <h6>Order Placed</h6>
                                                         </div>
                                                     </div>
@@ -153,9 +167,9 @@
                                                             <span><i class="fa-regular fa-handshake"></i></span>
                                                             <h6 style="left: -6px;">Delivered</h6>
                                                         </div>
-                                                     </div>
+                                                    </div>
                                                 </div>
-                                             </div>
+                                            </div>
                                         </div>
                                     </div>
                                     <div class="col-md-4">
@@ -163,38 +177,49 @@
                                             <div class="od-header">
                                                 <div class="od-left">
                                                     <h4>Customer Details</h4>
-                                                 </div>
+                                                </div>
                                                 <div class="od-status order-status-wrapper">
-                                                    <a href="" class="order-status text-black"><i class="fa-regular fa-pen-to-square"></i></a>
+                                                    <a href="" class="order-status text-black"><i
+                                                            class="fa-regular fa-pen-to-square"></i></a>
                                                 </div>
                                             </div>
                                             <hr style="margin: 0;">
                                             <div class="od-right-detail">
                                                 <ul>
-                                                   <li>
-                                                       <div class="od-label-text">Name : </div>
-                                                       <div class="od-price">Mason </div>
-                                                   </li>
-                                                   <li>
-                                                    <div class="od-label-text">Email : </div>
-                                                    <div class="od-price">mason.co.uk </div>
-                                                </li>
-                                                <li>
-                                                    <div class="od-label-text">Mobile : </div>
-                                                    <div class="od-price">+44 256 253 3564 </div>
-                                                </li>
-                                                 <li>
-                                                    <div class="od-label-text">Billing Address : </div>
-                                                    <div class="od-price">Lorem ipsum dolor sit amet consectetur adipisicing elit.</div>
-                                                </li>
-                                                <li>
-                                                    <div class="od-label-text">Payment Method : </div>
-                                                    <div class="od-price">COD</div>
-                                                </li>
-                                                 </ul>
-                                           </div>
+                                                    <li>
+                                                        <div class="od-label-text">Name : </div>
+                                                        <div class="od-price">
+                                                            <%=order.user_name %>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="od-label-text">Email : </div>
+                                                        <div class="od-price">
+                                                            <%=order.email %>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="od-label-text">Mobile : </div>
+                                                        <div class="od-price">+44 <%=order.user_phone %>
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="od-label-text">Billing Address : </div>
+                                                        <div class="od-price">
+                                                            <%=order.address %> , <%=order.user_pincode %> ,
+                                                                    <%=order.locality %> , <%=order.city %> , ,
+                                                                            <%=order.state %>
+                                                                                <%=order.country %> ,
+                                                        </div>
+                                                    </li>
+                                                    <li>
+                                                        <div class="od-label-text">Payment Method : </div>
+                                                        <div class="od-price">....... </div>
+                                                    </li>
+                                                </ul>
+                                            </div>
                                         </div>
-                                       
+
                                     </div>
                                 </div>
                             </div>
