@@ -33,7 +33,7 @@ router.get("/users-list", async (req, res) => {
   try {
     const [users] = await connect.query("SELECT * FROM user_registration");
     res.render("admin/users-list", { users });
-  } catch (error) {}
+  } catch (error) { }
 });
 
 // Function to fetch user wishlist from the database along with product details
@@ -117,18 +117,88 @@ router.get("/user-detailed-view/:userId", async (req, res) => {
 
 
 // Static Routes
-router.get('/orders',(req,res) =>{
-  return res.render('admin/orders');
+router.get('/orders', async (req, res) => {
+  try {
+    const [order_list] = await connect.query(`
+       SELECT 
+        o.*, 
+        ua.name, 
+        ua.email ,
+        ua.phone, 
+        ua.pincode, 
+        ua.created_at,
+        (SELECT COUNT(*) FROM order_items oi WHERE oi.order_id = o.order_id) AS item_count
+        FROM orders o 
+        JOIN user_address ua ON o.address_id = ua.id
+    `);
+
+    return res.render('admin/orders', { orders: order_list });
+  } catch (error) {
+    console.error("Error loading orders:", error);
+    return res.status(500).send("Internal Server Error");
+  }
 });
-router.get('/order-details',(req,res) =>{
+
+
+router.get('/order-details', (req, res) => {
   res.render("admin/order-details");
 });
-router.get('/',(req,res) =>{
+
+router.get("/order-details/:orderId", async (req, res) => {
+  const { orderId } = req.params;
+
+  try {
+    const [orderReows] = await connect.query(
+      "SELECT * FROM orders WHERE order_id = ? ",
+      [orderId]
+    );
+
+    const [orderRows] = await connect.query(
+      `SELECT o.*, ua.name AS user_name,ua.full_address AS address, ua.locality AS locality, ua.country AS country, ua.state AS state,ua.city AS city,  ua.email AS email , ua.phone AS user_phone, ua.pincode AS user_pincode, ua.created_at AS address_created_at
+       FROM orders o
+       JOIN user_address ua ON o.address_id = ua.id
+       WHERE o.order_id = ?`,
+      [orderId]
+    );
+
+
+    if (orderRows.length > 0) {
+      const order = orderRows[0];
+
+      // Fetch items for the order
+      const [orderItems] = await connect.query(
+        `SELECT oi.*, p.product_name, p.product_main_image
+         FROM order_items oi 
+         JOIN products p ON oi.product_id = p.id 
+         WHERE oi.order_id = ?`,
+        [orderId]
+      );
+
+      const formattedDateTime = new Date(order.created_at).toLocaleString('en-US', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+        hour: 'numeric',
+        minute: '2-digit',
+        hour12: true
+      });
+
+      // Render the order details page
+      res.render("admin/order-details", { order, orderItems, formattedDateTime });
+    } else {
+      res.status(404).send("Order not found");
+    }
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Server error");
+  }
+});
+router.get('/', (req, res) => {
   res.render("admin/index");
 });
 
 
-router.get('/add-new-varient',(req,res) =>{
+router.get('/add-new-varient', (req, res) => {
   res.render("admin/add-new-varient");
 });
 
@@ -153,11 +223,11 @@ router.get('/add-product-in/:variant_name', async (req, res) => {
       [variant_name]
     );
 
-    const [all_products ] = await connect.query(
-      'SELECT * FROM products' 
+    const [all_products] = await connect.query(
+      'SELECT * FROM products'
     );
 
-    res.render('admin/add-products-in-varient', { products_in_varient, variant_name  , all_products});
+    res.render('admin/add-products-in-varient', { products_in_varient, variant_name, all_products });
   } catch (err) {
     console.error('Error fetching products for variant:', err);
     res.status(500).send('Internal Server Error');

@@ -199,14 +199,15 @@ router.post("/place-order", async (req, res) => {
     for (const product of parsedCartItems) {
       const product_type = product.wear_type_bottom_or_top;
       const insertOrderItemQuery = `
-        INSERT INTO order_items (order_id, product_id, quantity, price, size, colour) 
-        VALUES (?, ?, ?, ?, ?, ?)
+        INSERT INTO order_items (order_id, product_id, quantity, price, discount_on_product	, size, colour) 
+        VALUES (?, ?, ?, ?, ?, ?, ?)
       `;
       const insertOrderItemValues = [
         newOrderId,
         product.product_id,
         product.quantity,
         parseFloat(product.product_price),
+        product.discount_on_product,
         product.selected_size,
         product.colour,
       ];
