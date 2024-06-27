@@ -412,4 +412,14 @@ router.post('/add-varient', async (req, res) => {
   }
 });
 
+router.get('/staff-users', (req,res) =>{
+   return res.render("admin/staff-users");
+})
+
+
+router.get('/add-staff', (req,res) =>{
+  return res.render("admin/add-staff");
+})
+
+
 export default router;
