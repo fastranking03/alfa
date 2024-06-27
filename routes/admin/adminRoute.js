@@ -32,12 +32,7 @@ router.post("/update-about-us", upload.fields([
   { name: 'ceo_image', maxCount: 1 },
 ]), async (req, res) => {
   try {
-    const folder = '../../about_us_images/'; // Adjust to your folder path relative to current working directory
-
-    // Delete existing photos in the folder
-    deleteFilesInDirectory(folder);
-
-    // Extract form data and file names
+    // Extract form data
     const {
       mission_title,
       mission_description,
@@ -51,12 +46,15 @@ router.post("/update-about-us", upload.fields([
       ceo_description
     } = req.body;
 
+    // Get current images from the database
+    const [currentData] = await connect.query('SELECT mission_image, expertise1_image, expertise2_image, expertise3_image, ceo_image FROM about_us_content WHERE id = 1');
+
     // Initialize variables to hold updated filenames
-    let mission_image_update = null;
-    let expertise1_image_update = null;
-    let expertise2_image_update = null;
-    let expertise3_image_update = null;
-    let ceo_image_update = null;
+    let mission_image_update = currentData[0].mission_image;
+    let expertise1_image_update = currentData[0].expertise1_image;
+    let expertise2_image_update = currentData[0].expertise2_image;
+    let expertise3_image_update = currentData[0].expertise3_image;
+    let ceo_image_update = currentData[0].ceo_image;
 
     // Check if files were uploaded and update variables accordingly
     if (req.files['mission_image'] && req.files['mission_image'][0]) {
@@ -74,12 +72,6 @@ router.post("/update-about-us", upload.fields([
     if (req.files['ceo_image'] && req.files['ceo_image'][0]) {
       ceo_image_update = req.files['ceo_image'][0].filename;
     }
- 
-    const mission_image = req.files['mission_image'] ? req.files['mission_image'][0].filename : null;
-    const expertise1_image = req.files['expertise1_image'] ? req.files['expertise1_image'][0].filename : null;
-    const expertise2_image = req.files['expertise2_image'] ? req.files['expertise2_image'][0].filename : null;
-    const expertise3_image = req.files['expertise3_image'] ? req.files['expertise3_image'][0].filename : null;
-    const ceo_image = req.files['ceo_image'] ? req.files['ceo_image'][0].filename : null;
 
     // Update query
     const updateQuery = `
@@ -104,23 +96,21 @@ router.post("/update-about-us", upload.fields([
       expertise3_description,
       ceo_title,
       ceo_description,
-      mission_image,
-      expertise1_image,
-      expertise2_image,
-      expertise3_image,
-      ceo_image
+      mission_image_update,
+      expertise1_image_update,
+      expertise2_image_update,
+      expertise3_image_update,
+      ceo_image_update
     ];
-
+    
     await connect.query(updateQuery, values);
     console.log("About Us data updated successfully");
-    res.redirect("/about-us");
+    res.redirect("/admin/about-content");
   } catch (error) {
     console.error("Error updating About Us data:", error);
     res.status(500).send("Error updating About Us data");
   }
 });
-
-
 router.get("/products", async (req, res) => {
   try {
     // Query all products from the database along with their category and subcategory information

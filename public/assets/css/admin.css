@@ -594,6 +594,7 @@
  .alfa-control{
    width: 100%;
    height: 45px;
+   padding: 6px 13px;
    outline: none;
    border: 1px solid #929292;
  }
