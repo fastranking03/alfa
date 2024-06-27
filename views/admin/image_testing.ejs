@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <base href="http://localhost:8081" target="" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alfa Admin | Add Product</title>
+    <%- include('includes/head') %>
+</head>
+
+<body>
+    <div class="container">
+        <h2>Add Products</h2>
+        <form id="productForm" action="/addProducts-testing" method="POST" enctype="multipart/form-data">
+            <div id="productsContainer">
+                <!-- Dynamic product inputs will be added here -->
+            </div>
+            <button type="button" onclick="addProductForm()">Add More Product</button>
+            <button type="submit">Submit</button>
+        </form>
+    </div>
+
+    <script>
+        let productIndex = 0;
+
+        function addProductForm() {
+            const productsContainer = document.getElementById('productsContainer');
+            const productTemplate = `
+                <div class="product-detail product" id="product_${productIndex}">
+                    <h3>Product ${productIndex + 1}</h3>
+                    <div class="form-group">
+                        <label for="productName${productIndex}">Product Name</label>
+                        <input type="text" name="product_name[]" id="productName${productIndex}" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="productImage1_${productIndex}">Product Image 1</label>
+                        <input type="file" name="product_image1[]" id="productImage1_${productIndex}" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="productImage2_${productIndex}">Product Image 2</label>
+                        <input type="file" name="product_image2[]" id="productImage2_${productIndex}" class="form-control" required>
+                    </div>
+                    <button type="button" class="btn btn-danger" onclick="removeProduct(${productIndex})">Remove</button>
+                </div>
+            `;
+            productsContainer.insertAdjacentHTML('beforeend', productTemplate);
+            productIndex++;
+        }
+
+        function removeProduct(index) {
+            const productElement = document.getElementById(`product_${index}`);
+            if (productElement) {
+                productElement.remove();
+            }
+        } 
+
+        // Add the initial product form
+        addProductForm();
+    </script> 
+    <%- include('includes/foot') %> 
+</body>
+
+</html>

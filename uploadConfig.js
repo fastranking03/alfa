@@ -13,6 +13,10 @@ const storage = multer.diskStorage({
     }
     else if(req.originalUrl.includes("/add-blog")){
       folder = "./blog_images/";
+    }else if(req.originalUrl.includes("/update-about-us")){
+      folder = "./about_us_images/";
+    }else if(req.originalUrl.includes("/addProducts")){
+      folder = "./product_images/";
     }
 
     cb(null, folder); // Folder to save images
@@ -21,7 +25,8 @@ const storage = multer.diskStorage({
   filename: (req, file, cb) => {
     cb(null, Date.now() + path.extname(file.originalname)); // Unique filename with timestamp
   },
-});
+}); 
+
 
 const upload = multer({ storage: storage });
 export default upload;

@@ -10,7 +10,7 @@
 </head>
 
 <body>
- 
+
     <div class="main-admin-wrapper">
         <%- include('includes/header') %>
             <div class="alfa-admin-wrapper">
@@ -23,7 +23,7 @@
                                 </div>
                             </div>
                             <div class="admin-cardsss">
-                                <form action="">
+                                <form action="admin/update-about-us" method="post" enctype="multipart/form-data" >
                                     <div class="content-form-wrapper">
                                         <div class="content-form">
                                             <div class="content-form-title">
@@ -35,35 +35,37 @@
                                                     <div class="col-md-6">
                                                         <div class="image-container">
                                                             <div class="image-flexxx">
-                                                                <label class="image-input">
-                                                                    <input type="file" name="file"
-                                                                        accept="image/png,image/jpeg"
-                                                                        max-size="10000000">
-                                                                    <input type="hidden" name="">
-                                                                    <img src="" alt="">
+                                                                <label class="image-input"> 
+                                                                    <input type="file" name="mission_image"
+                                                                    accept="image/png,image/jpeg"
+                                                                    max-size="10000000" placeholder="Enter Mission Title"> 
+                                                                    <!-- <input type="hidden" name=""> -->
+                                                                    <img src="../../about_us_images/<%= aboutUsData.mission_image %>" alt="">
                                                                 </label>
                                                                 <div>
                                                                     Click to select an asset or drag and drop <br> in
                                                                     this area
                                                                 </div>
+
                                                             </div>
                                                         </div>
                                                     </div>
+                                                    
                                                     <div class="col-md-6">
                                                         <div class="row">
                                                             <div class="col-md-12">
                                                                 <div class="form-group alfa-f-group">
-                                                                    <label for="Title">Title</label>
-                                                                    <input type="text" name="name" class="alfa-control"
-                                                                        id="">
+                                                                    <label for="Title">Our Mission Title</label>
+                                                                    <input type="text" name="mission_title"
+                                                                        class="alfa-control" id="" value="<%= aboutUsData.our_mission_title %>">
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-12">
                                                                 <div class="form-group alfa-f-group">
-                                                                    <label for="Title">Subtitle</label>
-                                                                    <textarea name="" class="alfa-control" id=""
-                                                                        rows="4" cols="50"
-                                                                        style="height: 200px;"></textarea>
+                                                                    <label for="Title">Our Mission Description</label>
+                                                                    <textarea name="mission_description"
+                                                                        class="alfa-control" id="" rows="4" cols="50"
+                                                                        style="height: 200px;"><%= aboutUsData.our_mission_description %></textarea>
                                                                 </div>
                                                             </div>
                                                         </div>
@@ -84,27 +86,29 @@
                                                         <div class="image-container image-container2">
                                                             <div class="image-flexxx image-flexxx2">
                                                                 <label class="image-input image-input2">
-                                                                    <input type="file" name="file"
+                                                                    <input type="file" name="expertise1_image"
                                                                         accept="image/png,image/jpeg"
-                                                                        max-size="10000000">
-                                                                    <input type="hidden" name="">
-                                                                    <img src="" alt="">
+                                                                        max-size="10000000" placeholder="Enter Mission Title"> 
+
+                                                                        <img src="../../about_us_images/<%= aboutUsData.expertise1_image %>" alt="">
                                                                 </label>
                                                                 <div>Upload icon</div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                     <div class="col-md-5">
+                                                    <div class="col-md-5">
                                                         <div class="form-group alfa-f-group">
-                                                            <label for="Title">Title</label>
-                                                            <input type="text" name="name" class="alfa-control" id="">
+                                                            <label for="Title">Expertise 1 Title </label>
+                                                            <input type="text" name="expertise1_title"
+                                                                class="alfa-control" id="" value="<%= aboutUsData.expertise1_title %>">
                                                         </div>
                                                     </div>
                                                     <div class="col-md-5">
                                                         <div class="form-group alfa-f-group">
-                                                            <label for="Title">Subtitle</label>
-                                                            <textarea name="" class="alfa-control" id="" rows="4"
-                                                                cols="50" style="height: 100px;"></textarea>
+                                                            <label for="Title">Expertise 1 Content</label>
+                                                            <textarea name="expertise1_description" class="alfa-control"
+                                                                id="" rows="4" cols="50"
+                                                                style="height: 100px;"><%= aboutUsData.expertise1_description %></textarea>
                                                         </div>
                                                     </div>
 
@@ -117,27 +121,29 @@
                                                         <div class="image-container image-container2">
                                                             <div class="image-flexxx image-flexxx2">
                                                                 <label class="image-input image-input2">
-                                                                    <input type="file" name="file"
+                                                                    <input type="file" name="expertise2_image"
                                                                         accept="image/png,image/jpeg"
-                                                                        max-size="10000000">
-                                                                    <input type="hidden" name="">
-                                                                    <img src="" alt="">
+                                                                        max-size="10000000"> 
+                                                                    <img src="../../about_us_images/<%= aboutUsData.expertise2_image %>" alt="">
                                                                 </label>
                                                                 <div>Upload icon</div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                     <div class="col-md-5">
+
+                                                    <div class="col-md-5">
                                                         <div class="form-group alfa-f-group">
-                                                            <label for="Title">Title</label>
-                                                            <input type="text" name="name" class="alfa-control" id="">
+                                                            <label for="Title">Expertise 2 Title </label>
+                                                            <input type="text" name="expertise2_title"
+                                                                class="alfa-control" id="" value="<%= aboutUsData.expertise2_title %>">
                                                         </div>
                                                     </div>
                                                     <div class="col-md-5">
                                                         <div class="form-group alfa-f-group">
-                                                            <label for="Title">Subtitle</label>
-                                                            <textarea name="" class="alfa-control" id="" rows="4"
-                                                                cols="50" style="height: 100px;"></textarea>
+                                                            <label for="Title">Expertise 2 Content </label>
+                                                            <textarea name="expertise2_description" class="alfa-control"
+                                                                id="" rows="4" cols="50"
+                                                                style="height: 100px;"><%= aboutUsData.expertise2_description %></textarea>
                                                         </div>
                                                     </div>
 
@@ -150,27 +156,29 @@
                                                         <div class="image-container image-container2">
                                                             <div class="image-flexxx image-flexxx2">
                                                                 <label class="image-input image-input2">
-                                                                    <input type="file" name="file"
+                                                                    <input type="file" name="expertise3_image"
                                                                         accept="image/png,image/jpeg"
                                                                         max-size="10000000">
                                                                     <input type="hidden" name="">
-                                                                    <img src="" alt="">
+                                                                    <img src="../../about_us_images/<%= aboutUsData.expertise3_image %>" alt="">
                                                                 </label>
                                                                 <div>Upload icon</div>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                     <div class="col-md-5">
+                                                    <div class="col-md-5">
                                                         <div class="form-group alfa-f-group">
-                                                            <label for="Title">Title</label>
-                                                            <input type="text" name="name" class="alfa-control" id="">
+                                                            <label for="Title">Expertise 3 Title </label>
+                                                            <input type="text" name="expertise3_title"
+                                                                class="alfa-control" id="" value="<%= aboutUsData.expertise3_title %>">
                                                         </div>
                                                     </div>
                                                     <div class="col-md-5">
                                                         <div class="form-group alfa-f-group">
-                                                            <label for="Title">Subtitle</label>
-                                                            <textarea name="" class="alfa-control" id="" rows="4"
-                                                                cols="50" style="height: 100px;"></textarea>
+                                                            <label for="Title">Expertise 3 Content </label>
+                                                            <textarea name="expertise3_description" class="alfa-control"
+                                                                id="" rows="4" cols="50"
+                                                                style="height: 100px;"><%= aboutUsData.expertise3_description %></textarea>
                                                         </div>
                                                     </div>
 
@@ -181,7 +189,7 @@
                                     <div class="content-form-wrapper mt-3">
                                         <div class="content-form">
                                             <div class="content-form-title">
-                                                <h5>Seo About Us</h5>
+                                                <h5>CEO About Us</h5>   
                                             </div>
                                             <hr>
                                             <div class="froms-input">
@@ -190,8 +198,10 @@
                                                         <div class="image-container">
                                                             <div class="image-flexxx">
                                                                 <label class="image-input">
-                                                                    <input type="file" name="file" accept="image/png,image/jpeg" max-size="10000000"> <input type="hidden" name=""> 
-                                                                    <img src="" alt="">
+                                                                    <input type="file" name="ceo_image"
+                                                                        accept="image/png,image/jpeg"
+                                                                        max-size="10000000">  
+                                                                        <img src="../../about_us_images/<%= aboutUsData.ceo_image %>" alt="">
                                                                 </label>
                                                                 <div>
                                                                     Click to select an asset or drag and drop <br> in
@@ -200,21 +210,22 @@
                                                             </div>
                                                         </div>
                                                     </div>
+
                                                     <div class="col-md-6">
                                                         <div class="row">
                                                             <div class="col-md-12">
                                                                 <div class="form-group alfa-f-group">
-                                                                    <label for="Title">Title</label>
-                                                                    <input type="text" name="name" class="alfa-control"
-                                                                        id="">
+                                                                    <label for="Title"> CEO Title</label>
+                                                                    <input type="text" name="ceo_title"
+                                                                        class="alfa-control" id="" value="<%= aboutUsData.ceo_title%>">
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-12">
                                                                 <div class="form-group alfa-f-group">
-                                                                    <label for="Title">Subtitle</label>
-                                                                    <textarea name="" class="alfa-control" id=""
-                                                                        rows="4" cols="50"
-                                                                        style="height: 200px;"></textarea>
+                                                                    <label for="Title">CEO Content</label>
+                                                                    <textarea name="ceo_description"
+                                                                        class="alfa-control" id="" rows="4" cols="50"
+                                                                        style="height: 200px;"><%= aboutUsData.ceo_description%></textarea>
                                                                 </div>
                                                             </div>
                                                         </div>

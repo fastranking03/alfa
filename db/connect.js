@@ -1,7 +1,7 @@
   
 import mysql from 'mysql2/promise';
 
-const pool = mysql.createPool({
+const connect = mysql.createPool({
   host: '153.92.6.103',
   user: 'u923315908_alfamen_03',
   password: 'Alfamen_03',
@@ -14,7 +14,7 @@ const pool = mysql.createPool({
 // Optional: Test the connection when starting the application
 (async () => {
   try {
-    const connection = await pool.getConnection();
+    const connection = await connect.getConnection();
     console.log('Connected to database');
     connection.release();
   } catch (err) {
@@ -22,4 +22,4 @@ const pool = mysql.createPool({
   }
 })();
 
-export default pool;
+export default connect;

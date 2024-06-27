@@ -1,7 +1,125 @@
-import express from "express";
-import connect from "../../db/connect.js"; // Import your database connection
+import express from 'express';
+import connect from '../../db/connect.js'; // Adjust path as per your file structure
+import upload from '../../uploadConfig.js'; // Adjust path as per your file structure
+import fs from 'fs';
+import path from 'path';
 
 const router = express.Router();
+
+// Function to delete all files in a directory
+const deleteFilesInDirectory = (directory) => {
+  if (fs.existsSync(directory)) {
+    fs.readdirSync(directory).forEach(file => {
+      const filePath = path.join(directory, file);
+      try {
+        fs.unlinkSync(filePath);
+        console.log(`Deleted file: ${filePath}`);
+      } catch (error) {
+        console.error(`Error deleting file ${filePath}:`, error);
+      }
+    });
+  } else {
+    fs.mkdirSync(directory, { recursive: true });
+  }
+};
+
+// Route to update "About Us" content
+router.post("/update-about-us", upload.fields([
+  { name: 'mission_image', maxCount: 1 },
+  { name: 'expertise1_image', maxCount: 1 },
+  { name: 'expertise2_image', maxCount: 1 },
+  { name: 'expertise3_image', maxCount: 1 },
+  { name: 'ceo_image', maxCount: 1 },
+]), async (req, res) => {
+  try {
+    const folder = '../../about_us_images/'; // Adjust to your folder path relative to current working directory
+
+    // Delete existing photos in the folder
+    deleteFilesInDirectory(folder);
+
+    // Extract form data and file names
+    const {
+      mission_title,
+      mission_description,
+      expertise1_title,
+      expertise1_description,
+      expertise2_title,
+      expertise2_description,
+      expertise3_title,
+      expertise3_description,
+      ceo_title,
+      ceo_description
+    } = req.body;
+
+    // Initialize variables to hold updated filenames
+    let mission_image_update = null;
+    let expertise1_image_update = null;
+    let expertise2_image_update = null;
+    let expertise3_image_update = null;
+    let ceo_image_update = null;
+
+    // Check if files were uploaded and update variables accordingly
+    if (req.files['mission_image'] && req.files['mission_image'][0]) {
+      mission_image_update = req.files['mission_image'][0].filename;
+    }
+    if (req.files['expertise1_image'] && req.files['expertise1_image'][0]) {
+      expertise1_image_update = req.files['expertise1_image'][0].filename;
+    }
+    if (req.files['expertise2_image'] && req.files['expertise2_image'][0]) {
+      expertise2_image_update = req.files['expertise2_image'][0].filename;
+    }
+    if (req.files['expertise3_image'] && req.files['expertise3_image'][0]) {
+      expertise3_image_update = req.files['expertise3_image'][0].filename;
+    }
+    if (req.files['ceo_image'] && req.files['ceo_image'][0]) {
+      ceo_image_update = req.files['ceo_image'][0].filename;
+    }
+ 
+    const mission_image = req.files['mission_image'] ? req.files['mission_image'][0].filename : null;
+    const expertise1_image = req.files['expertise1_image'] ? req.files['expertise1_image'][0].filename : null;
+    const expertise2_image = req.files['expertise2_image'] ? req.files['expertise2_image'][0].filename : null;
+    const expertise3_image = req.files['expertise3_image'] ? req.files['expertise3_image'][0].filename : null;
+    const ceo_image = req.files['ceo_image'] ? req.files['ceo_image'][0].filename : null;
+
+    // Update query
+    const updateQuery = `
+      UPDATE about_us_content SET 
+        our_mission_title = ?, our_mission_description = ?, 
+        expertise1_title = ?, expertise1_description = ?, 
+        expertise2_title = ?, expertise2_description = ?, 
+        expertise3_title = ?, expertise3_description = ?, 
+        ceo_title = ?, ceo_description = ?, 
+        mission_image = ?, expertise1_image = ?, expertise2_image = ?, expertise3_image = ?, ceo_image = ? 
+      WHERE id = 1;
+    `;
+
+    const values = [
+      mission_title,
+      mission_description,
+      expertise1_title,
+      expertise1_description,
+      expertise2_title,
+      expertise2_description,
+      expertise3_title,
+      expertise3_description,
+      ceo_title,
+      ceo_description,
+      mission_image,
+      expertise1_image,
+      expertise2_image,
+      expertise3_image,
+      ceo_image
+    ];
+
+    await connect.query(updateQuery, values);
+    console.log("About Us data updated successfully");
+    res.redirect("/about-us");
+  } catch (error) {
+    console.error("Error updating About Us data:", error);
+    res.status(500).send("Error updating About Us data");
+  }
+});
+
 
 router.get("/products", async (req, res) => {
   try {
