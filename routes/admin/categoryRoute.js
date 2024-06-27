@@ -81,6 +81,7 @@ router.post("/update-category-submit", upload.single("category_image"), async (r
     console.error("Error updating category:", err);
     res.redirect("/admin/category");
   }
+  
 });
 
 // Delete category

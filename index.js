@@ -85,7 +85,7 @@ app.use("/category_images", express.static("category_images"));
 
 app.use("/product_images", express.static("product_images"));
 app.use("/blog_images", express.static("blog_images"));
-
+app.use("/about_us_images", express.static("about_us_images"));
 // Routes
 
 app.use("/", commanRoute);

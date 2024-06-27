@@ -1427,20 +1427,26 @@ router.get("/delete-product/:cart_id", async (req, res) => {
       // Redirect back to the cart page after deletion
       return res.redirect("/cart");
     }
-
-
-
+ 
   } catch (error) {
     console.error("Error deleting product:", error);
     // Send an error status (500) without any response body
     res.sendStatus(500);
   }
 });
-
-router.get("/about-us", (req, res) => {
-  const user = req.session.user;
-  res.render("about-us", { user });
+ 
+router.get("/about-us", async (req, res) => {
+  try { 
+    const [rows] = await connect.query('SELECT * FROM about_us_content ORDER BY id DESC LIMIT 1');
+    const aboutUsData = rows[0];  
+    return res.render("about-us", { aboutUsData });
+  } catch (error) {
+    console.error('Error fetching About Us data:', error);
+    res.status(500).send('Error fetching About Us data');
+  }
 });
+
+
 
 router.get("/blog-detail/:slug_name", async (req, res) => {
   try {

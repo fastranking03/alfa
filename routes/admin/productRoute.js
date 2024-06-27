@@ -21,16 +21,22 @@ router.get("/add-product", async (req, res) => {
   }
 });
 
+router.get("/testing-image", (req, res) => {
+
+  return res.render("admin/image_testing");
+
+});
+
 router.get("/add-product/:category_name", async (req, res) => {
   const categoryName = req.params.category_name;
 
-  try { 
+  try {
     const [categoryResult] = await connect.query("SELECT id FROM category WHERE category_name = ?", [categoryName]);
-    
+
     if (categoryResult.length === 0) {
       // Handle the case where the category is not found
       return res.status(404).send("Category not found");
-    } 
+    }
     const categoryId = categoryResult[0].id;
 
     // Pass the weartype variable based on the category, you might need to determine this dynamically
@@ -49,6 +55,29 @@ router.get("/add-product/:category_name", async (req, res) => {
 });
 
 
+// Multer configuration for file upload
+// const storage = multer.diskStorage({
+//   destination: function (req, file, cb) {
+//     cb(null, '../../product_images/'); // Path where uploaded files will be stored
+//   },
+//   filename: function (req, file, cb) {
+//     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
+//     cb(null, uniqueSuffix + path.extname(file.originalname)); // Append timestamp + random number as filename
+//   }
+// });
+// , upload.fields([
+//   { name: 'picture__input1', maxCount: 5 },
+//   { name: 'picture__input2', maxCount: 5 },
+//   { name: 'picture__input3', maxCount: 5 },
+//   { name: 'picture__input4', maxCount: 5 },
+//   { name: 'picture__input5', maxCount: 5 },
+//   { name: 'picture__input6', maxCount: 5 },
+// ])
+
+// Multer upload initialization with specific fields
+// const upload = multer({ storage: storage });
+
+
 router.post("/addProducts", async (req, res) => {
   const {
     productType,
@@ -57,9 +86,28 @@ router.post("/addProducts", async (req, res) => {
     common_product_name,
     common_product_title,
     common_product_description,
+    product_info,
+    Shipping_info,
+    return_policy,
   } = req.body;
 
   const uniqueBatchId = uuidv4();
+
+  // Prepare images array
+  // const images = [];
+
+  // Iterate through each set of uploaded files
+  // for (let i = 1; i <= 6; i++) {
+  //   const files = req.files[`picture__input${i}`];
+  //   if (files) {
+  //     files.forEach((file, index) => {
+  //       images.push({
+  //         image_url: '../../product_images/' + file.filename // Assuming images are saved in public/uploads/
+  //       });
+  //     });
+  //   }
+  // }
+
 
   const products = req.body.product_mrp.map((mrp, index) => {
     const product = {
@@ -67,9 +115,12 @@ router.post("/addProducts", async (req, res) => {
       discount: req.body.product_discount[index],
       colour: req.body.product_colour[index],
       image_url: req.body.product_image[index],
-      product_info : req.body.product_info[index],
-      shipping_info : req.body.Shipping_info[index],
-      return_policy :  req.body.return_policy[index], 
+      // image1: req.body.picture__input1[index],
+      // image2: req.body.picture__input2[index],
+      // image3: req.body.picture__input3[index],
+      // image4: req.body.picture__input4[index],
+      // image5: req.body.picture__input5[index],
+
     };
 
     if (productType === "top") {
@@ -121,9 +172,9 @@ router.post("/addProducts", async (req, res) => {
     productType,
     product.colour,
     uniqueBatchId,
-    product.product_info,
-    product.shipping_info,
-    product.return_policy, 
+    product_info,
+    Shipping_info,
+    return_policy,
   ]);
 
   try {
@@ -131,11 +182,11 @@ router.post("/addProducts", async (req, res) => {
     await connect.query(insertQuery, [values]);
 
     // Retrieve the IDs of the inserted products
-     // Retrieve all inserted product IDs
-     const [result] = await connect.query('SELECT id FROM products WHERE unique_batch_id = ? LIMIT 1', [uniqueBatchId]);
-     const firstProductId = result.length > 0 ? result[0].id : null;
-     console.log(firstProductId);
-     
+    // Retrieve all inserted product IDs
+    const [result] = await connect.query('SELECT id FROM products WHERE unique_batch_id = ? LIMIT 1', [uniqueBatchId]);
+    const firstProductId = result.length > 0 ? result[0].id : null;
+    console.log(firstProductId);
+
 
     // Prepare to insert inventory data based on productType
     if (productType === "top") {
@@ -199,6 +250,7 @@ router.post("/addProducts", async (req, res) => {
 });
 
 
+
 // router.post("/addProducts", async (req, res) => {
 //   const {
 //     productType,
@@ -244,7 +296,7 @@ router.post("/addProducts", async (req, res) => {
 //         size_46: req.body.size_46[index],
 //       };
 //     }
- 
+
 //     return product;
 //   });
 

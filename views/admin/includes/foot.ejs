@@ -48,18 +48,14 @@
 
         // Methods
         function fileHandler(e) {
-            var file = $file.files.length && $file.files[0];
-
-            if (!file) return;
-
-            var errors = checkValidity(file);
-
+            var file = $file.files.length && $file.files[0]; 
+            if (!file) return; 
+            var errors = checkValidity(file); 
             if (errors) {
                 api.onInvalid(errors);
                 $file.value = null;
                 return;
-            }
-
+            } 
             api.onChanged(file, update, $wrapper)
         }
 
@@ -115,8 +111,7 @@
                 _.remove()
             }
         });
-
-
+ 
         function customOnChanged(file, update, $el) {
             if (!$el.nextElementSibling) {
                 var $remove = document.createElement('button');
@@ -140,7 +135,6 @@
                 $el.classList.remove("isUploading");
             }, 3000);
 
-        };
-
+        }; 
     });
 </script>

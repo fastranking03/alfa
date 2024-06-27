@@ -38,7 +38,7 @@
                 </div>
               </div>
               <div class="admin-card">
-                <form action="/admin/addProducts" method="POST">
+                <form action="/admin/addProducts" method="POST" enctype="multipart/form-data">
                   <input type="hidden" id="productType" name="productType" value="<%= weartype %>" />
 
                   <div class="admin-from">
@@ -85,19 +85,19 @@
                           <div class="col-md-12">
                             <div class="from-group">
                               <label for="Catename">Product Information</label>
-                              <textarea class="form-control" name="product_info[]" id=""></textarea>
+                              <textarea class="form-control" name="product_info" id=""></textarea>
                             </div>
                           </div>
                           <div class="col-md-12">
                             <div class="from-group">
                               <label for="Catename">Shipping Information</label>
-                              <textarea class="form-control" name="Shipping_info[]" id=""></textarea>
+                              <textarea class="form-control" name="Shipping_info" id=""></textarea>
                             </div>
                           </div>
                           <div class="col-md-12">
                             <div class="from-group">
                               <label for="Catename">Return Policy</label>
-                              <textarea class="form-control" name="return_policy[]" id=""></textarea>
+                              <textarea class="form-control" name="return_policy" id=""></textarea>
                             </div>
                           </div>
                         </div>
@@ -270,7 +270,7 @@
                                         <label class="picture main-picture" for="picture__input" tabIndex="0">
                                           <span class="picture__image"><i class="fa-solid fa-arrow-up"></i> </span>
                                         </label>
-                                        <input type="file" name="picture__input[]" id="picture__input">
+                                        <input type="file" name="picture__input1[]" id="picture__input"  multiple>
                                       </div>
                                     </div>
                                   </div>
@@ -281,7 +281,7 @@
                                           <label class="picture" for="picture__input1" tabIndex="0">
                                             <span class="picture__image"><i class="fa-solid fa-image"></i></span>
                                           </label>
-                                          <input type="file" name="picture__input[]" id="picture__input1"
+                                          <input type="file" name="picture__input2[]" id="picture__input1"
                                             class="picture__input">
                                           <img id="preview1" class="image-preview" style="display:none;" />
                                         </div>
@@ -291,7 +291,7 @@
                                           <label class="picture" for="picture__input2" tabIndex="0">
                                             <span class="picture__image"><i class="fa-solid fa-image"></i></span>
                                           </label>
-                                          <input type="file" name="picture__input[]" id="picture__input2"
+                                          <input type="file" name="picture__input3[]" id="picture__input2"
                                             class="picture__input">
                                           <img id="preview2" class="image-preview" style="display:none;" />
                                         </div>
@@ -301,7 +301,7 @@
                                           <label class="picture" for="picture__input3" tabIndex="0">
                                             <span class="picture__image"><i class="fa-solid fa-image"></i></span>
                                           </label>
-                                          <input type="file" name="picture__input[]" id="picture__input3"
+                                          <input type="file" name="picture__input4[]" id="picture__input3"
                                             class="picture__input">
                                           <img id="preview3" class="image-preview" style="display:none;" />
                                         </div>
@@ -311,7 +311,7 @@
                                           <label class="picture" for="picture__input4" tabIndex="0">
                                             <span class="picture__image"><i class="fa-solid fa-image"></i></span>
                                           </label>
-                                          <input type="file" name="picture__input[]" id="picture__input4"
+                                          <input type="file" name="picture__input5[]" id="picture__input4"
                                             class="picture__input">
                                           <img id="preview4" class="image-preview" style="display:none;" />
                                         </div>
@@ -321,13 +321,13 @@
                                           <label class="picture" for="picture__input4" tabIndex="0">
                                             <span class="picture__image"><i class="fa-solid fa-image"></i></span>
                                           </label>
-                                          <input type="file" name="picture__input[]" id="picture__input4"
+                                          <input type="file" name="picture__input6[]" id="picture__input4"
                                             class="picture__input">
                                           <img id="preview4" class="image-preview" style="display:none;" />
                                         </div>
                                       </div>
                                     </div>
-                                    
+
                                   </div>
                                 </div>
                               </div>
@@ -335,11 +335,12 @@
 
                               </div>
                             </div>
-                          <div class="mt-2" style="display: flex; justify-content: end;">
-                            <button type="button" class="btn-submit" onclick="addProductForm()">Add More
-                              Product</button>
-                          </div>
+                            <div class="mt-2" style="display: flex; justify-content: end;">
+                              <button type="button" class="btn-submit" onclick="addProductForm()">Add More
+                                Product</button>
+                            </div>
                     </div>
+
                     <div class="row mt-3">
                       <div class="admin-submit-btn d-flex" style="gap: 10px;">
                         <button type="submit" class="btn-submit">Submit</button>
@@ -553,7 +554,7 @@
                                          <label class="picture main-picture" for="picture__input" tabIndex="0">
                                           <span class="picture__image"><i class="fa-solid fa-arrow-up"></i> </span>
                                         </label>
-                                        <input type="file" name="picture__input[]" id="picture__input">
+                                        <input type="file" name="picture__input1[]" id="picture__input">
                                       </div>
                                     </div>
                                   </div>
@@ -564,7 +565,17 @@
                                           <label class="picture" for="picture__input1" tabIndex="0">
                                             <span class="picture__image"><i class="fa-solid fa-image"></i></span>
                                           </label>
-                                          <input type="file" name="picture__input[]" id="picture__input1" class="picture__input">
+                                          <input type="file" name="picture__input2[]" id="picture__input1" class="picture__input">
+                                          <img id="preview1" class="image-preview" style="display:none;" />
+                                        </div>
+                                      </div>
+                                        <div class="p-grid">
+                                        <div class="from-group">
+                                          <label class="picture" for="picture__input1" tabIndex="0">
+                                            <span class="picture__image"><i class="fa-solid fa-image"></i></span>
+                                          </label>
+                                          <input type="file" name="picture__input3[]" id="picture__input1"
+                                            class="picture__input">
                                           <img id="preview1" class="image-preview" style="display:none;" />
                                         </div>
                                       </div>
@@ -573,7 +584,7 @@
                                           <label class="picture" for="picture__input2" tabIndex="0">
                                             <span class="picture__image"><i class="fa-solid fa-image"></i></span>
                                           </label>
-                                          <input type="file" name="picture__input[]" id="picture__input2" class="picture__input">
+                                          <input type="file" name="picture__input4[]" id="picture__input2" class="picture__input">
                                           <img id="preview2" class="image-preview" style="display:none;" />
                                         </div>
                                       </div>
@@ -582,7 +593,7 @@
                                           <label class="picture" for="picture__input3" tabIndex="0">
                                             <span class="picture__image"><i class="fa-solid fa-image"></i></span>
                                           </label>
-                                          <input type="file" name="picture__input[]" id="picture__input3" class="picture__input">
+                                          <input type="file" name="picture__input5[]" id="picture__input3" class="picture__input">
                                           <img id="preview3" class="image-preview" style="display:none;" />
                                         </div>
                                       </div>
@@ -591,53 +602,14 @@
                                           <label class="picture" for="picture__input4" tabIndex="0">
                                             <span class="picture__image"><i class="fa-solid fa-image"></i></span>
                                           </label>
-                                          <input type="file" name="picture__input[]" id="picture__input4" class="picture__input">
+                                          <input type="file" name="picture__input6[]" id="picture__input4" class="picture__input">
                                           <img id="preview4" class="image-preview" style="display:none;" />
                                         </div>
                                       </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                      <div class="from-group">
-                                        <label for="Catename">Product Image</label>
-                                        <input type="file" name="product-image5[]" class="form-control" required>
-                                      </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                      <div class="from-group">
-                                        <label for="Catename">Product Image</label>
-                                        <input type="file" name="product-image" class="form-control" required>
-                                      </div>
-                                    </div>
+                                    </div> 
                                   </div>
                                 </div>
-                              </div>
-                              <div class="col-md-6">
-                                <div class="product-cart-wrap">
-                                  <div class="product-title-text ">
-                                    <h4>Information</h4>
-                                  </div>
-                                  <div class="row">
-                                    <div class="col-md-12">
-                                      <div class="from-group">
-                                        <label for="Catename">Product Information</label>
-                                        <textarea class="form-control" name="product_info[]" id=""></textarea>
-                                      </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                      <div class="from-group">
-                                        <label for="Catename">Shipping Information</label>
-                                        <textarea class="form-control" name="Shipping_info[]" id=""></textarea>
-                                      </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                      <div class="from-group">
-                                        <label for="Catename">Return Policy</label>
-                                        <textarea class="form-control" name="return_policy[]" id=""></textarea>
-                                      </div>
-                                    </div>
-                                  </div>
-                                </div>
-                              </div>
+                              </div> 
                             </div>
                           <div class="mt-2" style="display: flex; justify-content: end;">
                              <button type="button" class="btn-submit btn-danger" onclick="removeProduct(this)">Remove</button>
@@ -651,11 +623,12 @@
         productIndex++;
       }
 
-    function removeProduct(button) {
-      const productDiv = button.closest(".product");
-      productDiv.remove();
-    }
-  </script>
+      function removeProduct(button) {
+        const productDiv = button.closest(".product");
+        productDiv.remove();
+      }
+    </script>
+
 </body>
 
 </html>
