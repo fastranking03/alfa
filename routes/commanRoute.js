@@ -1397,11 +1397,11 @@ router.post("/add-to-cart", async (req, res) => {
 });
 
 router.get("/delete-product/:cart_id", async (req, res) => {
-  const user = req.session.user; 
+  const user = req.session.user;
   const cartId = parseInt(req.params.cart_id, 10);
   // Assuming you have the user's ID in the session
   try {
-    if (!user) { 
+    if (!user) {
       const cartItems = req.session.cart || [];
 
       const itemIndex = cartItems.findIndex((item) => item.cart_id === cartId);
@@ -1409,13 +1409,13 @@ router.get("/delete-product/:cart_id", async (req, res) => {
         // Remove the item if it exists
         cartItems.splice(itemIndex, 1);
       }
-  
-      req.session.cart = cartItems; 
+
+      req.session.cart = cartItems;
       req.session.cartCount = req.session.cart.length;
-   
+
       return res.redirect("/cart");
     } else {
-      const userId = req.session.user.id; 
+      const userId = req.session.user.id;
       const deleteProductQuery = `
                 DELETE FROM users_cart 
                 WHERE user_id = ? AND id = ?
@@ -1427,18 +1427,18 @@ router.get("/delete-product/:cart_id", async (req, res) => {
       // Redirect back to the cart page after deletion
       return res.redirect("/cart");
     }
- 
+
   } catch (error) {
     console.error("Error deleting product:", error);
     // Send an error status (500) without any response body
     res.sendStatus(500);
   }
 });
- 
+
 router.get("/about-us", async (req, res) => {
-  try { 
+  try {
     const [rows] = await connect.query('SELECT * FROM about_us_content ORDER BY id DESC LIMIT 1');
-    const aboutUsData = rows[0];  
+    const aboutUsData = rows[0];
     return res.render("about-us", { aboutUsData });
   } catch (error) {
     console.error('Error fetching About Us data:', error);
@@ -1520,6 +1520,13 @@ router.get("/order-detail/:orderId", async (req, res) => {
     if (orderRows.length > 0) {
       const order = orderRows[0];
 
+      const [addressRows] = await connect.query(
+        "SELECT * FROM user_address WHERE id = ?",
+        [order.address_id]
+      );
+
+      const address = addressRows[0];
+
       // Fetch items for the order
       const [orderItems] = await connect.query(
         `SELECT oi.*, p.product_name, p.product_main_image
@@ -1527,13 +1534,9 @@ router.get("/order-detail/:orderId", async (req, res) => {
          JOIN products p ON oi.product_id = p.id 
          WHERE oi.order_id = ?`,
         [orderId]
-      );
+      ); 
 
-      // Attach items to the order
-      // order.items = orderItems;
-
-      // Render the order details page
-      res.render("order-detail", { order, orderItems });
+      res.render("order-detail", { order, orderItems , address});
     } else {
       res.status(404).send("Order not found");
     }

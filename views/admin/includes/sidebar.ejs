@@ -2,82 +2,86 @@
   <div class="admin-sidnav-layout">
     <ul>
       <li><a href="/admin"> <span><i class="fa-solid fa-gauge"></i> </span> Dashboard</a></li>
+      <li><a href="/admin/master-analysis"> <span><i class="fa-solid fa-gauge"></i> </span> Master Analysis</a></li>
       <li><a href="/admin/users-list"> <span><i class="fa-solid fa-users"></i></span> Customer List</a></li>
-      <li class="menu-item-has-children">
-        <a href="javascript:void(0)" style="cursor: pointer;">
-          <div class="admin-submenu">
-            <div><span> <i class="fa-solid fa-table"></i></span> Staff </div>
-            <span><i class="fa-solid fa-angle-down"></i></span>
-          </div>
-        </a>
-        <ul class="sub-menu alfa-sub-menu">
-          <li><a href="/admin/staff-users">Staff List</a></li>
-         </ul>
-      </li>
-      <li><a href="/admin/banner"><span><i class="fa-solid fa-image"></i></span> Banner</a></li>
-      <li><a href="/admin/category"><span><i class="fa-solid fa-folder"></i></span> Category</a></li>
-      <li><a href="/admin/subcategory"><span><i class="fa-solid fa-folder"></i></span> Sub Category</a></li>
-      <li class="menu-item-has-children">
-        <a style="cursor: pointer;">
-          <div class="admin-submenu">
-            <div><span> <i class="fa-solid fa-table"></i></span> Products </div>
-            <span><i class="fa-solid fa-angle-down"></i></span>
-          </div>
-        </a>
-       
-        <ul class="sub-menu alfa-sub-menu">
-          <% categories.forEach(category=> { %>
-            <li><a href="/admin/add-product/<%= category.category_name %>">
-                <%= category.category_name %>
-              </a></li>
-            <% }); %>
-        </ul>
+      <% if (alfa_team && alfa_team.role==='admin' ) { %>
+        <li class="menu-item-has-children">
+          <a href="javascript:void(0)" style="cursor: pointer;">
+            <div class="admin-submenu">
+              <div><span> <i class="fa-solid fa-table"></i></span> Staff </div>
+              <span><i class="fa-solid fa-angle-down"></i></span>
+            </div>
+          </a>
+          <ul class="sub-menu alfa-sub-menu">
+            <li><a href="/admin/staff-users">Staff List</a></li>
+          </ul>
+        </li>
+        <% } %>
 
-      </li>
-      <li class="menu-item-has-children">
-        <a href="#" style="cursor: pointer;">
-          <div class="admin-submenu">
-            <div><span> <i class="fa-solid fa-table"></i></span> Accessories </div>
-            <span><i class="fa-solid fa-angle-down"></i></span>
-          </div>
-        </a>
-        <ul class="sub-menu alfa-sub-menu">
-          <li><a href="/admin/">Shoes</a></li>
-          <li><a href="/admin/">Belts</a></li>
-          <li><a href="/admin/">Wallets</a></li>
-        </ul>
-      </li>
-      <li class="menu-item-has-children">
+          <li><a href="/admin/banner"><span><i class="fa-solid fa-image"></i></span> Banner</a></li>
+          <li><a href="/admin/category"><span><i class="fa-solid fa-folder"></i></span> Category</a></li>
+          <li><a href="/admin/subcategory"><span><i class="fa-solid fa-folder"></i></span> Sub Category</a></li>
+          <li class="menu-item-has-children">
+            <a style="cursor: pointer;">
+              <div class="admin-submenu">
+                <div><span> <i class="fa-solid fa-table"></i></span> Products </div>
+                <span><i class="fa-solid fa-angle-down"></i></span>
+              </div>
+            </a>
 
-        <a style="cursor: pointer;">
-          <div class="admin-submenu">
-            <div><span> <i class="fa-solid fa-table"></i></span> Inventory </div>
-            <span><i class="fa-solid fa-angle-down"></i></span>
-          </div>
-        </a>
+            <ul class="sub-menu alfa-sub-menu">
+              <% categories.forEach(category=> { %>
+                <li><a href="/admin/add-product/<%= category.category_name %>">
+                    <%= category.category_name %>
+                  </a></li>
+                <% }); %>
+            </ul>
 
-        <ul class="sub-menu">
-          <li><a href="/admin/inventory/top-wear">Top Wear Inventory</a></li>
-          <li><a href="/admin/inventory/bottom-wear">Bottom Wear Inventory</a></li>
-        </ul>
-        
-      </li>
-      <li><a href="/admin/orders"> <span><i class="fa-solid fa-folder"></i></span> Order List</a></li>
-      <li class="menu-item-has-children">
-        <a style="cursor: pointer;">
-          <div class="admin-submenu">
-            <div><span> <i class="fa-solid fa-table"></i></span> Web pages </div>
-            <span><i class="fa-solid fa-angle-down"></i></span>
-          </div>
-        </a>
-        <ul class="sub-menu alfa-sub-menu">
-          <li><a href="/admin/about-content">About Us</a></li>
-          <li><a href="/admin/contact-info">Contact Info</a></li>
-          <li><a href="/admin/contact-inquiry">Contact Inquiry</a></li>
-        </ul>
-      </li>
-      <li><a href="/admin/blog"> <span><i class="fa-solid fa-table"></i></span> Blog List</a></li>
-      <li><a href="/admin/varients"><span><i class="fa-solid fa-folder"></i></span> See Varients</a></li>
+          </li>
+          <li class="menu-item-has-children">
+            <a href="#" style="cursor: pointer;">
+              <div class="admin-submenu">
+                <div><span> <i class="fa-solid fa-table"></i></span> Accessories </div>
+                <span><i class="fa-solid fa-angle-down"></i></span>
+              </div>
+            </a>
+            <ul class="sub-menu alfa-sub-menu">
+              <li><a href="/admin/">Shoes</a></li>
+              <li><a href="/admin/">Belts</a></li>
+              <li><a href="/admin/">Wallets</a></li>
+            </ul>
+          </li>
+          <li class="menu-item-has-children">
+
+            <a style="cursor: pointer;">
+              <div class="admin-submenu">
+                <div><span> <i class="fa-solid fa-table"></i></span> Inventory </div>
+                <span><i class="fa-solid fa-angle-down"></i></span>
+              </div>
+            </a>
+
+            <ul class="sub-menu">
+              <li><a href="/admin/inventory/top-wear">Top Wear Inventory</a></li>
+              <li><a href="/admin/inventory/bottom-wear">Bottom Wear Inventory</a></li>
+            </ul>
+
+          </li>
+          <li><a href="/admin/orders"> <span><i class="fa-solid fa-folder"></i></span> Order List</a></li>
+          <li class="menu-item-has-children">
+            <a style="cursor: pointer;">
+              <div class="admin-submenu">
+                <div><span> <i class="fa-solid fa-table"></i></span> Web pages </div>
+                <span><i class="fa-solid fa-angle-down"></i></span>
+              </div>
+            </a>
+            <ul class="sub-menu alfa-sub-menu">
+              <li><a href="/admin/about-content">About Us</a></li>
+              <li><a href="/admin/contact-info">Contact Info</a></li>
+              <li><a href="/admin/contact-inquiry">Contact Inquiry</a></li>
+            </ul>
+          </li>
+          <li><a href="/admin/blog"> <span><i class="fa-solid fa-table"></i></span> Blog List</a></li>
+          <li><a href="/admin/varients"><span><i class="fa-solid fa-folder"></i></span> See Varients</a></li>
     </ul>
   </div>
 </div>

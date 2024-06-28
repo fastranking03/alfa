@@ -28,10 +28,10 @@ router.get("/otp-verify", async (req, res) => {
 router.get("/reset-password", async (req, res) => {
   res.render("reset-password");
 });
- 
+
 router.post("/signup", async (req, res) => {
   const { name, email, password } = req.body;
-   
+
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(email)) {
     return res.render("signup", {
@@ -39,13 +39,13 @@ router.post("/signup", async (req, res) => {
     });
   }
 
-    if (password.length < 6 || password.length > 16) {
-      return res.render("signup", {
-        error: "Password must be between 6 and 16 characters long.",
-      });
-    }
+  if (password.length < 6 || password.length > 16) {
+    return res.render("signup", {
+      error: "Password must be between 6 and 16 characters long.",
+    });
+  }
   try {
-    
+
     const checkEmailQuery =
       "SELECT email FROM user_registration WHERE email = ?";
     const [existingUser] = await connect.query(checkEmailQuery, [email]);
@@ -137,11 +137,11 @@ router.post("/login", async (req, res) => {
       return res.render("login", { error: "Email is not registered." });
     }
 
-    
+
     // Check if user is verified
     if (user[0].verified !== 1) {
-       // Generate OTP
-    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+      // Generate OTP
+      const otp = Math.floor(100000 + Math.random() * 900000).toString();
 
       // Nodemailer configuration
       const transporter = nodemailer.createTransport({
@@ -399,5 +399,42 @@ router.get("/logout", (req, res) => {
     res.redirect("/login");
   });
 });
+ 
 
+router.get("/alfa-login", (req, res) => {
+   return res.render("alfa-login");
+});
+
+
+// alfa login staff or admin
+
+router.post("/alfa-login", async (req, res) => {
+  try {
+    const { email, password } = req.body;
+
+    // Query user details including verified status
+    const alfa_query = "SELECT * FROM alfa_personal_staff WHERE email = ?";
+    const [user] = await connect.query(alfa_query, [email]);
+
+    // Check if user exists
+    if (user.length === 0) {
+      return res.render("login", { error: "Email is not registered." });
+    }
+    else if (password == user[0].password) {
+      req.session.alfa_team = user[0];
+    } else {
+      return res.render("login", { error: "Invalid Email or Password" });
+    }
+ 
+    if ( user[0].current_status === "active") {
+      return res.redirect("/admin");
+    }else{
+      return res.redirect('/alfa-login');
+    }
+ 
+  } catch (error) {
+    console.error("Error logging in:", error);
+    res.render("login", { error: "Error in login" });
+  }
+});
 export default router;

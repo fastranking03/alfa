@@ -23,6 +23,82 @@ const deleteFilesInDirectory = (directory) => {
   }
 };
 
+router.get('/', (req, res) => {
+  res.render("admin/index");
+});
+
+router.get('/master-analysis', async (req, res) => {
+  try {
+
+    const [orderStatsResult] = await connect.query('SELECT SUM(total_payable) AS totalAmount,SUM(vat) AS vatAmount, COUNT(*) AS totalOrders FROM orders');
+    const totalOrderedAmount = orderStatsResult[0].totalAmount || 0;
+    const totalOrders = orderStatsResult[0].totalOrders;
+    const vatamount = orderStatsResult[0].vatAmount;
+
+    const [all_users] = await connect.query('SELECT * FROM user_registration');
+
+
+
+    const [newUsersDayWiseResult] = await connect.query(`
+      SELECT DATE(created_at) AS date, COUNT(*) AS count 
+      FROM user_registration
+      WHERE created_at >= DATE_SUB(CURDATE(), INTERVAL 7 DAY) 
+      GROUP BY DATE(created_at)
+    `);
+
+    // Fetch number of new users this month
+    const [newUsersThisMonthResult] = await connect.query(`
+      SELECT COUNT(*) AS count 
+      FROM user_registration
+      WHERE YEAR(created_at) = YEAR(CURDATE()) AND MONTH(created_at) = MONTH(CURDATE())
+    `);
+    const newUsersThisMonth = newUsersThisMonthResult[0].count;
+
+    // Fetch number of new users this week
+    const [newUsersThisWeekResult] = await connect.query(`
+      SELECT COUNT(*) AS count 
+      FROM user_registration
+      WHERE YEARWEEK(created_at, 1) = YEARWEEK(CURDATE(), 1)
+    `);
+    const newUsersThisWeek = newUsersThisWeekResult[0].count;
+
+    // Fetch number of new users today
+    const [newUsersTodayResult] = await connect.query(`
+      SELECT COUNT(*) AS count 
+      FROM user_registration 
+      WHERE DATE(created_at) = CURDATE()
+    `);
+    const newUsersToday = newUsersTodayResult[0].count;
+
+    // Fetch number of repeated customers
+    const [repeatedCustomersResult] = await connect.query(`
+      SELECT COUNT(*) AS count 
+      FROM (
+        SELECT user_id, COUNT(*) AS order_count 
+        FROM orders 
+        GROUP BY user_id 
+        HAVING order_count > 1
+      ) AS repeated_customers
+    `);
+    const totalRepeatedCustomers = repeatedCustomersResult[0].count;
+
+    res.render('admin/master-analysis', {
+      all_users,
+      totalOrderedAmount,
+      totalOrders,
+      newUsersDayWise: newUsersDayWiseResult,
+      newUsersThisMonth,
+      newUsersThisWeek,
+      newUsersToday,
+      totalRepeatedCustomers, 
+      vatamount,
+    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
 // Route to update "About Us" content
 router.post("/update-about-us", upload.fields([
   { name: 'mission_image', maxCount: 1 },
@@ -74,7 +150,7 @@ router.post("/update-about-us", upload.fields([
     if (req.files['ceo_image'] && req.files['ceo_image'][0]) {
       ceo_image_update = req.files['ceo_image'][0].filename;
     }
- 
+
     const mission_image = req.files['mission_image'] ? req.files['mission_image'][0].filename : null;
     const expertise1_image = req.files['expertise1_image'] ? req.files['expertise1_image'][0].filename : null;
     const expertise2_image = req.files['expertise2_image'] ? req.files['expertise2_image'][0].filename : null;
@@ -311,15 +387,10 @@ router.get("/order-details/:orderId", async (req, res) => {
     res.status(500).send("Server error");
   }
 });
-router.get('/', (req, res) => {
-  res.render("admin/index");
-});
-
 
 router.get('/add-new-varient', (req, res) => {
   res.render("admin/add-new-varient");
 });
-
 
 router.get('/varients', async (req, res) => {
   try {
@@ -330,7 +401,6 @@ router.get('/varients', async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
-
 
 router.get('/add-product-in/:variant_name', async (req, res) => {
   const { variant_name } = req.params;
@@ -381,11 +451,6 @@ router.post('/add-product-in-varient', async (req, res) => {
   }
 });
 
-
-
-
-
-
 router.post('/add-varient', async (req, res) => {
   try {
     const { varient_name } = req.body;
@@ -412,14 +477,83 @@ router.post('/add-varient', async (req, res) => {
   }
 });
 
-router.get('/staff-users', (req,res) =>{
-   return res.render("admin/staff-users");
-})
+function isAdminAndActive(req, res, next) {
+  if (req.session.user && req.session.user.role === 'admin' && req.session.user.current_status === 'active') {
+    return next();
+  }
+  else {
+    return res.redirect("/alfa-login");
+  }
+}
 
+router.get('/staff-users', isAdminAndActive, async (req, res) => {
+  try {
+    const [stafflist] = await connect.query('SELECT * FROM alfa_personal_staff ');
 
-router.get('/add-staff', (req,res) =>{
-  return res.render("admin/add-staff");
-})
+    return res.render("admin/staff-users", { stafflist });
+  } catch (error) {
+    console.error('Error adding new variant:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
 
+router.post('/staff-details-submit', isAdminAndActive, async (req, res) => {
+  try {
+    const { id, name, email, password, current_status, role } = req.body;
+
+    if (id) {
+      const query = `
+        UPDATE alfa_personal_staff
+        SET name = ?, email = ?, current_status = ?, role = ?  
+        WHERE id = ?
+    `;
+      const params = [name, email, current_status, role, id];
+      await connect.query(query, params);
+    } else {
+      // Insert new alfa_personal_staff member
+      const query = "INSERT INTO alfa_personal_staff (name, email, password, current_status, role ) VALUES (? , ? ,? , ? ,?)";
+      const params = [name, email, password, current_status, role];
+      await connect.query(query, params);
+    }
+
+    res.redirect('/admin/staff-users');
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+router.get('/add-staff', isAdminAndActive, async (req, res) => {
+  try {
+    // Assuming you fetch staff data based on ID when editing
+    const staffId = req.query.id;
+    let staff = null;
+    if (staffId) {
+      const query = 'SELECT * FROM alfa_personal_staff WHERE id = ?';
+      const [rows] = await connect.query(query, [staffId]);
+      staff = rows[0];
+    }
+    return res.render('admin/add-staff', { staff });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+router.get('/update-staff/:id', isAdminAndActive, async (req, res) => {
+  try {
+    const staffId = req.params.id;
+    let staff = null;
+    if (staffId) {
+      const query = 'SELECT * FROM alfa_personal_staff WHERE id = ?';
+      const [rows] = await connect.query(query, [staffId]);
+      staff = rows[0];
+    }
+    return res.render('admin/add-staff', { staff });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+});
 
 export default router;
