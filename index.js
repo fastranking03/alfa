@@ -16,7 +16,8 @@ import adminProductsRoute from "./routes/admin/productRoute.js";
 import placeOrderRoute from './routes/placeOrderRoute.js';
 import blogRoute from './routes/admin/blogRoute.js';
 import contentRoute from './routes/admin/contentRoute.js';
-
+import newProduct from './routes/admin/newProduct.js';
+ 
 import session from "express-session";
 import slugify from "slugify";
 import { fileURLToPath } from "url";
@@ -117,7 +118,7 @@ app.use("/admin/", adminProductsRoute);
 app.use("/admin/", subcategoryRoute);
 app.use("/admin/", blogRoute);
 app.use("/admin/", contentRoute);
-
+app.use("/admin/", newProduct);
 
 app.get('/order-history', (req, res) => {
   return res.render('order-history')
@@ -149,8 +150,7 @@ app.get('/my-profile', async (req, res) => {
     res.status(500).json({ error: "Failed to fetch user details" });
   }
 });
-
-
+ 
 app.post('/payment', (req, res) => {
   let { cartItemscheckoutpage, total_mrp, discount_on_mrp, subtotal, vat, delivery_charges, total_payable, selectedAddress } = req.body;
   cartItemscheckoutpage = JSON.parse(cartItemscheckoutpage);

@@ -20,5 +20,7 @@ router.get('/about-content', async (req, res) => {
  router.get('/contact-info',(req,res) =>{
    return res.render('admin/contact-info');
 })
+
+
  
 export default router;

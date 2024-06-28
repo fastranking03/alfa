@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alfa Admin | Master Analysis</title>
     <%- include('includes/head') %>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
 </head>
 
 <body>
@@ -29,7 +29,9 @@
                                                 <h6>Total Orders</h6>
                                             </div>
                                             <div class="dash-box-content">
-                                                <h4><%= totalOrders %></h4>
+                                                <h4>
+                                                    <%= totalOrders %>
+                                                </h4>
                                             </div>
                                         </div>
                                     </div>
@@ -40,7 +42,8 @@
                                                 <h6>Total Ordered Amount</h6>
                                             </div>
                                             <div class="dash-box-content">
-                                                <h4>£<%= totalOrderedAmount %></h4>
+                                                <h4>£<%= totalOrderedAmount %>
+                                                </h4>
                                             </div>
                                         </div>
                                     </div>
@@ -51,18 +54,21 @@
                                                 <h6>Total Vat Amount</h6>
                                             </div>
                                             <div class="dash-box-content">
-                                                <h4>£<%= vatamount %></h4>
+                                                <h4>£<%= vatamount %>
+                                                </h4>
                                             </div>
                                         </div>
                                     </div>
-                                  
+
                                     <div class="col-md-4 my-3 bg-dark text-white">
                                         <div class="dashboard-card p-3 mx-auto text-center my-auto ">
                                             <div class="dash-top">
                                                 <h6>Total Repeated Customers</h6>
                                             </div>
                                             <div class="dash-box-content">
-                                                <h4><%= totalRepeatedCustomers %></h4>
+                                                <h4>
+                                                    <%= totalRepeatedCustomers %>
+                                                </h4>
                                             </div>
                                         </div>
                                     </div>
@@ -80,35 +86,41 @@
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <div class="row">
-                                     <div class="col-md-4 my-3 bg-dark text-white">
-                                         <div class="dashboard-card p-3 mx-auto text-center my-auto ">
+                                    <div class="col-md-4 my-3 bg-dark text-white">
+                                        <div class="dashboard-card p-3 mx-auto text-center my-auto ">
                                             <div class="dash-top">
                                                 <h6>New Users This Month</h6>
                                             </div>
                                             <div class="dash-box-content">
-                                                <h4><%= newUsersThisMonth %></h4>
+                                                <h4>
+                                                    <%= newUsersThisMonth %>
+                                                </h4>
                                             </div>
                                         </div>
                                     </div>
-                                     <div class="col-md-4 my-3 bg-dark text-white">
-                                         <div class="dashboard-card p-3 mx-auto text-center my-auto ">
+                                    <div class="col-md-4 my-3 bg-dark text-white">
+                                        <div class="dashboard-card p-3 mx-auto text-center my-auto ">
                                             <div class="dash-top">
                                                 <h6>New Users This Week</h6>
                                             </div>
                                             <div class="dash-box-content">
-                                                <h4><%= newUsersThisWeek %></h4>
+                                                <h4>
+                                                    <%= newUsersThisWeek %>
+                                                </h4>
                                             </div>
                                         </div>
                                     </div>
-                                     <div class="col-md-4 my-3 bg-dark text-white">
-                                         <div class="dashboard-card p-3 mx-auto text-center my-auto ">
+                                    <div class="col-md-4 my-3 bg-dark text-white">
+                                        <div class="dashboard-card p-3 mx-auto text-center my-auto ">
                                             <div class="dash-top">
                                                 <h6>New Users Today</h6>
                                             </div>
                                             <div class="dash-box-content">
-                                                <h4><%= newUsersToday %></h4>
+                                                <h4>
+                                                    <%= newUsersToday %>
+                                                </h4>
                                             </div>
                                         </div>
                                     </div>
@@ -118,38 +130,39 @@
                 </div>
             </div>
     </div>
+
     <%- include('includes/foot') %>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const newUsersDayWise = <%= JSON.stringify(newUsersDayWise) %>;
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        <script>
+            document.addEventListener("DOMContentLoaded", function () {
+                const newUsersDayWise = <%= JSON.stringify(newUsersDayWise) %>;
 
-            const labels = newUsersDayWise.map(data => data.date);
-            const data = newUsersDayWise.map(data => data.count);
+                const labels = newUsersDayWise.map(data => data.date);
+                const data = newUsersDayWise.map(data => data.count);
 
-            const ctx = document.getElementById('newUsersDayWiseChart').getContext('2d');
-            new Chart(ctx, {
-                type: 'bar',
-                data: {
-                    labels: labels,
-                    datasets: [{
-                        label: 'New Users',
-                        data: data,
-                        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-                        borderColor: 'rgba(75, 192, 192, 1)',
-                        borderWidth: 1
-                    }]
-                },
-                options: {
-                    scales: {
-                        y: {
-                            beginAtZero: true
+                const ctx = document.getElementById('newUsersDayWiseChart').getContext('2d');
+                new Chart(ctx, {
+                    type: 'bar',
+                    data: {
+                        labels: labels,
+                        datasets: [{
+                            label: 'New Users',
+                            data: data,
+                            backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                            borderColor: 'rgba(75, 192, 192, 1)',
+                            borderWidth: 1
+                        }]
+                    },
+                    options: {
+                        scales: {
+                            y: {
+                                beginAtZero: true
+                            }
                         }
                     }
-                }
+                });
             });
-        });
-    </script>
+        </script>
 </body>
 
 </html>

@@ -10,18 +10,82 @@
 
 <body>
   <style>
-    .from-group {
-      margin-bottom: 10px;
+    .image-input {
+      box-sizing: border-box;
+      display: inline-block;
+      height: 135px;
+      border: 1px solid #CCCCCC;
+      border-radius: 4px;
+      position: relative;
+      cursor: pointer;
+      box-shadow: 0 1px 10px 0 hsla(0, 0%, 0, 0.15);
+      margin: 0 12px 12px 0;
     }
-    input::-webkit-outer-spin-button,
-    input::-webkit-inner-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
+
+    .image-input::before {
+      content: "upload";
+      background-image: url($icon);
+      display: inline-block;
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      left: 52%;
+      top: 52%;
+      opacity: 0.3;
+      transition: opacity 200ms;
+      transform: translate(-50%, -50%);
     }
-    .product-cart-wrap {
-      border: 1px solid #cccccc;
-      border-radius: 10px;
-      padding: 24px 20px 35px;
+
+    .isUploading::after {
+      content: "";
+      display: inline-block;
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      left: 32px;
+      top: 32px;
+      opacity: 0.3;
+      border-radius: 50%;
+      border: 2px solid;
+      border-color: transparent currentColor currentColor;
+      animation: spin 600ms linear infinite;
+    }
+
+    .isUploading::before {
+      display: none;
+    }
+
+    input[type=file] {
+      opacity: 0;
+      display: block;
+      height: 100px;
+      pointer-events: none;
+    }
+
+    .c-img {
+      position: absolute;
+      display: block;
+      border-radius: 4px;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      transition: opacity 200ms;
+      opacity: 1;
+      object-fit: contain;
+      object-position: center;
+      background: white;
+      z-index: 1;
+    }
+
+    .c-img img[src=""] {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .image-input.main-image-input {
+      width: 100%;
+      height: 350px;
     }
   </style>
   <div class="main-admin-warpper">
@@ -38,16 +102,12 @@
               <div class="admin-card">
                 <form action="/admin/addProducts" method="POST" enctype="multipart/form-data">
                   <input type="hidden" id="productType" name="productType" value="<%= weartype %>" />
+                  <input type="hidden" name="category_id" class="form-control" value="<%= category.id %>"
+                    placeholder="Enter Short Title">
+                  <input type="hidden" name="subcategory_id" value="1" required />
 
                   <div class="admin-from">
-                    <div class="row">
-                      <div class="col-md-4">
-                        <div class="from-group">
-                          <label for="Catename">Category ID</label>
-                          <input type="text" name="category_id" class="form-control" placeholder="Enter Short Title">
-                          <input type="hidden" name="subcategory_id" value="1" required />
-                        </div>
-                      </div>
+                    <div class="row">category
                       <div class="col-md-4">
                         <div class="from-group">
                           <label for="Catename">Product Name:</label>
@@ -111,28 +171,26 @@
                         <div class="col-md-3">
                           <div class="from-group">
                             <label for="Catename">MRP</label>
-                            <input type="text" name="product_mrp[]" class="form-control"
-                              placeholder="Enter Product MRP">
+                            <input type="text" name="product_mrp" class="form-control" placeholder="Enter Product MRP">
                           </div>
                         </div>
                         <div class="col-md-3">
                           <div class="from-group">
                             <label for="Catename">Discount</label>
-                            <input type="text" name="product_discount[]" class="form-control"
+                            <input type="text" name="product_discount" class="form-control"
                               placeholder="Enter  Discount">
                           </div>
                         </div>
-                        <div class="col-md-3">
+                        <!-- <div class="col-md-3">
                           <div class="from-group">
                             <label for="Catename">Image Url</label>
-                            <input type="text" name="product_image[]" class="form-control"
-                              placeholder="Enter  Image URL">
+                            <input type="text" name="product_image" class="form-control" placeholder="Enter  Image URL">
                           </div>
-                        </div>
+                        </div> -->
                         <div class="col-md-3">
                           <div class="from-group">
                             <label for="Catename">Color</label>
-                            <input type="text" name="product_colour[]" class="form-control"
+                            <input type="text" name="product_colour" class="form-control"
                               placeholder="Enter Product Color" required>
                           </div>
                         </div>
@@ -145,49 +203,49 @@
                           <div class="col-md-3">
                             <div class="from-group">
                               <label for="Catename">Size XS</label>
-                              <input type="number" name="size_xs[]" value="0" min="0" class="form-control" required>
+                              <input type="number" name="size_xs" value="0" min="0" class="form-control" required>
                             </div>
                           </div>
                           <div class="col-md-3">
                             <div class="from-group">
                               <label for="Catename">Size S</label>
-                              <input type="number" name="size_s[]" value="0" min="0" class="form-control" required>
+                              <input type="number" name="size_s" value="0" min="0" class="form-control" required>
                             </div>
                           </div>
                           <div class="col-md-3">
                             <div class="from-group">
                               <label for="Catename">Size M</label>
-                              <input type="number" name="size_m[]" value="0" min="0" class="form-control" required>
+                              <input type="number" name="size_m" value="0" min="0" class="form-control" required>
                             </div>
                           </div>
                           <div class="col-md-3">
                             <div class="from-group">
                               <label for="Catename">Size L</label>
-                              <input type="number" name="size_l[]" value="0" min="0" class="form-control" required>
+                              <input type="number" name="size_l" value="0" min="0" class="form-control" required>
                             </div>
                           </div>
                           <div class="col-md-3">
                             <div class="from-group">
                               <label for="Catename">Size XL</label>
-                              <input type="number" name="size_xl[]" value="0" min="0" class="form-control" required>
+                              <input type="number" name="size_xl" value="0" min="0" class="form-control" required>
                             </div>
                           </div>
                           <div class="col-md-3">
                             <div class="from-group">
                               <label for="Catename">Size XXL</label>
-                              <input type="number" name="size_xxl[]" value="0" min="0" class="form-control" required>
+                              <input type="number" name="size_xxl" value="0" min="0" class="form-control" required>
                             </div>
                           </div>
                           <div class="col-md-3">
                             <div class="from-group">
                               <label for="Catename">Size XXXL</label>
-                              <input type="number" name="size_xxxl[]" value="0" min="0" class="form-control" required>
+                              <input type="number" name="size_xxxl" value="0" min="0" class="form-control" required>
                             </div>
                           </div>
                           <div class="col-md-3">
                             <div class="from-group">
                               <label for="Catename">Size XXXXL</label>
-                              <input type="number" name="size_xxxxl[]" value="0" min="0" class="form-control" required>
+                              <input type="number" name="size_xxxxl" value="0" min="0" class="form-control" required>
                             </div>
                           </div>
                         </div>
@@ -196,61 +254,61 @@
                             <div class="col-md-3">
                               <div class="from-group">
                                 <label for="Catename">Size 28</label>
-                                <input type="number" name="size_28[]" value="0" min="0" class="form-control" required>
+                                <input type="number" name="size_28" value="0" min="0" class="form-control" required>
                               </div>
                             </div>
                             <div class="col-md-3">
                               <div class="from-group">
                                 <label for="Catename">Size 30</label>
-                                <input type="number" name="size_30[]" value="0" min="0" class="form-control" required>
+                                <input type="number" name="size_30" value="0" min="0" class="form-control" required>
                               </div>
                             </div>
                             <div class="col-md-3">
                               <div class="from-group">
                                 <label for="Catename">Size 32</label>
-                                <input type="number" name="size_33[]" value="0" min="0" class="form-control" required>
+                                <input type="number" name="size_33" value="0" min="0" class="form-control" required>
                               </div>
                             </div>
                             <div class="col-md-3">
                               <div class="from-group">
                                 <label for="Catename">Size 34</label>
-                                <input type="number" name="size_34[]" value="0" min="0" class="form-control" required>
+                                <input type="number" name="size_34" value="0" min="0" class="form-control" required>
                               </div>
                             </div>
                             <div class="col-md-3">
                               <div class="from-group">
                                 <label for="Catename">Size 36</label>
-                                <input type="number" name="size_36[]" value="0" min="0" class="form-control" required>
+                                <input type="number" name="size_36" value="0" min="0" class="form-control" required>
                               </div>
                             </div>
                             <div class="col-md-3">
                               <div class="from-group">
                                 <label for="Catename">Size 38</label>
-                                <input type="number" name="size_38[]" value="0" min="0" class="form-control" required>
+                                <input type="number" name="size_38" value="0" min="0" class="form-control" required>
                               </div>
                             </div>
                             <div class="col-md-3">
                               <div class="from-group">
                                 <label for="Catename">Size 40</label>
-                                <input type="number" name="size_40[]" value="0" min="0" class="form-control" required>
+                                <input type="number" name="size_40" value="0" min="0" class="form-control" required>
                               </div>
                             </div>
                             <div class="col-md-3">
                               <div class="from-group">
                                 <label for="Catename">Size 42</label>
-                                <input type="number" name="size_42[]" value="0" min="0" class="form-control" required>
+                                <input type="number" name="size_42" value="0" min="0" class="form-control" required>
                               </div>
                             </div>
                             <div class="col-md-3">
                               <div class="from-group">
                                 <label for="Catename">Size 44</label>
-                                <input type="number" name="size_44[]" value="0" min="0" class="form-control" required>
+                                <input type="number" name="size_44" value="0" min="0" class="form-control" required>
                               </div>
                             </div>
                             <div class="col-md-3">
                               <div class="from-group">
                                 <label for="Catename">Size 46</label>
-                                <input type="number" name="size_46[]" value="0" min="0" class="form-control" required>
+                                <input type="number" name="size_46" value="0" min="0" class="form-control" required>
                               </div>
                             </div>
                           </div>
@@ -265,64 +323,56 @@
                                   <div class="row">
                                     <div class="col-md-12">
                                       <div class="from-group">
-                                        <label class="picture main-picture" for="picture__input" tabIndex="0">
-                                          <span class="picture__image"><i class="fa-solid fa-arrow-up"></i> </span>
+                                        <label class="image-input main-image-input">
+                                          <input type="file" name="product_main_image" accept="image/png,image/jpeg"
+                                            max-size="10000000">
+                                          <input type="hidden" name="product_main_image">
+                                          <img class="c-img" src="" alt="">
                                         </label>
-                                        <input type="file" name="picture__input1[]" id="picture__input"  multiple>
                                       </div>
                                     </div>
                                   </div>
                                   <div class="row">
-                                    <div class="product-grid-image">
-                                      <div class="p-grid">
-                                        <div class="from-group">
-                                          <label class="picture" for="picture__input1" tabIndex="0">
-                                            <span class="picture__image"><i class="fa-solid fa-image"></i></span>
-                                          </label>
-                                          <input type="file" name="picture__input2[]" id="picture__input1"
-                                            class="picture__input">
-                                          <img id="preview1" class="image-preview" style="display:none;" />
-                                        </div>
+                                    <div class="image-grid-wrapper" style="display: flex;">
+                                      <div class="image-items">
+                                        <label class="image-input">
+                                          <input type="file" name="image1" accept="image/png,image/jpeg"
+                                            max-size="10000000">
+                                          <input type="hidden" name="">
+                                          <img class="c-img" src="" alt="">
+                                        </label>
                                       </div>
-                                      <div class="p-grid">
-                                        <div class="from-group">
-                                          <label class="picture" for="picture__input2" tabIndex="0">
-                                            <span class="picture__image"><i class="fa-solid fa-image"></i></span>
-                                          </label>
-                                          <input type="file" name="picture__input3[]" id="picture__input2"
-                                            class="picture__input">
-                                          <img id="preview2" class="image-preview" style="display:none;" />
-                                        </div>
+                                      <div class="image-items">
+                                        <label class="image-input">
+                                          <input type="file" name="image2" accept="image/png,image/jpeg"
+                                            max-size="10000000">
+                                          <input type="hidden" name="">
+                                          <img class="c-img" src="" alt="">
+                                        </label>
                                       </div>
-                                      <div class="p-grid">
-                                        <div class="from-group">
-                                          <label class="picture" for="picture__input3" tabIndex="0">
-                                            <span class="picture__image"><i class="fa-solid fa-image"></i></span>
-                                          </label>
-                                          <input type="file" name="picture__input4[]" id="picture__input3"
-                                            class="picture__input">
-                                          <img id="preview3" class="image-preview" style="display:none;" />
-                                        </div>
+                                      <div class="image-items">
+                                        <label class="image-input">
+                                          <input type="file" name="image3" accept="image/png,image/jpeg"
+                                            max-size="10000000">
+                                          <input type="hidden" name="">
+                                          <img class="c-img" src="" alt="">
+                                        </label>
                                       </div>
-                                      <div class="p-grid">
-                                        <div class="from-group">
-                                          <label class="picture" for="picture__input4" tabIndex="0">
-                                            <span class="picture__image"><i class="fa-solid fa-image"></i></span>
-                                          </label>
-                                          <input type="file" name="picture__input5[]" id="picture__input4"
-                                            class="picture__input">
-                                          <img id="preview4" class="image-preview" style="display:none;" />
-                                        </div>
+                                      <div class="image-items">
+                                        <label class="image-input">
+                                          <input type="file" name="image4" accept="image/png,image/jpeg"
+                                            max-size="10000000">
+                                          <input type="hidden" name="">
+                                          <img class="c-img" src="" alt="">
+                                        </label>
                                       </div>
-                                      <div class="p-grid">
-                                        <div class="from-group">
-                                          <label class="picture" for="picture__input4" tabIndex="0">
-                                            <span class="picture__image"><i class="fa-solid fa-image"></i></span>
-                                          </label>
-                                          <input type="file" name="picture__input6[]" id="picture__input4"
-                                            class="picture__input">
-                                          <img id="preview4" class="image-preview" style="display:none;" />
-                                        </div>
+                                      <div class="image-items">
+                                        <label class="image-input">
+                                          <input type="file" name="image5" accept="image/png,image/jpeg"
+                                            max-size="10000000">
+                                          <input type="hidden" name="">
+                                          <img class="c-img" src="" alt="">
+                                        </label>
                                       </div>
                                     </div>
 
@@ -353,284 +403,196 @@
       </div>
   </div>
   <%- include('includes/foot') %>
+
     <script>
-      const inputFile = document.querySelector("#picture__input");
-      const pictureImage = document.querySelector(".picture__image");
-      const pictureImageTxt = "Upload Image";
-      pictureImage.innerHTML = pictureImageTxt;
+      function ImageInput(element) {
+        // Variables
+        var $wrapper = element;
+        var $file = $wrapper.querySelector('input[type=file]');
+        var $input = $wrapper.querySelector('input[type=hidden]');
+        var $img = $wrapper.querySelector('img');
+        var maxSize = Number($file.getAttribute('max-size'));
+        var types = $file.accept.split(',');
 
-      inputFile.addEventListener("change", function (e) {
-        const inputTarget = e.target;
-        const file = inputTarget.files[0];
+        var api = {
+          onInvalid: onInvalid,
+          onChanged: onChanged,
+        };
 
-        if (file) {
-          const reader = new FileReader();
+        // Methods
+        function fileHandler(e) {
+          var file = $file.files.length && $file.files[0];
 
-          reader.addEventListener("load", function (e) {
-            const readerTarget = e.target;
+          if (!file) return;
 
-            const img = document.createElement("img");
-            img.src = readerTarget.result;
-            img.classList.add("picture__img");
+          var errors = checkValidity(file);
 
-            pictureImage.innerHTML = "";
-            pictureImage.appendChild(img);
+          if (errors) {
+            api.onInvalid(errors);
+            $file.value = null;
+            return;
+          }
+
+          api.onChanged(file, update, $wrapper);
+        }
+
+        function humanizeFormat(string) {
+          return string.replace(/.*?\//, '');
+        }
+
+        function checkValidity(file) {
+          var errors = [];
+
+          types.includes(file.type) || errors.push('Format file harus: ' + types.map(humanizeFormat).join(', '));
+          file.size < maxSize || errors.push('Ukuran file maksimal ' + maxSize / 1000000 + 'MB');
+
+          return errors.length ? errors : false;
+        }
+
+        function getFileData(file, callback) {
+          var reader = new FileReader();
+
+          reader.addEventListener("load", function () {
+            callback(reader.result);
+          }, false);
+
+          if (file) {
+            reader.readAsDataURL(file);
+          }
+        }
+
+        function update(data) {
+          $img.src = data;
+          $input.value = data;
+        }
+
+        function onInvalid(errors) {
+          alert(errors.join('. '));
+        }
+
+        function onChanged(file, update, $wrapper) {
+          console.log('.onChanged called');
+          getFileData(file, update);
+        }
+
+        // Init
+        $file.addEventListener('change', fileHandler);
+
+        return api;
+      };
+
+      function initImageInputs() {
+        document.querySelectorAll('.image-input').forEach(_ => {
+          var imageInput = new ImageInput(_);
+          _.addEventListener("click", (e) => {
+            if (e.target.classList.contains('image-remove')) {
+              _.remove();
+            }
           });
 
-          reader.readAsDataURL(file);
-        } else {
-          pictureImage.innerHTML = pictureImageTxt;
-        }
-      });
+          if (_.classList.contains('withAjax')) {
+            imageInput.onChanged = customOnChanged;
+          }
 
-    </script>
-    <script>
+          function customOnChanged(file, update, $el) {
+            if (!$el.nextElementSibling) {
+              var $remove = document.createElement('button');
+              $remove.className = "image-remove";
+
+              var $new = $el.cloneNode(true);
+              $new.querySelector('input[type=hidden]').value = "";
+              $new.querySelector('input[type=file]').value = "";
+              $new.querySelector('img').src = "";
+
+              $el.parentElement.append($new);
+              $el.append($remove);
+
+              var imageInput = new ImageInput($new);
+              imageInput.onChanged = customOnChanged;
+            }
+
+            $el.classList.add('isUploading');
+            setTimeout(function () {
+              update('https://placekitten.com/200/300');
+              $el.classList.remove("isUploading");
+            }, 3000);
+          }
+        });
+      }
+
       let productIndex = 1;
+
       function addProductForm() {
         const productsContainer = document.getElementById("products");
         const productTemplate = `
-                     <div class="product-detail product" id="products">
-                      <div class="">
-                       </div>
-                      <div class="row mt-4">
-                        <div class="col-md-3">
-                          <div class="from-group">
-                            <label for="Catename">MRP</label>
-                            <input type="text" name="product_mrp[]" class="form-control"
-                              placeholder="Enter Product MRP">
-                          </div>
-                        </div>
-                        <div class="col-md-3">
-                          <div class="from-group">
-                            <label for="Catename">Discount</label>
-                            <input type="text" name="product_discount[]" class="form-control"
-                              placeholder="Enter  Discount">
-                          </div>
-                        </div>
-                        <div class="col-md-3">
-                          <div class="from-group">
-                            <label for="Catename">Image Url</label>
-                            <input type="text" name="product_image[]" class="form-control"
-                              placeholder="Enter  Image URL">
-                          </div>
-                        </div>
-                        <div class="col-md-3">
-                          <div class="from-group">
-                            <label for="Catename">Color</label>
-                            <input type="text" name="product_colour[]" class="form-control"
-                              placeholder="Enter Product Color" required>
-                          </div>
-                        </div>
-                      </div>
-                      <div class="product-title-text mt-4">
-                        <h4>Size Detail</h4>
-                      </div>
-                      <% if (weartype==='top' ) { %>
-                        <div class="row mt-2">
-                          <div class="col-md-3">
-                            <div class="from-group">
-                              <label for="Catename">Size XS</label>
-                              <input type="number" name="size_xs[]" value="0" min="0" class="form-control" required>
-                            </div>
-                          </div>
-                          <div class="col-md-3">
-                            <div class="from-group">
-                              <label for="Catename">Size S</label>
-                              <input type="number" name="size_s[]" value="0" min="0" class="form-control" required>
-                            </div>
-                          </div>
-                          <div class="col-md-3">
-                            <div class="from-group">
-                              <label for="Catename">Size M</label>
-                              <input type="number" name="size_m[]" value="0" min="0" class="form-control" required>
-                            </div>
-                          </div>
-                          <div class="col-md-3">
-                            <div class="from-group">
-                              <label for="Catename">Size L</label>
-                              <input type="number" name="size_l[]" value="0" min="0" class="form-control" required>
-                            </div>
-                          </div>
-                          <div class="col-md-3">
-                            <div class="from-group">
-                              <label for="Catename">Size XL</label>
-                              <input type="number" name="size_xl[]" value="0" min="0" class="form-control" required>
-                            </div>
-                          </div>
-                          <div class="col-md-3">
-                            <div class="from-group">
-                              <label for="Catename">Size XXL</label>
-                              <input type="number" name="size_xxl[]" value="0" min="0" class="form-control" required>
-                            </div>
-                          </div>
-                          <div class="col-md-3">
-                            <div class="from-group">
-                              <label for="Catename">Size XXXL</label>
-                              <input type="number" name="size_xxxl[]" value="0" min="0" class="form-control" required>
-                            </div>
-                          </div>
-                          <div class="col-md-3">
-                            <div class="from-group">
-                              <label for="Catename">Size XXXL</label>
-                              <input type="number" name="size_xxxl[]" value="0" min="0" class="form-control" required>
-                            </div>
-                          </div>
-                        </div>
-                        <% } else if (weartype==='bottom' ) { %>
-                          <div class="row mt-2">
-                            <div class="col-md-3">
-                              <div class="from-group">
-                                <label for="Catename">Size 28</label>
-                                <input type="number" name="size_28[]" value="0" min="0" class="form-control" required>
-                              </div>
-                            </div>
-                            <div class="col-md-3">
-                              <div class="from-group">
-                                <label for="Catename">Size 30</label>
-                                <input type="number" name="size_30[]" value="0" min="0" class="form-control" required>
-                              </div>
-                            </div>
-                            <div class="col-md-3">
-                              <div class="from-group">
-                                <label for="Catename">Size 32</label>
-                                <input type="number" name="size_33[]" value="0" min="0" class="form-control" required>
-                              </div>
-                            </div>
-                            <div class="col-md-3">
-                              <div class="from-group">
-                                <label for="Catename">Size 34</label>
-                                <input type="number" name="size_34[]" value="0" min="0" class="form-control" required>
-                              </div>
-                            </div>
-
-                            <div class="col-md-3">
-                              <div class="from-group">
-                                <label for="Catename">Size 36</label>
-                                <input type="number" name="size_36[]" value="0" min="0" class="form-control" required>
-                              </div>
-                            </div>
-
-                            <div class="col-md-3">
-                              <div class="from-group">
-                                <label for="Catename">Size 38</label>
-                                <input type="number" name="size_38[]" value="0" min="0" class="form-control" required>
-                              </div>
-                            </div>
-                            <div class="col-md-3">
-                              <div class="from-group">
-                                <label for="Catename">Size 40</label>
-                                <input type="number" name="size_40[]" value="0" min="0" class="form-control" required>
-                              </div>
-                            </div>
-
-                            <div class="col-md-3">
-                              <div class="from-group">
-                                <label for="Catename">Size 42</label>
-                                <input type="number" name="size_42[]" value="0" min="0" class="form-control" required>
-                              </div>
-                            </div>
-
-
-                            <div class="col-md-3">
-                              <div class="from-group">
-                                <label for="Catename">Size 44</label>
-                                <input type="number" name="size_44[]" value="0" min="0" class="form-control" required>
-                              </div>
-                            </div>
-                            
-                            <div class="col-md-3">
-                              <div class="from-group">
-                                <label for="Catename">Size 46</label>
-                                <input type="number" name="size_46[]" value="0" min="0" class="form-control" required>
-                              </div>
-                            </div>
-                          </div>
-                          <% } %>
-                          <div class="row mt-3">
-                              <div class="col-md-6">
-                                <div class="product-cart-wrap">
-                                  <div class="product-title-text">
-                                    <h4>Media</h4>
-                                  </div>
-                                  <div class="row">
-                                    <div class="col-md-12">
-                                      <div class="from-group">
-                                         <label class="picture main-picture" for="picture__input" tabIndex="0">
-                                          <span class="picture__image"><i class="fa-solid fa-arrow-up"></i> </span>
-                                        </label>
-                                        <input type="file" name="picture__input1[]" id="picture__input">
-                                      </div>
-                                    </div>
-                                  </div>
-                                   <div class="row">
-                                    <div class="product-grid-image">
-                                      <div class="p-grid">
-                                        <div class="from-group">
-                                          <label class="picture" for="picture__input1" tabIndex="0">
-                                            <span class="picture__image"><i class="fa-solid fa-image"></i></span>
-                                          </label>
-                                          <input type="file" name="picture__input2[]" id="picture__input1" class="picture__input">
-                                          <img id="preview1" class="image-preview" style="display:none;" />
-                                        </div>
-                                      </div>
-                                        <div class="p-grid">
-                                        <div class="from-group">
-                                          <label class="picture" for="picture__input1" tabIndex="0">
-                                            <span class="picture__image"><i class="fa-solid fa-image"></i></span>
-                                          </label>
-                                          <input type="file" name="picture__input3[]" id="picture__input1"
-                                            class="picture__input">
-                                          <img id="preview1" class="image-preview" style="display:none;" />
-                                        </div>
-                                      </div>
-                                      <div class="p-grid">
-                                        <div class="from-group">
-                                          <label class="picture" for="picture__input2" tabIndex="0">
-                                            <span class="picture__image"><i class="fa-solid fa-image"></i></span>
-                                          </label>
-                                          <input type="file" name="picture__input4[]" id="picture__input2" class="picture__input">
-                                          <img id="preview2" class="image-preview" style="display:none;" />
-                                        </div>
-                                      </div>
-                                      <div class="p-grid">
-                                        <div class="from-group">
-                                          <label class="picture" for="picture__input3" tabIndex="0">
-                                            <span class="picture__image"><i class="fa-solid fa-image"></i></span>
-                                          </label>
-                                          <input type="file" name="picture__input5[]" id="picture__input3" class="picture__input">
-                                          <img id="preview3" class="image-preview" style="display:none;" />
-                                        </div>
-                                      </div>
-                                      <div class="p-grid">
-                                        <div class="from-group">
-                                          <label class="picture" for="picture__input4" tabIndex="0">
-                                            <span class="picture__image"><i class="fa-solid fa-image"></i></span>
-                                          </label>
-                                          <input type="file" name="picture__input6[]" id="picture__input4" class="picture__input">
-                                          <img id="preview4" class="image-preview" style="display:none;" />
-                                        </div>
-                                      </div>
-                                    </div> 
-                                  </div>
-                                </div>
-                              </div> 
-                            </div>
-                          <div class="mt-2" style="display: flex; justify-content: end;">
-                             <button type="button" class="btn-submit btn-danger" onclick="removeProduct(this)">Remove</button>
-                          </div>
+            <div class="add-more-data product" id="product-${productIndex + 1}">
+                <div class="row">
+                    <div class="col-md-3">
+                        <label for="product_name_${productIndex + 1}" class="form-label">Product Name:</label>
+                        <input type="text" id="product_name_${productIndex + 1}" name="product_name" class="form-control" required>
                     </div>
-      `;
+                    <div class="col-md-3">
+                        <label for="product_price_${productIndex + 1}" class="form-label">Product Price:</label>
+                        <input type="text" id="product_price_${productIndex + 1}" name="product_price" class="form-control" required>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="discount_on_product_${productIndex + 1}" class="form-label">Discount:</label>
+                        <input type="text" id="discount_on_product_${productIndex + 1}" name="discount_on_product" class="form-control" required>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="product_title_${productIndex + 1}" class="form-label">Product Title:</label>
+                        <input type="text" id="product_title_${productIndex + 1}" name="product_title" class="form-control" required>
+                    </div>
+                    <div class="col-md-12">
+                        <label for="product_description_${productIndex + 1}" class="form-label">Product Description:</label>
+                        <textarea id="product_description_${productIndex + 1}" name="product_description" class="form-control" required></textarea>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="image-text">
+                        <h3>Image Preview</h3>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="image-grid-wrapper" style="display: flex;">
+                                <div class="image-items">
+                                    <label class="image-input">
+                                        <input type="file" name="file" accept="image/png,image/jpeg" max-size="10000000">
+                                        <input type="hidden" name="">
+                                        <img class="c-img" src="" alt="">
+                                    </label>
+                                </div>
+                                <div class="image-items">
+                                    <label class="image-input">
+                                        <input type="file" name="file" accept="image/png,image/jpeg" max-size="10000000">
+                                        <input type="hidden" name="">
+                                        <img class="c-img" src="" alt="">
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="mt-2" style="display: flex; justify-content: end;">
+                    <button type="button" class="btn-submit btn-danger" onclick="removeProduct(this)">Remove</button>
+                </div>
+            </div>
+        `;
         const productNode = document.createElement("div");
         productNode.innerHTML = productTemplate.trim();
         productsContainer.appendChild(productNode.firstChild);
 
         productIndex++;
+        initImageInputs(); // Reinitialize the image inputs
       }
 
       function removeProduct(button) {
         const productDiv = button.closest(".product");
         productDiv.remove();
       }
+
+      // Initialize image inputs for existing elements
+      initImageInputs();
     </script>
 
 </body>

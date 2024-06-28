@@ -1,7 +1,7 @@
 import express from "express";
 import connect from "../../db/connect.js";
 import { v4 as uuidv4 } from "uuid";
-
+import upload from '../../uploadConfig.js'; // Adjust path as per your file structure
 const router = express.Router();
 
 router.get("/add-product", async (req, res) => {
@@ -31,54 +31,48 @@ router.get("/add-product/:category_name", async (req, res) => {
   const categoryName = req.params.category_name;
 
   try {
-    const [categoryResult] = await connect.query("SELECT id FROM category WHERE category_name = ?", [categoryName]);
+    if (!connect) {
+      return res.status(500).send("Database connection not established");
+    }
 
+    // Query the category based on category_name
+    const [categoryResult] = await connect.query("SELECT * FROM category WHERE category_name = ?", [categoryName]);
+
+    // Handle case where category is not found
     if (categoryResult.length === 0) {
-      // Handle the case where the category is not found
       return res.status(404).send("Category not found");
     }
-    const categoryId = categoryResult[0].id;
 
-    // Pass the weartype variable based on the category, you might need to determine this dynamically
-    const weartype = "top"; // Example weartype, adjust this as needed
+    // Extract category details
+    const category = categoryResult[0];
+    const weartype = category.wear_type;
 
+    // Log the retrieved data for debugging purposes
+    console.log({ weartype });
+
+    // Render the add-product-new page with the retrieved data
     res.render("admin/add-product-new", {
-      categories,
-      subcategories,
+      category,
       weartype,
       selectedCategory: categoryName
     });
   } catch (error) {
+    // Log the error for debugging purposes
     console.error("Error loading add-product page:", error);
-    res.status(500).send("Internal Server Error");
+    res.status(500).send("Internal Server Error: Unable to load add-product page");
   }
 });
 
 
-// Multer configuration for file upload
-// const storage = multer.diskStorage({
-//   destination: function (req, file, cb) {
-//     cb(null, '../../product_images/'); // Path where uploaded files will be stored
-//   },
-//   filename: function (req, file, cb) {
-//     const uniqueSuffix = Date.now() + '-' + Math.round(Math.random() * 1E9);
-//     cb(null, uniqueSuffix + path.extname(file.originalname)); // Append timestamp + random number as filename
-//   }
-// });
-// , upload.fields([
-//   { name: 'picture__input1', maxCount: 5 },
-//   { name: 'picture__input2', maxCount: 5 },
-//   { name: 'picture__input3', maxCount: 5 },
-//   { name: 'picture__input4', maxCount: 5 },
-//   { name: 'picture__input5', maxCount: 5 },
-//   { name: 'picture__input6', maxCount: 5 },
-// ])
 
-// Multer upload initialization with specific fields
-// const upload = multer({ storage: storage });
-
-
-router.post("/addProducts", async (req, res) => {
+router.post("/addProducts", upload.fields([
+  { name: 'product_main_image', maxCount: 1 },
+  { name: 'image1', maxCount: 1 },
+  { name: 'image2', maxCount: 1 },
+  { name: 'image3', maxCount: 1 },
+  { name: 'image4', maxCount: 1 },
+  { name: 'image5', maxCount: 1 }
+]), async (req, res) => {
   const {
     productType,
     category_id,
@@ -89,311 +83,175 @@ router.post("/addProducts", async (req, res) => {
     product_info,
     Shipping_info,
     return_policy,
+    product_mrp,
+    product_discount,
+    product_colour,
+    size_xs, size_s, size_m, size_l, size_xl, size_xxl, size_xxxl, size_xxxxl,
+    size_28, size_30, size_32, size_34, size_36, size_38, size_40, size_42, size_44, size_46
   } = req.body;
 
   const uniqueBatchId = uuidv4();
 
-  // Prepare images array
-  // const images = [];
 
-  // Iterate through each set of uploaded files
-  // for (let i = 1; i <= 6; i++) {
-  //   const files = req.files[`picture__input${i}`];
-  //   if (files) {
-  //     files.forEach((file, index) => {
-  //       images.push({
-  //         image_url: '../../product_images/' + file.filename // Assuming images are saved in public/uploads/
-  //       });
-  //     });
-  //   }
-  // }
+  const product = {
+    category_id,
+    subcategory_id,
+    product_name: common_product_name,
+    product_price: product_mrp,
+    discount_on_product: product_discount,
+    product_title: common_product_title,
+    product_description: common_product_description,
+    wear_type_bottom_or_top: productType,
+    colour: product_colour,
+    unique_batch_id: uniqueBatchId,
+    product_information: product_info,
+    shipping_information: Shipping_info,
+    return_policy: return_policy,
+    product_main_image: req.files['product_main_image'] ? req.files['product_main_image'][0].filename : null,
 
+    images: [
+      req.files['image1'] ? req.files['image1'][0].filename : null,
+      req.files['image2'] ? req.files['image2'][0].filename : null,
+      req.files['image3'] ? req.files['image3'][0].filename : null,
+      req.files['image4'] ? req.files['image4'][0].filename : null,
+      req.files['image5'] ? req.files['image5'][0].filename : null
+    ].filter(image => image !== null)
+  };
 
-  const products = req.body.product_mrp.map((mrp, index) => {
-    const product = {
-      mrp,
-      discount: req.body.product_discount[index],
-      colour: req.body.product_colour[index],
-      image_url: req.body.product_image[index],
-      // image1: req.body.picture__input1[index],
-      // image2: req.body.picture__input2[index],
-      // image3: req.body.picture__input3[index],
-      // image4: req.body.picture__input4[index],
-      // image5: req.body.picture__input5[index],
-
+  if (productType === 'top') {
+    product.sizes = {
+      xs: size_xs,
+      s: size_s,
+      m: size_m,
+      l: size_l,
+      xl: size_xl,
+      xxl: size_xxl,
+      xxxl: size_xxxl,
+      xxxxl: size_xxxxl,
     };
+  } else if (productType === 'bottom') {
+    product.sizes = {
+      size_28: size_28,
+      size_30: size_30,
+      size_32: size_32,
+      size_34: size_34,
+      size_36: size_36,
+      size_38: size_38,
+      size_40: size_40,
+      size_42: size_42,
+      size_44: size_44,
+      size_46: size_46,
+    };
+  }
 
-    if (productType === "top") {
-      product.sizes = {
-        xs: req.body.size_xs[index],
-        s: req.body.size_s[index],
-        m: req.body.size_m[index],
-        l: req.body.size_l[index],
-        xl: req.body.size_xl[index],
-        xxl: req.body.size_xxl[index],
-        xxxl: req.body.size_xxxl[index],
-        xxxxl: req.body.size_xxxxl[index],
-      };
-    } else if (productType === "bottom") {
-      product.sizes = {
-        size_28: req.body.size_28[index],
-        size_30: req.body.size_30[index],
-        size_32: req.body.size_32[index],
-        size_34: req.body.size_34[index],
-        size_36: req.body.size_36[index],
-        size_38: req.body.size_38[index],
-        size_40: req.body.size_40[index],
-        size_42: req.body.size_42[index],
-        size_44: req.body.size_44[index],
-        size_46: req.body.size_46[index],
-      };
-    }
-
-    return product;
-  });
 
   const insertQuery = `
     INSERT INTO products (
       category_id, subcategory_id, product_name, product_price, 
       discount_on_product, product_title, product_description, wear_type_bottom_or_top, 
-      colour, unique_batch_id , product_information , shipping_information , return_policy
+      colour, unique_batch_id , product_information , shipping_information , return_policy,
+      product_main_image 
     ) 
-    VALUES ?;
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ? );
   `;
 
-  const values = products.map((product) => [
+  const values = [
     category_id,
     subcategory_id,
     common_product_name,
-    product.mrp,
-    product.discount,
+    product_mrp,
+    product_discount,
     common_product_title,
     common_product_description,
     productType,
-    product.colour,
+    product_colour,
     uniqueBatchId,
     product_info,
     Shipping_info,
     return_policy,
-  ]);
+    product.product_main_image
+  ];
 
   try {
-    // Perform insertion of products
-    await connect.query(insertQuery, [values]);
+    // Perform insertion of product
+    await connect.query(insertQuery, values);
 
-    // Retrieve the IDs of the inserted products
-    // Retrieve all inserted product IDs
+    // Retrieve the ID of the inserted product
     const [result] = await connect.query('SELECT id FROM products WHERE unique_batch_id = ? LIMIT 1', [uniqueBatchId]);
     const firstProductId = result.length > 0 ? result[0].id : null;
-    console.log(firstProductId);
 
-
-    // Prepare to insert inventory data based on productType
-    if (productType === "top") {
-      // Prepare topwear inventory insertion query
+    // Insert inventory data based on productType
+    if (productType === 'top') {
       const topwearInventoryQuery = `
         INSERT INTO topwear_inventory_with_sizes (
           product_id, product_name, xs, s, m, l, xl, xxl, xxxl, xxxxl
-        ) VALUES ?
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `;
 
-      // Map productIds and inventory values for topwear
-      const topwearInventoryValues = products.map((product, index) => [
-        firstProductId + index,
+      const topwearInventoryValues = [
+        firstProductId,
         common_product_name,
-        product.sizes?.xs || null,
-        product.sizes?.s || null,
-        product.sizes?.m || null,
-        product.sizes?.l || null,
-        product.sizes?.xl || null,
-        product.sizes?.xxl || null,
-        product.sizes?.xxxl || null,
-        product.sizes?.xxxxl || null,
-      ]);
+        size_xs,
+        size_s,
+        size_m,
+        size_l,
+        size_xl,
+        size_xxl,
+        size_xxxl,
+        size_xxxxl,
+      ];
 
-      // Insert topwear inventory data
-      await connect.query(topwearInventoryQuery, [topwearInventoryValues]);
-    } else if (productType === "bottom") {
-      // Prepare bottomwear inventory insertion query
+      await connect.query(topwearInventoryQuery, topwearInventoryValues);
+    } else if (productType === 'bottom') {
       const bottomwearInventoryQuery = `
         INSERT INTO bottomwear_inventory (
           product_id, product_name, size_28, size_30, size_32, size_34, size_36, size_38, size_40, size_42, size_44, size_46
-        ) VALUES ?
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
       `;
 
-      // Map productIds and inventory values for bottomwear
-      const bottomwearInventoryValues = products.slice(0, productCount).map((product, index) => [
-        firstProductId + index,
+      const bottomwearInventoryValues = [
+        firstProductId,
         common_product_name,
-        product.sizes?.size_28 || null,
-        product.sizes?.size_30 || null,
-        product.sizes?.size_32 || null,
-        product.sizes?.size_34 || null,
-        product.sizes?.size_36 || null,
-        product.sizes?.size_38 || null,
-        product.sizes?.size_40 || null,
-        product.sizes?.size_42 || null,
-        product.sizes?.size_44 || null,
-        product.sizes?.size_46 || null,
-      ]);
+        size_28,
+        size_30,
+        size_32,
+        size_34,
+        size_36,
+        size_38,
+        size_40,
+        size_42,
+        size_44,
+        size_46,
+      ];
 
-      // Insert bottomwear inventory data
-      await connect.query(bottomwearInventoryQuery, [bottomwearInventoryValues]);
+      await connect.query(bottomwearInventoryQuery, bottomwearInventoryValues);
     }
 
-    console.log("Products and inventory data inserted successfully");
-    res.redirect("add-product");
+    // Insert product images into the product_images table
+    const insertImagesQuery = `
+        INSERT INTO Product_Images (product_id, image_path) VALUES (?, ?)
+      `;
+    for (const image of product.images) {
+      await connect.query(insertImagesQuery, [firstProductId, image]);
+    }
+
+    console.log("Product and inventory data inserted successfully");
+    res.redirect(`/product/${firstProductId}`);
+
   } catch (err) {
-    console.error("Error inserting products and inventory data:", err);
-    res.status(500).send("Error inserting products and inventory data");
+    console.error("Error inserting product and inventory data:", err);
+    res.status(500).send("Error inserting product and inventory data");
   }
 });
 
+router.get('/product/:productId', async (req, res) => {
+  const productId = req.params.productId;
+  try {
 
+  } catch (error) {
 
-// router.post("/addProducts", async (req, res) => {
-//   const {
-//     productType,
-//     category_id,
-//     subcategory_id,
-//     common_product_name,
-//     common_product_title,
-//     common_product_description,
-//   } = req.body;
-
-//   const uniqueBatchId = uuidv4();
-
-//   const products = req.body.product_mrp.map((mrp, index) => {
-//     const product = {
-//       mrp,
-//       discount: req.body.product_discount[index],
-//       colour: req.body.product_colour[index],
-//       image_url: req.body.product_image[index],
-//     };
-
-//     if (productType === "top") {
-//       product.sizes = {
-//         xs: req.body.size_xs[index],
-//         s: req.body.size_s[index],
-//         m: req.body.size_m[index],
-//         l: req.body.size_l[index],
-//         xl: req.body.size_xl[index],
-//         xxl: req.body.size_xxl[index],
-//         xxxl: req.body.size_xxxl[index],
-//         xxxxl: req.body.size_xxxxl[index],
-//       };
-//     } else if (productType === "bottom") {
-//       product.sizes = {
-//         size_28: req.body.size_28[index],
-//         size_30: req.body.size_30[index],
-//         size_32: req.body.size_32[index],
-//         size_34: req.body.size_34[index],
-//         size_36: req.body.size_36[index],
-//         size_38: req.body.size_38[index],
-//         size_40: req.body.size_40[index],
-//         size_42: req.body.size_42[index],
-//         size_44: req.body.size_44[index],
-//         size_46: req.body.size_46[index],
-//       };
-//     }
-
-//     return product;
-//   });
-
-//   const insertQuery = `
-//     INSERT INTO products (
-//       category_id, subcategory_id, product_name, product_price, 
-//       discount_on_product, product_title, product_description, wear_type_bottom_or_top, 
-//       colour, unique_batch_id 
-//     ) 
-//     VALUES ?;
-//   `;
-
-//   const values = products.map((product) => [
-//     category_id,
-//     subcategory_id,
-//     common_product_name,
-//     product.mrp,
-//     product.discount,
-//     common_product_title,
-//     common_product_description,
-//     productType,
-//     product.colour,
-//     uniqueBatchId,
-//   ]);
-
-
-//   try {
-//     // Perform insertion of products
-//     await connect.query(insertQuery, [values]);
-
-//     // Retrieve the IDs of the inserted products
-//     const [result] = await connect.query('SELECT LAST_INSERT_ID() as firstProductId, COUNT(*) as productCount FROM products');
-//     const { firstProductId, productCount } = result;
-
-//     // Prepare to insert inventory data based on productType
-//     if (productType === "top") {
-//       // Prepare topwear inventory insertion query
-//       const topwearInventoryQuery = `
-//         INSERT INTO topwear_inventory_with_sizes ( product_id, product_name, xs, s, m, l, xl, xxl, xxxl, xxxxl ) VALUES ?
-//       `;
-
-//       // Map productIds and inventory values for topwear
-//       const topwearInventoryValues = Array.from({ length: productCount }, (_, index) => {
-//         const productId = firstProductId + index;
-//         return [
-//           productId,
-//           common_product_name, 
-//           products[index].sizes?.xs || null, // Handle potential undefined sizes
-//           products[index].sizes?.s || null,
-//           products[index].sizes?.m || null,
-//           products[index].sizes?.l || null,
-//           products[index].sizes?.xl || null,
-//           products[index].sizes?.xxl || null,
-//           products[index].sizes?.xxxl || null,
-//           products[index].sizes?.xxxxl || null,
-//         ];
-//       });
-
-//       // Insert topwear inventory data
-//       await connect.query(topwearInventoryQuery, [topwearInventoryValues]);
-//     } else if (productType === "bottom") {
-//       // Prepare bottomwear inventory insertion query
-//       const bottomwearInventoryQuery = `
-//         INSERT INTO bottomwear_inventory ( product_id, product_name, size_28, size_30, size_32, size_34, size_36, size_38, size_40, size_42, size_44, size_46
-//         ) VALUES ?
-//       `;
-
-//       // Map productIds and inventory values for bottomwear
-//       const bottomwearInventoryValues = Array.from({ length: productCount }, (_, index) => {
-//         const productId = firstProductId + index;
-//         return [
-//           productId,
-//           common_product_name, 
-//           products[index].sizes?.size_28 || null,  
-//           products[index].sizes?.size_30 || null,
-//           products[index].sizes?.size_32 || null,
-//           products[index].sizes?.size_34 || null,
-//           products[index].sizes?.size_36 || null,
-//           products[index].sizes?.size_38 || null,
-//           products[index].sizes?.size_40 || null,
-//           products[index].sizes?.size_42 || null,
-//           products[index].sizes?.size_44 || null,
-//           products[index].sizes?.size_46 || null,
-//         ];
-//       });
-
-//       // Insert bottomwear inventory data
-//       await connect.query(bottomwearInventoryQuery, [bottomwearInventoryValues]);
-//     }
-
-//     console.log("Products and inventory data inserted successfully");
-//     res.redirect("admin/add-product");
-//   } catch (err) {
-//     console.error("Error inserting products and inventory data:", err);
-//     res.status(500).send("Error inserting products and inventory data");
-//   }
-// });
+  }
+});
 
 router.post("/addProductnewvarients", async (req, res) => {
   const [name, description, title] = req.body();
