@@ -80,6 +80,7 @@ router.post("/addProducts", upload.fields([
     common_product_name,
     common_product_title,
     common_product_description,
+    uuid,
     product_info,
     Shipping_info,
     return_policy,
@@ -90,8 +91,8 @@ router.post("/addProducts", upload.fields([
     size_28, size_30, size_32, size_34, size_36, size_38, size_40, size_42, size_44, size_46
   } = req.body;
 
-  const uniqueBatchId = uuidv4();
 
+  const uniqueBatchId = uuid || uuidv4();
 
   const product = {
     category_id,
@@ -174,11 +175,10 @@ router.post("/addProducts", upload.fields([
 
   try {
     // Perform insertion of product
-    await connect.query(insertQuery, values);
+    const [insertResult] = await connect.query(insertQuery, values);
 
-    // Retrieve the ID of the inserted product
-    const [result] = await connect.query('SELECT id FROM products WHERE unique_batch_id = ? LIMIT 1', [uniqueBatchId]);
-    const firstProductId = result.length > 0 ? result[0].id : null;
+    // Retrieve the last inserted ID
+    const lastInsertedId = insertResult.insertId;
 
     // Insert inventory data based on productType
     if (productType === 'top') {
@@ -189,7 +189,7 @@ router.post("/addProducts", upload.fields([
       `;
 
       const topwearInventoryValues = [
-        firstProductId,
+        lastInsertedId,
         common_product_name,
         size_xs,
         size_s,
@@ -210,7 +210,7 @@ router.post("/addProducts", upload.fields([
       `;
 
       const bottomwearInventoryValues = [
-        firstProductId,
+        lastInsertedId,
         common_product_name,
         size_28,
         size_30,
@@ -232,11 +232,11 @@ router.post("/addProducts", upload.fields([
         INSERT INTO Product_Images (product_id, image_path) VALUES (?, ?)
       `;
     for (const image of product.images) {
-      await connect.query(insertImagesQuery, [firstProductId, image]);
+      await connect.query(insertImagesQuery, [lastInsertedId, image]);
     }
 
     console.log("Product and inventory data inserted successfully");
-    res.redirect(`/product/${firstProductId}`);
+    res.redirect(`product/${lastInsertedId}`);
 
   } catch (err) {
     console.error("Error inserting product and inventory data:", err);
@@ -247,11 +247,90 @@ router.post("/addProducts", upload.fields([
 router.get('/product/:productId', async (req, res) => {
   const productId = req.params.productId;
   try {
+    // Fetch all related products with the same unique_batch_id
+    const [productResult] = await connect.query('SELECT * FROM products WHERE id = ?', [productId]);
+    if (productResult.length === 0) {
+      return res.status(404).send("Product not found");
+    }
+    const product = productResult[0];
+    const batchId = product.unique_batch_id;
+    const weartype = product.wear_type_bottom_or_top;
+    const [relatedProductsResult] = await connect.query('SELECT * FROM products WHERE unique_batch_id = ?', [batchId]);
 
-  } catch (error) {
+    const inventoryDetailsAndImages = await Promise.all(
+      relatedProductsResult.map(async (relatedProduct) => {
+        let inventory;
+        if (relatedProduct.wear_type_bottom_or_top === 'top') {
+          const [topwearInventory] = await connect.query('SELECT * FROM topwear_inventory_with_sizes WHERE product_id = ?', [relatedProduct.id]);
+          inventory = topwearInventory.length > 0 ? topwearInventory[0] : null;
+        } else if (relatedProduct.wear_type_bottom_or_top === 'bottom') {
+          const [bottomwearInventory] = await connect.query('SELECT * FROM bottomwear_inventory WHERE product_id = ?', [relatedProduct.id]);
+          inventory = bottomwearInventory.length > 0 ? bottomwearInventory[0] : null;
+        }
 
+        // Fetch images for the related product
+        const [images] = await connect.query('SELECT image_path FROM Product_Images WHERE product_id = ?', [relatedProduct.id]);
+
+        return {
+          ...relatedProduct,
+          inventory,
+          images
+        };
+      })
+    );
+
+    res.render('admin/product-details', {
+      product,
+      relatedProducts: inventoryDetailsAndImages,
+      weartype
+
+    });
+
+  } catch (err) {
+    console.error("Error fetching product details:", err);
+    res.status(500).send("Error fetching product details");
   }
 });
+
+router.post('/product-update', upload.any(), async (req, res) => {
+  const { related_product_id, product_type } = req.body;
+  let updateInventoryQuery;
+  let inventoryValues;
+
+  try {
+    if (product_type === "top") {
+      updateInventoryQuery = `
+        UPDATE topwear_inventory_with_sizes
+        SET
+            xs = ?, s = ?, m = ?, l = ?, xl = ?, xxl = ?, xxxl = ?, xxxxl = ?
+        WHERE product_id = ?;
+      `;
+      inventoryValues = [
+        req.body.xs, req.body.s, req.body.m, req.body.l, req.body.xl,
+        req.body.xxl, req.body.xxxl, req.body.xxxxl, related_product_id
+      ];
+    } else if (product_type === "bottom") {
+      updateInventoryQuery = `
+        UPDATE bottom_wear_inventory_with_sizes
+        SET size_28 = ?, size_30 = ?, size_32 = ?, size_34 = ?, size_36 = ?, 
+            size_38 = ?, size_40 = ?, size_42 = ?, size_44 = ?, size_46 = ?
+        WHERE product_id = ?;
+      `;
+      inventoryValues = [
+        req.body.size_28, req.body.size_30, req.body.size_32, req.body.size_34, req.body.size_36,
+        req.body.size_38, req.body.size_40, req.body.size_42, req.body.size_44, req.body.size_46, related_product_id
+      ];
+    }
+
+    await connect.query(updateInventoryQuery, inventoryValues);
+
+    res.redirect(`product/${related_product_id}`);
+  } catch (error) {
+    console.error('Error updating product:', error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
 
 router.post("/addProductnewvarients", async (req, res) => {
   const [name, description, title] = req.body();
