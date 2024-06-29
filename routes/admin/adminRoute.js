@@ -111,6 +111,7 @@ router.post("/update-about-us", upload.fields([
     res.status(500).send("Error updating About Us data");
   }
 });
+
 router.get("/products", async (req, res) => {
   try {
     // Query all products from the database along with their category and subcategory information
@@ -370,10 +371,6 @@ router.post('/add-product-in-varient', async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
-
-
-
-
 
 
 router.post('/add-varient', async (req, res) => {

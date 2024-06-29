@@ -703,7 +703,7 @@
    height: 100%;
    transition: opacity 200ms;
    opacity: 1;
-   object-fit: cover;
+   object-fit: contain;
    object-position: center;
    background: white;
    z-index: 1;

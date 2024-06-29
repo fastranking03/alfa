@@ -468,4 +468,8 @@ router.get("/delete/:id", (req, res) => {
   res.redirect("/products"); // Assuming '/products' is the route for listing all products
 });
 
+
+
+// Add New Product Code
+
 export default router;
