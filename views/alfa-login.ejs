@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alfa Meanswear | Login</title>
+    <%- include('includes/head') %>
+</head>
+
+<body>
+    <div class="alfa-main-wraper"> 
+        <%- include('includes/header') %>
+            <div class="mt-100">
+                 <div class="user-container">
+                    <div class="user-banner-wrapper">
+                        <div class="t-banner">
+                            <img src="assets/images/admin.jpg" alt="">
+                        </div>
+                    </div>
+                    <div class="user-main-wrapper ">
+                        <div class="alfa-user-wrap">
+                            <div class="alfa-form-warpper">
+                                <div class="alfa-user-title">
+                                    <h3>Login Your Account</h3>
+                                </div>
+                                <div class="user-login-option text-center">
+                                    
+                                    <div class="user-else-option">
+                                        <span>OR</span>
+                                    </div>
+                                </div>
+                                <div class="error-message" style="color: red;">
+                                    <% if (typeof error !== 'undefined') { %>
+                                        <p><%= error %></p>
+                                    <% } %>
+                                </div>
+
+                                <div class="main-form">
+                                    <form action="/alfa-login" method="post" id="loginForm">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div class="alfa-form-group">
+                                                    <label for="Email">Email ID</label>
+                                                    <input type="text" class="form-input" name="email" id="emailInput"
+                                                        placeholder="Enter your Email ID">
+                                                    <div id="emailError" style="color: red; display: none;">Please enter a valid email address.</div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-12">
+                                                <div class="alfa-form-group position-relative">
+                                                    <label for="Password">Password</label>
+                                                    <input type="password" class="form-input" name="password"
+                                                        id="passwordView" placeholder="Enter your Password">
+                                                    <span id="onEyeClick"><i id="eyeView" class="fa-regular fa-eye-slash"></i></span>
+                                                </div>
+                                            </div> 
+
+                                            <div class="col-md-12">
+                                                <div class="user-button">
+                                                    <button class="user-btn" id="login">Login</button>
+                                                </div>
+                                            </div>  
+                                        </div>
+                                    </form>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+    <script>
+      var onEyeClick = document.getElementById("onEyeClick");
+        var passwordView = document.getElementById("passwordView");
+        var eyeView = document.getElementById("eyeView");
+
+        onEyeClick.addEventListener('click', function() {
+            if (passwordView.type == "text") {
+                passwordView.type = "password";
+                eyeView.classList.remove("fa-eye");
+                eyeView.classList.add("fa-eye-slash");
+            } else {
+                passwordView.type = "text";
+                eyeView.classList.remove("fa-eye-slash");
+                eyeView.classList.add("fa-eye");
+            }
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const emailInput = document.getElementById("emailInput");
+            const emailError = document.getElementById("emailError");
+            const loginForm = document.getElementById("loginForm");
+
+            emailInput.addEventListener("input", function () {
+                 const emailValue = emailInput.value;
+                if (validateEmail(emailValue)) {
+                    emailError.style.display = "none";
+                    document.getElementById("login").classList.add("user-btn-primary")
+                } else {
+                    emailError.style.display = "block";
+                    document.getElementById("login").classList.remove("user-btn-primary")
+                }
+            });
+            
+            loginForm.addEventListener("submit", function (event) {
+                const emailValue = emailInput.value;
+                if (!validateEmail(emailValue)) {
+                    emailError.style.display = "block";
+                    event.preventDefault();
+                }
+            });
+            function validateEmail(email) {
+                const emailPattern = /^[A-Za-z0-9\._%+\-]+@[A-Za-z0-9\.\-]+\.[A-Za-z]{2,}$/;
+                return emailPattern.test(email);
+            }
+        });
+
+    </script>
+</body> 
+</html>

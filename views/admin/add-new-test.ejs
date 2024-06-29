@@ -102,10 +102,11 @@
                             </div>
                             <div class="admin-card">
                                 <!-- Add Product Form -->
-                                <form action="/admin/add-new-test" method="POST" class="row g-3" enctype="multipart/form-data">
+                                <form action="/admin/add-new-test" method="POST" class="row g-3"
+                                    enctype="multipart/form-data">
                                     <div class="add-more-data" id="products">
                                         <div class="row">
-                                              <div class="col-md-3">
+                                            <div class="col-md-3">
                                                 <label for="product_name" class="form-label">Product Name:</label>
                                                 <input type="text" id="product_name" name="product_name[]"
                                                     class="form-control" required>
@@ -124,7 +125,7 @@
                                                     class="form-control" required></textarea>
                                             </div>
                                         </div>
-                                         
+
                                         <div class="product-title-text mt-3">
                                             <h4>Pricing</h4>
                                         </div>
@@ -158,7 +159,7 @@
                                                 <h4>Size Detail</h4>
                                             </div>
 
-                                             <div class="row mt-3">
+                                            <div class="row mt-3">
                                                 <div class="col-md-6">
                                                     <div class="product-cart-wrap">
                                                         <div class="product-title-text">
@@ -171,8 +172,7 @@
                                                                         <input type="file" name="product_main_image[]"
                                                                             accept="image/png,image/jpeg"
                                                                             max-size="10000000">
-                                                                        <input type="hidden"
-                                                                            name="product_main_image">
+                                                                        <input type="hidden" name="product_main_image">
                                                                         <img class="c-img" src="" alt="">
                                                                     </label>
                                                                 </div>
@@ -253,7 +253,7 @@
             </div>
     </div>
     </div>
-    
+
     <script>
         function ImageInput(element) {
             // Variables
@@ -374,7 +374,7 @@
 
         function addProductForm() {
             const productsContainer = document.getElementById("products");
-          
+
             const productTemplate = `  <div class="add-more-data product" id="products">
                                         <div class="row">
                                               <div class="col-md-3">
@@ -517,7 +517,7 @@
             productsContainer.appendChild(productNode.firstChild);
 
             productIndex++;
-           
+
             initImageInputs(); // Reinitialize the image inputs
         }
 
@@ -525,9 +525,9 @@
             const productDiv = button.closest(".product");
             productDiv.remove();
         }
-        
 
-        
+
+
         // Initialize image inputs for existing elements
         initImageInputs();
     </script>

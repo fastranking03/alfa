@@ -1,0 +1,799 @@
+<html lang="en">
+
+<head>
+  <base href="http://localhost:8081" target="" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Alfa Admin | Add Banner</title>
+  <%- include('includes/head') %>
+</head>
+
+<body>
+  <style>
+    .from-group {
+      margin-bottom: 10px;
+    }
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+    }
+    .product-cart-wrap {
+      border: 1px solid #cccccc;
+      border-radius: 10px;
+      padding: 24px 20px 35px;
+    }
+  </style>
+  <div class="main-admin-warpper">
+    <%- include('includes/header') %>
+      <div class="alfa-admin-wrapper">
+        <div class="admin-side-nav">
+          <%- include('includes/sidebar') %>
+            <div class="admin-main-layout">
+              <div class="admin-bradcrumb">
+                <div class="admin-brudcrumb-title">
+                  <h4>Add Product</h4>
+                </div>
+              </div>
+              <div class="admin-card">
+                <form action="/admin/addProducts" method="POST" enctype="multipart/form-data">
+                  <input type="hidden" id="productType" name="productType" value="<%= weartype %>" />
+
+                  <div class="admin-from">
+                    <div class="row">
+                      <div class="col-md-4">
+                        <div class="from-group">
+                          <label for="Catename">Category ID</label>
+                          <input type="text" name="category_id" class="form-control" placeholder="Enter Short Title">
+                          <input type="hidden" name="subcategory_id" value="1" required />
+                        </div>
+                      </div>
+                      <div class="col-md-4">
+                        <div class="from-group">
+                          <label for="Catename">Product Name:</label>
+                          <input type="text" name="common_product_name" class="form-control"
+                            placeholder="Enter Product Name">
+                        </div>
+                      </div>
+
+                      <div class="col-md-4">
+                        <div class="from-group">
+                          <label for="Catename">Product Title</label>
+                          <input type="text" name="common_product_title" class="form-control"
+                            placeholder="Enter Product Title">
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-md-12 mt-4">
+                        <div class="from-group">
+                          <label for="Catename">Product Description</label>
+                          <textarea type="color" name="common_product_description" class="form-control"
+                            style="height: 200px;" placeholder="Enter Category Name"></textarea>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row mt-3">
+                      <div class="product-cart-wraps">
+                        <div class="product-title-text ">
+                          <h4>Information</h4>
+                        </div>
+                        <div class="row">
+                          <div class="col-md-12">
+                            <div class="from-group">
+                              <label for="Catename">Product Information</label>
+                              <textarea class="form-control" name="product_info" id=""></textarea>
+                            </div>
+                          </div>
+                          <div class="col-md-12">
+                            <div class="from-group">
+                              <label for="Catename">Shipping Information</label>
+                              <textarea class="form-control" name="Shipping_info" id=""></textarea>
+                            </div>
+                          </div>
+                          <div class="col-md-12">
+                            <div class="from-group">
+                              <label for="Catename">Return Policy</label>
+                              <textarea class="form-control" name="return_policy" id=""></textarea>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="product-title-text mt-3">
+                      <h4>Pricing</h4>
+                    </div>
+                    <div class="product-detail product" id="products">
+                      <div class="">
+                      </div>
+                      <div class="row mt-2">
+                        <div class="col-md-3">
+                          <div class="from-group">
+                            <label for="Catename">MRP</label>
+                            <input type="text" name="product_mrp[]" class="form-control"
+                              placeholder="Enter Product MRP">
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <div class="from-group">
+                            <label for="Catename">Discount</label>
+                            <input type="text" name="product_discount[]" class="form-control"
+                              placeholder="Enter  Discount">
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <div class="from-group">
+                            <label for="Catename">Image Url</label>
+                            <input type="text" name="product_image[]" class="form-control"
+                              placeholder="Enter  Image URL">
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <div class="from-group">
+                            <label for="Catename">Color</label>
+                            <input type="text" name="product_colour[]" class="form-control"
+                              placeholder="Enter Product Color" required>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="product-title-text mt-4">
+                        <h4>Size Detail</h4>
+                      </div>
+                      <% if (weartype==='top' ) { %>
+                        <div class="row mt-2">
+                          <div class="col-md-3">
+                            <div class="from-group">
+                              <label for="Catename">Size XS</label>
+                              <input type="number" name="size_xs[]" value="0" min="0" class="form-control" required>
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <div class="from-group">
+                              <label for="Catename">Size S</label>
+                              <input type="number" name="size_s[]" value="0" min="0" class="form-control" required>
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <div class="from-group">
+                              <label for="Catename">Size M</label>
+                              <input type="number" name="size_m[]" value="0" min="0" class="form-control" required>
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <div class="from-group">
+                              <label for="Catename">Size L</label>
+                              <input type="number" name="size_l[]" value="0" min="0" class="form-control" required>
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <div class="from-group">
+                              <label for="Catename">Size XL</label>
+                              <input type="number" name="size_xl[]" value="0" min="0" class="form-control" required>
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <div class="from-group">
+                              <label for="Catename">Size XXL</label>
+                              <input type="number" name="size_xxl[]" value="0" min="0" class="form-control" required>
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <div class="from-group">
+                              <label for="Catename">Size XXXL</label>
+                              <input type="number" name="size_xxxl[]" value="0" min="0" class="form-control" required>
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <div class="from-group">
+                              <label for="Catename">Size XXXXL</label>
+                              <input type="number" name="size_xxxxl[]" value="0" min="0" class="form-control" required>
+                            </div>
+                          </div>
+                        </div>
+                        <% } else if (weartype==='bottom' ) { %>
+                          <div class="row mt-2">
+                            <div class="col-md-3">
+                              <div class="from-group">
+                                <label for="Catename">Size 28</label>
+                                <input type="number" name="size_28[]" value="0" min="0" class="form-control" required>
+                              </div>
+                            </div>
+                            <div class="col-md-3">
+                              <div class="from-group">
+                                <label for="Catename">Size 30</label>
+                                <input type="number" name="size_30[]" value="0" min="0" class="form-control" required>
+                              </div>
+                            </div>
+                            <div class="col-md-3">
+                              <div class="from-group">
+                                <label for="Catename">Size 32</label>
+                                <input type="number" name="size_33[]" value="0" min="0" class="form-control" required>
+                              </div>
+                            </div>
+                            <div class="col-md-3">
+                              <div class="from-group">
+                                <label for="Catename">Size 34</label>
+                                <input type="number" name="size_34[]" value="0" min="0" class="form-control" required>
+                              </div>
+                            </div>
+                            <div class="col-md-3">
+                              <div class="from-group">
+                                <label for="Catename">Size 36</label>
+                                <input type="number" name="size_36[]" value="0" min="0" class="form-control" required>
+                              </div>
+                            </div>
+                            <div class="col-md-3">
+                              <div class="from-group">
+                                <label for="Catename">Size 38</label>
+                                <input type="number" name="size_38[]" value="0" min="0" class="form-control" required>
+                              </div>
+                            </div>
+                            <div class="col-md-3">
+                              <div class="from-group">
+                                <label for="Catename">Size 40</label>
+                                <input type="number" name="size_40[]" value="0" min="0" class="form-control" required>
+                              </div>
+                            </div>
+                            <div class="col-md-3">
+                              <div class="from-group">
+                                <label for="Catename">Size 42</label>
+                                <input type="number" name="size_42[]" value="0" min="0" class="form-control" required>
+                              </div>
+                            </div>
+                            <div class="col-md-3">
+                              <div class="from-group">
+                                <label for="Catename">Size 44</label>
+                                <input type="number" name="size_44[]" value="0" min="0" class="form-control" required>
+                              </div>
+                            </div>
+                            <div class="col-md-3">
+                              <div class="from-group">
+                                <label for="Catename">Size 46</label>
+                                <input type="number" name="size_46[]" value="0" min="0" class="form-control" required>
+                              </div>
+                            </div>
+                          </div>
+                          <% } %>
+
+                            <div class="row mt-3">
+                              <div class="col-md-6">
+                                <div class="product-cart-wrap">
+                                  <div class="product-title-text">
+                                    <h4>Media</h4>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-md-12">
+                                      <div class="from-group">
+                                        <label class="picture main-picture" for="picture__input" tabIndex="0">
+                                          <span class="picture__image"><i class="fa-solid fa-arrow-up"></i> </span>
+                                        </label>
+                                        <input type="file" name="picture__input1[]" id="picture__input"  multiple>
+                                      </div>
+                                    </div>
+                                  </div>
+                                  <div class="row">
+                                    <div class="product-grid-image">
+                                      <div class="p-grid">
+                                        <div class="from-group">
+                                          <label class="picture" for="picture__input1" tabIndex="0">
+                                            <span class="picture__image"><i class="fa-solid fa-image"></i></span>
+                                          </label>
+                                          <input type="file" name="picture__input2[]" id="picture__input1"
+                                            class="picture__input">
+                                          <img id="preview1" class="image-preview" style="display:none;" />
+                                        </div>
+                                      </div>
+                                      <div class="p-grid">
+                                        <div class="from-group">
+                                          <label class="picture" for="picture__input2" tabIndex="0">
+                                            <span class="picture__image"><i class="fa-solid fa-image"></i></span>
+                                          </label>
+                                          <input type="file" name="picture__input3[]" id="picture__input2"
+                                            class="picture__input">
+                                          <img id="preview2" class="image-preview" style="display:none;" />
+                                        </div>
+                                      </div>
+                                      <div class="p-grid">
+                                        <div class="from-group">
+                                          <label class="picture" for="picture__input3" tabIndex="0">
+                                            <span class="picture__image"><i class="fa-solid fa-image"></i></span>
+                                          </label>
+                                          <input type="file" name="picture__input4[]" id="picture__input3"
+                                            class="picture__input">
+                                          <img id="preview3" class="image-preview" style="display:none;" />
+                                        </div>
+                                      </div>
+                                      <div class="p-grid">
+                                        <div class="from-group">
+                                          <label class="picture" for="picture__input4" tabIndex="0">
+                                            <span class="picture__image"><i class="fa-solid fa-image"></i></span>
+                                          </label>
+                                          <input type="file" name="picture__input5[]" id="picture__input4"
+                                            class="picture__input">
+                                          <img id="preview4" class="image-preview" style="display:none;" />
+                                        </div>
+                                      </div>
+                                      <div class="p-grid">
+                                        <div class="from-group">
+                                          <label class="picture" for="picture__input4" tabIndex="0">
+                                            <span class="picture__image"><i class="fa-solid fa-image"></i></span>
+                                          </label>
+                                          <input type="file" name="picture__input6[]" id="picture__input4"
+                                            class="picture__input">
+                                          <img id="preview4" class="image-preview" style="display:none;" />
+                                        </div>
+                                      </div>
+                                    </div>
+
+                                  </div>
+                                </div>
+                              </div>
+                              <div class="col-md-6">
+
+                              </div>
+                            </div>
+                            <div class="mt-2" style="display: flex; justify-content: end;">
+                              <button type="button" class="btn-submit" onclick="addProductForm()">Add More
+                                Product</button>
+                            </div>
+                    </div>
+
+                    <div class="row mt-3">
+                      <div class="admin-submit-btn d-flex" style="gap: 10px;">
+                        <button type="submit" class="btn-submit">Submit</button>
+                      </div>
+                    </div>
+
+                  </div>
+                </form>
+              </div>
+            </div>
+        </div>
+      </div>
+  </div>
+  <%- include('includes/foot') %>
+    <script>
+      const inputFile = document.querySelector("#picture__input");
+      const pictureImage = document.querySelector(".picture__image");
+      const pictureImageTxt = "Upload Image";
+      pictureImage.innerHTML = pictureImageTxt;
+
+      inputFile.addEventListener("change", function (e) {
+        const inputTarget = e.target;
+        const file = inputTarget.files[0];
+
+        if (file) {
+          const reader = new FileReader();
+
+          reader.addEventListener("load", function (e) {
+            const readerTarget = e.target;
+
+            const img = document.createElement("img");
+            img.src = readerTarget.result;
+            img.classList.add("picture__img");
+
+            pictureImage.innerHTML = "";
+            pictureImage.appendChild(img);
+          });
+
+          reader.readAsDataURL(file);
+        } else {
+          pictureImage.innerHTML = pictureImageTxt;
+        }
+      });
+
+    </script>
+    <script>
+      let productIndex = 1;
+      function addProductForm() {
+        const productsContainer = document.getElementById("products");
+        const productTemplate = `
+                     <div class="product-detail product" id="products">
+                      <div class="">
+                       </div>
+                      <div class="row mt-4">
+                        <div class="col-md-3">
+                          <div class="from-group">
+                            <label for="Catename">MRP</label>
+                            <input type="text" name="product_mrp[]" class="form-control"
+                              placeholder="Enter Product MRP">
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <div class="from-group">
+                            <label for="Catename">Discount</label>
+                            <input type="text" name="product_discount[]" class="form-control"
+                              placeholder="Enter  Discount">
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <div class="from-group">
+                            <label for="Catename">Image Url</label>
+                            <input type="text" name="product_image[]" class="form-control"
+                              placeholder="Enter  Image URL">
+                          </div>
+                        </div>
+                        <div class="col-md-3">
+                          <div class="from-group">
+                            <label for="Catename">Color</label>
+                            <input type="text" name="product_colour[]" class="form-control"
+                              placeholder="Enter Product Color" required>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="product-title-text mt-4">
+                        <h4>Size Detail</h4>
+                      </div>
+                      <% if (weartype==='top' ) { %>
+                        <div class="row mt-2">
+                          <div class="col-md-3">
+                            <div class="from-group">
+                              <label for="Catename">Size XS</label>
+                              <input type="number" name="size_xs[]" value="0" min="0" class="form-control" required>
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <div class="from-group">
+                              <label for="Catename">Size S</label>
+                              <input type="number" name="size_s[]" value="0" min="0" class="form-control" required>
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <div class="from-group">
+                              <label for="Catename">Size M</label>
+                              <input type="number" name="size_m[]" value="0" min="0" class="form-control" required>
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <div class="from-group">
+                              <label for="Catename">Size L</label>
+                              <input type="number" name="size_l[]" value="0" min="0" class="form-control" required>
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <div class="from-group">
+                              <label for="Catename">Size XL</label>
+                              <input type="number" name="size_xl[]" value="0" min="0" class="form-control" required>
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <div class="from-group">
+                              <label for="Catename">Size XXL</label>
+                              <input type="number" name="size_xxl[]" value="0" min="0" class="form-control" required>
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <div class="from-group">
+                              <label for="Catename">Size XXXL</label>
+                              <input type="number" name="size_xxxl[]" value="0" min="0" class="form-control" required>
+                            </div>
+                          </div>
+                          <div class="col-md-3">
+                            <div class="from-group">
+                              <label for="Catename">Size XXXL</label>
+                              <input type="number" name="size_xxxl[]" value="0" min="0" class="form-control" required>
+                            </div>
+                          </div>
+                        </div>
+                        <% } else if (weartype==='bottom' ) { %>
+                          <div class="row mt-2">
+                            <div class="col-md-3">
+                              <div class="from-group">
+                                <label for="Catename">Size 28</label>
+                                <input type="number" name="size_28[]" value="0" min="0" class="form-control" required>
+                              </div>
+                            </div>
+                            <div class="col-md-3">
+                              <div class="from-group">
+                                <label for="Catename">Size 30</label>
+                                <input type="number" name="size_30[]" value="0" min="0" class="form-control" required>
+                              </div>
+                            </div>
+                            <div class="col-md-3">
+                              <div class="from-group">
+                                <label for="Catename">Size 32</label>
+                                <input type="number" name="size_33[]" value="0" min="0" class="form-control" required>
+                              </div>
+                            </div>
+                            <div class="col-md-3">
+                              <div class="from-group">
+                                <label for="Catename">Size 34</label>
+                                <input type="number" name="size_34[]" value="0" min="0" class="form-control" required>
+                              </div>
+                            </div>
+
+                            <div class="col-md-3">
+                              <div class="from-group">
+                                <label for="Catename">Size 36</label>
+                                <input type="number" name="size_36[]" value="0" min="0" class="form-control" required>
+                              </div>
+                            </div>
+
+                            <div class="col-md-3">
+                              <div class="from-group">
+                                <label for="Catename">Size 38</label>
+                                <input type="number" name="size_38[]" value="0" min="0" class="form-control" required>
+                              </div>
+                            </div>
+                            <div class="col-md-3">
+                              <div class="from-group">
+                                <label for="Catename">Size 40</label>
+                                <input type="number" name="size_40[]" value="0" min="0" class="form-control" required>
+                              </div>
+                            </div>
+
+                            <div class="col-md-3">
+                              <div class="from-group">
+                                <label for="Catename">Size 42</label>
+                                <input type="number" name="size_42[]" value="0" min="0" class="form-control" required>
+                              </div>
+                            </div>
+
+
+                            <div class="col-md-3">
+                              <div class="from-group">
+                                <label for="Catename">Size 44</label>
+                                <input type="number" name="size_44[]" value="0" min="0" class="form-control" required>
+                              </div>
+                            </div>
+                            
+                            <div class="col-md-3">
+                              <div class="from-group">
+                                <label for="Catename">Size 46</label>
+                                <input type="number" name="size_46[]" value="0" min="0" class="form-control" required>
+                              </div>
+                            </div>
+                          </div>
+                          <% } %>
+                          <div class="row mt-3">
+                              <div class="col-md-6">
+                                <div class="product-cart-wrap">
+                                  <div class="product-title-text">
+                                    <h4>Media</h4>
+                                  </div>
+                                  <div class="row">
+                                    <div class="col-md-12">
+                                      <div class="from-group">
+                                         <label class="picture main-picture" for="picture__input" tabIndex="0">
+                                          <span class="picture__image"><i class="fa-solid fa-arrow-up"></i> </span>
+                                        </label>
+                                        <input type="file" name="picture__input1[]" id="picture__input">
+                                      </div>
+                                    </div>
+                                  </div>
+                                   <div class="row">
+                                    <div class="product-grid-image">
+                                      <div class="p-grid">
+                                        <div class="from-group">
+                                          <label class="picture" for="picture__input1" tabIndex="0">
+                                            <span class="picture__image"><i class="fa-solid fa-image"></i></span>
+                                          </label>
+                                          <input type="file" name="picture__input2[]" id="picture__input1" class="picture__input">
+                                          <img id="preview1" class="image-preview" style="display:none;" />
+                                        </div>
+                                      </div>
+                                        <div class="p-grid">
+                                        <div class="from-group">
+                                          <label class="picture" for="picture__input1" tabIndex="0">
+                                            <span class="picture__image"><i class="fa-solid fa-image"></i></span>
+                                          </label>
+                                          <input type="file" name="picture__input3[]" id="picture__input1"
+                                            class="picture__input">
+                                          <img id="preview1" class="image-preview" style="display:none;" />
+                                        </div>
+                                      </div>
+                                      <div class="p-grid">
+                                        <div class="from-group">
+                                          <label class="picture" for="picture__input2" tabIndex="0">
+                                            <span class="picture__image"><i class="fa-solid fa-image"></i></span>
+                                          </label>
+                                          <input type="file" name="picture__input4[]" id="picture__input2" class="picture__input">
+                                          <img id="preview2" class="image-preview" style="display:none;" />
+                                        </div>
+                                      </div>
+                                      <div class="p-grid">
+                                        <div class="from-group">
+                                          <label class="picture" for="picture__input3" tabIndex="0">
+                                            <span class="picture__image"><i class="fa-solid fa-image"></i></span>
+                                          </label>
+                                          <input type="file" name="picture__input5[]" id="picture__input3" class="picture__input">
+                                          <img id="preview3" class="image-preview" style="display:none;" />
+                                        </div>
+                                      </div>
+                                      <div class="p-grid">
+                                        <div class="from-group">
+                                          <label class="picture" for="picture__input4" tabIndex="0">
+                                            <span class="picture__image"><i class="fa-solid fa-image"></i></span>
+                                          </label>
+                                          <input type="file" name="picture__input6[]" id="picture__input4" class="picture__input">
+                                          <img id="preview4" class="image-preview" style="display:none;" />
+                                        </div>
+                                      </div>
+                                    </div> 
+                                  </div>
+                                </div>
+                              </div> 
+                            </div>
+                          <div class="mt-2" style="display: flex; justify-content: end;">
+                             <button type="button" class="btn-submit btn-danger" onclick="removeProduct(this)">Remove</button>
+                          </div>
+                    </div>
+      `;
+        const productNode = document.createElement("div");
+        productNode.innerHTML = productTemplate.trim();
+        productsContainer.appendChild(productNode.firstChild);
+
+        productIndex++;
+      }
+
+      function removeProduct(button) {
+        const productDiv = button.closest(".product");
+        productDiv.remove();
+      }
+    </script>
+
+</body>
+
+</html>
+
+
+<!-- 
+
+route code 
+
+
+
+
+router.post("/addProducts", async (req, res) => {
+  const {
+    productType,
+    category_id,
+    subcategory_id,
+    common_product_name,
+    common_product_title,
+    common_product_description,
+    product_info,
+    Shipping_info,
+    return_policy,
+  } = req.body;
+
+  const uniqueBatchId = uuidv4();
+ 
+
+  const products = req.body.product_mrp.map((mrp, index) => {
+    const product = {
+      mrp,
+      discount: req.body.product_discount[index],
+      colour: req.body.product_colour[index],
+      image_url: req.body.product_image[index], 
+    };
+
+    if (productType === "top") {
+      product.sizes = {
+        xs: req.body.size_xs[index],
+        s: req.body.size_s[index],
+        m: req.body.size_m[index],
+        l: req.body.size_l[index],
+        xl: req.body.size_xl[index],
+        xxl: req.body.size_xxl[index],
+        xxxl: req.body.size_xxxl[index],
+        xxxxl: req.body.size_xxxxl[index],
+      };
+    } else if (productType === "bottom") {
+      product.sizes = {
+        size_28: req.body.size_28[index],
+        size_30: req.body.size_30[index],
+        size_32: req.body.size_32[index],
+        size_34: req.body.size_34[index],
+        size_36: req.body.size_36[index],
+        size_38: req.body.size_38[index],
+        size_40: req.body.size_40[index],
+        size_42: req.body.size_42[index],
+        size_44: req.body.size_44[index],
+        size_46: req.body.size_46[index],
+      };
+    }
+
+    return product;
+  });
+
+  const insertQuery = `
+    INSERT INTO products (
+      category_id, subcategory_id, product_name, product_price, 
+      discount_on_product, product_title, product_description, wear_type_bottom_or_top, 
+      colour, unique_batch_id , product_information , shipping_information , return_policy
+    ) 
+    VALUES ?;
+  `;
+
+  const values = products.map((product) => [
+    category_id,
+    subcategory_id,
+    common_product_name,
+    product.mrp,
+    product.discount,
+    common_product_title,
+    common_product_description,
+    productType,
+    product.colour,
+    uniqueBatchId,
+    product_info,
+    Shipping_info,
+    return_policy,
+  ]);
+
+  try {
+    // Perform insertion of products
+    await connect.query(insertQuery, [values]);
+
+    // Retrieve the IDs of the inserted products
+    // Retrieve all inserted product IDs
+    const [result] = await connect.query('SELECT id FROM products WHERE unique_batch_id = ? LIMIT 1', [uniqueBatchId]);
+    const firstProductId = result.length > 0 ? result[0].id : null;
+    console.log(firstProductId);
+
+
+    // Prepare to insert inventory data based on productType
+    if (productType === "top") {
+      // Prepare topwear inventory insertion query
+      const topwearInventoryQuery = `
+        INSERT INTO topwear_inventory_with_sizes (
+          product_id, product_name, xs, s, m, l, xl, xxl, xxxl, xxxxl
+        ) VALUES ?
+      `;
+
+      // Map productIds and inventory values for topwear
+      const topwearInventoryValues = products.map((product, index) => [
+        firstProductId + index,
+        common_product_name,
+        product.sizes?.xs || null,
+        product.sizes?.s || null,
+        product.sizes?.m || null,
+        product.sizes?.l || null,
+        product.sizes?.xl || null,
+        product.sizes?.xxl || null,
+        product.sizes?.xxxl || null,
+        product.sizes?.xxxxl || null,
+      ]);
+
+      // Insert topwear inventory data
+      await connect.query(topwearInventoryQuery, [topwearInventoryValues]);
+    } else if (productType === "bottom") {
+      // Prepare bottomwear inventory insertion query
+      const bottomwearInventoryQuery = `
+        INSERT INTO bottomwear_inventory (
+          product_id, product_name, size_28, size_30, size_32, size_34, size_36, size_38, size_40, size_42, size_44, size_46
+        ) VALUES ?
+      `;
+
+      // Map productIds and inventory values for bottomwear
+      const bottomwearInventoryValues = products.slice(0, productCount).map((product, index) => [
+        firstProductId + index,
+        common_product_name,
+        product.sizes?.size_28 || null,
+        product.sizes?.size_30 || null,
+        product.sizes?.size_32 || null,
+        product.sizes?.size_34 || null,
+        product.sizes?.size_36 || null,
+        product.sizes?.size_38 || null,
+        product.sizes?.size_40 || null,
+        product.sizes?.size_42 || null,
+        product.sizes?.size_44 || null,
+        product.sizes?.size_46 || null,
+      ]);
+
+      // Insert bottomwear inventory data
+      await connect.query(bottomwearInventoryQuery, [bottomwearInventoryValues]);
+    }
+
+    console.log("Products and inventory data inserted successfully");
+    res.redirect("add-product");
+  } catch (err) {
+    console.error("Error inserting products and inventory data:", err);
+    res.status(500).send("Error inserting products and inventory data");
+  }
+});
+
+
+-->
