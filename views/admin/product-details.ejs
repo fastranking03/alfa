@@ -9,619 +9,690 @@
     <title>Alfa Admin | Add category</title>
     <%- include('includes/head') %>
 </head>
-
+<style>
+    .pro-d-box{
+        box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+        padding: 20px;
+        background: #fff;
+        margin: 0 0 20px;
+    }
+</style>
 <body>
     <div class="main-admin-warpper">
         <%- include('includes/header') %>
             <div class="alfa-admin-wrapper">
                 <div class="admin-side-nav">
                     <%- include('includes/sidebar') %>
-                        <h1>Update Product</h1>
-
-                        <!-- Related Products -->
-
-                        <% relatedProducts.forEach((relatedProduct, index)=> { %>
-                            <form action="admin/product-update" method="post" enctype="multipart/form-data">
-                                <h2>Related Product <%= index + 1 %>
-                                </h2>
-                                <input type="text" name="related_product_id" value="<%= relatedProduct.id %>">
-                                <input type="text" name="product_type"
-                                    value="<%= relatedProduct.wear_type_bottom_or_top %>">
-
-                                <label for="related_product_name_<%= index %>">Name:</label>
-                                <input type="text" id="related_product_name_<%= index %>" name="related_product_name"
-                                    value="<%= relatedProduct.product_name %>"><br>
-                                <label for="related_product_price_<%= index %>">Price:</label>
-                                <input type="number" id="related_product_price_<%= index %>"
-                                    name="related_product_price" value="<%= relatedProduct.product_price %>"
-                                    step="0.01"><br>
-                                <label for="related_product_description_<%= index %>">Description:</label>
-                                <textarea id="related_product_description_<%= index %>"
-                                    name="related_product_description"><%= relatedProduct.product_description %></textarea><br>
-
-                                <% if (relatedProduct.inventory) { %>
-                                    <% if (relatedProduct.wear_type_bottom_or_top==='top' ) { %>
-                                        <h4>Inventory (Topwear)</h4>
-                                        <label for="xs_<%= index %>">XS:</label>
-                                        <input type="number" id="xs_<%= index %>" name="xs"
-                                            value="<%= relatedProduct.inventory.xs %>"><br>
-
-                                        <label for="s_<%= index %>">S:</label>
-                                        <input type="number" id="s_<%= index %>" name="s"
-                                            value="<%= relatedProduct.inventory.s %>"><br>
-
-                                        <label for="m_<%= index %>">M:</label>
-                                        <input type="number" id="m_<%= index %>" name="m"
-                                            value="<%= relatedProduct.inventory.m %>"><br>
-
-                                        <label for="l_<%= index %>">L:</label>
-                                        <input type="number" id="l_<%= index %>" name="l"
-                                            value="<%= relatedProduct.inventory.l %>"><br>
-
-                                        <label for="xl_<%= index %>">XL:</label>
-                                        <input type="number" id="xl_<%= index %>" name="xl"
-                                            value="<%= relatedProduct.inventory.xl %>"><br>
-
-                                        <label for="xxl_<%= index %>">XXL:</label>
-                                        <input type="number" id="xxl_<%= index %>" name="xxl"
-                                            value="<%= relatedProduct.inventory.xxl %>"><br>
-
-                                        <label for="xxxl_<%= index %>">XXXL:</label>
-                                        <input type="number" id="xxxl_<%= index %>" name="xxxl"
-                                            value="<%= relatedProduct.inventory.xxxl %>"><br>
-
-                                        <label for="xxxxl_<%= index %>">XXXXL:</label>
-                                        <input type="number" id="xxxxl_<%= index %>" name="xxxxl"
-                                            value="<%= relatedProduct.inventory.xxxxl %>"><br>
-                                        <% } %>
-                                            <% if (relatedProduct.wear_type_bottom_or_top==='bottom' ) { %>
-                                                <h4>Inventory (Bottomwear)</h4>
-                                                <label for="size_28_<%= index %>">28:</label>
-                                                <input type="number" id="size_28_<%= index %>" name="size_28"
-                                                    value="<%= relatedProduct.inventory.size_28 %>"><br>
-
-                                                <label for="size_30_<%= index %>">30:</label>
-                                                <input type="number" id="size_30_<%= index %>" name="size_30"
-                                                    value="<%= relatedProduct.inventory.size_30 %>"><br>
-
-                                                <label for="size_32_<%= index %>">32:</label>
-                                                <input type="number" id="size_32_<%= index %>" name="size_32"
-                                                    value="<%= relatedProduct.inventory.size_32 %>"><br>
-
-                                                <label for="size_34_<%= index %>">34:</label>
-                                                <input type="number" id="size_34_<%= index %>" name="size_34"
-                                                    value="<%= relatedProduct.inventory.size_34 %>"><br>
-
-                                                <label for="size_36_<%= index %>">36:</label>
-                                                <input type="number" id="size_36_<%= index %>" name="size_36"
-                                                    value="<%= relatedProduct.inventory.size_36 %>"><br>
-
-                                                <label for="size_38_<%= index %>">38:</label>
-                                                <input type="number" id="size_38_<%= index %>" name="size_38"
-                                                    value="<%= relatedProduct.inventory.size_38 %>"><br>
-
-                                                <label for="size_40_<%= index %>">40:</label>
-                                                <input type="number" id="size_40_<%= index %>" name="size_40"
-                                                    value="<%= relatedProduct.inventory.size_40 %>"><br>
-
-                                                <label for="size_42_<%= index %>">42:</label>
-                                                <input type="number" id="size_42_<%= index %>" name="size_42"
-                                                    value="<%= relatedProduct.inventory.size_42 %>"><br>
-
-                                                <label for="size_44_<%= index %>">44:</label>
-                                                <input type="number" id="size_44_<%= index %>" name="size_44"
-                                                    value="<%= relatedProduct.inventory.size_44 %>"><br>
-
-                                                <label for="size_46_<%= index %>">46:</label>
-                                                <input type="number" id="size_46_<%= index %>" name="size_46"
-                                                    value="<%= relatedProduct.inventory.size_46 %>"><br>
-                                                <% } %>
-
-                                                    <% } %>
-
-                                                        <div class="image-grid-wrapper" style="display: flex;">
-                                                            <% if (relatedProduct.images.length> 0) { %>
-                                                                <% relatedProduct.images.forEach((image, index)=> { %>
-                                                                    <div class="image-items">
-                                                                        <label class="image-input">
-                                                                            <input type="file"
-                                                                                name="image<%= index + 1 %>"
-                                                                                accept="image/png,image/jpeg"
-                                                                                max-size="10000000">
-                                                                            <input type="hidden" name="image_ids[]"
-                                                                                value="<%= image.id %>">
-                                                                            <img class="c-img"
-                                                                                src="../../product_images/<%= image.image_path %>"
-                                                                                alt="Product Image">
-                                                                        </label>
-                                                                    </div>
-                                                                    <% }) %>
-                                                                        <% } %>
-                                                        </div>
-                                                        <h4>Product Images</h4>
-
-                                                        <button type="submit">Update Related Product <%= index + 1 %>
-                                                        </button>
-                            </form>
-                            <% }) %>
-
+                        <div class="admin-main-layout">
+                            <div class="admin-bradcrumb">
+                                <div class="admin-brudcrumb-title">
+                                    <h4>Add Product</h4>
+                                </div>
                                 <div class="mt-2" style="display: flex; justify-content: end;">
                                     <button type="button" class="btn-submit" onclick="addProductForm()">Add similar
                                         product</button>
                                 </div>
-
-                                <div id="new-product" style="display: none;">
-                                    <form action="/admin/addProducts" method="POST" enctype="multipart/form-data">
-                                        <input type="hidden" id="productType" name="productType"
-                                            value="<%= product.wear_type_bottom_or_top	%>" />
-                                        <input type="hidden" name="category_id" class="form-control"
-                                            value="<%= product.category_id %>" placeholder="Enter Short Title">
-                                        <input type="hidden" name="subcategory_id" value="1" required />
-
-                                        <input type="text" name="uuid" class="form-control"
-                                            value="<%= product.unique_batch_id %>" placeholder="Enter Short Title">
-
-                                        <div class="admin-from">
-                                            <div class="row">category
-                                                <div class="col-md-4">
-                                                    <div class="from-group">
-                                                        <label for="Catename">Product Name:</label>
-                                                        <input type="text" name="common_product_name"
-                                                            class="form-control" placeholder="Enter Product Name"
-                                                            value="<%=product.product_name  %>" readonly>
-                                                    </div>
-                                                </div>
-
-                                                <div class="col-md-4">
-                                                    <div class="from-group">
-                                                        <label for="Catename">Product Title</label>
-                                                        <input type="text" name="common_product_title"
-                                                            class="form-control" placeholder="Enter Product Title"
-                                                            value="<%=product.product_title  %>" readonly>
-                                                    </div>
+                            </div>
+                            <!-- Related Products -->
+                       <div class="row mt-2">
+                       
+                            <% relatedProducts.forEach((relatedProduct, index)=> { %>
+                                <div class="col-md-6">
+                                    <div class="pro-d-box">
+                                    <form action="admin/product-update" method="post" enctype="multipart/form-data">
+                                        <div>
+                                            <h4>Related Product <%= index + 1 %> </h4>
+                                        </div>
+                                        <div class="row">
+                                            <div class="col-md-3">
+                                                <div class="from-group">
+                                                    <label for="Category">Category</label>
+                                                    <input type="text" name="related_product_id" class="form-control" value="<%= relatedProduct.id %>">
                                                 </div>
                                             </div>
-                                            <div class="row">
-                                                <div class="col-md-12 mt-4">
-                                                    <div class="from-group">
-                                                        <label for="Catename">Product Description</label>
-                                                        <textarea type="color" name="common_product_description"
-                                                            class="form-control" style="height: 200px;"
-                                                            placeholder="Enter Category Name"
-                                                            readonly>  <%=product.product_description %> </textarea>
-                                                    </div>
-                                                </div>
+                                            <div class="col-md-3">
+                                                <div class="from-group">
+                                                    <label for="Category">Waer Type</label>
+                                                    <input type="text" name="product_type" class="form-control" value="<%= relatedProduct.wear_type_bottom_or_top %>">
+                                                 </div>
                                             </div>
-
-                                            <div class="row mt-3">
-                                                <div class="product-cart-wraps">
-                                                    <div class="product-title-text ">
-                                                        <h4>Information</h4>
-                                                    </div>
-                                                    <div class="row">
-                                                        <div class="col-md-12">
+                                            <div class="col-md-3">
+                                                <div class="from-group">
+                                                    <label for="Category">Name</label>
+                                                    <input type="text" id="related_product_name_<%= index %>" class="form-control" name="related_product_name" value="<%= relatedProduct.product_name %>">
+                                                 </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="from-group">
+                                                    <label for="Category">Price</label>
+                                                    <input type="number" id="related_product_price_<%= index %>"  class="form-control" name="related_product_price" value="<%= relatedProduct.product_price %>" step="0.01">
+                                                 </div>
+                                            </div>
+                                            <div class="col-md-12 mt-2">
+                                                <div class="from-group">
+                                                    <label for="Category">Description</label>
+                                                    <textarea id="related_product_description_<%= index %>" class="form-control"
+                                                        name="related_product_description"><%= relatedProduct.product_description %></textarea>
+                                                 </div>
+                                            </div>
+                                        </div>
+                                        <div class="mt-3">
+                                            <% if (relatedProduct.inventory) { %>
+                                                <% if (relatedProduct.wear_type_bottom_or_top==='top' ) { %>
+                                                   <div>
+                                                       <h4>Inventory (Topwear)</h4> 
+                                                   </div>
+                                                   <div class="row">
+                                                        <div class="col-md-2">
                                                             <div class="from-group">
-                                                                <label for="Catename">Product Information</label>
-                                                                <textarea class="form-control" name="product_info" id=""
-                                                                    readonly><%=product.product_information %></textarea>
+                                                                <label for="xs_<%= index %>">XS:</label>
+                                                                <input type="number" class="form-control" id="xs_<%= index %>" name="xs"
+                                                                value="<%= relatedProduct.inventory.xs %>"> 
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-12">
+                                                        <div class="col-md-2">
                                                             <div class="from-group">
-                                                                <label for="Catename">Shipping Information</label>
-                                                                <textarea class="form-control" name="Shipping_info"
-                                                                    id=""
-                                                                    readonly> <%=product.shipping_information %> </textarea>
+                                                                <label for="s_<%= index %>">S:</label>
+                                                                <input type="number" class="form-control" id="s_<%= index %>" name="s"
+                                                                value="<%= relatedProduct.inventory.s %>">
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-12">
+                                                        <div class="col-md-2">
                                                             <div class="from-group">
-                                                                <label for="Catename">Return Policy</label>
-                                                                <textarea class="form-control" name="return_policy"
-                                                                    id=""
-                                                                    readonly> <%=product.return_policy %> </textarea>
+                                                                <label for="m_<%= index %>">M:</label>
+                                                                <input type="number" class="form-control" id="m_<%= index %>" name="m"
+                                                                    value="<%= relatedProduct.inventory.m %>"> 
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <div class="from-group">
+                                                                <label for="l_<%= index %>">L:</label>
+                                                                <input type="number" class="form-control" id="l_<%= index %>" name="l" value="<%= relatedProduct.inventory.l %>"> 
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <div class="from-group">
+                                                                <label for="xl_<%= index %>">XL:</label>
+                                                                <input type="number" class="form-control" id="xl_<%= index %>" name="xl" value="<%= relatedProduct.inventory.xl %>">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-2">
+                                                            <div class="from-group">
+                                                                <label for="xxl_<%= index %>">XXL:</label>
+                                                                <input type="number" class="form-control" id="xxl_<%= index %>" name="xxl" value="<%= relatedProduct.inventory.xxl %>">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-2 mt-2">
+                                                            <div class="from-group">
+                                                                <label for="xxxl_<%= index %>">XXXL:</label>
+                                                                <input type="number" class="form-control" id="xxxl_<%= index %>" name="xxxl" value="<%= relatedProduct.inventory.xxxl %>">
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-md-2 mt-2">
+                                                            <div class="from-group">
+                                                                <label for="xxxxl_<%= index %>">XXXXL:</label>
+                                                                <input type="number" class="form-control" id="xxxxl_<%= index %>" name="xxxxl" value="<%= relatedProduct.inventory.xxxxl %>">
                                                             </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            </div>
-                                            <div class="product-title-text mt-3">
-                                                <h4>Pricing</h4>
-                                            </div>
-                                            <div class="product-detail product" id="products">
-                                                <div class="">
-                                                </div>
-                                                <div class="row mt-2">
-                                                    <div class="col-md-3">
+                                                  
+                                                    <% } %>
+                                                        <% if (relatedProduct.wear_type_bottom_or_top==='bottom' ) { %>
+                                                            <div>
+                                                                <h4>Inventory (Bottomwear)</h4>
+                                                            </div>
+                                                            <div class="row">
+                                                                <div class="col-md-2">
+                                                                    <div class="from-group">
+                                                                        <label for="size_28_<%= index %>">28:</label>
+                                                                        <input type="number" class="form-control" id="size_28_<%= index %>" name="size_28" value="<%= relatedProduct.inventory.size_28 %>">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-2">
+                                                                    <div class="from-group">
+                                                                        <label for="size_30_<%= index %>">30:</label>
+                                                                        <input type="number" class="form-control" id="size_30_<%= index %>" name="size_30"
+                                                                            value="<%= relatedProduct.inventory.size_30 %>"> 
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-2">
+                                                                    <div class="from-group">
+                                                                        <label for="size_32_<%= index %>">32:</label>
+                                                                        <input type="number" class="form-control" id="size_32_<%= index %>" name="size_32" value="<%= relatedProduct.inventory.size_32 %>">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-2">
+                                                                    <div class="from-group">
+                                                                        <label for="size_34_<%= index %>">34:</label>
+                                                                        <input type="number" class="form-control" id="size_34_<%= index %>" name="size_34" value="<%= relatedProduct.inventory.size_34 %>">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-2">
+                                                                    <div class="from-group">
+                                                                        <label for="size_36_<%= index %>">36:</label>
+                                                                        <input type="number" class="form-control" id="size_36_<%= index %>" name="size_36" value="<%= relatedProduct.inventory.size_36 %>">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-2">
+                                                                    <div class="from-group">
+                                                                        <label for="size_38_<%= index %>">38:</label>
+                                                                        <input type="number" class="form-control" id="size_38_<%= index %>" name="size_38" value="<%= relatedProduct.inventory.size_38 %>">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-2">
+                                                                    <div class="from-group">
+                                                                        <label for="size_40_<%= index %>">40:</label>
+                                                                        <input type="number" class="form-control" id="size_40_<%= index %>" name="size_40" value="<%= relatedProduct.inventory.size_40 %>">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-2">
+                                                                    <div class="from-group">
+                                                                        <label for="size_42_<%= index %>">42:</label>
+                                                                        <input type="number" class="form-control" id="size_42_<%= index %>" name="size_42" value="<%= relatedProduct.inventory.size_42 %>">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-2">
+                                                                    <div class="from-group">
+                                                                        <label for="size_44_<%= index %>">44:</label>
+                                                                        <input type="number" class="form-control" id="size_44_<%= index %>" name="size_44"  value="<%= relatedProduct.inventory.size_44 %>">
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-2">
+                                                                    <div class="from-group">
+                                                                        <label for="size_46_<%= index %>">46:</label>
+                                                                        <input type="number" class="form-control" id="size_46_<%= index %>" name="size_46" value="<%= relatedProduct.inventory.size_46 %>">
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                            <% } %>
+    
+                                                         <% } %>
+                                        </div>
+                                                                <div class="mt-4">
+                                                                    <div>
+                                                                        <h4>Product Images</h4>
+                                                                    </div>   
+                                                                     <div class="image-grid-wrapper mt-3 d-flex">
+                                                                        
+                                                                        <% if (relatedProduct.images.length> 0) { %>
+                                                                            <% relatedProduct.images.forEach((image, index)=> {
+                                                                                %>
+                                                                                <div class="image-items">
+                                                                                    <label class="image-input">
+                                                                                        <input type="file" name="image<%= index + 1 %>" accept="image/png,image/jpeg"  max-size="10000000">
+                                                                                        <input type="hidden" name="image_ids[]" value="<%= image.id %>">
+                                                                                        <img class="c-img"  src="../../product_images/<%= image.image_path %>" alt="Product Image">
+                                                                                    </label>
+                                                                                </div>
+                                                                                <% }) %>
+                                                                            <% } %>
+                                                                    </div>
+                                                                </div>
+                                                               
+                                                                <div class="mt-4" style="display: flex;justify-content: end;">
+                                                                    <button type="submit" class="btn-submit">Update</button>
+                                                                </div>
+                                    </form>
+                              </div>
+                            </div>
+                                <% }) %>
+                        
+                       </div>
+            
+  
+                                    <div id="new-product" class="mt-4" style="display: none;">
+                                        <div>
+                                            <h4>Add New Product</h4>
+                                        </div>
+                                        <form action="/admin/addProducts" method="POST" enctype="multipart/form-data">
+                                            <input type="hidden" id="productType" name="productType" value="<%= product.wear_type_bottom_or_top	%>" />
+                                            <input type="hidden" name="category_id" class="form-control"
+                                                value="<%= product.category_id %>" placeholder="Enter Short Title">
+                                            <input type="hidden" name="subcategory_id" value="1" required />
+
+                                            <input type="hidden" name="uuid" class="form-control"
+                                                value="<%= product.unique_batch_id %>" placeholder="Enter Short Title">
+
+                                            <div class="admin-from">
+                                                <div class="row">
+                                                    
+                                                    <div class="col-md-4">
                                                         <div class="from-group">
-                                                            <label for="Catename">MRP</label>
-                                                            <input type="text" name="product_mrp" class="form-control"
-                                                                placeholder="Enter Product MRP">
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-3">
-                                                        <div class="from-group">
-                                                            <label for="Catename">Discount</label>
-                                                            <input type="text" name="product_discount"
-                                                                class="form-control" placeholder="Enter  Discount">
+                                                            <label for="Catename">Product Name:</label>
+                                                            <input type="text" name="common_product_name"
+                                                                class="form-control" placeholder="Enter Product Name"  value="<%=product.product_name  %>" readonly>
                                                         </div>
                                                     </div>
 
-                                                    <div class="col-md-3">
+                                                    <div class="col-md-4">
                                                         <div class="from-group">
-                                                            <label for="Catename">Color</label>
-                                                            <input type="text" name="product_colour"
-                                                                class="form-control" placeholder="Enter Product Color"
-                                                                required>
+                                                            <label for="Catename">Product Title</label>
+                                                            <input type="text" name="common_product_title" class="form-control" placeholder="Enter Product Title" value="<%=product.product_title  %>" readonly>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="product-title-text mt-4">
-                                                    <h4>Size Detail</h4>
+                                                <div class="row">
+                                                    <div class="col-md-12 mt-4">
+                                                        <div class="from-group">
+                                                            <label for="Catename">Product Description</label>
+                                                            <textarea type="color" name="common_product_description"
+                                                                class="form-control" style="height: 200px;"
+                                                                placeholder="Enter Category Name"
+                                                                readonly>  <%=product.product_description %> </textarea>
+                                                        </div>
+                                                    </div>
                                                 </div>
-                                                <% if (weartype==='top' ) { %>
+
+                                                <div class="row mt-3">
+                                                    <div class="product-cart-wraps">
+                                                        <div class="product-title-text ">
+                                                            <h4>Information</h4>
+                                                        </div>
+                                                        <div class="row">
+                                                            <div class="col-md-12">
+                                                                <div class="from-group">
+                                                                    <label for="Catename">Product Information</label>
+                                                                    <textarea class="form-control" name="product_info"
+                                                                        id=""
+                                                                        readonly><%=product.product_information %></textarea>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-12">
+                                                                <div class="from-group">
+                                                                    <label for="Catename">Shipping Information</label>
+                                                                    <textarea class="form-control" name="Shipping_info"
+                                                                        id=""
+                                                                        readonly> <%=product.shipping_information %> </textarea>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-12">
+                                                                <div class="from-group">
+                                                                    <label for="Catename">Return Policy</label>
+                                                                    <textarea class="form-control" name="return_policy"
+                                                                        id=""
+                                                                        readonly> <%=product.return_policy %> </textarea>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="product-title-text mt-3">
+                                                    <h4>Pricing</h4>
+                                                </div>
+                                                <div class="product-detail product" id="products">
+                                                    <div class="">
+                                                    </div>
                                                     <div class="row mt-2">
                                                         <div class="col-md-3">
                                                             <div class="from-group">
-                                                                <label for="Catename">Size XS</label>
-                                                                <input type="number" name="size_xs" value="0" min="0"
-                                                                    class="form-control" required>
+                                                                <label for="Catename">MRP</label>
+                                                                <input type="text" name="product_mrp"
+                                                                    class="form-control"
+                                                                    placeholder="Enter Product MRP">
                                                             </div>
                                                         </div>
                                                         <div class="col-md-3">
                                                             <div class="from-group">
-                                                                <label for="Catename">Size S</label>
-                                                                <input type="number" name="size_s" value="0" min="0"
-                                                                    class="form-control" required>
+                                                                <label for="Catename">Discount</label>
+                                                                <input type="text" name="product_discount"
+                                                                    class="form-control" placeholder="Enter  Discount">
                                                             </div>
                                                         </div>
+
                                                         <div class="col-md-3">
                                                             <div class="from-group">
-                                                                <label for="Catename">Size M</label>
-                                                                <input type="number" name="size_m" value="0" min="0"
-                                                                    class="form-control" required>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <div class="from-group">
-                                                                <label for="Catename">Size L</label>
-                                                                <input type="number" name="size_l" value="0" min="0"
-                                                                    class="form-control" required>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <div class="from-group">
-                                                                <label for="Catename">Size XL</label>
-                                                                <input type="number" name="size_xl" value="0" min="0"
-                                                                    class="form-control" required>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <div class="from-group">
-                                                                <label for="Catename">Size XXL</label>
-                                                                <input type="number" name="size_xxl" value="0" min="0"
-                                                                    class="form-control" required>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <div class="from-group">
-                                                                <label for="Catename">Size XXXL</label>
-                                                                <input type="number" name="size_xxxl" value="0" min="0"
-                                                                    class="form-control" required>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <div class="from-group">
-                                                                <label for="Catename">Size XXXXL</label>
-                                                                <input type="number" name="size_xxxxl" value="0" min="0"
-                                                                    class="form-control" required>
+                                                                <label for="Catename">Color</label>
+                                                                <input type="text" name="product_colour"
+                                                                    class="form-control"
+                                                                    placeholder="Enter Product Color" required>
                                                             </div>
                                                         </div>
                                                     </div>
-                                                    <% } else if (weartype==='bottom' ) { %>
+                                                    <div class="product-title-text mt-4">
+                                                        <h4>Size Detail</h4>
+                                                    </div>
+                                                    <% if (weartype==='top' ) { %>
                                                         <div class="row mt-2">
                                                             <div class="col-md-3">
                                                                 <div class="from-group">
-                                                                    <label for="Catename">Size 28</label>
-                                                                    <input type="number" name="size_28" value="0"
+                                                                    <label for="Catename">Size XS</label>
+                                                                    <input type="number" name="size_xs" value="0"
                                                                         min="0" class="form-control" required>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-3">
                                                                 <div class="from-group">
-                                                                    <label for="Catename">Size 30</label>
-                                                                    <input type="number" name="size_30" value="0"
+                                                                    <label for="Catename">Size S</label>
+                                                                    <input type="number" name="size_s" value="0" min="0"
+                                                                        class="form-control" required>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <div class="from-group">
+                                                                    <label for="Catename">Size M</label>
+                                                                    <input type="number" name="size_m" value="0" min="0"
+                                                                        class="form-control" required>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <div class="from-group">
+                                                                    <label for="Catename">Size L</label>
+                                                                    <input type="number" name="size_l" value="0" min="0"
+                                                                        class="form-control" required>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-3">
+                                                                <div class="from-group">
+                                                                    <label for="Catename">Size XL</label>
+                                                                    <input type="number" name="size_xl" value="0"
                                                                         min="0" class="form-control" required>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-3">
                                                                 <div class="from-group">
-                                                                    <label for="Catename">Size 32</label>
-                                                                    <input type="number" name="size_33" value="0"
+                                                                    <label for="Catename">Size XXL</label>
+                                                                    <input type="number" name="size_xxl" value="0"
                                                                         min="0" class="form-control" required>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-3">
                                                                 <div class="from-group">
-                                                                    <label for="Catename">Size 34</label>
-                                                                    <input type="number" name="size_34" value="0"
+                                                                    <label for="Catename">Size XXXL</label>
+                                                                    <input type="number" name="size_xxxl" value="0"
                                                                         min="0" class="form-control" required>
                                                                 </div>
                                                             </div>
                                                             <div class="col-md-3">
                                                                 <div class="from-group">
-                                                                    <label for="Catename">Size 36</label>
-                                                                    <input type="number" name="size_36" value="0"
-                                                                        min="0" class="form-control" required>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <div class="from-group">
-                                                                    <label for="Catename">Size 38</label>
-                                                                    <input type="number" name="size_38" value="0"
-                                                                        min="0" class="form-control" required>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <div class="from-group">
-                                                                    <label for="Catename">Size 40</label>
-                                                                    <input type="number" name="size_40" value="0"
-                                                                        min="0" class="form-control" required>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <div class="from-group">
-                                                                    <label for="Catename">Size 42</label>
-                                                                    <input type="number" name="size_42" value="0"
-                                                                        min="0" class="form-control" required>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <div class="from-group">
-                                                                    <label for="Catename">Size 44</label>
-                                                                    <input type="number" name="size_44" value="0"
-                                                                        min="0" class="form-control" required>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <div class="from-group">
-                                                                    <label for="Catename">Size 46</label>
-                                                                    <input type="number" name="size_46" value="0"
+                                                                    <label for="Catename">Size XXXXL</label>
+                                                                    <input type="number" name="size_xxxxl" value="0"
                                                                         min="0" class="form-control" required>
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <% } %>
-
-                                                            <div class="row mt-3">
-                                                                <div class="col-md-6">
-                                                                    <div class="product-cart-wrap">
-                                                                        <div class="product-title-text">
-                                                                            <h4>Media</h4>
-                                                                        </div>
-                                                                        <div class="row">
-                                                                            <div class="col-md-12">
-                                                                                <div class="from-group">
-                                                                                    <label
-                                                                                        class="image-input main-image-input">
-                                                                                        <input type="file"
-                                                                                            name="product_main_image"
-                                                                                            accept="image/png,image/jpeg"
-                                                                                            max-size="10000000">
-                                                                                        <input type="hidden"
-                                                                                            name="product_main_image">
-                                                                                        <img class="c-img" src=""
-                                                                                            alt="">
-                                                                                    </label>
-                                                                                </div>
-                                                                            </div>
-                                                                        </div>
-                                                                        <div class="row">
-                                                                            <div class="image-grid-wrapper"
-                                                                                style="display: flex;">
-                                                                                <div class="image-items">
-                                                                                    <label class="image-input">
-                                                                                        <input type="file" name="image1"
-                                                                                            accept="image/png,image/jpeg"
-                                                                                            max-size="10000000">
-                                                                                        <input type="hidden"
-                                                                                            name="image1">
-                                                                                        <img class="c-img" src=""
-                                                                                            alt="">
-                                                                                    </label>
-                                                                                </div>
-                                                                                <div class="image-items">
-                                                                                    <label class="image-input">
-                                                                                        <input type="file" name="image2"
-                                                                                            accept="image/png,image/jpeg"
-                                                                                            max-size="10000000">
-                                                                                        <input type="hidden"
-                                                                                            name="image2">
-                                                                                        <img class="c-img" src=""
-                                                                                            alt="">
-                                                                                    </label>
-                                                                                </div>
-                                                                                <div class="image-items">
-                                                                                    <label class="image-input">
-                                                                                        <input type="file" name="image3"
-                                                                                            accept="image/png,image/jpeg"
-                                                                                            max-size="10000000">
-                                                                                        <input type="hidden" name="">
-                                                                                        <img class="c-img" src=""
-                                                                                            alt="">
-                                                                                    </label>
-                                                                                </div>
-                                                                                <div class="image-items">
-                                                                                    <label class="image-input">
-                                                                                        <input type="file" name="image4"
-                                                                                            accept="image/png,image/jpeg"
-                                                                                            max-size="10000000">
-                                                                                        <input type="hidden" name="">
-                                                                                        <img class="c-img" src=""
-                                                                                            alt="">
-                                                                                    </label>
-                                                                                </div>
-                                                                                <div class="image-items">
-                                                                                    <label class="image-input">
-                                                                                        <input type="file" name="image5"
-                                                                                            accept="image/png,image/jpeg"
-                                                                                            max-size="10000000">
-                                                                                        <input type="hidden" name="">
-                                                                                        <img class="c-img" src=""
-                                                                                            alt="">
-                                                                                    </label>
-                                                                                </div>
-                                                                            </div>
-
-                                                                        </div>
+                                                        <% } else if (weartype==='bottom' ) { %>
+                                                            <div class="row mt-2">
+                                                                <div class="col-md-3">
+                                                                    <div class="from-group">
+                                                                        <label for="Catename">Size 28</label>
+                                                                        <input type="number" name="size_28" value="0"
+                                                                            min="0" class="form-control" required>
                                                                     </div>
                                                                 </div>
-                                                                <div class="col-md-6">
-
+                                                                <div class="col-md-3">
+                                                                    <div class="from-group">
+                                                                        <label for="Catename">Size 30</label>
+                                                                        <input type="number" name="size_30" value="0"
+                                                                            min="0" class="form-control" required>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <div class="from-group">
+                                                                        <label for="Catename">Size 32</label>
+                                                                        <input type="number" name="size_33" value="0"
+                                                                            min="0" class="form-control" required>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <div class="from-group">
+                                                                        <label for="Catename">Size 34</label>
+                                                                        <input type="number" name="size_34" value="0"
+                                                                            min="0" class="form-control" required>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <div class="from-group">
+                                                                        <label for="Catename">Size 36</label>
+                                                                        <input type="number" name="size_36" value="0"
+                                                                            min="0" class="form-control" required>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <div class="from-group">
+                                                                        <label for="Catename">Size 38</label>
+                                                                        <input type="number" name="size_38" value="0"
+                                                                            min="0" class="form-control" required>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <div class="from-group">
+                                                                        <label for="Catename">Size 40</label>
+                                                                        <input type="number" name="size_40" value="0"
+                                                                            min="0" class="form-control" required>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <div class="from-group">
+                                                                        <label for="Catename">Size 42</label>
+                                                                        <input type="number" name="size_42" value="0"
+                                                                            min="0" class="form-control" required>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <div class="from-group">
+                                                                        <label for="Catename">Size 44</label>
+                                                                        <input type="number" name="size_44" value="0"
+                                                                            min="0" class="form-control" required>
+                                                                    </div>
+                                                                </div>
+                                                                <div class="col-md-3">
+                                                                    <div class="from-group">
+                                                                        <label for="Catename">Size 46</label>
+                                                                        <input type="number" name="size_46" value="0"
+                                                                            min="0" class="form-control" required>
+                                                                    </div>
                                                                 </div>
                                                             </div>
+                                                            <% } %>
 
-                                            </div>
+                                                                <div class="row mt-3">
+                                                                    <div class="col-md-6">
+                                                                        <div class="product-cart-wrap">
+                                                                            <div class="product-title-text">
+                                                                                <h4>Media</h4>
+                                                                            </div>
+                                                                            <div class="row">
+                                                                                <div class="col-md-12">
+                                                                                    <div class="from-group">
+                                                                                        <label
+                                                                                            class="image-input main-image-input">
+                                                                                            <input type="file" name="product_main_image" accept="image/png,image/jpeg" max-size="10000000">
+                                                                                            <input type="hidden" name="product_main_image">
+                                                                                            <img class="c-img" src="" alt="">
+                                                                                        </label>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <div class="col-md-6">
+                                                                                    <div class="image-grid-wrapper" style="display: flex;">
+                                                                                        <div class="image-items">
+                                                                                            <label class="image-input">
+                                                                                                <input type="file" name="image1" accept="image/png,image/jpeg" max-size="10000000">
+                                                                                                <input type="hidden" name="image1">
+                                                                                                <img class="c-img" src="" alt="">
+                                                                                            </label>
+                                                                                        </div>
+                                                                                        <div class="image-items">
+                                                                                            <label class="image-input">
+                                                                                                <input type="file" name="image2" accept="image/png,image/jpeg"
+                                                                                                    max-size="10000000">
+                                                                                                <input type="hidden" name="image2">
+                                                                                                <img class="c-img" src="" alt="">
+                                                                                            </label>
+                                                                                        </div>
+                                                                                        <div class="image-items">
+                                                                                            <label class="image-input">
+                                                                                                <input type="file" name="image3" accept="image/png,image/jpeg" max-size="10000000">
+                                                                                                <input type="hidden"  name="">
+                                                                                                <img class="c-img" src="" alt="">
+                                                                                            </label>
+                                                                                        </div>
+                                                                                        <div class="image-items">
+                                                                                            <label class="image-input">
+                                                                                                <input type="file" name="image4" accept="image/png,image/jpeg" max-size="10000000">
+                                                                                                <input type="hidden" name="">
+                                                                                                <img class="c-img" src="" alt="">
+                                                                                            </label>
+                                                                                        </div>
+                                                                                        <div class="image-items">
+                                                                                            <label class="image-input">
+                                                                                                <input type="file" name="image5" accept="image/png,image/jpeg" max-size="10000000">
+                                                                                                <input type="hidden" name="">
+                                                                                                <img class="c-img" src="" alt="">
+                                                                                            </label>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </div>
+                                                                            </div>
+                                                                            
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-md-6">
 
-                                            <div class="row mt-3">
-                                                <div class="admin-submit-btn d-flex" style="gap: 10px;">
-                                                    <button type="submit" class="btn-submit">Submit</button>
+                                                                    </div>
+                                                                </div>
+
                                                 </div>
+
+                                                <div class="row mt-3">
+                                                    <div class="admin-submit-btn d-flex" style="gap: 10px;">
+                                                        <button type="submit" class="btn-submit">Submit</button>
+                                                    </div>
+                                                </div>
+
                                             </div>
+                                        </form>
 
-                                        </div>
-                                    </form>
+                                    </div>
+                          </div>
+                        <script>
+                            function addProductForm() {
+                                var newProductDiv = document.getElementById('new-product');
+                                if (newProductDiv.style.display === 'none' || newProductDiv.style.display === '') {
+                                    newProductDiv.style.display = 'block';
+                                } else {
+                                    newProductDiv.style.display = 'none';
+                                }
+                            }
+                        </script>
+                        <script>
+                            function ImageInput(element) {
+                                // Variables
+                                var $wrapper = element;
+                                var $file = $wrapper.querySelector('input[type=file]');
+                                var $input = $wrapper.querySelector('input[type=hidden]');
+                                var $img = $wrapper.querySelector('img');
+                                var maxSize = Number($file.getAttribute('max-size'));
+                                var types = $file.accept.split(',');
 
-                                </div>
+                                var api = {
+                                    onInvalid: onInvalid,
+                                    onChanged: onChanged,
+                                };
 
-                                <script>
-                                    function addProductForm() {
-                                        var newProductDiv = document.getElementById('new-product');
-                                        if (newProductDiv.style.display === 'none' || newProductDiv.style.display === '') {
-                                            newProductDiv.style.display = 'block';
-                                        } else {
-                                            newProductDiv.style.display = 'none';
-                                        }
-                                    }
-                                </script>
-                                <script>
-                                    function ImageInput(element) {
-                                        // Variables
-                                        var $wrapper = element;
-                                        var $file = $wrapper.querySelector('input[type=file]');
-                                        var $input = $wrapper.querySelector('input[type=hidden]');
-                                        var $img = $wrapper.querySelector('img');
-                                        var maxSize = Number($file.getAttribute('max-size'));
-                                        var types = $file.accept.split(',');
+                                // Methods
+                                function fileHandler(e) {
+                                    var file = $file.files.length && $file.files[0];
 
-                                        var api = {
-                                            onInvalid: onInvalid,
-                                            onChanged: onChanged,
-                                        };
+                                    if (!file) return;
 
-                                        // Methods
-                                        function fileHandler(e) {
-                                            var file = $file.files.length && $file.files[0];
+                                    var errors = checkValidity(file);
 
-                                            if (!file) return;
-
-                                            var errors = checkValidity(file);
-
-                                            if (errors) {
-                                                api.onInvalid(errors);
-                                                $file.value = null;
-                                                return;
-                                            }
-
-                                            api.onChanged(file, update, $wrapper);
-                                        }
-
-                                        function humanizeFormat(string) {
-                                            return string.replace(/.*?\//, '');
-                                        }
-
-                                        function checkValidity(file) {
-                                            var errors = [];
-
-                                            types.includes(file.type) || errors.push('Format file harus: ' + types.map(humanizeFormat).join(', '));
-                                            file.size < maxSize || errors.push('Ukuran file maksimal ' + maxSize / 1000000 + 'MB');
-
-                                            return errors.length ? errors : false;
-                                        }
-
-                                        function getFileData(file, callback) {
-                                            var reader = new FileReader();
-
-                                            reader.addEventListener("load", function () {
-                                                callback(reader.result);
-                                            }, false);
-
-                                            if (file) {
-                                                reader.readAsDataURL(file);
-                                            }
-                                        }
-
-                                        function update(data) {
-                                            $img.src = data;
-                                            $input.value = data;
-                                        }
-
-                                        function onInvalid(errors) {
-                                            alert(errors.join('. '));
-                                        }
-
-                                        function onChanged(file, update, $wrapper) {
-                                            console.log('.onChanged called');
-                                            getFileData(file, update);
-                                        }
-
-                                        // Init
-                                        $file.addEventListener('change', fileHandler);
-
-                                        return api;
-                                    };
-
-                                    function initImageInputs() {
-                                        document.querySelectorAll('.image-input').forEach(_ => {
-                                            var imageInput = new ImageInput(_);
-                                            _.addEventListener("click", (e) => {
-                                                if (e.target.classList.contains('image-remove')) {
-                                                    _.remove();
-                                                }
-                                            });
-
-                                            if (_.classList.contains('withAjax')) {
-                                                imageInput.onChanged = customOnChanged;
-                                            }
-
-                                            function customOnChanged(file, update, $el) {
-                                                if (!$el.nextElementSibling) {
-                                                    var $remove = document.createElement('button');
-                                                    $remove.className = "image-remove";
-
-                                                    var $new = $el.cloneNode(true);
-                                                    $new.querySelector('input[type=hidden]').value = "";
-                                                    $new.querySelector('input[type=file]').value = "";
-                                                    $new.querySelector('img').src = "";
-
-                                                    $el.parentElement.append($new);
-                                                    $el.append($remove);
-
-                                                    var imageInput = new ImageInput($new);
-                                                    imageInput.onChanged = customOnChanged;
-                                                }
-
-                                                $el.classList.add('isUploading');
-                                                setTimeout(function () {
-                                                    update('https://placekitten.com/200/300');
-                                                    $el.classList.remove("isUploading");
-                                                }, 3000);
-                                            }
-                                        });
+                                    if (errors) {
+                                        api.onInvalid(errors);
+                                        $file.value = null;
+                                        return;
                                     }
 
-                                    initImageInputs();
-                                </script>
+                                    api.onChanged(file, update, $wrapper);
+                                }
+
+                                function humanizeFormat(string) {
+                                    return string.replace(/.*?\//, '');
+                                }
+
+                                function checkValidity(file) {
+                                    var errors = [];
+
+                                    types.includes(file.type) || errors.push('Format file harus: ' + types.map(humanizeFormat).join(', '));
+                                    file.size < maxSize || errors.push('Ukuran file maksimal ' + maxSize / 1000000 + 'MB');
+
+                                    return errors.length ? errors : false;
+                                }
+
+                                function getFileData(file, callback) {
+                                    var reader = new FileReader();
+
+                                    reader.addEventListener("load", function () {
+                                        callback(reader.result);
+                                    }, false);
+
+                                    if (file) {
+                                        reader.readAsDataURL(file);
+                                    }
+                                }
+
+                                function update(data) {
+                                    $img.src = data;
+                                    $input.value = data;
+                                }
+
+                                function onInvalid(errors) {
+                                    alert(errors.join('. '));
+                                }
+
+                                function onChanged(file, update, $wrapper) {
+                                    console.log('.onChanged called');
+                                    getFileData(file, update);
+                                }
+
+                                // Init
+                                $file.addEventListener('change', fileHandler);
+
+                                return api;
+                            };
+
+                            function initImageInputs() {
+                                document.querySelectorAll('.image-input').forEach(_ => {
+                                    var imageInput = new ImageInput(_);
+                                    _.addEventListener("click", (e) => {
+                                        if (e.target.classList.contains('image-remove')) {
+                                            _.remove();
+                                        }
+                                    });
+
+                                    if (_.classList.contains('withAjax')) {
+                                        imageInput.onChanged = customOnChanged;
+                                    }
+
+                                    function customOnChanged(file, update, $el) {
+                                        if (!$el.nextElementSibling) {
+                                            var $remove = document.createElement('button');
+                                            $remove.className = "image-remove";
+
+                                            var $new = $el.cloneNode(true);
+                                            $new.querySelector('input[type=hidden]').value = "";
+                                            $new.querySelector('input[type=file]').value = "";
+                                            $new.querySelector('img').src = "";
+
+                                            $el.parentElement.append($new);
+                                            $el.append($remove);
+
+                                            var imageInput = new ImageInput($new);
+                                            imageInput.onChanged = customOnChanged;
+                                        }
+
+                                        $el.classList.add('isUploading');
+                                        setTimeout(function () {
+                                            update('https://placekitten.com/200/300');
+                                            $el.classList.remove("isUploading");
+                                        }, 3000);
+                                    }
+                                });
+                            }
+
+                            initImageInputs();
+                        </script>
 
 </body>
 
