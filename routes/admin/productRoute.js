@@ -111,6 +111,7 @@ router.post("/addProducts", upload.fields([
     product_main_image: req.files['product_main_image'] ? req.files['product_main_image'][0].filename : null,
 
     images: [
+      req.files['product_main_image'] ? req.files['product_main_image'][0].filename : null,
       req.files['image1'] ? req.files['image1'][0].filename : null,
       req.files['image2'] ? req.files['image2'][0].filename : null,
       req.files['image3'] ? req.files['image3'][0].filename : null,
