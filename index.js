@@ -42,7 +42,6 @@ app.use(
   })
 );
 
-
 app.use(async (req, res, next) => {
   try {
     const [categories] = await connect.query("SELECT * FROM category");

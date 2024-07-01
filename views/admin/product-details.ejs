@@ -16,6 +16,71 @@
         background: #fff;
         margin: 0 0 20px;
     }
+ </style>
+ <style>
+    .image-input {
+        box-sizing: border-box;
+        display: inline-block;
+        height: 80px;
+        width: 90px;
+        border: 1px solid #CCCCCC;
+        border-radius: 4px;
+        position: relative; 
+        cursor: pointer;
+        box-shadow: 0 1px 10px 0 hsla(0, 0%, 0, 0.15);
+        margin: 0px 6px 0px 0;
+    }
+    .isUploading::after {
+        content: "";
+        display: inline-block;
+        position: absolute;
+        width: 30px;
+        height: 30px;
+        left: 32px;
+        top: 32px;
+        opacity: 0.3;
+        border-radius: 50%;
+        border: 2px solid;
+        border-color: transparent currentColor currentColor;
+        animation: spin 600ms linear infinite;
+    }
+
+    .isUploading::before {
+        display: none;
+    }
+
+    input[type=file] {
+        opacity: 0;
+        display: block;
+        height: 100px;
+        pointer-events: none;
+    }
+
+    .c-img {
+        position: absolute;
+        display: block;
+        border-radius: 4px;
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        transition: opacity 200ms;
+        opacity: 1;
+        object-fit: contain;
+        object-position: center;
+        background: white;
+        z-index: 1;
+    }
+
+    .c-img img[src=""] {
+        opacity: 0;
+        pointer-events: none;
+    }
+
+    .image-input.main-image-input {
+        width: 100%;
+        height: 350px;
+    }
 </style>
 <body>
     <div class="main-admin-warpper">
@@ -504,7 +569,7 @@
                                                                                     </div>
                                                                                 </div>
                                                                                 <div class="col-md-6">
-                                                                                    <div class="image-grid-wrapper" style="display: flex;">
+                                                                                    <div class="image-grid-wrapper mt-2 d-flex">
                                                                                         <div class="image-items">
                                                                                             <label class="image-input">
                                                                                                 <input type="file" name="image1" accept="image/png,image/jpeg" max-size="10000000">
@@ -566,14 +631,18 @@
                                     </div>
                           </div>
                         <script>
-                            function addProductForm() {
+                           function addProductForm() {
                                 var newProductDiv = document.getElementById('new-product');
+                                console.log(newProductDiv);
                                 if (newProductDiv.style.display === 'none' || newProductDiv.style.display === '') {
                                     newProductDiv.style.display = 'block';
+                                     newProductDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                                    
                                 } else {
                                     newProductDiv.style.display = 'none';
                                 }
                             }
+
                         </script>
                         <script>
                             function ImageInput(element) {
