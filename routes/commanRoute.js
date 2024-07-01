@@ -1778,4 +1778,8 @@ router.get("/return-order/:orderId", async (req, res) => {
     res.status(500).send("Internal Server Error");
   }
 });
+
+router.get('/privacy-policy', (req ,res) =>{
+  return res.render("privacy-policy")
+})
 export default router;
