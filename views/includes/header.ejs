@@ -12,7 +12,7 @@
                                         class="fa-solid fa-angle-down"></i></span></a>
                             <div class="dropdown-menu-wrapper">
                                 <ul>
-                                    <% categories.forEach(category=> { %>
+                                    <% categories.filter(category=> !category.isAccessories).forEach(category => { %>
                                         <li><a href="/category/<%= category.category_name %>" class="menu-item">
                                                 <%= category.category_name %>
                                             </a></li>
@@ -25,9 +25,9 @@
                                         class="fa-solid fa-angle-down"></i></span></a>
                             <div class="dropdown-menu-wrapper">
                                 <ul>
-                                    <% accessories.forEach(accessory=> { %>
-                                        <li><a href="/accessory/<%= accessory.accessory_name %>">
-                                                <%= accessory.accessory_name%>
+                                    <% categories.filter(category=> category.isAccessories).forEach(category => { %>
+                                        <li><a href="/category/<%= category.category_name %>" class="menu-item">
+                                                <%= category.category_name %>
                                             </a></li>
                                         <% }); %>
                                 </ul>

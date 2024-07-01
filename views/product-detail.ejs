@@ -14,27 +14,33 @@
     max-width: 600px;
     margin: 0 auto;
   }
+
   .size-list .size-item.disabled {
     opacity: 0.5;
     cursor: not-allowed;
   }
+
   .size-list .size-item.disabled input[type="radio"] {
     pointer-events: none;
   }
+
   .size-list .unavailableSize {
     color: red;
     font-style: italic;
   }
+
   .image-grid-wrapper {
     overflow-x: auto;
     white-space: nowrap;
   }
+
   .images-grids {
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
     overflow: hidden;
   }
+
   .image-item {
     flex: 1 1 calc(20% - 10px);
     cursor: pointer;
@@ -46,12 +52,15 @@
     transition: 0.3s ease-in-out;
     border: 2px solid #fff;
   }
+
   .image-item img {
     width: 100%;
   }
+
   input[type="radio"] {
     display: none;
   }
+
   .accordion-items {
     background-color: #fff;
     color: #111;
@@ -59,6 +68,7 @@
     border-radius: 0.5rem;
     border: 1px solid #eee;
   }
+
   .accordion-item-header {
     padding: 0.5rem 3rem 0.5rem 1rem;
     min-height: 3.5rem;
@@ -69,51 +79,61 @@
     cursor: pointer;
     font-size: 20px;
   }
+
   .accordion-item-header::after {
     content: "\002B";
     font-size: 2rem;
     position: absolute;
     right: 1rem;
   }
+
   .accordion-item-header.active::after {
     content: "\2212";
   }
+
   .accordion-item-body {
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.2s ease-out;
   }
+
   .accordion-item-body-content {
     padding: 1rem;
     line-height: 1.5rem;
     border-top: 1px solid;
     border-image: linear-gradient(to right, transparent, #34495e, transparent) 1;
   }
+
   .image-item img:hover {
     border: 1px solid #005d67;
   }
+
   .image-item img.selected {
     border: 1px solid #005d67;
   }
+
   .zoomContainer {
     z-index: 9999 !important;
   }
+
   .pd-img {
     cursor: zoom-in;
   }
+
   .pro-btn-flex button:disabled {
     background: #b3b9b3;
     border: 1px solid #b3b9b3;
     cursor: not-allowed;
   }
 </style>
+
 <body>
-    <!-- Loader -->
-    <div class="page-loader" id="loader">
-      <div class="spinner">
-         <div class="inner"></div>
-      </div>
-     </div>
+  <!-- Loader -->
+  <div class="page-loader" id="loader">
+    <div class="spinner">
+      <div class="inner"></div>
+    </div>
+  </div>
   <div class="alfa-main-wraper" id="web-content">
     <%- include('includes/header') %>
       <div class="mt-100">
@@ -261,7 +281,7 @@
                                     </label>
                                   </li>
                                   <% } %>
-                                    <% } else { %>
+                                    <% } else if(wearType==='top' ){ %>
                                       <li>
                                         <input type="radio" id="size-<%= size %>" name="selectedSize"
                                           value="<%= size.toUpperCase() %>" <%=stock> 0 ? '' : 'disabled' %> required />
@@ -272,11 +292,26 @@
                                           </span>
                                         </label>
                                       </li>
-                                      <% } %>
-                                        <% } %>
-                                          <% } else { %>
-                                            <p class="unavailableSize">Currently Out Of Stock</p>
+                                      <% } else if(wearType==='shoes' ){ %>
+                                        <% const numericSize=size.match(/\d+/); %>
+                                          <% if (numericSize && numericSize.length> 0) { %>
+                                            <li>
+                                              <input type="radio" id="size-<%= numericSize[0] %>" name="selectedSize"
+                                                value="<%= numericSize[0] %>" <%=stock> 0 ? '' :
+                                              'disabled' %> required />
+                                              <label for="size-<%= numericSize[0] %>"
+                                                class="size-item <%= stock > 0 ? '' : 'disabled' %>">
+                                                <span class="size">
+                                                  <%= numericSize[0] %> UK
+                                                </span>
+                                              </label>
+                                            </li>
                                             <% } %>
+                                              <% } %>
+                                                <% } %>
+                                                  <% } else { %>
+                                                    <p class="unavailableSize">Currently Out Of Stock</p>
+                                                    <% } %>
                       </ul>
                     </div>
 

@@ -64,7 +64,6 @@ router.get("/add-product/:category_name", async (req, res) => {
 });
 
 
-
 router.post("/addProducts", upload.fields([
   { name: 'product_main_image', maxCount: 1 },
   { name: 'image1', maxCount: 1 },
@@ -88,7 +87,8 @@ router.post("/addProducts", upload.fields([
     product_discount,
     product_colour,
     size_xs, size_s, size_m, size_l, size_xl, size_xxl, size_xxxl, size_xxxxl,
-    size_28, size_30, size_32, size_34, size_36, size_38, size_40, size_42, size_44, size_46
+    size_28, size_30, size_32, size_34, size_36, size_38, size_40, size_42, size_44, size_46,
+    size_06_uk, size_07_uk, size_08_uk, size_09_uk, size_10_uk, size_11_uk, size_12_uk, size_13_uk
   } = req.body;
 
 
@@ -120,31 +120,7 @@ router.post("/addProducts", upload.fields([
     ].filter(image => image !== null)
   };
 
-  if (productType === 'top') {
-    product.sizes = {
-      xs: size_xs,
-      s: size_s,
-      m: size_m,
-      l: size_l,
-      xl: size_xl,
-      xxl: size_xxl,
-      xxxl: size_xxxl,
-      xxxxl: size_xxxxl,
-    };
-  } else if (productType === 'bottom') {
-    product.sizes = {
-      size_28: size_28,
-      size_30: size_30,
-      size_32: size_32,
-      size_34: size_34,
-      size_36: size_36,
-      size_38: size_38,
-      size_40: size_40,
-      size_42: size_42,
-      size_44: size_44,
-      size_46: size_46,
-    };
-  }
+
 
 
   const insertQuery = `
@@ -227,6 +203,23 @@ router.post("/addProducts", upload.fields([
 
       await connect.query(bottomwearInventoryQuery, bottomwearInventoryValues);
     }
+    else if (productType === 'shoes') {
+      const shoes_inventory = `
+    INSERT INTO shoes_inventory (
+      product_id, product_name, size_6, size_7, size_8, size_9, size_10, size_11, size_12, size_13, created_at
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
+  `;
+
+      const shoes_inventory_Values = [
+        lastInsertedId,
+        common_product_name,
+        size_06_uk, size_07_uk, size_08_uk, size_09_uk, size_10_uk, size_11_uk, size_12_uk, size_13_uk
+      ];
+
+      await connect.query(shoes_inventory, shoes_inventory_Values);
+    }
+
+
 
     // Insert product images into the product_images table
     const insertImagesQuery = `

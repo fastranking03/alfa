@@ -375,6 +375,8 @@ router.get("/product-detail/:id", async (req, res) => {
       sizeQuery = `SELECT xs, s, m, l, xl, xxl, xxxl, xxxxl FROM topwear_inventory_with_sizes WHERE product_id = ?`;
     } else if (wearType === "bottom") {
       sizeQuery = `SELECT size_28, size_30, size_32, size_34, size_36, size_38, size_40, size_42, size_44, size_46 FROM bottom_wear_inventory_with_sizes WHERE product_id = ?`;
+    } else if (wearType === "shoes") {
+      sizeQuery = `SELECT size_6 , size_7 , size_8 , size_9 , size_10, size_11 , size_12, size_13  FROM shoes_inventory WHERE product_id = ?`;
     }
     if (sizeQuery) {
       [sizeRows] = await connect.query(sizeQuery, [productId]);
@@ -388,6 +390,8 @@ router.get("/product-detail/:id", async (req, res) => {
           if (wearType === "top" && !size.startsWith("size_")) {
             sizes[size.replace("_", " ")] = value;
           } else if (wearType === "bottom" && size.startsWith("size_")) {
+            sizes[size.replace("_", " ")] = value;
+          } else if (wearType === "shoes" && size.startsWith("size_")) {
             sizes[size.replace("_", " ")] = value;
           }
         }
@@ -752,6 +756,14 @@ router.get("/cart", async (req, res) => {
             [cartItem.product_id]
           );
           sizes = sizeRows[0];
+        } else if (cartItem.wear_type_bottom_or_top === "shoes") {
+          const [sizeRows] = await connect.query(
+            `SELECT size_6, size_7, size_8, size_9, size_10, size_11, size_12, size_13
+             FROM shoes_inventory
+             WHERE product_id = ?`,
+            [cartItem.product_id]
+          );
+          sizes = sizeRows[0];
         }
         return {
           ...cartItem,
@@ -774,6 +786,14 @@ router.get("/cart", async (req, res) => {
         // Determine the stock for the selected size
         let stock = null;
         if (selectedSize) {
+          // Log sizeKey and sizes for debugging
+          const sizeKey = `size_${selectedSize}`;
+          // Ensure sizeKey is lowercase to match the object keys if necessary
+          const sizeKeyLowerCase = sizeKey.toLowerCase();
+
+          console.log('Size Key:', sizeKeyLowerCase);
+          console.log('Available Sizes:', item.sizes);
+
           if (item.wear_type_bottom_or_top === "top") {
             const selectedSizeLowerCase = selectedSize.toLowerCase();
             stock = item.sizes ? item.sizes[selectedSizeLowerCase] : null;
@@ -781,9 +801,19 @@ router.get("/cart", async (req, res) => {
             const sizeKey = `size_${selectedSize}`;
             const sizeKeyLowerCase = sizeKey.toLowerCase();
             stock = item.sizes ? item.sizes[sizeKeyLowerCase] : null;
+          } else if (item.wear_type_bottom_or_top === "shoes") {
+            const sizeKey = `size_${selectedSize}`;
+            const sizeKeyLowerCase = sizeKey.toLowerCase();
+            stock = item.sizes ? item.sizes[sizeKeyLowerCase] : null;
           }
         }
 
+        console.log('Item:', item);
+        console.log('Selected Size:', selectedSize);
+        console.log('Stock:', stock);
+        console.log('Price:', price);
+        console.log('Discount:', discount);
+        console.log('Quantity:', quantity);
         if (stock && stock > 0) {
           // Include in calculations only if stock is available and greater than 0
           totalPrice += price * quantity;
@@ -802,6 +832,7 @@ router.get("/cart", async (req, res) => {
         deliveryFee -
         parseFloat(totalDiscount)
       ).toFixed(2);
+
 
       // Filter items where stock is available
       const cartItemsInStock = cartItems.filter((item) => {
@@ -1534,9 +1565,9 @@ router.get("/order-detail/:orderId", async (req, res) => {
          JOIN products p ON oi.product_id = p.id 
          WHERE oi.order_id = ?`,
         [orderId]
-      ); 
+      );
 
-      res.render("order-detail", { order, orderItems , address});
+      res.render("order-detail", { order, orderItems, address });
     } else {
       res.status(404).send("Order not found");
     }
