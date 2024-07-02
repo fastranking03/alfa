@@ -445,13 +445,27 @@ router.get("/product-detail/:id", async (req, res) => {
     const [sizeRows] = sizeQuery ? await connect.query(sizeQuery, [productId]) : [[]];
 
     const sizes = {};
-    if (sizeRows.length > 0) {
+    if (sizeRows && sizeRows.length > 0) {
       for (const [size, value] of Object.entries(sizeRows[0])) {
         if (value) {
           sizes[size.replace("_", " ")] = value;
+        } else {
+          if (wearType === "top" && !size.startsWith("size_")) {
+            sizes[size.replace("_", " ")] = value;
+          } else if (wearType === "bottom" && size.startsWith("size_")) {
+            sizes[size.replace("_", " ")] = value;
+          } else if (wearType === "shoes" && size.startsWith("size_")) {
+            sizes[size.replace("_", " ")] = value;
+          } else if (wearType === "belt" && size.startsWith("size_")) {
+            sizes[size.replace("_", " ")] = value;
+          } else if (wearType === "wallet" && !size.startsWith("size_")) {
+            sizes[size.replace("_", " ")] = value;
+          }
         }
       }
     }
+
+
 
     // Check if the product is in the user's favorites
     let isInFavorites = false;
