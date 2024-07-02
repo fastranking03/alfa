@@ -357,6 +357,54 @@ router.get("/product-detail/:id", async (req, res) => {
       "SELECT * FROM products WHERE id = ?",
       [productId]
     );
+
+
+    // Fetch reviews with all details
+    const [reviews] = await connect.query(
+      `SELECT * 
+       FROM order_items
+       WHERE product_id = ? AND isReviewed = 1`,
+      [productId]
+    );
+
+
+    // Fetch total review count
+    const [reviewSummary] = await connect.query(
+      `SELECT COUNT(*) as total_reviews, AVG(star_rating) as average_rating
+       FROM order_items
+       WHERE product_id = ? AND isReviewed = 1`,
+      [productId]
+    );
+
+    const totalReviews = reviewSummary[0].total_reviews;
+
+    const averageRating = reviewSummary[0].average_rating;
+
+
+    // Fetch review counts
+    const [reviewCounts] = await connect.query(
+      `SELECT star_rating, COUNT(*) as count
+       FROM order_items
+       WHERE product_id = ? AND isReviewed = 1
+       GROUP BY star_rating
+       ORDER BY star_rating DESC`,
+      [productId]
+    );
+
+    const reviewCountMap = {
+      5: 0,
+      4: 0,
+      3: 0,
+      2: 0,
+      1: 0,
+    };
+
+    // Populate the review count map with actual data
+    reviewCounts.forEach(review => {
+      reviewCountMap[review.star_rating] = review.count;
+    });
+
+
     if (productRows.length === 0) {
       return res.status(404).send("Product not found");
     }
@@ -455,6 +503,10 @@ router.get("/product-detail/:id", async (req, res) => {
       wearType,
       variantProducts,
       isInFavorites,
+      totalReviews,
+      averageRating,
+      reviews,
+      reviewCountMap,
     });
   } catch (error) {
     console.error(error);
@@ -1129,6 +1181,38 @@ router.post("/update-quantity", async (req, res) => {
   }
 });
 
+router.post("/submit-review", async (req, res) => {
+  const user = req.session.user;
+  if (!user) {
+    return res.redirect("/login");
+  }
+  const userId = user.id;
+  const { orderItemId, orderId, productId, rating, review } = req.body;
+
+  // Validate input
+  if (!productId || !rating || !review) {
+    return res.status(400).send('All fields are required.');
+  }
+
+  try {
+    // Update review in the database
+    const [result] = await connect.query(
+      `UPDATE order_items
+       SET star_rating = ?, review = ?, isReviewed = 1
+       WHERE order_id = ? AND product_id = ? AND id = ? AND user_id = ?`,
+      [rating, review, orderId, productId, orderItemId, userId]
+    );
+    res.redirect(`/order-detail/${orderId}`);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send('Internal Server Error');
+  }
+});
+
+
+
+
+
 router.post("/update-product-size", async (req, res) => {
   try {
     const { productId, cartId, newSize, oldSize } = req.body;
@@ -1190,9 +1274,9 @@ router.post("/submit-address", async (req, res) => {
       // Update existing address
       const updateSql = `
         UPDATE user_address 
-        SET name = ?, phone = ?, email = ?, pincode = ?, full_address = ?,  locality = ?, city = ?, state =? ,  billing_info_same_as_delivery_address = ?, address_type = ?
-        WHERE id = ?
-      `;
+        SET name = ?, phone = ?, email = ?, pincode = ?, full_address = ?, locality = ?, city = ?, state =? , billing_info_same_as_delivery_address = ?, address_type = ?
+      WHERE id = ?
+        `;
       await connect.query(updateSql, [
         name,
         phone,
@@ -1208,8 +1292,8 @@ router.post("/submit-address", async (req, res) => {
       ]);
     } else {
       // Your SQL query to insert the data
-      const sql = `INSERT INTO user_address (user_id, name, phone, email, pincode , full_address, locality , city, state ,  billing_info_same_as_delivery_address	,address_type ) 
-                   VALUES (?, ?, ?,  ? ,?, ?, ?, ?, ?, ?, ?)`;
+      const sql = `INSERT INTO user_address(user_id, name, phone, email, pincode, full_address, locality, city, state, billing_info_same_as_delivery_address, address_type) 
+                   VALUES(?, ?, ?,  ? ,?, ?, ?, ?, ?, ?, ?)`;
 
       // Execute the query with prepared statement
       await connect.query(sql, [
@@ -1253,7 +1337,7 @@ router.get("/my-wishlist", async (req, res) => {
       // Query to get the user's favorite products
       const getUserFavoritesQuery = `
         SELECT uf.*, p.*
-        FROM users_favorites uf
+    FROM users_favorites uf
         INNER JOIN products p ON uf.product_id = p.id
         WHERE uf.user_id = ?
       `;
@@ -1268,7 +1352,7 @@ router.get("/my-wishlist", async (req, res) => {
           const [sizeRows] = await connect.query(
             `SELECT xs, s, m, l, xl, xxl, xxxl, xxxxl 
              FROM topwear_inventory_with_sizes 
-             WHERE product_id = ?`,
+             WHERE product_id = ? `,
             [item.product_id]
           );
           sizes = sizeRows[0];
@@ -1276,7 +1360,7 @@ router.get("/my-wishlist", async (req, res) => {
           const [sizeRows] = await connect.query(
             `SELECT size_28, size_30, size_32, size_34, size_36, size_38, size_40, size_42, size_44, size_46 
              FROM bottom_wear_inventory_with_sizes 
-             WHERE product_id = ?`,
+             WHERE product_id = ? `,
             [item.product_id]
           );
           sizes = sizeRows[0];
@@ -1353,10 +1437,10 @@ router.post("/order-confirm", async (req, res) => {
 
     // Insert the new order into the database
     const query = `
-      INSERT INTO user_orders 
+      INSERT INTO user_orders
       (order_id, user_id, address_id, product_id, product_name, selected_size, category, sub_category, product_price, discount_on_product, discount_amount, vat, delivery_charges, total_payable)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `;
+      VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `;
     const values = [
       newOrderId,
       userId,
@@ -1479,7 +1563,7 @@ router.post("/add-to-cart", async (req, res) => {
         if (existingProduct[0].quantity !== product_quantity) {
           const updateQuantityQuery = `
             UPDATE users_cart SET quantity = ? WHERE user_id = ? AND product_id = ? AND selected_size = ?
-          `;
+      `;
           await connect.query(updateQuantityQuery, [
             product_quantity,
             userId,
@@ -1530,7 +1614,7 @@ router.get("/delete-product/:cart_id", async (req, res) => {
       const deleteProductQuery = `
                 DELETE FROM users_cart 
                 WHERE user_id = ? AND id = ?
-                `;
+      `;
 
       // Execute the query
       await connect.query(deleteProductQuery, [userId, cartId]);
@@ -1601,7 +1685,7 @@ router.get("/my-orders", async (req, res) => {
         `SELECT oi.*, p.product_name, p.product_main_image
          FROM order_items oi 
          JOIN products p ON oi.product_id = p.id 
-         WHERE oi.order_id = ?`,
+         WHERE oi.order_id = ? `,
         [order.order_id]
       );
       order.items = orderItems;
@@ -1647,7 +1731,7 @@ router.get("/order-detail/:orderId", async (req, res) => {
         `SELECT oi.*, p.product_name, p.product_main_image
          FROM order_items oi 
          JOIN products p ON oi.product_id = p.id 
-         WHERE oi.order_id = ?`,
+         WHERE oi.order_id = ? `,
         [orderId]
       );
 
@@ -1669,9 +1753,9 @@ router.post("/move-to-cart", async (req, res) => {
   try {
     // Step 1: Add the product to the cart table
     const addToCartQuery = `
-      INSERT INTO users_cart (user_id, product_id, selected_size , quantity)
-      VALUES (?, ?, ?, ?)
-    `;
+      INSERT INTO users_cart(user_id, product_id, selected_size, quantity)
+      VALUES(?, ?, ?, ?)
+        `;
     const addToCartResult = await connect.query(addToCartQuery, [
       userId,
       product_id,
@@ -1683,7 +1767,7 @@ router.post("/move-to-cart", async (req, res) => {
     const deleteFromFavoritesQuery = `
       DELETE FROM users_favorites
       WHERE user_id = ? AND product_id = ?
-    `;
+      `;
     const deleteFromFavoritesResult = await connect.query(
       deleteFromFavoritesQuery,
       [userId, product_id]
@@ -1785,9 +1869,9 @@ router.post("/add-to-wishlist", async (req, res) => {
   try {
     // Query to insert productId into userfav table
     const addToWishlistQuery = `
-      INSERT INTO users_favorites (user_id, product_id)
-      VALUES (?, ?)
-    `;
+      INSERT INTO users_favorites(user_id, product_id)
+      VALUES(?, ?)
+        `;
     await connect.query(addToWishlistQuery, [userId, product_id]);
 
     // Redirect to my-wishlist page upon successful addition
@@ -1810,7 +1894,7 @@ router.post("/save-profile", async (req, res) => {
   try {
     // Update the user's profile information in the database
     await connect.query(
-      `UPDATE user_registration SET name = ?, email = ?, phone_no = ?, alt_phone_no = ? WHERE id = ?`,
+      `UPDATE user_registration SET name = ?, email = ?, phone_no = ?, alt_phone_no = ? WHERE id = ? `,
       [name, email, phone, alt_phone, user_id]
     );
 

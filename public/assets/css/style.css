@@ -2175,13 +2175,10 @@ a {
    padding: 15px;
   align-items: center;
   justify-content: space-between;
-  margin: 0px 0 1px;
+  margin: 0px 0 15px;
+  border: 1px solid #E6E6E6;
 }
-.history-wrap{
-    border: 1px solid #E6E6E6;
-    padding: 0 0 20px;
-    margin: 0px 0 12px;
-}
+ 
 .history-wrappper .history-item .history-left-wrap{
   display: flex;
   align-items: center;
@@ -3002,4 +2999,8 @@ font-size: 14px;
 }
 .review-title{
   font-size: 18px;
+}
+.review-btn-wrap{
+    position: relative;
+    top: -9px;
 }
