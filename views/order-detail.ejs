@@ -8,7 +8,41 @@
   <title>Alfa Meanswear | Product Details</title>
   <%- include('includes/head') %>
 </head>
+<style>
+  .full-stars .rating-group {
+      display: inline-flex;
+  }
 
+  .full-stars input {
+      position: absolute;
+      left: -9999px;
+  }
+
+  .full-stars label {
+      margin: 0;
+      cursor: pointer;
+  }
+
+  .full-stars label svg {
+      margin: 2px;
+      height: 22px;
+      width: 22px;
+      fill: #F9CF2D;
+      transition: fill 0.3s;
+  }
+
+  .full-stars input:checked~label svg {
+      fill: #e4d79c;
+  }
+
+  .full-stars .rating-group:hover label svg {
+      fill: #F9CF2D;
+  }
+
+  .full-stars .rating-group input:hover~label svg {
+      fill: #e4d79c;
+  }
+</style>
 <body>
   <div class="alfa-main-wraper">
     <%- include('includes/header') %>
@@ -93,38 +127,139 @@
                   <div class="item-counts">
                     <div class="counts">
                       <h6>
-                        <%= orderItems.length %>Item
+                        <%= orderItems.length %> Item
                       </h6>
                     </div>
                   </div>
                   <div class="checkout-cart-wrapper">
                     <div class="checkout-wrapp">
                       <% orderItems.forEach(item=> { %>
-                        <div class="check-item">
-                          <div class="check-item-left">
-                            <div class="check-item-image">
-                              <img src="../product_images/<%=item.product_main_image %>" class="check-image" alt="" />
+                        <div>
+                          <div class="check-item">
+                            <div class="check-item-left">
+                              <div class="check-item-image">
+                                <img src="../product_images/<%=item.product_main_image %>" class="check-image" alt="" />
+                              </div>
+                              <div class="checkout-cont">
+                                <h4>
+                                  <%=item.product_name %>
+                                </h4>
+                                <div class="checkout-rest-cont">
+                                  <p>Color : <%=item.colour %>
+                                  </p>
+                                  <p>Size : <%=item.size %>
+                                  </p>
+                                  <p>Qty : <%=item.quantity %>
+                                  </p>
+                                </div>
+                              </div>
                             </div>
-                            <div class="checkout-cont">
-                              <h4>
-                                <%=item.product_name %>
-                              </h4>
-                              <div class="checkout-rest-cont">
-                                <p>Color : <%=item.colour %>
-                                </p>
-                                <p>Size : <%=item.size %>
-                                </p>
-                                <p>Qty : <%=item.quantity %>
-                                </p>
+                            <div class="check-item-right">
+                              <div class="review-btn-wrap">
+                                <a href="" data-bs-toggle="modal" data-bs-target="#writeReview">Write Review</a>
+                              </div>
+                              <div class="check-price">
+                                <h3>£ <%=item.price %>
+                                </h3>
                               </div>
                             </div>
                           </div>
-                          <div class="check-item-right">
-                            <div class="check-price">
-                              <h3>£ <%=item.price %>
-                              </h3>
+                        </div>
+                          <!-- Review Add Model -->
+                          <div class="modal" id="writeReview" data-bs-backdrop="static"  data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <div class="modal-dialog modal-dialog-centered">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title review-title" id="staticBackdropLabel">Write  Review</h5>
+                                        <button type="button" class="btn-closes" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <div class="review-offer-text">
+                                            <h6> <span><img src="assets/images/discount.png"  alt=""></span> Rate a review to win alfa menswear discount</h6>
+                                        </div>
+                                        <div class="cart-tr review-pop">
+                                            <div class="cart-td">
+                                                <div class="cart-items-left" style="align-items: start;">
+                                                     <div class="cart-image">
+                                                        <img src="../product_images/s.webp"  class="review-pro-img" alt="">
+                                                    </div>
+                                                    <div class="pro-cart-contents">
+                                                        <div class="pro-cart-title">
+                                                            <h3>shirt 1</h3>
+                                                        </div>
+                                                        <div class="full-stars">
+                                                          <div class="rating-group">
+                                                              <input name="fst-<%= order.order_id %>"
+                                                                  value="0" type="radio" disabled
+                                                                  checked />
+                                                              <label for="fst-<%= order.order_id %>-1">
+                                                                  <svg xmlns="http://www.w3.org/2000/svg"
+                                                                      viewBox="0 0 576 512">
+                                                                      <path
+                                                                          d="M259.3 17.8L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0z" />
+                                                                  </svg>
+                                                              </label>
+                                                              <input name="fst-<%= order.order_id %>"
+                                                                  id="fst-<%= order.order_id %>-1"
+                                                                  value="1" type="radio" />
+                                                              <label for="fst-<%= order.order_id %>-2">
+                                                                  <svg xmlns="http://www.w3.org/2000/svg"
+                                                                      viewBox="0 0 576 512">
+                                                                      <path
+                                                                          d="M259.3 17.8L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0z" />
+                                                                  </svg>
+                                                              </label>
+                                                              <input name="fst-<%= order.order_id %>"
+                                                                  id="fst-<%= order.order_id %>-2"
+                                                                  value="2" type="radio" />
+                                                              <label for="fst-<%= order.order_id %>-3">
+                                                                  <svg xmlns="http://www.w3.org/2000/svg"
+                                                                      viewBox="0 0 576 512">
+                                                                      <path
+                                                                          d="M259.3 17.8L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0z" />
+                                                                  </svg>
+                                                              </label>
+                                                              <input name="fst-<%= order.order_id %>"
+                                                                  id="fst-<%= order.order_id %>-3"
+                                                                  value="3" type="radio" />
+                                                              <label for="fst-<%= order.order_id %>-4">
+                                                                  <svg xmlns="http://www.w3.org/2000/svg"
+                                                                      viewBox="0 0 576 512">
+                                                                      <path
+                                                                          d="M259.3 17.8L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0z" />
+                                                                  </svg>
+                                                              </label>
+                                                              <input name="fst-<%= order.order_id %>"
+                                                                  id="fst-<%= order.order_id %>-4"
+                                                                  value="4" type="radio" />
+                                                              <label for="fst-<%= order.order_id %>-5">
+                                                                  <svg xmlns="http://www.w3.org/2000/svg"
+                                                                      viewBox="0 0 576 512">
+                                                                      <path
+                                                                          d="M259.3 17.8L194 150.2 47.9 171.5c-26.2 3.8-36.7 36.1-17.7 54.6l105.7 103-25 145.5c-4.5 26.3 23.2 46 46.4 33.7L288 439.6l130.7 68.7c23.2 12.2 50.9-7.4 46.4-33.7l-25-145.5 105.7-103c19-18.5 8.5-50.8-17.7-54.6L382 150.2 316.7 17.8c-11.7-23.6-45.6-23.9-57.4 0z" />
+                                                                  </svg>
+                                                              </label>
+                                                              <input name="fst-<%= order.order_id %>"
+                                                                  id="fst-<%= order.order_id %>-5"
+                                                                  value="5" type="radio" />
+                                                          </div>
+                                                      </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="review-textarea">
+                                            <div class="form-group">
+                                                <label for="Write a review">Write a review</label>
+                                                <textarea name="" class="form-control" style="margin:5px 0; height: 100px;" id=""></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                        <button type="submit" class="alfa-btn alfa-review-btn">Submit</button>
+                                    </div>
+                                </div>
                             </div>
-                          </div>
                         </div>
                         <% }); %>
                     </div>
@@ -193,7 +328,7 @@
                         </button>
                       </a>
                     </div>
-                    
+
                   </div>
                 </div>
               </div>
