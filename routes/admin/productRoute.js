@@ -298,6 +298,15 @@ router.get('/product/:productId', async (req, res) => {
         } else if (relatedProduct.wear_type_bottom_or_top === 'bottom') {
           const [bottomwearInventory] = await connect.query('SELECT * FROM bottomwear_inventory WHERE product_id = ?', [relatedProduct.id]);
           inventory = bottomwearInventory.length > 0 ? bottomwearInventory[0] : null;
+        } else if (relatedProduct.wear_type_bottom_or_top === 'shoes') {
+          const [shoesInventory] = await connect.query('SELECT * FROM shoes_inventory WHERE product_id = ?', [relatedProduct.id]);
+          inventory = shoesInventory.length > 0 ? shoesInventory[0] : null;
+        } else if (relatedProduct.wear_type_bottom_or_top === 'belt') {
+          const [beltInventory] = await connect.query('SELECT * FROM belts_inventory WHERE product_id = ?', [relatedProduct.id]);
+          inventory = beltInventory.length > 0 ? beltInventory[0] : null;
+        } else if (relatedProduct.wear_type_bottom_or_top === 'wallet') {
+          const [walletInventory] = await connect.query('SELECT * FROM wallet_inventory WHERE product_id = ?', [relatedProduct.id]);
+          inventory = walletInventory.length > 0 ? walletInventory[0] : null;
         }
 
         // Fetch images for the related product
@@ -352,6 +361,37 @@ router.post('/product-update', upload.any(), async (req, res) => {
         req.body.size_28, req.body.size_30, req.body.size_32, req.body.size_34, req.body.size_36,
         req.body.size_38, req.body.size_40, req.body.size_42, req.body.size_44, req.body.size_46, related_product_id
       ];
+    } else if (product_type === "shoes") {
+      updateInventoryQuery = `
+        UPDATE shoes_inventory
+        SET size_6 = ?, size_7 = ?, size_8 = ?, size_9 = ?, size_10 = ?, 
+            size_11 = ?, size_12 = ?, size_13 = ? 
+        WHERE product_id = ?;
+      `;
+      inventoryValues = [
+        req.body.size_06_uk, req.body.size_07_uk, req.body.size_08_uk, req.body.size_09_uk, req.body.size_10_uk,
+        req.body.size_11_uk, req.body.size_12_uk, req.body.size_13_uk, related_product_id
+      ];
+    } else if (product_type === "belt") {
+      updateInventoryQuery = `
+        UPDATE belts_inventory
+        SET size_28 = ?, size_30 = ?, size_32 = ?, size_34 = ?, size_36 = ?,
+            size_38 = ?, size_40 = ? 
+        WHERE product_id = ?;
+      `;
+      inventoryValues = [
+        req.body.size_28, req.body.size_30, req.body.size_32, req.body.size_34, req.body.size_36,
+        req.body.size_38, req.body.size_40, related_product_id
+      ];
+    } else if (product_type === "wallet") {
+      updateInventoryQuery = `
+        UPDATE wallet_inventory
+        SET s = ?, m = ?, l = ? 
+        WHERE product_id = ?;
+      `;
+      inventoryValues = [
+        req.body.size_s, req.body.size_m, req.body.size_l, related_product_id
+      ];
     }
 
     await connect.query(updateInventoryQuery, inventoryValues);
@@ -362,7 +402,6 @@ router.post('/product-update', upload.any(), async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
-
 
 router.post("/addProductnewvarients", async (req, res) => {
   const [name, description, title] = req.body();
