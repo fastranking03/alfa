@@ -3,9 +3,6 @@ import connect from "../db/connect.js";
 
 const router = express.Router();
 
-
-
-
 // Route to display products in a single category
 router.get("/:categoryName", async (req, res) => {
     const categoryName = req.params.categoryName;

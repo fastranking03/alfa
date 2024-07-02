@@ -307,11 +307,38 @@
                                               </label>
                                             </li>
                                             <% } %>
-                                              <% } %>
-                                                <% } %>
-                                                  <% } else { %>
-                                                    <p class="unavailableSize">Currently Out Of Stock</p>
+                                              <% } else if(wearType==='belt' ){ %>
+                                                <% const numericSize=size.match(/\d+/); %>
+                                                  <% if (numericSize && numericSize.length> 0) { %>
+                                                    <li>
+                                                      <input type="radio" id="size-<%= numericSize[0] %>"
+                                                        name="selectedSize" value="<%= numericSize[0] %>" <%=stock> 0
+                                                      ? '' : 'disabled' %> required />
+                                                      <label for="size-<%= numericSize[0] %>"
+                                                        class="size-item <%= stock > 0 ? '' : 'disabled' %>">
+                                                        <span class="size">
+                                                          <%= numericSize[0] %>
+                                                        </span>
+                                                      </label>
+                                                    </li>
                                                     <% } %>
+                                                      <% } else if(wearType==='wallet' ){ %>
+                                                        <li>
+                                                          <input type="radio" id="size-<%= size %>" name="selectedSize"
+                                                            value="<%= size.toUpperCase() %>" <%=stock> 0 ? '' :
+                                                          'disabled' %> required />
+                                                          <label for="size-<%= size %>"
+                                                            class="size-item <%= stock > 0 ? '' : 'disabled' %>">
+                                                            <span class="size">
+                                                              <%= size.toUpperCase() %>
+                                                            </span>
+                                                          </label>
+                                                        </li>
+                                                        <% } %>
+                                                          <% } %>
+                                                            <% } else { %>
+                                                              <p class="unavailableSize">Currently Out Of Stock</p>
+                                                              <% } %>
                       </ul>
                     </div>
 

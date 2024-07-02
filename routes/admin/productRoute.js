@@ -206,8 +206,8 @@ router.post("/addProducts", upload.fields([
     else if (productType === 'shoes') {
       const shoes_inventory = `
     INSERT INTO shoes_inventory (
-      product_id, product_name, size_6, size_7, size_8, size_9, size_10, size_11, size_12, size_13, created_at
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())
+      product_id, product_name, size_6, size_7, size_8, size_9, size_10, size_11, size_12, size_13, created_at , updaetd_at
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW() , NOW())
   `;
 
       const shoes_inventory_Values = [
@@ -217,6 +217,44 @@ router.post("/addProducts", upload.fields([
       ];
 
       await connect.query(shoes_inventory, shoes_inventory_Values);
+    }
+    else if (productType === 'belt') {
+      const belts_inventory = `
+    INSERT INTO belts_inventory (
+      product_id, product_name, size_28, size_30, size_32, size_34, size_36, size_38, size_40, created_at , updated_at
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW() , NOW())
+  `;
+
+      const belts_inventory_Values = [
+        lastInsertedId,
+        common_product_name,
+        size_28,
+        size_30,
+        size_32,
+        size_34,
+        size_36,
+        size_38,
+        size_40,
+      ];
+
+      await connect.query(belts_inventory, belts_inventory_Values);
+    }
+    else if (productType === 'wallet') {
+      const belts_inventory = `
+    INSERT INTO wallet_inventory (
+      product_id, product_name, s , m ,l , created_at , updated_at
+    ) VALUES ( ?, ?, ?, ?, ?, NOW() , NOW() )
+  `;
+
+      const belts_inventory_Values = [
+        lastInsertedId,
+        common_product_name,
+        size_s,
+        size_m,
+        size_l,
+      ];
+
+      await connect.query(belts_inventory, belts_inventory_Values);
     }
 
 
