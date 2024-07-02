@@ -125,10 +125,6 @@ app.get('/order-history', (req, res) => {
   return res.render('order-history')
 });
 
-app.get('/accessories', (req, res) => {
-  return res.render('accessories')
-});
-
 app.get('/my-profile', async (req, res) => {
   try {
     // Fetch user details from the user_registration table

@@ -166,11 +166,11 @@
                         </ul>
                       </div>
                     </div>
-                    0
+
 
                     <div class="product-size">
                       <div class="filter-title">
-                        <h4 class="product-h4">Size</h4>
+                        <h4 class="product-h4">Size w</h4>
                       </div>
                       <div class="product-size-list">
                         <ul id="sizeFilters">
@@ -204,6 +204,71 @@
                               <label for="sizeXXL" class="size-item">XXL</label>
                             </div>
                           </li>
+                        </ul>
+                      </div>
+                      <hr>
+                      <div class="product-size-list">
+                        <ul id="bottomWearSizeFilters">
+                          <li>
+                            <div class="product-checkout">
+                              <input type="checkbox" class="size-checkbox" id="bottomSize28" value="28" />
+                              <label for="bottomSize28" class="size-item">28</label>
+                            </div>
+                          </li>
+                          <li>
+                            <div class="product-checkout">
+                              <input type="checkbox" class="size-checkbox" id="bottomSize30" value="30" />
+                              <label for="bottomSize30" class="size-item">30</label>
+                            </div>
+                          </li>
+                          <li>
+                            <div class="product-checkout">
+                              <input type="checkbox" class="size-checkbox" id="bottomSize32" value="32" />
+                              <label for="bottomSize32" class="size-item">32</label>
+                            </div>
+                          </li>
+                          <li>
+                            <div class="product-checkout">
+                              <input type="checkbox" class="size-checkbox" id="bottomSize34" value="34" />
+                              <label for="bottomSize34" class="size-item">34</label>
+                            </div>
+                          </li>
+                          <li>
+                            <div class="product-checkout">
+                              <input type="checkbox" class="size-checkbox" id="bottomSize36" value="36" />
+                              <label for="bottomSize36" class="size-item">36</label>
+                            </div>
+                          </li>
+                          <li>
+                            <div class="product-checkout">
+                              <input type="checkbox" class="size-checkbox" id="bottomSize38" value="38" />
+                              <label for="bottomSize38" class="size-item">38</label>
+                            </div>
+                          </li>
+                          <li>
+                            <div class="product-checkout">
+                              <input type="checkbox" class="size-checkbox" id="bottomSize40" value="40" />
+                              <label for="bottomSize40" class="size-item">40</label>
+                            </div>
+                          </li>
+                          <!-- <li>
+                            <div class="product-checkout">
+                              <input type="checkbox" class="size-checkbox" id="bottomSize42" value="42" />
+                              <label for="bottomSize42" class="size-item">42</label>
+                            </div>
+                          </li>
+                          <li>
+                            <div class="product-checkout">
+                              <input type="checkbox" class="size-checkbox" id="bottomSize44" value="44" />
+                              <label for="bottomSize44" class="size-item">44</label>
+                            </div>
+                          </li>
+                          <li>
+                            <div class="product-checkout">
+                              <input type="checkbox" class="size-checkbox" id="bottomSize46" value="46" />
+                              <label for="bottomSize46" class="size-item">46</label>
+                            </div>
+                          </li> -->
                         </ul>
                       </div>
                     </div>
@@ -349,67 +414,6 @@
                 <h4 class="product-h4">Color</h4>
               </div>
 
-              <!-- <div class="product-color-list">
-                <ul>
-                  <li>
-                    <div class="prouduct-checkout">
-                      <input type="checkbox" class="cat-checkbox" id="blueCheckbox" value="blue" data-colour="colour" />
-                      <a class="product-color-item color1"> </a>
-                      <label for="blueCheckbox" class="color-label">Blue</label>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="prouduct-checkout">
-                      <input
-                        type="checkbox"
-                        class="cat-checkbox"
-                        id="whiteCheckbox"
-                        value="white"
-                        data-colour="colour"
-                      />
-
-                      <a href="" class="product-color-item color4"> </a>
-
-                      <label for="whiteCheckbox" class="color-label"
-                        >White</label
-                      >
-                    </div>
-                  </li>
-
-                  <li>
-                    <div class="prouduct-checkout">
-                      <input type="checkbox" class="cat-checkbox" id="purpleCheckbox" value="purple"
-                        data-colour="colour" />
-                      <a href="" class="product-color-item color3"> </a>
-                      <label for="purpleCheckbox" class="color-label">Purple</label>
-                    </div>
-                  </li>
-
-                  <li>
-                    <div class="prouduct-checkout">
-                      <input type="checkbox" class="cat-checkbox" id="pinkCheckbox" value="pink" data-colour="colour" />
-                      <a href="" class="product-color-item color4"> </a>
-                      <label for="pinkCheckbox" class="color-label">Pink</label>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="prouduct-checkout">
-                      <input type="checkbox" class="cat-checkbox" id="yellowCheckbox" value="yellow"
-                        data-colour="colour" />
-                      <a href="" class="product-color-item color4"> </a>
-                      <label for="yellowCheckbox" class="color-label">Yellow</label>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="prouduct-checkout">
-                      <input type="checkbox" class="cat-checkbox" id="brownCheckbox" value="brown"
-                        data-colour="colour" />
-                      <a href="" class="product-color-item color4"> </a>
-                      <label for="brownCheckbox" class="color-label">Brown</label>
-                    </div>
-                  </li>
-                </ul>
-              </div> -->
 
               <div class="product-color-list">
                 <ul>
@@ -417,7 +421,7 @@
                     <li>
                       <div class="prouduct-checkout">
                         <input type="checkbox" class="cat-checkbox" id="<%= color.color_name %>Checkbox"
-                          value="<%= color.color_name %>" data-colour="colour" />
+                          value="<%= color.color_name %>" data-colour="<%= color.color_name %>" />
                         <a class="product-color-item <%= color.color_code %>">
                         </a>
                         <label for="<%= color.color_name %>Checkbox" class="color-label">

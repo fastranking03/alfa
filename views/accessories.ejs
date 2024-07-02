@@ -2,918 +2,818 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Alfa Meanswear | Product</title>
-    <meta name="robots" content="noindex">
-    <%- include('includes/head') %>
+  <base href="http://localhost:8081" />
+  <!-- <base href="https://diz5s9u.localto.net/"> -->
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alfa Meanswear | Product</title>
+  <meta name="robots" content="noindex" />
+  <%- include('includes/head') %>
+    <style>
+      .size-checkbox {
+        opacity: 0;
+        position: absolute;
+        width: 0;
+        height: 0;
+      }
+
+      .size-checkbox:checked+label {
+        background-color: #005d67;
+        border-color: #005d67;
+        color: #fff !important;
+      }
+
+      /* Style the label text */
+      .size-checkbox+label::after {
+        content: "";
+        display: block;
+        width: 100%;
+        height: 100%;
+        background-image: url("checkmark.png");
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-position: center;
+      }
+
+      @keyframes slideInRight {
+        from {
+          right: -20px;
+          opacity: 0;
+        }
+
+        to {
+          right: 18px;
+          opacity: 1;
+        }
+      }
+
+      .color-circle {
+        display: inline-block;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background-color: #ccc;
+        margin-right: 5px;
+        border: 1px solid rgb(66, 66, 66);
+        /* Black border */
+      }
+
+      .comman-message .message-alert h6 {
+        position: fixed;
+        z-index: 10000;
+        top: 75px;
+        right: 10px;
+        background: #005d67;
+        color: #fff;
+        height: 40px;
+        padding: 10px 12px;
+        display: none;
+        opacity: 0;
+        font-weight: 400;
+        transition: right 0.5s ease, opacity 0.5s ease;
+      }
+
+      .comman-message .message-alert h6.show {
+        display: none;
+        animation: slideInRight 0.5s forwards;
+      }
+    </style>
+</head>
 </head>
 
 <body>
-    <div class="alfa-main-wraper">
-        <%- include('includes/header') %>
-            <div class="mt-100">
-                <div class="product-banner">
-                    <div class="container">
-                        <div class="hero-product-rows">
-                            <div class="product-col-6">
-                                <div class="breadcrubm-text">
-                                    <h2>Accessories</h2>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+  <div class="comman-message">
+    <div class="message-alert">
+      <h6 class="show" id="productAddedInCart"></h6>
+    </div>
+  </div>
+  <!-- Loader -->
+  <div class="page-loader" id="loader">
+    <div class="spinner">
+      <div class="inner"></div>
+    </div>
+  </div>
+  <div class="alfa-main-wraper" id="web-content">
+    <%- include('includes/header') %>
+      <div class="mt-100 mt-700">
+        <div class="product-banner">
+          <div class="container">
+            <div class="hero-product-rows">
+              <div class="product-col-6">
+                <div class="breadcrubm-text">
+                  <h2>Shop</h2>
                 </div>
-                <!-- Start -->
-                <section class="mt-80" style="margin-bottom: 145px">
-                    <div class="product-wrapper">
-                        <div class="custom-container">
-                            <div class="product-row">
-                                <div class="product-md-3">
-                                    <div class="product-left-wrapper">
-                                        <div class="product-search">
-                                            <div class="search-title">
-                                                <h4 class="product-h4">Search Products</h4>
-                                            </div>
-                                            <div class="product-search">
-                                                <span class="p-s-icon"><img src="assets/images/search.png"
-                                                        alt=""></span>
-                                                <input type="search" name="search" class="product-search-control"
-                                                    placeholder="Search for products" id="">
-                                            </div>
-                                        </div>
-                                        <div class="product-category mt-4">
-                                            <div class="cat-title">
-                                                <h4 class="product-h4">Categories</h4>
-                                            </div>
-                                            <div class="product-cat-type">
-                                                <ul class="product-cat-list">
-                                                    <li> <a href="" class="cat-item">Wallets <span
-                                                                class="cat-span">(10)</span></a> </li>
-                                                    <li> <a href="" class="cat-item">Belts <span
-                                                                class="cat-span">(10)</span></a> </li>
-                                                    <li> <a href="" class="cat-item">Shoes <span
-                                                                class="cat-span">(10)</span></a> </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        <div class="product-color">
-                                            <div class="color-title">
-                                                <h4 class="product-h4">Color</h4>
-                                            </div>
-                                            <div class="product-color-list">
-                                                <ul>
-                                                    <li>
-                                                        <div class="prouduct-checkout">
-                                                            <input type="checkbox" class="cat-checkbox" id="color1">
-                                                            <a href="" class="product-color-item color1"> </a>
-                                                            <label for="color1" class="c-items color-label">
-                                                                Black</label>
-                                                        </div>
-                                                    </li>
-                                                    <li>
-                                                        <div class="prouduct-checkout">
-                                                            <input type="checkbox" class="cat-checkbox" id="color2">
-                                                            <a href="" class="product-color-item color2"> </a>
-                                                            <label for="color2" class="c-items color-label"> Light
-                                                                Purple</label>
-                                                        </div>
-                                                    </li>
-                                                    <li>
-                                                        <div class="prouduct-checkout">
-                                                            <input type="checkbox" class="cat-checkbox" id="color3">
-                                                            <a href="" class="product-color-item color3"> </a>
-                                                            <label for="color3" class="c-items color-label"> Light
-                                                                Purple</label>
-                                                        </div>
-                                                    </li>
-                                                    <li>
-                                                        <div class="prouduct-checkout">
-                                                            <input type="checkbox" class="cat-checkbox" id="color4">
-                                                            <a href="" class="product-color-item color4"> </a>
-                                                            <label for="color4" class="c-items color-label">Pink</label>
-                                                        </div>
-                                                    </li>
-                                                    <li>
-                                                        <div class="prouduct-checkout">
-                                                            <input type="checkbox" class="cat-checkbox" id="color5">
-                                                            <a href="" class="product-color-item color5"> </a>
-                                                            <label for="color5" class="c-items color-label"> Light
-                                                                Purple</label>
-                                                        </div>
-                                                    </li>
-                                                    <li>
-                                                        <div class="prouduct-checkout">
-                                                            <input type="checkbox" class="cat-checkbox" id="color6">
-                                                            <a href="" class="product-color-item color6"> </a>
-                                                            <label for="color6" class="c-items color-label">
-                                                                Yellow</label>
-                                                        </div>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                        <div class="product-size">
-                                            <div class="filter-title">
-                                                <h4 class="product-h4">Size</h4>
-                                            </div>
-                                            <div class="product-size-list">
-                                                <ul>
-                                                    <li><a href="" class="size-item active">S</a></li>
-                                                    <li><a href="" class="size-item">M</a></li>
-                                                    <li><a href="" class="size-item">L</a></li>
-                                                    <li><a href="" class="size-item">XL</a></li>
-                                                    <li><a href="" class="size-item">XXL</a></li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                      
-                                        <div class="product-filter">
-                                            <div class="filter-title">
-                                                <h4 class="product-h4">Filter by price</h4>
-                                            </div>
-                                            <div class="price-range-wrapper">
-                                                <div class="price-slider">
-                                                    <div class="price-range-slider">
-                                                        Price:
-                                                        <span class="rangeValues"> </span>
-                                                        <input value="10" min="10" max="100" step="10" class="price-range-input" type="range">
-                                                        <input value="100" min="10" max="100" step="10" class="price-range-input" type="range">
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="product-md-9">
-                                    <div class="product-right-wrapper">
-                                        <div class="product-grid" style="justify-content: space-between;">
-                                             <div class="product-item">
-                                              <div class="produt-wrap">
-                                                <a href="/product-detail/1 ">
-                                                  <img src="../product_images/s.webp " class="pro-img" alt="">
-                                                </a>
-                                              </div>
-                                              <div class="product-add-to-card-wrap">
-                                                <button class="add-to-cart" data-product-id="1">
-                                                  <span><i class="fa-solid fa-cart-shopping"></i></span> Add to Cart
-                                                </button>
-                                                
-                                              </div>
-                                              <div class="product-details shop-content">
-                                                <div class="product-nameprice">
-                                                  <a href="/product-detail/1">
-                                                    <h6>
-                                                      shirt 1
-                                                    </h6>
-                                                    <p class="product-short-desc">Lorem ipsum dolor sit...</p>
-                                                  </a>
-                    
-                                                  <div class="product-price">
-                                                    <h5>
-                                                       <span class="final-price">£80.00</span>
-                                                          <span class="mrp-price"> £100</span>
-                                                      <span class="discount-text"> (20% OFF )</span>
-                                                    </h5>
-                                                   </div>
-                                                </div>
-                                                <div class="product-btn">
-                                                  <div class="pro-whishlist">
-                                                    <a class="add-to-favorites" data-product-id="1">
-                                                      <i class="fa-regular fa-heart"></i>
-                                                    </a>
-                                                  </div>
-                                                </div>
-                                              </div>
-                                            </div>
-                                            
-                                            <div class="product-item">
-                                              <div class="produt-wrap">
-                                                <a href="/product-detail/2 ">
-                                                  <img src="../product_images/shirt2.avif " class="pro-img" alt="">
-                                                </a>
-                                              </div>
-                                              <div class="product-add-to-card-wrap">
-                                                <button class="add-to-cart" data-product-id="2">
-                                                  <span><i class="fa-solid fa-cart-shopping"></i></span> Add to Cart
-                                                </button>
-                                                
-                                              </div>
-                                              <div class="product-details shop-content">
-                                                <div class="product-nameprice">
-                                                  <a href="/product-detail/2">
-                                                    <h6>
-                                                      shirt2
-                                                    </h6>
-                                                    <p class="product-short-desc">Lorem ipsum dolor sit...</p>
-                                                  </a>
-                    
-                                                  <div class="product-price">
-                                                    <h5>
-                                                       <span class="final-price">£68.00</span>
-                                                          <span class="mrp-price"> £85</span>
-                                                      <span class="discount-text"> (20% OFF )</span>
-                                                    </h5>
-                                                   </div>
-                                                </div>
-                                                <div class="product-btn">
-                                                  <div class="pro-whishlist">
-                                                    <a class="add-to-favorites" data-product-id="2">
-                                                      <i class="fa-regular fa-heart"></i>
-                                                    </a>
-                                                  </div>
-                                                </div>
-                                              </div>
-                                            </div>
-                                            
-                                            <div class="product-item">
-                                              <div class="produt-wrap">
-                                                <a href="/product-detail/3 ">
-                                                  <img src="../product_images/shirt3.avif " class="pro-img" alt="">
-                                                </a>
-                                              </div>
-                                              <div class="product-add-to-card-wrap">
-                                                <button class="add-to-cart" data-product-id="3">
-                                                  <span><i class="fa-solid fa-cart-shopping"></i></span> Add to Cart
-                                                </button>
-                                                
-                                              </div>
-                                              <div class="product-details shop-content">
-                                                <div class="product-nameprice">
-                                                  <a href="/product-detail/3">
-                                                    <h6>
-                                                      shirt 3
-                                                    </h6>
-                                                    <p class="product-short-desc">Lorem ipsum dolor sit...</p>
-                                                  </a>
-                    
-                                                  <div class="product-price">
-                                                    <h5>
-                                                       <span class="final-price">£64.00</span>
-                                                          <span class="mrp-price"> £80</span>
-                                                      <span class="discount-text"> (20% OFF )</span>
-                                                    </h5>
-                                                   </div>
-                                                </div>
-                                                <div class="product-btn">
-                                                  <div class="pro-whishlist">
-                                                    <a class="add-to-favorites" data-product-id="3">
-                                                      <i class="fa-regular fa-heart"></i>
-                                                    </a>
-                                                  </div>
-                                                </div>
-                                              </div>
-                                            </div>
-                                            
-                                            <div class="product-item">
-                                              <div class="produt-wrap">
-                                                <a href="/product-detail/4 ">
-                                                  <img src="../product_images/jean1.webp " class="pro-img" alt="">
-                                                </a>
-                                              </div>
-                                              <div class="product-add-to-card-wrap">
-                                                <button class="add-to-cart" data-product-id="4">
-                                                  <span><i class="fa-solid fa-cart-shopping"></i></span> Add to Cart
-                                                </button>
-                                                
-                                              </div>
-                                              <div class="product-details shop-content">
-                                                <div class="product-nameprice">
-                                                  <a href="/product-detail/4">
-                                                    <h6>
-                                                      jean 1
-                                                    </h6>
-                                                    <p class="product-short-desc">Lorem ipsum dolor sit...</p>
-                                                  </a>
-                    
-                                                  <div class="product-price">
-                                                    <h5>
-                                                       <span class="final-price">£76.50</span>
-                                                          <span class="mrp-price"> £90</span>
-                                                      <span class="discount-text"> (15% OFF )</span>
-                                                    </h5>
-                                                   </div>
-                                                </div>
-                                                <div class="product-btn">
-                                                  <div class="pro-whishlist">
-                                                    <a class="add-to-favorites" data-product-id="4">
-                                                      <i class="fa-regular fa-heart"></i>
-                                                    </a>
-                                                  </div>
-                                                </div>
-                                              </div>
-                                            </div>
-                                            
-                                            <div class="product-item">
-                                              <div class="produt-wrap">
-                                                <a href="/product-detail/5 ">
-                                                  <img src="../product_images/jean2_1.jpg " class="pro-img" alt="">
-                                                </a>
-                                              </div>
-                                              <div class="product-add-to-card-wrap">
-                                                <button class="add-to-cart" data-product-id="5">
-                                                  <span><i class="fa-solid fa-cart-shopping"></i></span> Add to Cart
-                                                </button>
-                                                
-                                              </div>
-                                              <div class="product-details shop-content">
-                                                <div class="product-nameprice">
-                                                  <a href="/product-detail/5">
-                                                    <h6>
-                                                      jean 2
-                                                    </h6>
-                                                    <p class="product-short-desc">Lorem ipsum dolor sit...</p>
-                                                  </a>
-                    
-                                                  <div class="product-price">
-                                                    <h5>
-                                                       <span class="final-price">£68.00</span>
-                                                          <span class="mrp-price"> £80</span>
-                                                      <span class="discount-text"> (15% OFF )</span>
-                                                    </h5>
-                                                   </div>
-                                                </div>
-                                                <div class="product-btn">
-                                                  <div class="pro-whishlist">
-                                                    <a class="add-to-favorites" data-product-id="5">
-                                                      <i class="fa-regular fa-heart"></i>
-                                                    </a>
-                                                  </div>
-                                                </div>
-                                              </div>
-                                            </div>
-                                            
-                                            <div class="product-item">
-                                              <div class="produt-wrap">
-                                                <a href="/product-detail/6 ">
-                                                  <img src="../product_images/trouser1.jpg " class="pro-img" alt="">
-                                                </a>
-                                              </div>
-                                              <div class="product-add-to-card-wrap">
-                                                <button class="add-to-cart" data-product-id="6">
-                                                  <span><i class="fa-solid fa-cart-shopping"></i></span> Add to Cart
-                                                </button>
-                                                
-                                              </div>
-                                              <div class="product-details shop-content">
-                                                <div class="product-nameprice">
-                                                  <a href="/product-detail/6">
-                                                    <h6>
-                                                      Trouser 1
-                                                    </h6>
-                                                    <p class="product-short-desc">Lorem ipsum dolor sit...</p>
-                                                  </a>
-                    
-                                                  <div class="product-price">
-                                                    <h5>
-                                                       <span class="final-price">£63.00</span>
-                                                          <span class="mrp-price"> £90</span>
-                                                      <span class="discount-text"> (30% OFF )</span>
-                                                    </h5>
-                                                   </div>
-                                                </div>
-                                                <div class="product-btn">
-                                                  <div class="pro-whishlist">
-                                                    <a class="add-to-favorites" data-product-id="6">
-                                                      <i class="fa-regular fa-heart"></i>
-                                                    </a>
-                                                  </div>
-                                                </div>
-                                              </div>
-                                            </div>
-                                            
-                                            <div class="product-item">
-                                              <div class="produt-wrap">
-                                                <a href="/product-detail/7 ">
-                                                  <img src="../product_images/trouser2.jpg " class="pro-img" alt="">
-                                                </a>
-                                              </div>
-                                              <div class="product-add-to-card-wrap">
-                                                <button class="add-to-cart" data-product-id="7">
-                                                  <span><i class="fa-solid fa-cart-shopping"></i></span> Add to Cart
-                                                </button>
-                                                
-                                              </div>
-                                              <div class="product-details shop-content">
-                                                <div class="product-nameprice">
-                                                  <a href="/product-detail/7">
-                                                    <h6>
-                                                      Trouser 2
-                                                    </h6>
-                                                    <p class="product-short-desc">Lorem ipsum dolor sit...</p>
-                                                  </a>
-                    
-                                                  <div class="product-price">
-                                                    <h5>
-                                                       <span class="final-price">£70.00</span>
-                                                          <span class="mrp-price"> £100</span>
-                                                      <span class="discount-text"> (30% OFF )</span>
-                                                    </h5>
-                                                   </div>
-                                                </div>
-                                                <div class="product-btn">
-                                                  <div class="pro-whishlist">
-                                                    <a class="add-to-favorites" data-product-id="7">
-                                                      <i class="fa-regular fa-heart"></i>
-                                                    </a>
-                                                  </div>
-                                                </div>
-                                              </div>
-                                            </div>
-                                            
-                                            <div class="product-item">
-                                              <div class="produt-wrap">
-                                                <a href="/product-detail/8 ">
-                                                  <img src="../product_images/trouser3.webp " class="pro-img" alt="">
-                                                </a>
-                                              </div>
-                                              <div class="product-add-to-card-wrap">
-                                                <button class="add-to-cart" data-product-id="8">
-                                                  <span><i class="fa-solid fa-cart-shopping"></i></span> Add to Cart
-                                                </button>
-                                                
-                                              </div>
-                                              <div class="product-details shop-content">
-                                                <div class="product-nameprice">
-                                                  <a href="/product-detail/8">
-                                                    <h6>
-                                                      Trouser 3
-                                                    </h6>
-                                                    <p class="product-short-desc">Lorem ipsum dolor sit...</p>
-                                                  </a>
-                    
-                                                  <div class="product-price">
-                                                    <h5>
-                                                       <span class="final-price">£84.00</span>
-                                                          <span class="mrp-price"> £120</span>
-                                                      <span class="discount-text"> (30% OFF )</span>
-                                                    </h5>
-                                                   </div>
-                                                </div>
-                                                <div class="product-btn">
-                                                  <div class="pro-whishlist">
-                                                    <a class="add-to-favorites" data-product-id="8">
-                                                      <i class="fa-regular fa-heart"></i>
-                                                    </a>
-                                                  </div>
-                                                </div>
-                                              </div>
-                                            </div>
-                                            
-                                            <div class="product-item">
-                                              <div class="produt-wrap">
-                                                <a href="/product-detail/9 ">
-                                                  <img src="../product_images/trouser4.jpg " class="pro-img" alt="">
-                                                </a>
-                                              </div>
-                                              <div class="product-add-to-card-wrap">
-                                                <button class="add-to-cart" data-product-id="9">
-                                                  <span><i class="fa-solid fa-cart-shopping"></i></span> Add to Cart
-                                                </button>
-                                                
-                                              </div>
-                                              <div class="product-details shop-content">
-                                                <div class="product-nameprice">
-                                                  <a href="/product-detail/9">
-                                                    <h6>
-                                                      Trouser 4
-                                                    </h6>
-                                                    <p class="product-short-desc">Lorem ipsum dolor sit...</p>
-                                                  </a>
-                    
-                                                  <div class="product-price">
-                                                    <h5>
-                                                       <span class="final-price">£98.00</span>
-                                                          <span class="mrp-price"> £140</span>
-                                                      <span class="discount-text"> (30% OFF )</span>
-                                                    </h5>
-                                                   </div>
-                                                </div>
-                                                <div class="product-btn">
-                                                  <div class="pro-whishlist">
-                                                    <a class="add-to-favorites" data-product-id="9">
-                                                      <i class="fa-regular fa-heart"></i>
-                                                    </a>
-                                                  </div>
-                                                </div>
-                                              </div>
-                                            </div>
-                                            
-                                            <div class="product-item">
-                                              <div class="produt-wrap">
-                                                <a href="/product-detail/10 ">
-                                                  <img src="../product_images/shirt4.avif " class="pro-img" alt="">
-                                                </a>
-                                              </div>
-                                              <div class="product-add-to-card-wrap">
-                                                <button class="add-to-cart" data-product-id="10">
-                                                  <span><i class="fa-solid fa-cart-shopping"></i></span> Add to Cart
-                                                </button>
-                                                
-                                              </div>
-                                              <div class="product-details shop-content">
-                                                <div class="product-nameprice">
-                                                  <a href="/product-detail/10">
-                                                    <h6>
-                                                      shirt 4
-                                                    </h6>
-                                                    <p class="product-short-desc">Lorem ipsum dolor sit...</p>
-                                                  </a>
-                    
-                                                  <div class="product-price">
-                                                    <h5>
-                                                       <span class="final-price">£64.00</span>
-                                                          <span class="mrp-price"> £80</span>
-                                                      <span class="discount-text"> (20% OFF )</span>
-                                                    </h5>
-                                                   </div>
-                                                </div>
-                                                <div class="product-btn">
-                                                  <div class="pro-whishlist">
-                                                    <a class="add-to-favorites" data-product-id="10">
-                                                      <i class="fa-regular fa-heart"></i>
-                                                    </a>
-                                                  </div>
-                                                </div>
-                                              </div>
-                                            </div>
-                                            
-                                            <div class="product-item">
-                                              <div class="produt-wrap">
-                                                <a href="/product-detail/12 ">
-                                                  <img src="../product_images/tshirt1_green.webp " class="pro-img" alt="">
-                                                </a>
-                                              </div>
-                                              <div class="product-add-to-card-wrap">
-                                                <button class="add-to-cart" data-product-id="12">
-                                                  <span><i class="fa-solid fa-cart-shopping"></i></span> Add to Cart
-                                                </button>
-                                                
-                                              </div>
-                                              <div class="product-details shop-content">
-                                                <div class="product-nameprice">
-                                                  <a href="/product-detail/12">
-                                                    <h6>
-                                                      tshirt1 green
-                                                    </h6>
-                                                    <p class="product-short-desc">Lorem ipsum dolor sit...</p>
-                                                  </a>
-                    
-                                                  <div class="product-price">
-                                                    <h5>
-                                                       <span class="final-price">£53.10</span>
-                                                          <span class="mrp-price"> £59</span>
-                                                      <span class="discount-text"> (10% OFF )</span>
-                                                    </h5>
-                                                   </div>
-                                                </div>
-                                                <div class="product-btn">
-                                                  <div class="pro-whishlist">
-                                                    <a class="add-to-favorites" data-product-id="12">
-                                                      <i class="fa-regular fa-heart"></i>
-                                                    </a>
-                                                  </div>
-                                                </div>
-                                              </div>
-                                            </div>
-                                            
-                                            <div class="product-item">
-                                              <div class="produt-wrap">
-                                                <a href="/product-detail/13 ">
-                                                  <img src="../product_images/tshirt1_grey.webp " class="pro-img" alt="">
-                                                </a>
-                                              </div>
-                                              <div class="product-add-to-card-wrap">
-                                                <button class="add-to-cart" data-product-id="13">
-                                                  <span><i class="fa-solid fa-cart-shopping"></i></span> Add to Cart
-                                                </button>
-                                                
-                                              </div>
-                                              <div class="product-details shop-content">
-                                                <div class="product-nameprice">
-                                                  <a href="/product-detail/13">
-                                                    <h6>
-                                                      tshirt1 grey
-                                                    </h6>
-                                                    <p class="product-short-desc">Lorem ipsum dolor sit...</p>
-                                                  </a>
-                    
-                                                  <div class="product-price">
-                                                    <h5>
-                                                       <span class="final-price">£53.10</span>
-                                                          <span class="mrp-price"> £59</span>
-                                                      <span class="discount-text"> (10% OFF )</span>
-                                                    </h5>
-                                                   </div>
-                                                </div>
-                                                <div class="product-btn">
-                                                  <div class="pro-whishlist">
-                                                    <a class="add-to-favorites" data-product-id="13">
-                                                      <i class="fa-regular fa-heart"></i>
-                                                    </a>
-                                                  </div>
-                                                </div>
-                                              </div>
-                                            </div>
-                                            
-                                            <div class="product-item">
-                                              <div class="produt-wrap">
-                                                <a href="/product-detail/14 ">
-                                                  <img src="../product_images/tshirt1_yellow.webp " class="pro-img" alt="">
-                                                </a>
-                                              </div>
-                                              <div class="product-add-to-card-wrap">
-                                                <button class="add-to-cart" data-product-id="14">
-                                                  <span><i class="fa-solid fa-cart-shopping"></i></span> Add to Cart
-                                                </button>
-                                                
-                                              </div>
-                                              <div class="product-details shop-content">
-                                                <div class="product-nameprice">
-                                                  <a href="/product-detail/14">
-                                                    <h6>
-                                                      tshirt1 yellow
-                                                    </h6>
-                                                    <p class="product-short-desc">Lorem ipsum dolor sit...</p>
-                                                  </a>
-                    
-                                                  <div class="product-price">
-                                                    <h5>
-                                                       <span class="final-price">£53.10</span>
-                                                          <span class="mrp-price"> £59</span>
-                                                      <span class="discount-text"> (10% OFF )</span>
-                                                    </h5>
-                                                   </div>
-                                                </div>
-                                                <div class="product-btn">
-                                                  <div class="pro-whishlist">
-                                                    <a class="add-to-favorites" data-product-id="14">
-                                                      <i class="fa-regular fa-heart"></i>
-                                                    </a>
-                                                  </div>
-                                                </div>
-                                              </div>
-                                            </div>
-                                            
-                                            <div class="product-item">
-                                              <div class="produt-wrap">
-                                                <a href="/product-detail/15 ">
-                                                  <img src="../product_images/tshirt2_olive.webp " class="pro-img" alt="">
-                                                </a>
-                                              </div>
-                                              <div class="product-add-to-card-wrap">
-                                                <button class="add-to-cart" data-product-id="15">
-                                                  <span><i class="fa-solid fa-cart-shopping"></i></span> Add to Cart
-                                                </button>
-                                                
-                                              </div>
-                                              <div class="product-details shop-content">
-                                                <div class="product-nameprice">
-                                                  <a href="/product-detail/15">
-                                                    <h6>
-                                                      tshirt2 olive
-                                                    </h6>
-                                                    <p class="product-short-desc">Lorem ipsum dolor sit...</p>
-                                                  </a>
-                    
-                                                  <div class="product-price">
-                                                    <h5>
-                                                       <span class="final-price">£74.80</span>
-                                                          <span class="mrp-price"> £85</span>
-                                                      <span class="discount-text"> (12% OFF )</span>
-                                                    </h5>
-                                                   </div>
-                                                </div>
-                                                <div class="product-btn">
-                                                  <div class="pro-whishlist">
-                                                    <a class="add-to-favorites" data-product-id="15">
-                                                      <i class="fa-regular fa-heart"></i>
-                                                    </a>
-                                                  </div>
-                                                </div>
-                                              </div>
-                                            </div>
-                                            
-                                            <div class="product-item">
-                                              <div class="produt-wrap">
-                                                <a href="/product-detail/16 ">
-                                                  <img src="../product_images/tshirt2_pink.webp " class="pro-img" alt="">
-                                                </a>
-                                              </div>
-                                              <div class="product-add-to-card-wrap">
-                                                <button class="add-to-cart" data-product-id="16">
-                                                  <span><i class="fa-solid fa-cart-shopping"></i></span> Add to Cart
-                                                </button>
-                                                
-                                              </div>
-                                              <div class="product-details shop-content">
-                                                <div class="product-nameprice">
-                                                  <a href="/product-detail/16">
-                                                    <h6>
-                                                      tshirt2 pink
-                                                    </h6>
-                                                    <p class="product-short-desc">Lorem ipsum dolor sit...</p>
-                                                  </a>
-                    
-                                                  <div class="product-price">
-                                                    <h5>
-                                                       <span class="final-price">£74.80</span>
-                                                          <span class="mrp-price"> £85</span>
-                                                      <span class="discount-text"> (12% OFF )</span>
-                                                    </h5>
-                                                   </div>
-                                                </div>
-                                                <div class="product-btn">
-                                                  <div class="pro-whishlist">
-                                                    <a class="add-to-favorites" data-product-id="16">
-                                                      <i class="fa-regular fa-heart"></i>
-                                                    </a>
-                                                  </div>
-                                                </div>
-                                              </div>
-                                            </div>
-                                            
-                                            <div class="product-item">
-                                              <div class="produt-wrap">
-                                                <a href="/product-detail/17 ">
-                                                  <img src="../product_images/tshirt2_white.webp " class="pro-img" alt="">
-                                                </a>
-                                              </div>
-                                              <div class="product-add-to-card-wrap">
-                                                <button class="add-to-cart" data-product-id="17">
-                                                  <span><i class="fa-solid fa-cart-shopping"></i></span> Add to Cart
-                                                </button>
-                                                
-                                              </div>
-                                              <div class="product-details shop-content">
-                                                <div class="product-nameprice">
-                                                  <a href="/product-detail/17">
-                                                    <h6>
-                                                      tshirt2 white
-                                                    </h6>
-                                                    <p class="product-short-desc">Lorem ipsum dolor sit...</p>
-                                                  </a>
-                    
-                                                  <div class="product-price">
-                                                    <h5>
-                                                       <span class="final-price">£74.80</span>
-                                                          <span class="mrp-price"> £85</span>
-                                                      <span class="discount-text"> (12% OFF )</span>
-                                                    </h5>
-                                                   </div>
-                                                </div>
-                                                <div class="product-btn">
-                                                  <div class="pro-whishlist">
-                                                    <a class="add-to-favorites" data-product-id="17">
-                                                      <i class="fa-regular fa-heart"></i>
-                                                    </a>
-                                                  </div>
-                                                </div>
-                                              </div>
-                                            </div>
-                                            
-                                            <div class="product-item">
-                                              <div class="produt-wrap">
-                                                <a href="/product-detail/18 ">
-                                                  <img src="../product_images/tshirt3_maroon.webp " class="pro-img" alt="">
-                                                </a>
-                                              </div>
-                                              <div class="product-add-to-card-wrap">
-                                                <button class="add-to-cart" data-product-id="18">
-                                                  <span><i class="fa-solid fa-cart-shopping"></i></span> Add to Cart
-                                                </button>
-                                                
-                                              </div>
-                                              <div class="product-details shop-content">
-                                                <div class="product-nameprice">
-                                                  <a href="/product-detail/18">
-                                                    <h6>
-                                                      tshirt3 maroon
-                                                    </h6>
-                                                    <p class="product-short-desc">Lorem ipsum dolor sit...</p>
-                                                  </a>
-                    
-                                                  <div class="product-price">
-                                                    <h5>
-                                                       <span class="final-price">£80.75</span>
-                                                          <span class="mrp-price"> £95</span>
-                                                      <span class="discount-text"> (15% OFF )</span>
-                                                    </h5>
-                                                   </div>
-                                                </div>
-                                                <div class="product-btn">
-                                                  <div class="pro-whishlist">
-                                                    <a class="add-to-favorites" data-product-id="18">
-                                                      <i class="fa-regular fa-heart"></i>
-                                                    </a>
-                                                  </div>
-                                                </div>
-                                              </div>
-                                            </div>
-                                            
-                                            <div class="product-item">
-                                              <div class="produt-wrap">
-                                                <a href="/product-detail/19 ">
-                                                  <img src="../product_images/tshirt3_old_rose.webp " class="pro-img" alt="">
-                                                </a>
-                                              </div>
-                                              <div class="product-add-to-card-wrap">
-                                                <button class="add-to-cart" data-product-id="19">
-                                                  <span><i class="fa-solid fa-cart-shopping"></i></span> Add to Cart
-                                                </button>
-                                                
-                                              </div>
-                                              <div class="product-details shop-content">
-                                                <div class="product-nameprice">
-                                                  <a href="/product-detail/19">
-                                                    <h6>
-                                                      tshirt3 Old Rose
-                                                    </h6>
-                                                    <p class="product-short-desc">Lorem ipsum dolor sit...</p>
-                                                  </a>
-                    
-                                                  <div class="product-price">
-                                                    <h5>
-                                                       <span class="final-price">£80.75</span>
-                                                          <span class="mrp-price"> £95</span>
-                                                      <span class="discount-text"> (15% OFF )</span>
-                                                    </h5>
-                                                   </div>
-                                                </div>
-                                                <div class="product-btn">
-                                                  <div class="pro-whishlist">
-                                                    <a class="add-to-favorites" data-product-id="19">
-                                                      <i class="fa-regular fa-heart"></i>
-                                                    </a>
-                                                  </div>
-                                                </div>
-                                              </div>
-                                            </div>
-                                            
-                                            <div class="product-item">
-                                              <div class="produt-wrap">
-                                                <a href="/product-detail/20 ">
-                                                  <img src="../product_images/tshirt3_steel_grey.webp " class="pro-img" alt="">
-                                                </a>
-                                              </div>
-                                              <div class="product-add-to-card-wrap">
-                                                <button class="add-to-cart" data-product-id="20">
-                                                  <span><i class="fa-solid fa-cart-shopping"></i></span> Add to Cart
-                                                </button>
-                                                
-                                              </div>
-                                              <div class="product-details shop-content">
-                                                <div class="product-nameprice">
-                                                  <a href="/product-detail/20">
-                                                    <h6>
-                                                      tshirt3 Steel Grey
-                                                    </h6>
-                                                    <p class="product-short-desc">Lorem ipsum dolor sit...</p>
-                                                  </a>
-                    
-                                                  <div class="product-price">
-                                                    <h5>
-                                                       <span class="final-price">£80.75</span>
-                                                          <span class="mrp-price"> £95</span>
-                                                      <span class="discount-text"> (15% OFF )</span>
-                                                    </h5>
-                                                   </div>
-                                                </div>
-                                                <div class="product-btn">
-                                                  <div class="pro-whishlist">
-                                                    <a class="add-to-favorites" data-product-id="20">
-                                                      <i class="fa-regular fa-heart"></i>
-                                                    </a>
-                                                  </div>
-                                                </div>
-                                              </div>
-                                            </div>
-                                            
-                                        </div> 
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </section>
-                <!-- End -->
+              </div>
             </div>
-            <!-- Footer -->
-            <%- include('includes/footer') %>
-            <!-- End -->
-     </div>
-    <%- include('includes/foot') %>
-    <script>
-          document.addEventListener("DOMContentLoaded", function() {
-            const productGrid = document.querySelector(".product-grid");
-            const productItems = document.querySelectorAll(".product-item");
-             if (productItems.length < 5) {
-                productGrid.style.justifyContent = "start";
-            } else {
-                productGrid.style.justifyContent = "space-between";
+          </div>
+        </div>
+        <!-- Start -->
+        <section class="mt-50" style="margin-bottom: 145px">
+          <div class="product-wrapper">
+            <div class="custom-container">
+              <div class="product-row">
+                <div class="product-md-3">
+                  <div class="product-left-wrapper">
+                    <div class="product-search">
+                      <div class="search-title">
+                        <h4 class="product-h4">Search Products</h4>
+                      </div>
+                      <div class="product-search">
+                        <span class="p-s-icon"><img src="assets/images/search.png" alt="" /></span>
+                        <input type="search" name="search" class="product-search-control"
+                          placeholder="Search for products" id="" />
+                      </div>
+                    </div>
+                    <div class="product-category mt-4">
+                      <div class="cat-title">
+                        <h4 class="product-h4">Categories</h4>
+                      </div>
+                      <div class="product-cat-type">
+                        <ul class="product-cat-list">
+                          <% categories.forEach(category=> { %>
+                            <li>
+                              <a href="category/<%= category.category_name %>">
+                                <button class="cat-item">
+                                  <%= category.category_name %>
+                                    <span class="cat-span">( <%=category.product_count %> )</span>
+                                </button></a>
+                            </li>
+                            <% }); %>
+                        </ul>
+                      </div>
+                    </div>
+                    <div class="product-color">
+                      <div class="color-title">
+                        <h4 class="product-h4">Color</h4>
+                      </div>
+
+                      <div class="product-color-list">
+                        <ul>
+                          <% color_list.forEach(color=> { %>
+                            <li>
+                              <div class="prouduct-checkout">
+                                <input type="checkbox" class="cat-checkbox" id="<%= color.color_name %>Checkbox"
+                                  value="<%= color.color_name %>" data-colour="colour" />
+                                <a class="color-circle" style="
+                                  background-color: <%= color.color_code %>;
+                                "></a>
+                                <label for="<%= color.color_name %>Checkbox" class="color-label">
+                                  <%= color.color_name %>
+                                </label>
+                              </div>
+                            </li>
+                            <% }); %>
+                        </ul>
+                      </div>
+                    </div>
+
+
+                    <div class="product-size">
+                      <div class="filter-title">
+                        <h4 class="product-h4">Size</h4>
+                      </div>
+
+                      <p>Wallet sizes</p>
+                      <div class="product-size-list">
+                        <ul id="walletSizeFilters">
+                          <li>
+                            <div class="product-checkout">
+                              <input type="checkbox" class="size-checkbox" id="sizeS" value="S" />
+                              <label for="sizeS" class="size-item">S</label>
+                            </div>
+                          </li>
+                          <li>
+                            <div class="product-checkout">
+                              <input type="checkbox" class="size-checkbox" id="sizeM" value="M" />
+                              <label for="sizeM" class="size-item">M</label>
+                            </div>
+                          </li>
+                          <li>
+                            <div class="product-checkout">
+                              <input type="checkbox" class="size-checkbox" id="sizeL" value="L" />
+                              <label for="sizeL" class="size-item">L</label>
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                      <hr>
+
+                      <p>Shoes sizes [UK]</p>
+                      <div class="product-size-list">
+                        <ul id="shoesSizeFilters">
+                          <li>
+                            <div class="product-checkout">
+                              <input type="checkbox" class="size-checkbox" id="size6" value="6" />
+                              <label for="size6" class="size-item">6</label>
+                            </div>
+                          </li>
+                          <li>
+                            <div class="product-checkout">
+                              <input type="checkbox" class="size-checkbox" id="size7" value="7" />
+                              <label for="size7" class="size-item">7</label>
+                            </div>
+                          </li>
+                          <li>
+                            <div class="product-checkout">
+                              <input type="checkbox" class="size-checkbox" id="size8" value="8" />
+                              <label for="size8" class="size-item">8</label>
+                            </div>
+                          </li>
+                          <li>
+                            <div class="product-checkout">
+                              <input type="checkbox" class="size-checkbox" id="size9" value="9" />
+                              <label for="size9" class="size-item">9</label>
+                            </div>
+                          </li>
+                          <li>
+                            <div class="product-checkout">
+                              <input type="checkbox" class="size-checkbox" id="size10" value="10" />
+                              <label for="size10" class="size-item">10</label>
+                            </div>
+                          </li>
+                          <li>
+                            <div class="product-checkout">
+                              <input type="checkbox" class="size-checkbox" id="size11" value="11" />
+                              <label for="size11" class="size-item">11</label>
+                            </div>
+                          </li>
+                          <li>
+                            <div class="product-checkout">
+                              <input type="checkbox" class="size-checkbox" id="size12" value="12" />
+                              <label for="size12" class="size-item">12</label>
+                            </div>
+                          </li>
+                          <li>
+                            <div class="product-checkout">
+                              <input type="checkbox" class="size-checkbox" id="size13" value="13" />
+                              <label for="size13" class="size-item">13</label>
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                      <hr>
+
+                      <p>Belt sizes</p>
+                      <div class="product-size-list">
+                        <ul id="beltSizeFilters">
+                          <li>
+                            <div class="product-checkout">
+                              <input type="checkbox" class="size-checkbox" id="size28" value="28" />
+                              <label for="size28" class="size-item">28</label>
+                            </div>
+                          </li>
+                          <li>
+                            <div class="product-checkout">
+                              <input type="checkbox" class="size-checkbox" id="size30" value="30" />
+                              <label for="size30" class="size-item">30</label>
+                            </div>
+                          </li>
+                          <li>
+                            <div class="product-checkout">
+                              <input type="checkbox" class="size-checkbox" id="size32" value="32" />
+                              <label for="size32" class="size-item">32</label>
+                            </div>
+                          </li>
+                          <li>
+                            <div class="product-checkout">
+                              <input type="checkbox" class="size-checkbox" id="size34" value="34" />
+                              <label for="size34" class="size-item">34</label>
+                            </div>
+                          </li>
+                          <li>
+                            <div class="product-checkout">
+                              <input type="checkbox" class="size-checkbox" id="size36" value="36" />
+                              <label for="size36" class="size-item">36</label>
+                            </div>
+                          </li>
+                          <li>
+                            <div class="product-checkout">
+                              <input type="checkbox" class="size-checkbox" id="size38" value="38" />
+                              <label for="size38" class="size-item">38</label>
+                            </div>
+                          </li>
+                          <li>
+                            <div class="product-checkout">
+                              <input type="checkbox" class="size-checkbox" id="size40" value="40" />
+                              <label for="size40" class="size-item">40</label>
+                            </div>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+
+                    <div class="product-filter">
+                      <div class="filter-title">
+                        <h4 class="product-h4">Filter by price</h4>
+                      </div>
+                      <div class="price-range-wrapper">
+                        <div class="price-slider">
+                          <div class="price-range-slider">
+                            Price:
+                            <span class="rangeValues"> </span>
+                            <input value="10" min="10" max="100" step="10" class="price-range-input" type="range" />
+                            <input value="100" min="10" max="100" step="10" class="price-range-input" type="range" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="product-md-9">
+                  <div class="product-right-wrapper">
+                    <div id="productGrid" class="product-grid">
+                      <% products.forEach(product=> { %>
+                        <div class="product-item"
+                          data-price="<%=(product.product_price * (1 - (product.discount_on_product / 100))).toFixed(2) %>"
+                          data-color="<%= product.colour %>" data-size="<%= product.sizes %>">
+                          <div class="produt-wrap">
+                            <a href="/product-detail/<%= product.id %> ">
+                              <img src="../product_images/<%= product.product_main_image%> %>" class="pro-img" alt="" />
+                            </a>
+                          </div>
+                          <div class="product-add-to-card-wrap">
+                            <button class="add-to-cart" data-product-id="<%= product.id %>">
+                              <span><i class="fa-solid fa-cart-shopping"></i></span>
+                              Add to Cart
+                            </button>
+                          </div>
+                          <div class="product-details shop-content">
+                            <div class="product-nameprice">
+                              <a href="/product-detail/<%= product.id %>">
+                                <h6>
+                                  <%= product.product_name %>
+                                </h6>
+                                <p class="product-short-desc">
+                                  Lorem ipsum dolor sit...
+                                </p>
+                              </a>
+
+                              <div class="product-price">
+                                <h5>
+                                  <span class="final-price">£<%=(product.product_price * (1 -
+                                      (product.discount_on_product / 100))).toFixed(2) %></span>
+                                  <span class="mrp-price">
+                                    £<%=product.product_price %></span>
+                                  <span class="discount-text">
+                                    (<%=product.discount_on_product %>% OFF
+                                      )</span>
+                                </h5>
+                              </div>
+                            </div>
+                            <div class="product-btn">
+                              <div class="pro-whishlist">
+                                <a class="add-to-favorites" data-product-id="<%= product.id %>">
+                                  <i class="fa-regular fa-heart"></i>
+                                </a>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <% }); %>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- End -->
+      </div>
+      <!-- Mobile Product Filter -->
+      <div class="mobile-filter-wrapper">
+        <div class="mobile-filter">
+          <button data-bs-toggle="offcanvas" data-bs-target="#offcanvasBottom" aria-controls="offcanvasBottom">
+            <span><i class="fa-solid fa-filter"></i></span> Filter
+          </button>
+        </div>
+      </div>
+      <div class="offcanvas offcanvas-bottom custom-offcanvas-bottom" tabindex="-1" id="offcanvasBottom"
+        aria-labelledby="offcanvasBottomLabel">
+        <div class="offcanvas-header">
+          <h5 class="offcanvas-title" id="offcanvasBottomLabel">Filter</h5>
+          <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body custom-filter-body">
+          <div class="product-left-wrapper">
+            <div class="product-search">
+              <div class="product-search">
+                <span class="p-s-icon"><img src="assets/images/search.png" alt="" /></span>
+                <input type="search" name="search" class="product-search-control" placeholder="Search for products"
+                  id="" />
+              </div>
+            </div>
+            <div class="product-category mt-4">
+              <div class="cat-title">
+                <h4 class="product-h4">Categories</h4>
+              </div>
+              <div class="product-cat-type">
+                <ul class="product-cat-list">
+                  <li>
+                    <a href="category/Shirts"><button class="cat-item">
+                        Shirts
+                        <span class="cat-span">( 4 )</span>
+                      </button></a>
+                  </li>
+
+                  <li>
+                    <a href="category/Jeans"><button class="cat-item">
+                        Jeans
+                        <span class="cat-span">( 2 )</span>
+                      </button></a>
+                  </li>
+
+                  <li>
+                    <a href="category/Trouser "><button class="cat-item">
+                        Trouser
+                        <span class="cat-span">( 4 )</span>
+                      </button></a>
+                  </li>
+
+                  <li>
+                    <a href="category/Tshirts"><button class="cat-item">
+                        Tshirts
+                        <span class="cat-span">( 9 )</span>
+                      </button></a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="product-color">
+              <div class="color-title">
+                <h4 class="product-h4">Color</h4>
+              </div>
+
+
+              <div class="product-color-list">
+                <ul>
+                  <% color_list.forEach(color=> { %>
+                    <li>
+                      <div class="prouduct-checkout">
+                        <input type="checkbox" class="cat-checkbox" id="<%= color.color_name %>Checkbox"
+                          value="<%= color.color_name %>" data-colour="<%= color.color_name %>" />
+                        <a class="product-color-item <%= color.color_code %>">
+                        </a>
+                        <label for="<%= color.color_name %>Checkbox" class="color-label">
+                          <%= color.color_name %>
+                        </label>
+                      </div>
+                    </li>
+                    <% }); %>
+                </ul>
+              </div>
+            </div>
+
+            <div class="product-size">
+              <div class="filter-title">
+                <h4 class="product-h4">Size</h4>
+              </div>
+
+              <p>Wallet sizes</p>
+              <div class="product-size-list">
+                <ul id="walletSizeFilters">
+                  <li>
+                    <div class="product-checkout">
+                      <input type="checkbox" class="size-checkbox" id="sizeS" value="S" />
+                      <label for="sizeS" class="size-item">S</label>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="product-checkout">
+                      <input type="checkbox" class="size-checkbox" id="sizeM" value="M" />
+                      <label for="sizeM" class="size-item">M</label>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="product-checkout">
+                      <input type="checkbox" class="size-checkbox" id="sizeL" value="L" />
+                      <label for="sizeL" class="size-item">L</label>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <hr>
+
+              <p>Shoes sizes [UK]</p>
+              <div class="product-size-list">
+                <ul id="shoesSizeFilters">
+                  <li>
+                    <div class="product-checkout">
+                      <input type="checkbox" class="size-checkbox" id="size6" value="6" />
+                      <label for="size6" class="size-item">6</label>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="product-checkout">
+                      <input type="checkbox" class="size-checkbox" id="size7" value="7" />
+                      <label for="size7" class="size-item">7</label>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="product-checkout">
+                      <input type="checkbox" class="size-checkbox" id="size8" value="8" />
+                      <label for="size8" class="size-item">8</label>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="product-checkout">
+                      <input type="checkbox" class="size-checkbox" id="size9" value="9" />
+                      <label for="size9" class="size-item">9</label>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="product-checkout">
+                      <input type="checkbox" class="size-checkbox" id="size10" value="10" />
+                      <label for="size10" class="size-item">10</label>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="product-checkout">
+                      <input type="checkbox" class="size-checkbox" id="size11" value="11" />
+                      <label for="size11" class="size-item">11</label>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="product-checkout">
+                      <input type="checkbox" class="size-checkbox" id="size12" value="12" />
+                      <label for="size12" class="size-item">12</label>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="product-checkout">
+                      <input type="checkbox" class="size-checkbox" id="size13" value="13" />
+                      <label for="size13" class="size-item">13</label>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+              <hr>
+
+              <p>Belt sizes</p>
+              <div class="product-size-list">
+                <ul id="beltSizeFilters">
+                  <li>
+                    <div class="product-checkout">
+                      <input type="checkbox" class="size-checkbox" id="size28" value="28" />
+                      <label for="size28" class="size-item">28</label>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="product-checkout">
+                      <input type="checkbox" class="size-checkbox" id="size30" value="30" />
+                      <label for="size30" class="size-item">30</label>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="product-checkout">
+                      <input type="checkbox" class="size-checkbox" id="size32" value="32" />
+                      <label for="size32" class="size-item">32</label>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="product-checkout">
+                      <input type="checkbox" class="size-checkbox" id="size34" value="34" />
+                      <label for="size34" class="size-item">34</label>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="product-checkout">
+                      <input type="checkbox" class="size-checkbox" id="size36" value="36" />
+                      <label for="size36" class="size-item">36</label>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="product-checkout">
+                      <input type="checkbox" class="size-checkbox" id="size38" value="38" />
+                      <label for="size38" class="size-item">38</label>
+                    </div>
+                  </li>
+                  <li>
+                    <div class="product-checkout">
+                      <input type="checkbox" class="size-checkbox" id="size40" value="40" />
+                      <label for="size40" class="size-item">40</label>
+                    </div>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div class="product-filter">
+              <div class="filter-title">
+                <h4 class="product-h4">Filter by price</h4>
+              </div>
+              <div class="price-range-wrapper">
+                <div class="price-slider">
+                  <div class="price-range-slider">
+                    Price:
+                    <span class="rangeValues">$10 - $100</span>
+                    <input value="10" min="10" max="100" step="10" class="price-range-input" type="range" />
+                    <input value="100" min="10" max="100" step="10" class="price-range-input" type="range" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- End -->
+      <!-- Footer -->
+      <%- include('includes/footer') %>
+
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+        <script>
+          $(document).ready(function () {
+            // Price Range Filter
+            const priceInputs = document.querySelectorAll(".price-range-input");
+            const productItems = $(".product-item");
+            const rangeValues = document.querySelectorAll(".rangeValues");
+
+            priceInputs.forEach((input) => {
+              input.addEventListener("input", applyFilters);
+            });
+
+            // Color Filter
+            const colorCheckboxes = $(".cat-checkbox");
+            const sizeCheckboxes = $(".size-checkbox");
+
+            colorCheckboxes.on("change", applyFilters);
+            sizeCheckboxes.on("change", applyFilters);
+
+            function applyFilters() {
+              const minPrice = parseInt(priceInputs[0].value);
+              const maxPrice = parseInt(priceInputs[1].value);
+
+              rangeValues.forEach((rangeValue) => {
+                rangeValue.textContent = `$${minPrice} - $${maxPrice}`;
+              });
+
+              const selectedColors = [];
+              colorCheckboxes.each(function () {
+                if ($(this).is(":checked")) {
+                  selectedColors.push($(this).val().toLowerCase());
+                }
+              });
+
+              const selectedSizes = [];
+              sizeCheckboxes.each(function () {
+                if ($(this).is(":checked")) {
+                  selectedSizes.push($(this).val().toLowerCase());
+                }
+              });
+
+              productItems.each(function () {
+                const productPrice = parseFloat($(this).data("price"));
+                const productColor = $(this).data("color").toLowerCase();
+                const productSizes = $(this)
+                  .data("size")
+                  .toLowerCase()
+                  .split(":")
+                  .filter((_, i) => i % 2 === 0); // Get sizes only
+
+                const matchesPrice =
+                  productPrice >= minPrice && productPrice <= maxPrice;
+                const matchesColor =
+                  selectedColors.length === 0 ||
+                  selectedColors.includes(productColor);
+                const matchesSize =
+                  selectedSizes.length === 0 ||
+                  selectedSizes.some((size) => productSizes.includes(size));
+
+                if (matchesPrice && matchesColor && matchesSize) {
+                  $(this).show();
+                } else {
+                  $(this).hide();
+                }
+              });
             }
-        });
-    </script>
+          });
+        </script>
+        <!-- End -->
+        <script>
+          // Add event listener to the "Add to Favorites" button
+          document.addEventListener("DOMContentLoaded", function () {
+            const addToFavoritesButtons =
+              document.querySelectorAll(".add-to-favorites");
+
+            addToFavoritesButtons.forEach((button) => {
+              button.addEventListener("click", function () {
+                const productId = button.getAttribute("data-product-id");
+
+                // Send AJAX request to the server
+                fetch(`/favorites/add/${productId}`, {
+                  method: "GET",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  credentials: "same-origin", // include cookies
+                })
+                  .then((response) => {
+                    if (!response.ok) {
+                      throw new Error("Network response was not ok");
+                    }
+                    return response.json();
+                  })
+                  .then((data) => {
+                    if (data.success) {
+                      // Show popup alert
+                      alert(data.message);
+
+                      // Update wishlist count in the span
+                      const wishlistLi = document.querySelector("#wishlist");
+                      if (wishlistLi) {
+                        const countTextSpan =
+                          wishlistLi.querySelector(".count-text");
+                        if (countTextSpan) {
+                          countTextSpan.textContent = data.favoritesCount;
+                        }
+                      }
+                    } else {
+                      alert(data.message);
+                    }
+                  })
+                  .catch((error) => {
+                    console.error(
+                      "There was a problem with the fetch operation:",
+                      error
+                    );
+                    // Handle error
+                    alert(
+                      "An error occurred while adding the product to favorites"
+                    );
+                  });
+              });
+            });
+          });
+        </script>
+        <script>
+          document.addEventListener("DOMContentLoaded", () => {
+            const addToCartButtons = document.querySelectorAll(".add-to-cart");
+
+            var cartMessage = document.getElementById("productAddedInCart");
+
+            addToCartButtons.forEach((button) => {
+              button.addEventListener("click", addToCart);
+            });
+
+            async function addToCart(event) {
+              const productId =
+                event.currentTarget.getAttribute("data-product-id");
+              try {
+                const response = await fetch(`/cart/add/${productId}`, {
+                  method: "GET",
+                });
+                const result = await response.json();
+                if (result.success) {
+                  cartMessage.textContent = result.message;
+                  cartMessage.style.display = "block";
+                  setTimeout(() => {
+                    cartMessage.style.display = "none"
+                  }, 4000)
+
+                  // Update cart count in the span
+                  const cartLi = document.querySelector("#cart");
+                  if (cartLi) {
+                    const countTextSpan = cartLi.querySelector(".product-count");
+                    if (countTextSpan) {
+                      // countTextSpan.textContent = data.favoritesCount;
+                      countTextSpan.textContent = result.CartCount;
+                    }
+                  }
+                } else {
+
+                  cartMessage.textContent = result.message;
+                  cartMessage.style.display = "block";
+                  setTimeout(() => {
+                    cartMessage.style.display = "none"
+                  }, 4000)
+                }
+              } catch (error) {
+                console.error("Error:", error);
+                cartMessage.textContent = 'An error occurred while adding the product to cart';
+                cartMessage.style.display = "block";
+                setTimeout(() => {
+                  cartMessage.style.display = "none"
+                }, 4000)
+
+              }
+            }
+          });
+        </script>
+        <script>
+          document.addEventListener("DOMContentLoaded", function () {
+            var productGrid = document.getElementById("productGrid");
+            var productItems = productGrid.getElementsByClassName("product-item");
+            console.log(productItems.length - 3)
+            if (productItems.length <= 3) {
+              productGrid.classList.add("product-grid-start");
+            } else {
+              productGrid.classList.add("product-grid-space-between");
+            }
+          });
+        </script>
+  </div>
+  <%- include('includes/foot') %>
+
 </body>
 
 </html>

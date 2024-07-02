@@ -299,8 +299,10 @@ router.get("/product", async (req, res) => {
   FROM products p
   LEFT JOIN topwear_inventory_with_sizes tw ON p.id = tw.product_id AND p.wear_type_bottom_or_top = 'top'
   LEFT JOIN bottom_wear_inventory_with_sizes bw ON p.id = bw.product_id AND p.wear_type_bottom_or_top = 'bottom'
+  WHERE p.wear_type_bottom_or_top IN ('top', 'bottom')
   GROUP BY p.id;
 `;
+
 
   const querycategoryList = `
       SELECT c.*, COUNT(p.id) AS product_count
@@ -330,6 +332,47 @@ router.get("/product", async (req, res) => {
   }
 });
 
+router.get("/accessories", async (req, res) => {
+
+  const queryProduct = `
+  SELECT p.*,
+    CASE
+      WHEN p.wear_type_bottom_or_top = 'shoes' THEN GROUP_CONCAT(CONCAT_WS(':', '6', sh.size_6, '7', sh.size_7, '8', sh.size_8, '9', sh.size_9, '10', sh.size_10, '11', sh.size_11, '12', sh.size_12, '13', sh.size_13) SEPARATOR ', ')
+      WHEN p.wear_type_bottom_or_top = 'belt' THEN GROUP_CONCAT(CONCAT_WS(':', '28', bt.size_28, '30', bt.size_30, '32', bt.size_32, '34', bt.size_34, '36', bt.size_36, '38', bt.size_38, '40', bt.size_40) SEPARATOR ', ')
+      WHEN p.wear_type_bottom_or_top = 'wallet' THEN GROUP_CONCAT(CONCAT_WS(':', 's', wl.s, 'm', wl.m, 'l', wl.l) SEPARATOR ', ')
+    END AS sizes
+  FROM products p
+  LEFT JOIN shoes_inventory sh ON p.id = sh.product_id AND p.wear_type_bottom_or_top = 'shoes'
+  LEFT JOIN belts_inventory bt ON p.id = bt.product_id AND p.wear_type_bottom_or_top = 'belt'
+  LEFT JOIN wallet_inventory wl ON p.id = wl.product_id AND p.wear_type_bottom_or_top = 'wallet'
+  WHERE p.wear_type_bottom_or_top IN ('shoes', 'belt', 'wallet')
+  GROUP BY p.id;
+`;
+
+  const querycategoryList = `
+      SELECT c.*, COUNT(p.id) AS product_count
+      FROM category c
+      LEFT JOIN products p ON c.id = p.category_id 
+      GROUP BY c.id;
+      `;
+
+  const colorlist = `
+      SELECT * FROM colors;
+      `;
+
+  try {
+    const [categories] = await connect.query(querycategoryList);
+    const [color_list] = await connect.query(colorlist);
+    const [results] = await connect.query(queryProduct);
+    console.log(results);
+    return res.render("accessories", {
+      products: results, categories: categories, color_list: color_list,
+    });
+  } catch (error) {
+    console.error("Database query error:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
 
 
 router.get("/blogs", async (req, res) => {
@@ -372,7 +415,7 @@ router.get("/product-detail/:id", async (req, res) => {
 
     const product = productRows[0];
     const wearType = product.wear_type_bottom_or_top;
-    const product_varient_name = product.varient_name;
+    const product_varient_name = product.unique_batch_id;
 
     // Fetch product images
     const [product_images] = await connect.query(
@@ -382,7 +425,7 @@ router.get("/product-detail/:id", async (req, res) => {
 
     // Fetch related variant products
     const [variantProducts] = await connect.query(
-      "SELECT * FROM products WHERE varient_name = ?",
+      "SELECT * FROM products WHERE unique_batch_id = ?",
       [product_varient_name]
     );
 
@@ -464,8 +507,6 @@ router.get("/product-detail/:id", async (req, res) => {
         }
       }
     }
-
-
 
     // Check if the product is in the user's favorites
     let isInFavorites = false;
