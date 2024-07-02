@@ -907,6 +907,14 @@ router.post("/update-quantity", async (req, res) => {
             [cartItem.product_id]
           );
           sizes = sizeRows[0];
+        } else if (cartItem.wear_type_bottom_or_top === "shoes") {
+          const [sizeRows] = await connect.query(
+            `SELECT size_6, size_7, size_8, size_9, size_10, size_11, size_12, size_13
+             FROM shoes_inventory
+             WHERE product_id = ?`,
+            [cartItem.product_id]
+          );
+          sizes = sizeRows[0];
         }
         return {
           ...cartItem,
@@ -928,13 +936,27 @@ router.post("/update-quantity", async (req, res) => {
         const selectedSize = item.selected_size;
         // Determine the stock for the selected size
         let stock = null;
-        if (item.wear_type_bottom_or_top === "top") {
-          const selectedSizeLowerCase = selectedSize.toLowerCase();
-          stock = item.sizes ? item.sizes[selectedSizeLowerCase] : null;
-        } else if (item.wear_type_bottom_or_top === "bottom") {
+        if (selectedSize) {
+          // Log sizeKey and sizes for debugging
           const sizeKey = `size_${selectedSize}`;
+          // Ensure sizeKey is lowercase to match the object keys if necessary
           const sizeKeyLowerCase = sizeKey.toLowerCase();
-          stock = item.sizes ? item.sizes[sizeKeyLowerCase] : null;
+
+          console.log('Size Key:', sizeKeyLowerCase);
+          console.log('Available Sizes:', item.sizes);
+
+          if (item.wear_type_bottom_or_top === "top") {
+            const selectedSizeLowerCase = selectedSize.toLowerCase();
+            stock = item.sizes ? item.sizes[selectedSizeLowerCase] : null;
+          } else if (item.wear_type_bottom_or_top === "bottom") {
+            const sizeKey = `size_${selectedSize}`;
+            const sizeKeyLowerCase = sizeKey.toLowerCase();
+            stock = item.sizes ? item.sizes[sizeKeyLowerCase] : null;
+          } else if (item.wear_type_bottom_or_top === "shoes") {
+            const sizeKey = `size_${selectedSize}`;
+            const sizeKeyLowerCase = sizeKey.toLowerCase();
+            stock = item.sizes ? item.sizes[sizeKeyLowerCase] : null;
+          }
         }
 
         if (stock && stock > 0) {
