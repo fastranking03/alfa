@@ -538,6 +538,7 @@ a {
   align-items: center;
   justify-content: center;
   height: 48px;
+  border: none;
 }
 
 .alfa-btn:hover {
@@ -2171,11 +2172,15 @@ a {
 }
 .history-wrappper .history-item{
   display: flex;
-  border: 1px solid #E6E6E6;
-  padding: 15px;
+   padding: 15px;
   align-items: center;
   justify-content: space-between;
-  margin: 0px 0 15px;
+  margin: 0px 0 1px;
+}
+.history-wrap{
+    border: 1px solid #E6E6E6;
+    padding: 0 0 20px;
+    margin: 0px 0 12px;
 }
 .history-wrappper .history-item .history-left-wrap{
   display: flex;
@@ -2799,4 +2804,202 @@ font-size: 14px;
     margin: 0px 0 30px;
     font-size: 14px;
     color: #938484;
+}
+ .review-badge{
+  position: absolute;
+  top: 20px;
+ }
+.review-warapper{
+  border: 1px solid #d9d9d9;
+  padding: 19px;
+}
+   .review-span{
+    background: #fef5d5;
+    width: 30px;
+    height: 30px;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 50%;
+}
+.review-start{
+  color: #f9cf2d;
+  font-size: 15px;
+}
+.review-rating-wrapper{
+    max-width: 600px;
+    width: 600px;
+    margin: 39px auto;
+    display: flex;
+    align-items: center;
+}
+.total-rating h4{
+    font-size: 55px;
+    font-weight: 500;
+    color:var(--primaryColor);
+    display: flex;
+    align-items: center;
+    margin: 0;
+}
+.total-rating p{
+  margin: 0;
+}
+.review-span.count-str{
+  width: 22px;
+  height: 22px;
+  background: #e5eff0;
+  margin: 0 5px;
+ }
+.count-start{
+  font-size: 12px;
+   color: var(--primaryColor);
+}
+.rating-count-ravegrage{
+  display: flex;
+  width: 100%;
+  align-items: center;
+  gap: 5px;
+  height: 22px;
+}
+.rating-count{
+  width: 30%;
+}
+.review-rating-progress{
+  width: 70%;
+  border-left: 1px solid #eee;
+  padding-left: 34px;
+}
+.pro-start{
+  color: var(--primaryColor);
+  font-size: 12px;
+}
+.total-idivitual-review span{
+  font-size: 12px;
+}
+.rate_and_start{
+  white-space: nowrap;
+  font-size: 13px;
+  color: #b8adad;
+}
+.rating-progress {
+  margin:20px auto;
+  padding:0;
+  width:90%;
+  height:3px;
+  overflow:hidden;
+  background:#e5e5e5;
+  border-radius:6px;
+}
+
+.rating-bar {
+	position:relative;
+  float:left;
+  min-width:1%;
+  height:100%;
+  background:var(--primaryColor);
+}
+
+.rating-percent {
+	position:absolute;
+  top:50%;
+  left:50%;
+  transform:translate(-50%,-50%);
+  margin:0;
+  font-family:tahoma,arial,helvetica;
+  font-size:12px;
+  color:white;
+}
+.review-ul ul{
+    list-style: none;
+    display: flex;
+    gap: 5px;
+    background: #fef5d5;
+    width: 130px;
+    padding: 6px;
+    justify-content: center;
+    border-radius: 20px;
+}
+.review-box{
+    border-bottom: 1px solid #d9d9d9;
+    padding: 0 0 20px;
+}
+.review-box-foot{
+  display: flex;
+  justify-content: space-between;
+}
+.r-box-right span{
+  margin: 0 0px 0px 16px;
+  font-size: 14px;
+  color: #888080;
+}
+.r-box-left span{
+  font-size: 14px;
+  color: #888080;
+}
+.rivew-row{
+    display: grid;
+    grid-template-columns: auto auto;
+    row-gap: 25px;
+    column-gap: 50px;
+}
+.review-content-head{
+  margin: 22px auto;
+}
+.review-wrapper{
+    background: #f7f8f4;
+    margin: 0 14px 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px;
+}
+.review-btn-wrap a{
+  color:var(--primaryColor);
+  font-size: 15px;
+  font-weight: 500;
+}
+.review-btn-wrap a:hover{
+  color:var(--primaryColor);
+}
+.review-offer-text{
+    background: #fef5d5;
+    padding: 5px;
+    text-align: center;
+}
+.review-offer-text h6{
+    margin: 0;
+    font-size: 16px;
+    font-weight: 400;
+    color: #443737;
+}
+ .review-pro-img{
+    width: 80px;
+    height: 101px;
+    object-fit: contain;
+}
+.review-pop {
+  padding: 20px 0 0;
+}
+.review-textarea{
+  margin: 15px auto 0 ;
+}
+.alfa-btn.alfa-review-btn{
+    width: auto;
+    height: auto;
+    padding: 8px 22px;
+}
+.btn-closes{
+     border: none;
+    background: var(--primaryColor);
+    color: #fff;
+    border-radius: 50%;
+    font-size: 14px;
+    width: 22px;
+    height: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.review-title{
+  font-size: 18px;
 }

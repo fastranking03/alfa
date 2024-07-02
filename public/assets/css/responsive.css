@@ -256,15 +256,12 @@
     .alfa-navbar ul {
         gap: 16px;
     }
-
     .footer {
         padding: 30px 10px 30px;
     }
-
     .main-footer {
         margin: 55px 15px 25px;
     }
-
     /* .product-grid {
         gap: 15px;
     } */
@@ -521,7 +518,7 @@
     }
 
     .final-prices {
-        font-size: 16px;
+        font-size: 16px !important;
     }
 
     .pro-detail-size-ul .size-item {
@@ -1047,7 +1044,9 @@
     .pro-cart-price h3 {
         font-size: 17px;
     }
-
+   .pro-cart-price h5{
+    margin: 0;
+   }
     .pro-cart-colorsize p {
         margin: 0 0 0px;
         font-size: 12px;
@@ -1276,6 +1275,25 @@
     }
     .contact-info ,.contact-us-wrapper {
         padding: 0 10px;
+    }
+    .review-rating-wrapper{
+        width: 100%;
+        max-width: 100%;
+    }
+    .rating-count {
+        width: 35%;
+    }
+    .total-rating h4{
+        font-size: 35px;
+    }
+    .review-rating-progress{
+        border-left: 0;
+    }
+    .rivew-row{
+        grid-template-columns: auto;
+    }
+    .total-rating p{
+        font-size: 14px;
     }
 }
 
