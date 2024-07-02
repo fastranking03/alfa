@@ -1,31 +1,35 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Alfa Meanswear | My Cart</title>
-    <%- include('includes/head') %>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alfa Meanswear | My Cart</title>
+  <%- include('includes/head') %>
 
     <script src="https://cdn.jsdelivr.net/npm/slugify@1.5.0/slugify.min.js"></script>
 
     <style>
       .product-size-list .selected {
-        background-color: #381818; /* Example background color */
-        border: 1px solid #801212; /* Example border */
-        color: #a8bba4; /* Example text color */
+        background-color: #381818;
+        /* Example background color */
+        border: 1px solid #801212;
+        /* Example border */
+        color: #a8bba4;
+        /* Example text color */
         /* Add any other styling as needed */
       }
 
       .card-s.selected-size {
         background-color: #005d67;
-        color: #fff  !important;
+        color: #fff !important;
       }
     </style>
-  </head>
+</head>
 
-  <body>
-    <div class="alfa-main-wraper">
-      <%- include('includes/header') %>
+<body>
+  <div class="alfa-main-wraper">
+    <%- include('includes/header') %>
       <div class="mt-100 mt-150">
         <div class="checkout-wrapper margin-160">
           <div class="custom-container">
@@ -33,216 +37,351 @@
               <h3>Shopping Cart</h3>
             </div>
             <div class="containers mt-3">
-              <input
-                type="hidden"
-                name="cartItemsviewpage"
-                value="<%= JSON.stringify(cartItemsInStock) %>"
-              />
+              <input type="hidden" name="cartItemsviewpage" value="<%= JSON.stringify(cartItemsInStock) %>" />
               <div class="row">
                 <div class="col-md-8">
                   <div class="alfa-cart-items cart-right-wrap">
                     <div class="cart-table">
                       <div class="cart-tbody" id="cart-pricing">
-                        <% cartItemsInStock.forEach((item, index) => { %>
-                        <div class="cart-tr cart-b-tr">
-                          <div class="cart-td">
-                            <div class="cart-items-left">
-                              <div class="cart-delete">
-                                <a  href="/delete-product/<%= item.cart_id %>"  class="delete-product" >
-                                  <span><i class="fa-regular fa-circle-xmark"></i></span>
-                                </a>
-                              </div>
-                              <div class="cart-image">
-                                <img src="../product_images/<%=item.product_main_image %>" class="cart-img" alt=""/>
-                              </div>
-
-                              <div class="pro-cart-contents">
-                                <div class="pro-cart-title">
-                                  <h3><%= item.product_name %></h3>
-                                </div>
-                                <div class="product-size-list">
-                                  <span class="cart-short-text" data-cart-id="<%= item.cart_id %>" data-product-id="<%= item.product_id %>" data-selected-size="<%= item.selected_size %>">
-                                    Select Size 
-                                  </span>
-                                  <!-- <span class="cart-short-text-2" data-product-id-2="<%= item.product_id %>" ></span> -->
-                                  <!-- <input type="text" class="proIds" data-product-id="<%= item.product_id %>" value="<%= item.product_id %>"> -->
-                                   <ul id="sizeList-<%= item.cart_id %>" class="size-list">
-                                    <% if (item.sizes && Object.keys(item.sizes).length > 0) { %>
-                                      <% for (const [size, stock] of Object.entries(item.sizes)) { %>
-                                        <% if (item.wear_type_bottom_or_top === 'bottom') { %>
-                                          <% const numericSize = size.replace('size_', ''); %>
-                                          <% if (numericSize.length > 0) { %>
-                                            <% if (stock) { %> 
-                                              <li class="cart-li">
-                                                <input type="radio" id="size-<%= item.cart_id %>-<%= numericSize %>" name="selectedSize-<%= item.cart_id %>-<%= item.product_id %>" value="<%= numericSize %>" <%= stock > 0 ? '' : 'disabled' %> <%= item.selected_size && item.selected_size.toLowerCase() === numericSize.toLowerCase() ? 'checked' : '' %> required />
-                                                <label id="label-<%= item.cart_id %>-<%= numericSize %>" style="<%= stock > 0 ? '' : 'opacity: 0.5;' %>" for="size-<%= item.cart_id %>-<%= numericSize %>" class="size-item card-s <%= stock > 0 ? '' : 'disabled' %>">
-                                                  <span class="size"><%= numericSize %></span>
-                                                </label>
-                                              </li>
-                                            <% } else { %>
-                                              <li class="cart-li">
-                                                <label class="size-item card-s disabled" style="opacity: 0.5;">
-                                                  <span class="size"><%= numericSize %> </span>
-                                                </label>
-                                              </li>
-                                            <% } %>
-                                          <% } %>
-                                        <% } else { %>
-                                          <% if (stock) { %>
-                                            <li class="cart-li">
-                                              <input type="radio" id="size-<%= item.cart_id %>-<%= size %>" name="selectedSize-<%= item.cart_id %>-<%= item.product_id %>" value="<%= size.toUpperCase() %>" <%= stock > 0 ? '' : 'disabled' %> <%= item.selected_size && item.selected_size.toLowerCase() === size.toLowerCase() ? 'checked' : '' %> required />
-                                              <label id="label-<%= item.cart_id %>-<%= size %>" style="<%= stock > 0 ? '' : 'opacity: 0.5;' %>" for="size-<%= item.cart_id %>-<%= size %>" class="card-s size-item <%= stock > 0 ? '' : 'disabled' %>">
-                                                <span class="size"><%= size.toUpperCase() %></span>
-                                              </label>
-                                            </li>
-                                          <% } else { %>
-                                            <li class="cart-li">
-                                              <label class="size-item card-s disabled" style="opacity: 0.5;">
-                                                <span class="size"><%= size.toUpperCase() %> </span>
-                                              </label>
-                                            </li>
-                                          <% } %>
-                                        <% } %>
-                                      <% } %>
-                                    <% } else { %>
-                                      <p>Currently Out Of Stock</p>
-                                    <% } %>
-                                  </ul>
-                                   
-                                </div>
-                                
-                                <div class="new-cart-quantity">
-                                  <span class="cart-short-text"
-                                    >Quantity :
-                                    <span
-                                      id="quantity-display-<%= item.product_id %>"
-                                      ><%=item.quantity %></span
-                                    ></span
-                                  >
-                                  <div class="cart-quantity-wrapper cart-qw">
-                                    <div class="left-input">
-                                      <span class="decrement" id="minus"
-                                        ><i class="fa-solid fa-minus"></i
-                                      ></span>
-                                    </div>
-                                    <div class="cart-quantity">
-                                      <input
-                                        type="text"
-                                        name="product_quantity"
-                                        value="<%=item.quantity %>"
-                                        class="cart-value"
-                                        data-product-id="<%= item.product_id %>"
-                                        data-cart-id="<%= item.cart_id %>"
-                                        id="quantity-js"
-                                      />
-                                    </div>
-                                    <div class="right-input">
-                                      <span class="increment"
-                                        ><i class="fa-solid fa-plus"></i
-                                      ></span>
-                                    </div>
-                                  </div>
-                                  <div class="product-limit-msg">
-                                    <span>Maximum quantity reached </span>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          </div>
-
-                          <input  type="hidden" name="products[<%=index%>][productId]" value="<%= item.product_id %>" />
-                          <input type="hidden" name="products[<%=index%>][price]"  value="<%= item.product_price %>" />
-                          <div class="cart-td position-relative">
-                            <div class="pro-cart-price">
-                              <h5>
-                                <span class="mrp-price cart-mrp">£<%=item.product_price %></span>
-                                <span class="final-prices cart-final" >£<%= (item.product_price * (1 -  (item.discount_on_product / 100))).toFixed(2) %></span>
-                                <span class="discount-text cart-discount" >(<%=item.discount_on_product %>% OFF )</span >
-                              </h5>
-                              <div class="move-to-wishlist">
-                                <a href="/move-to-wishlist/<%= item.cart_id %>">Move To Wishlist</a>
-                              </div>
-                            </div>
-                            <div class="move-to-wishlist d-none">
-                              <a href="/move-to-wishlist/<%= item.cart_id %>" >Move To Wishlist</a >
-                            </div>
-                          </div>
-                        </div>
-                        <% }); %>
-
-                        <!-- Display total calculations -->
-                      </div>
-
-                      <% if (isLoggedIn) { %>
-                      <div class="mt-4">
-                      
-                        <% cartItemsOutOfStock.forEach((item, index) => { %>
-                          
-                          <div class="checkout-title mt-3">
-                            <h3>Out Of Stock Products</h3>
-                          </div>
+                        <% cartItemsInStock.forEach((item, index)=> { %>
                           <div class="cart-tr cart-b-tr">
-                            <div class=" ">
+                            <div class="cart-td">
                               <div class="cart-items-left">
                                 <div class="cart-delete">
-                                  <a href="/delete-product/<%= item.cart_id %>" class="delete-product" >
-                                    <span ><i class="fa-regular fa-circle-xmark"></i ></span>
+                                  <a href="/delete-product/<%= item.cart_id %>" class="delete-product">
+                                    <span><i class="fa-regular fa-circle-xmark"></i></span>
                                   </a>
                                 </div>
                                 <div class="cart-image">
-                                  <img src="../product_images/<%=item.product_main_image %>" class="cart-img" alt=""/>
+                                  <img src="../product_images/<%=item.product_main_image %>" class="cart-img" alt="" />
                                 </div>
-  
+
                                 <div class="pro-cart-contents">
                                   <div class="pro-cart-title">
-                                    <h3><%= item.product_name %></h3>
+                                    <h3>
+                                      <%= item.product_name %>
+                                    </h3>
                                   </div>
                                   <div class="product-size-list">
-                                    <p style="color: #ff2020;font-size: 13px;">Currently Out Of Stock</p>
+                                    <span class="cart-short-text" data-cart-id="<%= item.cart_id %>"
+                                      data-product-id="<%= item.product_id %>"
+                                      data-selected-size="<%= item.selected_size %>">
+                                      Select Size
+                                    </span>
+
+                                    <ul id="sizeList-<%= item.cart_id %>" class="size-list">
+                                      <% if (item.sizes && Object.keys(item.sizes).length> 0) { %>
+                                        <% for (const [size, stock] of Object.entries(item.sizes)) { %>
+                                          <% if (item.wear_type_bottom_or_top==='bottom' ) { %>
+                                            <% const numericSize=size.replace('size_', '' ); %>
+                                              <% if (numericSize.length> 0) { %>
+                                                <% if (stock) { %>
+                                                  <li class="cart-li">
+                                                    <input type="radio" id="size-<%= item.cart_id %>-<%= numericSize %>"
+                                                      name="selectedSize-<%= item.cart_id %>-<%= item.product_id %>"
+                                                      value="<%= numericSize %>" <%=stock> 0
+                                                    ? '' : 'disabled' %>
+                                                    <%= item.selected_size &&
+                                                      item.selected_size.toLowerCase()===numericSize.toLowerCase()
+                                                      ? 'checked' : '' %>
+                                                      required />
+                                                      <label id="label-<%= item.cart_id %>-<%= numericSize %>"
+                                                        style="<%= stock > 0 ? '' : 'opacity: 0.5;' %>"
+                                                        for="size-<%= item.cart_id %>-<%= numericSize %>"
+                                                        class="size-item card-s <%= stock > 0 ? '' : 'disabled' %>">
+                                                        <span class="size">
+                                                          <%= numericSize %>
+                                                        </span>
+                                                      </label>
+                                                  </li>
+                                                  <% } else { %>
+                                                    <li class="cart-li">
+                                                      <label class="size-item card-s disabled" style="opacity: 0.5;">
+                                                        <span class="size">
+                                                          <%= numericSize %>
+                                                        </span>
+                                                      </label>
+                                                    </li>
+                                                    <% } %>
+                                                      <% } %>
+                                                        <% } else if (item.wear_type_bottom_or_top==='top' ) { %>
+                                                          <% if (stock) { %>
+                                                            <li class="cart-li">
+                                                              <input type="radio"
+                                                                id="size-<%= item.cart_id %>-<%= size %>"
+                                                                name="selectedSize-<%= item.cart_id %>-<%= item.product_id %>"
+                                                                value="<%= size.toUpperCase() %>" <%=stock> 0 ? '' :
+                                                              'disabled' %>
+                                                              <%= item.selected_size &&
+                                                                item.selected_size.toLowerCase()===size.toLowerCase()
+                                                                ? 'checked' : '' %>
+                                                                required />
+                                                                <label id="label-<%= item.cart_id %>-<%= size %>"
+                                                                  style="<%= stock > 0 ? '' : 'opacity: 0.5;' %>"
+                                                                  for="size-<%= item.cart_id %>-<%= size %>"
+                                                                  class="card-s size-item <%= stock > 0 ? '' : 'disabled' %>">
+                                                                  <span class="size">
+                                                                    <%= size.toUpperCase() %>
+                                                                  </span>
+                                                                </label>
+                                                            </li>
+                                                            <% } else { %>
+                                                              <li class="cart-li">
+                                                                <label class="size-item card-s disabled"
+                                                                  style="opacity: 0.5;">
+                                                                  <span class="size">
+                                                                    <%= size.toUpperCase() %>
+                                                                  </span>
+                                                                </label>
+                                                              </li>
+                                                              <% } %>
+                                                                <% } else if (item.wear_type_bottom_or_top==='shoes' ) {
+                                                                  %>
+                                                                  <% const numericSize=size.replace('size_', '' ); %>
+                                                                    <% if (numericSize.length> 0) { %>
+                                                                      <% if (stock) { %>
+                                                                        <% const numericSizeNum=Number(numericSize);
+                                                                          const
+                                                                          selectedSizeNum=Number(item.selected_size);
+                                                                          const
+                                                                          isChecked=selectedSizeNum===numericSizeNum; %>
+                                                                          <li class="cart-li">
+                                                                            <input type="radio"
+                                                                              id="size-<%= item.cart_id %>-<%= size %>"
+                                                                              name="selectedSize-<%= item.cart_id %>-<%= item.product_id %>"
+                                                                              value="<%= numericSize %>" <%=stock> 0 ?
+                                                                            '' : 'disabled' %>
+                                                                            <%= isChecked ? 'checked' : '' %>
+                                                                              required />
+                                                                              <label
+                                                                                id="label-<%= item.cart_id %>-<%= size %>"
+                                                                                style="<%= stock > 0 ? '' : 'opacity: 0.5;' %>"
+                                                                                for="size-<%= item.cart_id %>-<%= size %>"
+                                                                                class="card-s size-item <%= stock > 0 ? '' : 'disabled' %>">
+                                                                                <span class="size">
+                                                                                  <%= numericSize %>
+                                                                                </span>
+                                                                              </label>
+                                                                          </li>
+                                                                          <% } else { %>
+                                                                            <li class="cart-li">
+                                                                              <label class="size-item card-s disabled"
+                                                                                style="opacity: 0.5;">
+                                                                                <span class="size">
+                                                                                  <%= numericSize %>
+                                                                                </span>
+                                                                              </label>
+                                                                            </li>
+                                                                            <% } %>
+                                                                              <% } %>
+                                                                                <% } else if
+                                                                                  (item.wear_type_bottom_or_top==='belt'
+                                                                                  ) { %>
+                                                                                  <% const
+                                                                                    numericSize=size.replace('size_', ''
+                                                                                    ); %>
+                                                                                    <% if (numericSize.length> 0) { %>
+                                                                                      <% if (stock) { %>
+                                                                                        <li class="cart-li">
+                                                                                          <input type="radio"
+                                                                                            id="size-<%= item.cart_id %>-<%= numericSize %>"
+                                                                                            name="selectedSize-<%= item.cart_id %>-<%= item.product_id %>"
+                                                                                            value="<%= numericSize %>"
+                                                                                            <%=stock> 0
+                                                                                          ? '' : 'disabled' %>
+                                                                                          <%= item.selected_size &&
+                                                                                            item.selected_size.toLowerCase()===numericSize.toLowerCase()
+                                                                                            ? 'checked' : '' %>
+                                                                                            required />
+                                                                                            <label
+                                                                                              id="label-<%= item.cart_id %>-<%= numericSize %>"
+                                                                                              style="<%= stock > 0 ? '' : 'opacity: 0.5;' %>"
+                                                                                              for="size-<%= item.cart_id %>-<%= numericSize %>"
+                                                                                              class="size-item card-s <%= stock > 0 ? '' : 'disabled' %>">
+                                                                                              <span class="size">
+                                                                                                <%= numericSize %>
+                                                                                              </span>
+                                                                                            </label>
+                                                                                        </li>
+                                                                                        <% } else { %>
+                                                                                          <li class="cart-li">
+                                                                                            <label
+                                                                                              class="size-item card-s disabled"
+                                                                                              style="opacity: 0.5;">
+                                                                                              <span class="size">
+                                                                                                <%= numericSize %>
+                                                                                              </span>
+                                                                                            </label>
+                                                                                          </li>
+                                                                                          <% } %>
+                                                                                            <% } %>
+                                                                                              <% } else if
+                                                                                                (item.wear_type_bottom_or_top==='wallet'
+                                                                                                ) { %>
+                                                                                                <% if (stock) { %>
+                                                                                                  <li class="cart-li">
+                                                                                                    <input type="radio"
+                                                                                                      id="size-<%= item.cart_id %>-<%= size %>"
+                                                                                                      name="selectedSize-<%= item.cart_id %>-<%= item.product_id %>"
+                                                                                                      value="<%= size.toUpperCase() %>"
+                                                                                                      <%=stock> 0 ? ''
+                                                                                                    :
+                                                                                                    'disabled' %>
+                                                                                                    <%=
+                                                                                                      item.selected_size
+                                                                                                      &&
+                                                                                                      item.selected_size.toLowerCase()===size.toLowerCase()
+                                                                                                      ? 'checked' : ''
+                                                                                                      %>
+                                                                                                      required />
+                                                                                                      <label
+                                                                                                        id="label-<%= item.cart_id %>-<%= size %>"
+                                                                                                        style="<%= stock > 0 ? '' : 'opacity: 0.5;' %>"
+                                                                                                        for="size-<%= item.cart_id %>-<%= size %>"
+                                                                                                        class="card-s size-item <%= stock > 0 ? '' : 'disabled' %>">
+                                                                                                        <span
+                                                                                                          class="size">
+                                                                                                          <%=
+                                                                                                            size.toUpperCase()
+                                                                                                            %>
+                                                                                                        </span>
+                                                                                                      </label>
+                                                                                                  </li>
+                                                                                                  <% } else { %>
+                                                                                                    <li class="cart-li">
+                                                                                                      <label
+                                                                                                        class="size-item card-s disabled"
+                                                                                                        style="opacity: 0.5;">
+                                                                                                        <span
+                                                                                                          class="size">
+                                                                                                          <%=
+                                                                                                            size.toUpperCase()
+                                                                                                            %>
+                                                                                                        </span>
+                                                                                                      </label>
+                                                                                                    </li>
+                                                                                                    <% } %>
+                                                                                                      <% } %>
+                                                                                                        <% } %>
+                                                                                                          <% } else { %>
+                                                                                                            <p>Currently
+                                                                                                              Out Of
+                                                                                                              Stock</p>
+                                                                                                            <% } %>
+                                    </ul>
+
+                                  </div>
+
+                                  <div class="new-cart-quantity">
+                                    <span class="cart-short-text">Quantity :
+                                      <span id="quantity-display-<%= item.product_id %>">
+                                        <%=item.quantity %>
+                                      </span></span>
+                                    <div class="cart-quantity-wrapper cart-qw">
+                                      <div class="left-input">
+                                        <span class="decrement" id="minus"><i class="fa-solid fa-minus"></i></span>
+                                      </div>
+                                      <div class="cart-quantity">
+                                        <input type="text" name="product_quantity" value="<%=item.quantity %>"
+                                          class="cart-value" data-product-id="<%= item.product_id %>"
+                                          data-cart-id="<%= item.cart_id %>" id="quantity-js" />
+                                      </div>
+                                      <div class="right-input">
+                                        <span class="increment"><i class="fa-solid fa-plus"></i></span>
+                                      </div>
+                                    </div>
+                                    <div class="product-limit-msg">
+                                      <span>Maximum quantity reached </span>
+                                    </div>
                                   </div>
                                 </div>
                               </div>
                             </div>
-  
-                            <input
-                              type="hidden"
-                              name="products[<%=index%>][productId]"
-                              value="<%= item.product_id %>"
-                            />
-                            <input
-                              type="hidden"
-                              name="products[<%=index%>][price]"
-                              value="<%= item.product_price %>"
-                            />
+
+                            <input type="hidden" name="products[<%=index%>][productId]"
+                              value="<%= item.product_id %>" />
+                            <input type="hidden" name="products[<%=index%>][price]" value="<%= item.product_price %>" />
                             <div class="cart-td position-relative">
                               <div class="pro-cart-price">
                                 <h5>
-                                  <span class="mrp-price"
-                                    >£<%=item.product_price %></span
-                                  >
-                                  <span class="final-prices"
-                                    >£<%= (item.product_price * (1 -
-                                    (item.discount_on_product / 100))).toFixed(2)
-                                    %></span
-                                  >
-                                  <span class="discount-text"
-                                    >(<%=item.discount_on_product %>% OFF )</span
-                                  >
+                                  <span class="mrp-price cart-mrp">£<%=item.product_price %></span>
+                                  <span class="final-prices cart-final">£<%= (item.product_price * (1 -
+                                      (item.discount_on_product / 100))).toFixed(2) %></span>
+                                  <span class="discount-text cart-discount">(<%=item.discount_on_product %>% OFF
+                                      )</span>
                                 </h5>
                                 <div class="move-to-wishlist">
                                   <a href="/move-to-wishlist/<%= item.cart_id %>">Move To Wishlist</a>
                                 </div>
                               </div>
                               <div class="move-to-wishlist d-none">
-                                <a href="/move-to-wishlist/<%= item.cart_id %>"
-                                  >Move To Wishlist</a
-                                >
+                                <a href="/move-to-wishlist/<%= item.cart_id %>">Move To Wishlist</a>
                               </div>
                             </div>
                           </div>
                           <% }); %>
+
+                            <!-- Display total calculations -->
                       </div>
-                      <% }  %>
+
+                      <% if (isLoggedIn) { %>
+                        <div class="mt-4">
+
+                          <% cartItemsOutOfStock.forEach((item, index)=> { %>
+
+                            <div class="checkout-title mt-3">
+                              <h3>Out Of Stock Products</h3>
+                            </div>
+                            <div class="cart-tr cart-b-tr">
+                              <div class=" ">
+                                <div class="cart-items-left">
+                                  <div class="cart-delete">
+                                    <a href="/delete-product/<%= item.cart_id %>" class="delete-product">
+                                      <span><i class="fa-regular fa-circle-xmark"></i></span>
+                                    </a>
+                                  </div>
+                                  <div class="cart-image">
+                                    <img src="../product_images/<%=item.product_main_image %>" class="cart-img"
+                                      alt="" />
+                                  </div>
+
+                                  <div class="pro-cart-contents">
+                                    <div class="pro-cart-title">
+                                      <h3>
+                                        <%= item.product_name %>
+                                      </h3>
+                                    </div>
+                                    <div class="product-size-list">
+                                      <p style="color: #ff2020;font-size: 13px;">Currently Out Of Stock</p>
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <input type="hidden" name="products[<%=index%>][productId]"
+                                value="<%= item.product_id %>" />
+                              <input type="hidden" name="products[<%=index%>][price]"
+                                value="<%= item.product_price %>" />
+                              <div class="cart-td position-relative">
+                                <div class="pro-cart-price">
+                                  <h5>
+                                    <span class="mrp-price">£<%=item.product_price %></span>
+                                    <span class="final-prices">£<%= (item.product_price * (1 - (item.discount_on_product
+                                        / 100))).toFixed(2) %></span>
+                                    <span class="discount-text">(<%=item.discount_on_product %>% OFF )</span>
+                                  </h5>
+                                  <div class="move-to-wishlist">
+                                    <a href="/move-to-wishlist/<%= item.cart_id %>">Move To Wishlist</a>
+                                  </div>
+                                </div>
+                                <div class="move-to-wishlist d-none">
+                                  <a href="/move-to-wishlist/<%= item.cart_id %>">Move To Wishlist</a>
+                                </div>
+                              </div>
+                            </div>
+                            <% }); %>
+                        </div>
+                        <% } %>
                     </div>
                   </div>
                 </div>
@@ -252,11 +391,7 @@
                       <h4>Order Summary</h4>
                     </div>
                     <div class="promo-code-wrap">
-                      <input
-                        type="text"
-                        class="promo-input"
-                        placeholder="Promo Code"
-                      />
+                      <input type="text" class="promo-input" placeholder="Promo Code" />
                       <button type="submit" class="apply-btn" name="submit">
                         Apply
                       </button>
@@ -268,7 +403,9 @@
                           <div class="alfa-text">Total MRP</div>
                           <div class="alfa-price">
                             £
-                            <span id="totalPrice-ajax"><%= totalPrice %></span>
+                            <span id="totalPrice-ajax">
+                              <%= totalPrice %>
+                            </span>
                           </div>
                         </li>
 
@@ -276,30 +413,43 @@
                           <div class="alfa-text">Discount on MRP</div>
                           <div class="alfa-price">
                             - £
-                            <span id="totalDiscount-ajax"
-                              ><%= totalDiscount %></span
-                            >
+                            <span id="totalDiscount-ajax">
+                              <%= totalDiscount %>
+                            </span>
                           </div>
                         </li>
 
                         <li>
                           <div class="alfa-text">Sub Total</div>
                           <div class="alfa-price">
-                            <span id="subtotal-ajax"><%=subtotal%></span>
+                            <span id="subtotal-ajax">
+                              <%=subtotal%>
+                            </span>
                           </div>
                         </li>
 
                         <li>
                           <div class="alfa-text">VAT</div>
                           <div class="alfa-price">
-                            £ <span id="GST-ajax"><%= GST %></span>
+                            £ <span id="GST-ajax">
+                              <%= GST %>
+                            </span>
                           </div>
                         </li>
                         <li>
                           <div class="alfa-text">Delivery Fee</div>
                           <div class="alfa-price">
                             £
-                            <span id="Delivery-ajax"><%= deliveryFee %></span>
+                            <% if (cartItemsInStock.length> 0) { %>
+                              <span id="Delivery-ajax">
+                                <%= deliveryFee %>
+                              </span>
+                              <% } else { %>
+                                <span id="Delivery-ajax">
+                                  0
+                                </span>
+                                <% } %>
+                                  <!-- <span id="Delivery-ajax"><%= deliveryFee %></span> -->
                           </div>
                         </li>
                       </ul>
@@ -311,45 +461,38 @@
                           <div class="alfa-text">Total Cost</div>
                           <div class="alfa-price">
                             £
-                            <span id="totalCost-ajax"><%= totalCost %></span>
+
+                            <% if (cartItemsInStock.length> 0) { %>
+                              <span id="totalCost-ajax">
+                                <%= totalCost %>
+                              </span>
+                              <% } else { %>
+                                <span id="totalCost-ajax">
+                                  0
+                                </span>
+                                <% } %>
                           </div>
                         </li>
                       </ul>
                     </div>
                     <hr />
-                    <input
-                      type="hidden"
-                      name="subtotal"
-                      value="<%= totalPrice %>"
-                    />
+                    <input type="hidden" name="subtotal" value="<%= totalPrice %>" />
 
-                    <input
-                      type="hidden"
-                      name="discount"
-                      value="<%=totalDiscount   %>"
-                    />
+                    <input type="hidden" name="discount" value="<%=totalDiscount   %>" />
                     <input type="hidden" name="vat" value="<%= GST %>" />
-                    <input
-                      type="hidden"
-                      name="deliveryFee"
-                      value="<%= deliveryFee %>"
-                    />
+                    <input type="hidden" name="deliveryFee" value="<%= deliveryFee %>" />
 
-                    <input
-                      type="hidden"
-                      name="totalCost"
-                      value="<%= totalCost %>"
-                    />
+                    <input type="hidden" name="totalCost" value="<%= totalCost %>" />
                     <div class="alfa-checkout-wrapper">
-                      <% if (cartItemsInStock.length > 0) { %>
+                      <% if (cartItemsInStock.length> 0) { %>
                         <button type="button" class="checkout-btn">Proceed to Checkout</button>
-                      <% } else { %>
-                        <button type="button" class="checkout-btn" disabled>No Products Available for Checkout</button>
+                        <% } else { %>
 
-                        <button class="checkout-btn" > <a href="/products">Add Products In Cart </a></button>
-                      <% } %>
+
+                          <button class="checkout-btn"> <a href="/products" class="text-white">Continue
+                              Shopping</a></button>
+                          <% } %>
                     </div>
-                    
                   </div>
                 </div>
               </div>
@@ -361,23 +504,23 @@
       <!-- <%=JSON.stringify(cartItems) %> -->
       <!-- Footer -->
       <%- include('includes/footer') %>
-      <!-- End -->
-    </div>
-    <%- include('includes/foot') %>
-    
+        <!-- End -->
+  </div>
+  <%- include('includes/foot') %>
+
     <script>
-      document.querySelector('.checkout-btn').addEventListener('click', function(event) {
+      document.querySelector('.checkout-btn').addEventListener('click', function (event) {
         // Get all cart items
         const cartItemsInStock = document.querySelectorAll('.cart-tr');
-    
+
         for (const item of cartItemsInStock) {
           // Get the product and cart IDs
           const productQuantityInput = item.querySelector('input[name="product_quantity"]');
           if (!productQuantityInput) continue;
-          
+
           const productId = productQuantityInput.getAttribute('data-product-id');
           const cartId = productQuantityInput.getAttribute('data-cart-id');
-    
+
           // Check if a size is selected for this product
           const selectedSize = document.querySelector(`input[name="selectedSize-${cartId}-${productId}"]:checked`);
           if (!selectedSize) {
@@ -387,11 +530,12 @@
             return;
           }
         }
-        
+
         // If all items have a selected size, proceed to checkout
         window.location.href = '/checkout';
       });
     </script>
-     
-  </body>
+
+</body>
+
 </html>

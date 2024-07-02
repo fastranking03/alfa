@@ -17,7 +17,8 @@ import placeOrderRoute from './routes/placeOrderRoute.js';
 import blogRoute from './routes/admin/blogRoute.js';
 import contentRoute from './routes/admin/contentRoute.js';
 import newProduct from './routes/admin/newProduct.js';
- 
+import accessoriesRoutes from './routes/accessoriesRoutes.js';
+
 import session from "express-session";
 import slugify from "slugify";
 import { fileURLToPath } from "url";
@@ -46,6 +47,7 @@ app.use(async (req, res, next) => {
   try {
     const [categories] = await connect.query("SELECT * FROM category");
     const [contentArray] = await connect.query("SELECT * FROM alfa_content");
+    const [accessories] = await connect.query("SELECT * FROM accessories");
 
     if (!req.session.user) {
       if (!req.session.cart) {
@@ -65,8 +67,9 @@ app.use(async (req, res, next) => {
     res.locals.user = req.session.user;
     res.locals.alfa_team = req.session.alfa_team;
 
-    res.locals.categories = categories; // Make categories available globally
-    res.locals.content = contentArray[0]; // Assign the first (and only) row of content  
+    res.locals.categories = categories;
+    res.locals.accessories = accessories;
+    res.locals.content = contentArray[0];
     next();
   } catch (error) {
     console.error("Error fetching data:", error);
@@ -97,15 +100,16 @@ app.use("/", favoritesRoute);
 app.use("/", cartRoute);
 app.use("/", placeOrderRoute);
 app.use("/category/", CategoryRoutes);
+app.use("/accessory/", accessoriesRoutes);
 
 function isAdminOrStaffAndActive(req, res, next) {
-  if (req.session.alfa_team) { 
+  if (req.session.alfa_team) {
     if ((req.session.alfa_team.role === 'admin' || req.session.alfa_team.role === 'staff') && req.session.alfa_team.current_status === 'active') {
       return next();
     }
   }
   return res.redirect("/alfa-login");
-} 
+}
 
 app.use("/admin/", isAdminOrStaffAndActive);;
 
@@ -149,7 +153,7 @@ app.get('/my-profile', async (req, res) => {
     res.status(500).json({ error: "Failed to fetch user details" });
   }
 });
- 
+
 app.post('/payment', (req, res) => {
   let { cartItemscheckoutpage, total_mrp, discount_on_mrp, subtotal, vat, delivery_charges, total_payable, selectedAddress } = req.body;
   cartItemscheckoutpage = JSON.parse(cartItemscheckoutpage);

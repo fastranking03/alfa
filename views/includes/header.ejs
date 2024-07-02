@@ -2,32 +2,38 @@
     <header class="header">
         <div class="header-container">
             <div class="left-header-wrapper">
-                 <div class="alfa-navbar">
+                <div class="alfa-navbar">
                     <ul>
                         <li><a href="/" class="nav-item active">Home</a></li>
                         <li><a href="/about-us" class="nav-item">About Us</a></li>
                         <li><a href="/blogs" class="nav-item">Blogs</a></li>
-                         <li class="position-relative alfa-menu-li">
-                            <a href="/product" class="nav-item">Shop <span class="icon-rotate"><i class="fa-solid fa-angle-down"></i></span></a>
-                            <div class="dropdown-menu-wrapper">
-                                <ul>
-                                    <% categories.forEach(category => { %>
-                                        <li><a href="/category/<%= category.category_name %>" class="menu-item"><%= category.category_name %></a></li>
-                                    <% }); %>
-                                </ul>
-                            </div>
-                          </li>
                         <li class="position-relative alfa-menu-li">
-                            <a href="/accessories" class="nav-item">Accessories <span class="icon-rotate"><i class="fa-solid fa-angle-down"></i></span></a>
+                            <a href="/product" class="nav-item">Shop <span class="icon-rotate"><i
+                                        class="fa-solid fa-angle-down"></i></span></a>
                             <div class="dropdown-menu-wrapper">
                                 <ul>
-                                    <li><a href="/accessories" class="menu-item">Belts</a></li>
-                                    <li><a href="/accessories"  class="menu-item">Wallets</a></li>
-                                    <li><a href="/accessories"  class="menu-item">Shoes</a></li>
+                                    <% categories.filter(category=> !category.isAccessories).forEach(category => { %>
+                                        <li><a href="/category/<%= category.category_name %>" class="menu-item">
+                                                <%= category.category_name %>
+                                            </a></li>
+                                        <% }); %>
                                 </ul>
                             </div>
                         </li>
-                        
+                        <li class="position-relative alfa-menu-li">
+                            <a href="/accessories" class="nav-item">Accessories <span class="icon-rotate"><i
+                                        class="fa-solid fa-angle-down"></i></span></a>
+                            <div class="dropdown-menu-wrapper">
+                                <ul>
+                                    <% categories.filter(category=> category.isAccessories).forEach(category => { %>
+                                        <li><a href="/category/<%= category.category_name %>" class="menu-item">
+                                                <%= category.category_name %>
+                                            </a></li>
+                                        <% }); %>
+                                </ul>
+                            </div>
+                        </li>
+
                     </ul>
                 </div>
             </div>
@@ -73,7 +79,7 @@
                                 </div>
                                 <div class="user-pro-links">
                                     <ul>
-                                        <li><a href="/my-orders">Orders</a></li> 
+                                        <li><a href="/my-orders">Orders</a></li>
                                         <li><a href="/my-wishlist">Wishlist</a></li>
                                         <li><a href="/my-profile">My Profile</a></li>
                                         <li><a href="">Contact Us</a></li>
@@ -85,8 +91,8 @@
                             <a href="my-wishlist">
                                 <div class="alfa-icon-flex position-relative">
                                     <img src="assets/images/heart.png" width="100%" alt="" />
-                                    <span class="product-count count-text" style="right: 5px;"> 
-                                        <%= session.wishlistCount  !== undefined ? session.wishlistCount  : 'null' %>
+                                    <span class="product-count count-text" style="right: 5px;">
+                                        <%= session.wishlistCount !==undefined ? session.wishlistCount : 'null' %>
                                     </span>
                                     <span>Wishlist</span>
                                 </div>
@@ -98,12 +104,12 @@
                                 <div class="alfa-icon-flex position-relative">
                                     <img src="assets/images/cart.png" width="100%" alt="" />
                                     <span class="product-count">
-                                        <%= session.cartCount !== undefined ? session.cartCount : 'null' %>
+                                        <%= session.cartCount !==undefined ? session.cartCount : 'null' %>
                                     </span>
                                     <span>Cart</span>
                                 </div>
                             </a>
-                        </li> 
+                        </li>
                 </div>
             </div>
         </div>
@@ -134,7 +140,7 @@
                                                     <% } %>
                                                         <p>To access account and manage orders</p>
                                             </div>
-    
+
                                             <div class="profile-login-signup">
                                                 <% if (user) { %>
                                                     <a href="/logout">Logout</a>
@@ -148,7 +154,7 @@
                                     </div>
                                     <div class="user-pro-links">
                                         <ul>
-                                            <li><a href="/my-orders">Orders</a></li> 
+                                            <li><a href="/my-orders">Orders</a></li>
                                             <li><a href="/my-wishlist">Wishlist</a></li>
                                             <li><a href="/my-profile">My Profile</a></li>
                                             <li><a href="">Contact Us</a></li>
@@ -185,7 +191,8 @@
     </div>
 </div>
 <!-- Mobile Navbar -->
-<div class="offcanvas sidebar-offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
+<div class="offcanvas sidebar-offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample"
+    aria-labelledby="offcanvasExampleLabel">
     <div class="offcanvas-header">
         <h5 class="offcanvas-title" id="offcanvasExampleLabel"><img src="assets/images/alfa-logo.png" width="50px"
                 alt=""></h5>
@@ -197,46 +204,52 @@
                 <li><a href="/" class="m-item">Home</a></li>
                 <li><a href="/about-us" class="m-item">About Us</a></li>
                 <li><a href="/blogs" class="m-item">Blogs</a></li>
-                 <li class="position-relative alfa-menu-lis" style="color: #000;">
-                    <a class="nav-item m-item">Shop <span class="icon-rotate"><i class="fa-solid fa-angle-down"></i></span></a>
+                <li class="position-relative alfa-menu-lis" style="color: #000;">
+                    <a class="nav-item m-item">Shop <span class="icon-rotate"><i
+                                class="fa-solid fa-angle-down"></i></span></a>
                     <div class="dropdown-menu-wrappers">
                         <ul>
-                            <% categories.forEach(category => { %>
-                                <li><a href="/category/<%= category.category_name %>" class="menu-item "><%= category.category_name %> <span><i class="fa-solid fa-arrow-right"></i></span></a></li>
-                            <% }); %>
+                            <% categories.forEach(category=> { %>
+                                <li><a href="/category/<%= category.category_name %>" class="menu-item ">
+                                        <%= category.category_name %> <span><i
+                                                    class="fa-solid fa-arrow-right"></i></span>
+                                    </a></li>
+                                <% }); %>
                         </ul>
                     </div>
-                  </li>
-                  <li class="position-relative alfa-menu-lis" style="color: #000;">
-                    <a class="nav-item m-item">Accessories <span class="icon-rotate"><i class="fa-solid fa-angle-down"></i></span></a>
+                </li>
+                <li class="position-relative alfa-menu-lis" style="color: #000;">
+                    <a class="nav-item m-item">Accessories <span class="icon-rotate"><i
+                                class="fa-solid fa-angle-down"></i></span></a>
                     <div class="dropdown-menu-wrappers">
                         <ul>
-                            <li><a href="/accessories" class="menu-item">Belts <span><i class="fa-solid fa-arrow-right"></i></span></a></li>
-                            <li><a href="/accessories"  class="menu-item">Wallets <span><i class="fa-solid fa-arrow-right"></i></span></a></li>
-                            <li><a href="/accessories"  class="menu-item">Shoes <span><i class="fa-solid fa-arrow-right"></i></span></a></li>
+                            <% accessories.forEach(accessory=> { %>
+                                <li><a href="/accessory/<%= accessory.accessory_name %>">
+                                        <%= accessory.accessory_name%>
+                                    </a></li>
+                                <% }); %>
                         </ul>
                     </div>
-                  </li>
-                  
+                </li>
+
                 <li><a href="/contact-us" class="m-item">Contact Us</a></li>
             </ul>
         </div>
     </div>
 </div>
- 
+
 <script>
     var onClickProfile = document.getElementById("onClickProfiles");
     var openProfileCards = document.getElementById("openProfileCards");
     var cardOpen = true
-    onClickProfile.addEventListener("click",function(){
-        if(cardOpen){
+    onClickProfile.addEventListener("click", function () {
+        if (cardOpen) {
             openProfileCards.style.display = "block";
             cardOpen = false
         }
-        else{
+        else {
             cardOpen = true
             openProfileCards.style.display = "none";
-         }
+        }
     })
 </script>
- 

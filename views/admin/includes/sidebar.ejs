@@ -39,21 +39,23 @@
 
           </li>
           <li class="menu-item-has-children">
-            <a href="#" style="cursor: pointer;">
+            <a style="cursor: pointer;">
               <div class="admin-submenu">
                 <div><span> <i class="fa-solid fa-table"></i></span> Accessories </div>
                 <span><i class="fa-solid fa-angle-down"></i></span>
               </div>
             </a>
             <ul class="sub-menu alfa-sub-menu">
-              <li><a href="/admin/">Shoes</a></li>
-              <li><a href="/admin/">Belts</a></li>
-              <li><a href="/admin/">Wallets</a></li>
+              <% accessories.forEach(accessory=> { %>
+                <li><a href="/admin/add-product/<%= accessory.accessory_name %>">
+                    <%= accessory.accessory_name %>
+                  </a></li>
+                <% }); %>
             </ul>
           </li>
-          <li class="menu-item-has-children">
 
-            <a href="javascript:void(0)" style="cursor: pointer;">
+          <li class="menu-item-has-children">
+            <a style="cursor: pointer;">
               <div class="admin-submenu">
                 <div><span> <i class="fa-solid fa-table"></i></span> Inventory </div>
                 <span><i class="fa-solid fa-angle-down"></i></span>
@@ -66,6 +68,7 @@
             </ul>
 
           </li>
+
           <li><a href="/admin/orders"> <span><i class="fa-solid fa-folder"></i></span> Order List</a></li>
           <li class="menu-item-has-children">
             <a style="cursor: pointer;">

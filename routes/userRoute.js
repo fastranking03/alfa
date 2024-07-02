@@ -399,10 +399,10 @@ router.get("/logout", (req, res) => {
     res.redirect("/login");
   });
 });
- 
+
 
 router.get("/alfa-login", (req, res) => {
-   return res.render("alfa-login");
+  return res.render("alfa-login");
 });
 
 
@@ -418,23 +418,23 @@ router.post("/alfa-login", async (req, res) => {
 
     // Check if user exists
     if (user.length === 0) {
-      return res.render("login", { error: "Email is not registered." });
+      return res.render("alfa-login", { error: "Email is not registered." });
     }
     else if (password == user[0].password) {
       req.session.alfa_team = user[0];
     } else {
-      return res.render("login", { error: "Invalid Email or Password" });
+      return res.render("alfa-login", { error: "Invalid Email or Password" });
     }
- 
-    if ( user[0].current_status === "active") {
+
+    if (user[0].current_status === "active") {
       return res.redirect("/admin");
-    }else{
+    } else {
       return res.redirect('/alfa-login');
     }
- 
+
   } catch (error) {
     console.error("Error logging in:", error);
-    res.render("login", { error: "Error in login" });
+    res.render("alfa-login", { error: "Error in login" });
   }
 });
 export default router;
