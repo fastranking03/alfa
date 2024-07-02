@@ -133,12 +133,13 @@ router.get("/delete-from-wishlist/:favoriteId", async (req, res) => {
 // Route for the product page
 router.post("/place-order", async (req, res) => {
   const user = req.session.user;
-  const userId = user ? user.id : null;
 
   if (!user) {
     return res.redirect("/login"); // Redirect to the login page if the user is not logged in
   }
 
+  const userId = user ? user.id : null;
+  const userName = user.name;
   const {
     cartItemscheckoutpage,
     total_mrp,
@@ -171,12 +172,13 @@ router.post("/place-order", async (req, res) => {
 
     // Insert new order
     const insertOrderQuery = `
-      INSERT INTO orders (order_id, user_id, total_payable, vat, delivery_charges, sub_total, total_mrp, discount_amount, address_id) 
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+      INSERT INTO orders (order_id, user_id, user_name , total_payable, vat, delivery_charges, sub_total, total_mrp, discount_amount, address_id) 
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
     const insertOrderValues = [
       newOrderId,
       userId,
+      userName,
       parseFloat(total_payable),
       parseFloat(vat),
       parseFloat(deliveryFee),
@@ -199,11 +201,13 @@ router.post("/place-order", async (req, res) => {
     for (const product of parsedCartItems) {
       const product_type = product.wear_type_bottom_or_top;
       const insertOrderItemQuery = `
-        INSERT INTO order_items (order_id, product_id, quantity, price, discount_on_product	, size, colour) 
-        VALUES (?, ?, ?, ?, ?, ?, ?)
+        INSERT INTO order_items (order_id, user_id ,user_name , product_id, quantity, price, discount_on_product	, size, colour ) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
       `;
       const insertOrderItemValues = [
         newOrderId,
+        userId,
+        userName,
         product.product_id,
         product.quantity,
         parseFloat(product.product_price),
@@ -1614,10 +1618,14 @@ router.get("/my-orders", async (req, res) => {
 });
 
 router.get("/order-detail/:orderId", async (req, res) => {
-  const { orderId } = req.params;
   const user = req.session.user;
-  const userId = user.id;
+  if (!user) {
+    return res.redirect("/login");
+  }
 
+  const { orderId } = req.params;
+
+  const userId = user.id;
   try {
     const [orderRows] = await connect.query(
       "SELECT * FROM orders WHERE order_id = ? AND user_id = ?",
@@ -1886,7 +1894,7 @@ router.get("/return-order/:orderId", async (req, res) => {
   }
 });
 
-router.get('/privacy-policy', (req ,res) =>{
+router.get('/privacy-policy', (req, res) => {
   return res.render("privacy-policy")
 })
 export default router;
