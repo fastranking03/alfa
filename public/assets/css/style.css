@@ -1817,6 +1817,9 @@ a {
     align-items: center;
     gap: 15px;
 }
+.check-item-right{
+  text-align: right;
+}
 .checkout-cont h4{
   font-size: 17px;
   margin: 0;

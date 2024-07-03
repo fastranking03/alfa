@@ -156,7 +156,7 @@
                             </div>
                             <div class="check-item-right">
                               <div class="review-btn-wrap">
-                                <a href="" data-bs-toggle="modal" data-bs-target="#writeReview">Write Review</a>
+                                <a href="" data-bs-toggle="modal" data-bs-target="#writeReview<%=item.id %>">Write Review</a>
                               </div>
                               <div class="check-price">
                                 <h3>£ <%=item.price %>
@@ -165,12 +165,13 @@
                             </div>
                           </div>
                         </div>
+                        <form action="" method="post">                         
                           <!-- Review Add Model -->
-                          <div class="modal" id="writeReview" data-bs-backdrop="static"  data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                          <div class="modal" id="writeReview<%=item.id %>" data-bs-backdrop="static"  data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
                             <div class="modal-dialog modal-dialog-centered">
                                 <div class="modal-content">
                                     <div class="modal-header">
-                                        <h5 class="modal-title review-title" id="staticBackdropLabel">Write  Review</h5>
+                                        <h5 class="modal-title review-title" id="staticBackdropLabel">Write Review</h5>
                                         <button type="button" class="btn-closes" data-bs-dismiss="modal" aria-label="Close"><i class="fa-solid fa-xmark"></i></button>
                                     </div>
                                     <div class="modal-body">
@@ -181,7 +182,7 @@
                                             <div class="cart-td">
                                                 <div class="cart-items-left" style="align-items: start;">
                                                      <div class="cart-image">
-                                                        <img src="../product_images/s.webp"  class="review-pro-img" alt="">
+                                                        <img src="./product_images/<%=item.product_main_image %>"  class="review-pro-img" alt="">
                                                     </div>
                                                     <div class="pro-cart-contents">
                                                         <div class="pro-cart-title">
@@ -260,7 +261,9 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                         </div>
+                        </form>
+ 
                         <% }); %>
                     </div>
                     <div class="alfa-cart-total">
