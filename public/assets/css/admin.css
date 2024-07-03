@@ -800,3 +800,12 @@
    height: 100px;
    object-fit: contain;
  }
+ .product-rating{
+   display: flex;
+   align-items: center;
+ }
+ .product-rating h6{
+    margin: 0;
+    font-size: 15px;
+    font-weight: 600;
+ }

@@ -58,25 +58,7 @@
         /* Black border */
       }
 
-      .comman-message .message-alert h6 {
-        position: fixed;
-        z-index: 10000;
-        top: 75px;
-        right: 10px;
-        background: #005d67;
-        color: #fff;
-        height: 40px;
-        padding: 10px 12px;
-        display: none;
-        opacity: 0;
-        font-weight: 400;
-        transition: right 0.5s ease, opacity 0.5s ease;
-      }
-
-      .comman-message .message-alert h6.show {
-        display: none;
-        animation: slideInRight 0.5s forwards;
-      }
+     
     </style>
 </head>
 </head>
@@ -84,7 +66,7 @@
 <body>
   <div class="comman-message">
     <div class="message-alert">
-      <h6 class="show" id="productAddedInCart"></h6>
+      <h6 class="showss" id="productAddedInCart"></h6>
     </div>
   </div>
   <!-- Loader -->
@@ -564,13 +546,15 @@
             }
           });
         </script>
-
+ 
+ 
         <!-- End -->
         <script>
           // Add event listener to the "Add to Favorites" button
           document.addEventListener("DOMContentLoaded", function () {
-            const addToFavoritesButtons =
-              document.querySelectorAll(".add-to-favorites");
+            const addToFavoritesButtons = document.querySelectorAll(".add-to-favorites");
+
+            var cartMessage = document.getElementById("productAddedInCart");
 
             addToFavoritesButtons.forEach((button) => {
               button.addEventListener("click", function () {
@@ -593,8 +577,12 @@
                   .then((data) => {
                     if (data.success) {
                       // Show popup alert
-                      alert(data.message);
-
+                        cartMessage.textContent = data.message;
+                        cartMessage.style.display = "block";
+                        setTimeout(() => {
+                          cartMessage.style.display = "none"
+                        }, 4000)
+ 
                       // Update wishlist count in the span
                       const wishlistLi = document.querySelector("#wishlist");
                       if (wishlistLi) {
@@ -605,7 +593,12 @@
                         }
                       }
                     } else {
-                      alert(data.message);
+                      cartMessage.textContent = data.message;
+                        cartMessage.style.display = "block";
+                        setTimeout(() => {
+                          cartMessage.style.display = "none"
+                        }, 4000)
+                      
                     }
                   })
                   .catch((error) => {

@@ -126,8 +126,8 @@
     cursor: not-allowed;
   }
 </style>
-
-<body>
+ <body>
+  
   <!-- Loader -->
   <div class="page-loader" id="loader">
     <div class="spinner">
@@ -217,21 +217,13 @@
                   </div>
                   <div class="price-review-warapper">
                     <div class="product-rating">
-                      <%=averageRating %>
-                        <ul>
-                          <li>
-                            <a href=""><span class="alfa-start"><i class="fa-solid fa-star"></i></span></a>
-                            <a href=""><span class="alfa-start"><i class="fa-solid fa-star"></i></span></a>
-                            <a href=""><span class="alfa-start"><i class="fa-solid fa-star"></i></span></a>
-                            <a href=""><span class="alfa-start"><i class="fa-solid fa-star"></i></span></a>
-                            <a href=""><span class="alfa-start"><i class="fa-solid fa-star"></i></span></a>
-                            <div class="border-width"></div>
-                            <span class="review-count">
-                              <%=totalReviews %> Customer Review
-                            </span>
-                          </li>
-                        </ul>
-                    </div>
+                      <h6>
+                        <%= (averageRating !==undefined && averageRating !==null) ? Number(averageRating).toFixed(2) : 'N/A' %>
+                        <span class="alfa-start"><i class="fa-solid fa-star"></i></span>
+                      </h6>
+                        <div class="border-width"></div>
+                        <span class="review-count"> <%=totalReviews %> Customer Review </span>
+                     </div>
                     <div class="product--price">
                       <h5>
                         <span class="final-prices fn-price">£<%=(product.product_price * (1 -
@@ -657,7 +649,7 @@
               const selectedSize = productForm.querySelector('input[name="selectedSize"]:checked');
               if (!selectedSize) {
                 alert("Please select a size.");
-                return; // Stop execution if no size is selected
+                return;
               }
             }
 
