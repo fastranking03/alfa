@@ -6,23 +6,6 @@ import path from 'path';
 
 const router = express.Router();
 
-// Function to delete all files in a directory
-const deleteFilesInDirectory = (directory) => {
-  if (fs.existsSync(directory)) {
-    fs.readdirSync(directory).forEach(file => {
-      const filePath = path.join(directory, file);
-      try {
-        fs.unlinkSync(filePath);
-        console.log(`Deleted file: ${filePath}`);
-      } catch (error) {
-        console.error(`Error deleting file ${filePath}:`, error);
-      }
-    });
-  } else {
-    fs.mkdirSync(directory, { recursive: true });
-  }
-};
-
 router.get('/', (req, res) => {
   res.render("admin/index");
 });
@@ -90,7 +73,7 @@ router.get('/master-analysis', async (req, res) => {
       newUsersThisMonth,
       newUsersThisWeek,
       newUsersToday,
-      totalRepeatedCustomers, 
+      totalRepeatedCustomers,
       vatamount,
     });
   } catch (error) {
@@ -148,7 +131,7 @@ router.post("/update-about-us", upload.fields([
     if (req.files['ceo_image'] && req.files['ceo_image'][0]) {
       ceo_image_update = req.files['ceo_image'][0].filename;
     }
- 
+
     const mission_image = req.files['mission_image'] ? req.files['mission_image'][0].filename : null;
     const expertise1_image = req.files['expertise1_image'] ? req.files['expertise1_image'][0].filename : null;
     const expertise2_image = req.files['expertise2_image'] ? req.files['expertise2_image'][0].filename : null;
@@ -184,7 +167,7 @@ router.post("/update-about-us", upload.fields([
       expertise3_image_update,
       ceo_image_update
     ];
-    
+
     await connect.query(updateQuery, values);
     console.log("About Us data updated successfully");
     res.redirect("/admin/about-content");
