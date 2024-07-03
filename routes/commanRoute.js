@@ -444,7 +444,7 @@ router.get("/product-detail/:id", async (req, res) => {
        WHERE product_id = ? AND isReviewed = 1`,
       [productId]
     );
-
+    // comtent
     const totalReviews = reviewSummary[0].total_reviews;
     const averageRating = reviewSummary[0].average_rating;
 
