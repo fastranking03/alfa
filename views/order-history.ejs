@@ -7,7 +7,7 @@
     <title>Alfa Meanswear | My Cart</title>
     <%- include('includes/head') %>
 </head>
- 
+
 
 <body>
     <div class="alfa-main-wraper">
@@ -42,7 +42,9 @@
                                                                                     <div class="order-id">
                                                                                         <a
                                                                                             href="order-detail?orderId=<%= order.order_id %>">
-                                                                                            <span class="idtxt">Order  ID:</span> <%= order.order_id %>
+                                                                                            <span class="idtxt">Order
+                                                                                                ID:</span>
+                                                                                            <%= order.order_id %>
                                                                                         </a>
                                                                                     </div>
                                                                                     <h6>
@@ -68,15 +70,15 @@
                                                                                 </div>
                                                                             </div>
                                                                             <% } %>
-                                                                        <div class="history-links">
-                                                                            <a
-                                                                                href="/order-detail/<%= order.order_id %>">Order
-                                                                                Detail</a>
-                                                                            <span>|</span>
-                                                                            <a href="">Buy again</a>
-                                                                        </div>
-                                                          </div>
-                                                                
+                                                                                <div class="history-links">
+                                                                                    <a
+                                                                                        href="/order-detail/<%= order.order_id %>">Order
+                                                                                        Detail</a>
+                                                                                    <span>|</span>
+                                                                                    <a href="">Buy again</a>
+                                                                                </div>
+                                                                </div>
+
                                                             </div>
                                                         </div>
                                                         <% }) %>

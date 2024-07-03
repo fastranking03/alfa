@@ -126,8 +126,8 @@
     cursor: not-allowed;
   }
 </style>
-
-<body>
+ <body>
+  
   <!-- Loader -->
   <div class="page-loader" id="loader">
     <div class="spinner">
@@ -215,18 +215,13 @@
                   </div>
                   <div class="price-review-warapper">
                     <div class="product-rating">
-                      <ul>
-                        <li>
-                          <a href=""><span class="alfa-start"><i class="fa-solid fa-star"></i></span></a>
-                          <a href=""><span class="alfa-start"><i class="fa-solid fa-star"></i></span></a>
-                          <a href=""><span class="alfa-start"><i class="fa-solid fa-star"></i></span></a>
-                          <a href=""><span class="alfa-start"><i class="fa-solid fa-star"></i></span></a>
-                          <a href=""><span class="alfa-start"><i class="fa-solid fa-star"></i></span></a>
-                          <div class="border-width"></div>
-                          <span class="review-count"> 10 Customer Review</span>
-                        </li>
-                      </ul>
-                    </div>
+                      <h6>
+                        <%= (averageRating !==undefined && averageRating !==null) ? Number(averageRating).toFixed(2) : 'N/A' %>
+                        <span class="alfa-start"><i class="fa-solid fa-star"></i></span>
+                      </h6>
+                        <div class="border-width"></div>
+                        <span class="review-count"> <%=totalReviews %> Customer Review </span>
+                     </div>
                     <div class="product--price">
                       <h5>
                         <span class="final-prices fn-price">£<%=(product.product_price * (1 -
@@ -237,6 +232,7 @@
                       </h5>
                     </div>
                   </div>
+
                   <div class="product-color-list product--color">
                     <div class="pro--text">
                       <h6 style="color: #9f9f9f; font-size: 13px">
@@ -399,18 +395,16 @@
               <div class="accordion-items">
                 <div class="accordion-item-header">Product Information</div>
                 <div class="accordion-item-body">
-                  <div class="accordion-item-body-content">content Pending</div>
+                  <div class="accordion-item-body-content">
+                    <%= product.product_information %>
+                  </div>
                 </div>
               </div>
               <div class="accordion-items">
                 <div class="accordion-item-header">Shipping Information</div>
                 <div class="accordion-item-body">
                   <div class="accordion-item-body-content">
-                    Web Development broadly refers to the tasks associated with
-                    developing functional websites and applications for the
-                    Internet. The web development process includes web design,
-                    web content development, client-side/server-side scripting
-                    and network security configuration, among other tasks.
+                    <%= product.shipping_information %>
                   </div>
                 </div>
               </div>
@@ -418,11 +412,7 @@
                 <div class="accordion-item-header">Return Policy</div>
                 <div class="accordion-item-body">
                   <div class="accordion-item-body-content">
-                    Web Development broadly refers to the tasks associated with
-                    developing functional websites and applications for the
-                    Internet. The web development process includes web design,
-                    web content development, client-side/server-side scripting
-                    and network security configuration, among other tasks.
+                    <%= product.return_policy %>
                   </div>
                 </div>
               </div>
@@ -440,9 +430,13 @@
                 <div class="review-rating-wrapper">
                   <div class="rating-count">
                     <div class="total-rating">
-                      <h4>4.1K <span class="review-span count-str"><i class="fa-solid fa-star count-start"></i></span>
+                      <h4>
+                        <%=totalReviews %> <span class="review-span count-str"><i
+                              class="fa-solid fa-star count-start"></i></span>
                       </h4>
-                      <p>1.1k Verified Buyers</p>
+                      <p>
+                        <%=totalReviews %>  Verified Buyers
+                      </p>
                     </div>
                   </div>
                   <div class="review-rating-progress">
@@ -454,7 +448,9 @@
                         </div>
                       </div>
                       <div class="total-idivitual-review">
-                        <span>200</span>
+                        <span>
+                          <%= reviewCountMap[5] %>
+                        </span>
                       </div>
                     </div>
                     <div class="rating-count-ravegrage">
@@ -465,7 +461,9 @@
                         </div>
                       </div>
                       <div class="total-idivitual-review">
-                        <span>340</span>
+                        <span>
+                          <%= reviewCountMap[4] %>
+                        </span>
                       </div>
                     </div>
                     <div class="rating-count-ravegrage">
@@ -476,7 +474,9 @@
                         </div>
                       </div>
                       <div class="total-idivitual-review">
-                        <span>150</span>
+                        <span>
+                          <%= reviewCountMap[3] %>
+                        </span>
                       </div>
                     </div>
                     <div class="rating-count-ravegrage">
@@ -487,18 +487,22 @@
                         </div>
                       </div>
                       <div class="total-idivitual-review">
-                        <span>100</span>
+                        <span>
+                          <%= reviewCountMap[2] %>
+                        </span>
                       </div>
                     </div>
                     <div class="rating-count-ravegrage">
-                      <div class="rate_and_start">1 <span><i class="fa-solid fa-star pro-start"></i></span></div>
+                      <div class="rate_and_start">1 <spawn><i class="fa-solid fa-star pro-start"></i></span></div>
                       <div class="rating-progress">
                         <div class="rating-bar" style="width:10%">
                           <p class="rating-percent"></p>
                         </div>
                       </div>
                       <div class="total-idivitual-review">
-                        <span>55</span>
+                        <span>
+                          <%= reviewCountMap[1] %>
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -506,84 +510,46 @@
                 <hr>
                 <div class="review-content-wrapper">
                   <div class="review-content-head">
-                    <h4>Customer Reviews (113)</h4>
+                    <h4>Customer Reviews ( <%=totalReviews %>)</h4>
                   </div>
                   <div class="rivew-row mt-3">
-                    <div class="review-box">
+                    <!-- Display individual reviews -->
+                    <% reviews.forEach(review=> { %>
+                      <div class="review-box">
                         <div class="review-ul">
-                            <ul>
-                               <li><span><i class="fa-solid fa-star review-start"></i></span></li>
-                               <li><span><i class="fa-solid fa-star review-start"></i></span></li>
-                               <li><span><i class="fa-solid fa-star review-start"></i></span></li>
-                               <li><span><i class="fa-solid fa-star review-start"></i></span></li>
-                               <li><span><i class="fa-solid fa-star review-start"></i></span></li>
-                            </ul>
+                          <ul>
+                            <% for (let i=1; i <=5; i++) { %>
+                              <li>
+                                <span><i
+                                    class="fa-solid fa-star review-start <%= i <= review.star_rating ? 'active' : '' %>"></i></span>
+                              </li>
+                              <% } %>
+                          </ul>
                         </div>
-                         <div class="review-cont">
-                          <p>Good polo tshirt Cloth material 9 /10 Fitting 9/10 Colour peach 10/10 One 
-                            should go for one size down for perfect fit Above all nice polo tshirt with 
-                            reasonable price Will be looking for more RR polo in my wardrobe collection.</p>
+                        <div class="review-cont">
+                          <p>
+                            <%= review.review %>
+                          </p>
                         </div>
                         <div class="review-box-foot">
-                           <div class="r-box-left">
-                               <span>Ritesh Dwivedi | 26 Apr 2024</span>
-                           </div>
-                           <div class="r-box-right">
-                              <span><i class="fa-regular fa-thumbs-up"></i> 2</span>
-                              <span class="mr-r"><i class="fa-regular fa-thumbs-down"></i> 2</span>
-                           </div>
+                          <div class="r-box-left">
+                            <span>
+                              <%= review.user_name %> | <%= new Date(review.created_at).toLocaleDateString() %>
+                            </span>
+                          </div>
+                          <div class="r-box-right">
+                            <span><i class="fa-regular fa-thumbs-up"></i>
+                              <%= review.upvotes || 0 %>
+                            </span>
+                            <span class="mr-r"><i class="fa-regular fa-thumbs-down"></i>
+                              <%= review.downvotes || 0 %>
+                            </span>
+                          </div>
                         </div>
-                    </div>
-                    <div class="review-box">
-                      <div class="review-ul">
-                          <ul>
-                             <li><span><i class="fa-solid fa-star review-start"></i></span></li>
-                             <li><span><i class="fa-solid fa-star review-start"></i></span></li>
-                             <li><span><i class="fa-solid fa-star review-start"></i></span></li>
-                             <li><span><i class="fa-solid fa-star review-start"></i></span></li>
-                             <li><span><i class="fa-solid fa-star review-start"></i></span></li>
-                          </ul>
                       </div>
-                       <div class="review-cont">
-                        <p>Good polo tshirt Cloth material 9 /10 Fitting 9/10 Colour peach 10/10 One 
-                          should go for one size down for perfect fit Above all nice polo tshirt with 
-                          reasonable price Will be looking for more RR polo in my wardrobe collection.</p>
-                      </div>
-                      <div class="review-box-foot">
-                         <div class="r-box-left">
-                             <span>Ritesh Dwivedi | 26 Apr 2024</span>
-                         </div>
-                         <div class="r-box-right">
-                            <span><i class="fa-regular fa-thumbs-up"></i> 2</span>
-                            <span class="mr-r"><i class="fa-regular fa-thumbs-down"></i> 2</span>
-                         </div>
-                      </div>
-                  </div>
-                  <div class="review-box">
-                    <div class="review-ul">
-                        <ul>
-                           <li><span><i class="fa-solid fa-star review-start"></i></span></li>
-                           <li><span><i class="fa-solid fa-star review-start"></i></span></li>
-                           <li><span><i class="fa-solid fa-star review-start"></i></span></li>
-                           <li><span><i class="fa-solid fa-star review-start"></i></span></li>
-                           <li><span><i class="fa-solid fa-star review-start"></i></span></li>
-                        </ul>
-                    </div>
-                     <div class="review-cont">
-                      <p>Good polo tshirt Cloth material 9 /10 Fitting 9/10 Colour peach 10/10 One 
-                        should go for one size down for perfect fit Above all nice polo tshirt with 
-                        reasonable price Will be looking for more RR polo in my wardrobe collection.</p>
-                    </div>
-                    <div class="review-box-foot">
-                       <div class="r-box-left">
-                           <span>Ritesh Dwivedi | 26 Apr 2024</span>
-                       </div>
-                       <div class="r-box-right">
-                          <span><i class="fa-regular fa-thumbs-up"></i> 2</span>
-                          <span class="mr-r"><i class="fa-regular fa-thumbs-down"></i> 2</span>
-                       </div>
-                    </div>
-                </div>
+                      <% }) %>
+
+
                   </div>
                 </div>
               </div>
@@ -681,7 +647,7 @@
               const selectedSize = productForm.querySelector('input[name="selectedSize"]:checked');
               if (!selectedSize) {
                 alert("Please select a size.");
-                return; // Stop execution if no size is selected
+                return;
               }
             }
 

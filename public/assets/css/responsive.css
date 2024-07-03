@@ -287,7 +287,10 @@
     .product-item {
         width: 190px;
     }
-
+    .review-rating-wrapper {
+        width: 100%;
+        max-width: 100%;
+    }
     .produt-wrap .pro-img {
         height: 245px;
     }
