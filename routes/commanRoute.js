@@ -433,7 +433,7 @@ router.get("/product-detail/:id", async (req, res) => {
     const [reviews] = await connect.query(
       `SELECT * 
        FROM order_items
-       WHERE product_id = ? AND isReviewed = 1`,
+       WHERE product_id = ? AND isReviewApproved = 1`,
       [productId]
     );
 
@@ -441,7 +441,7 @@ router.get("/product-detail/:id", async (req, res) => {
     const [reviewSummary] = await connect.query(
       `SELECT COUNT(*) as total_reviews, AVG(star_rating) as average_rating
        FROM order_items
-       WHERE product_id = ? AND isReviewed = 1`,
+       WHERE product_id = ? AND isReviewApproved = 1`,
       [productId]
     );
     // comtent
@@ -453,7 +453,7 @@ router.get("/product-detail/:id", async (req, res) => {
     const [reviewCounts] = await connect.query(
       `SELECT star_rating, COUNT(*) as count
        FROM order_items
-       WHERE product_id = ? AND isReviewed = 1
+       WHERE product_id = ? AND isReviewApproved = 1
        GROUP BY star_rating
        ORDER BY star_rating DESC`,
       [productId]
