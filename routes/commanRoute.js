@@ -299,8 +299,10 @@ router.get("/product", async (req, res) => {
   FROM products p
   LEFT JOIN topwear_inventory_with_sizes tw ON p.id = tw.product_id AND p.wear_type_bottom_or_top = 'top'
   LEFT JOIN bottom_wear_inventory_with_sizes bw ON p.id = bw.product_id AND p.wear_type_bottom_or_top = 'bottom'
+  WHERE p.wear_type_bottom_or_top IN ('top', 'bottom')
   GROUP BY p.id;
 `;
+
 
   const querycategoryList = `
       SELECT c.*, COUNT(p.id) AS product_count
@@ -330,6 +332,47 @@ router.get("/product", async (req, res) => {
   }
 });
 
+router.get("/accessories", async (req, res) => {
+
+  const queryProduct = `
+  SELECT p.*,
+    CASE
+      WHEN p.wear_type_bottom_or_top = 'shoes' THEN GROUP_CONCAT(CONCAT_WS(':', '6', sh.size_6, '7', sh.size_7, '8', sh.size_8, '9', sh.size_9, '10', sh.size_10, '11', sh.size_11, '12', sh.size_12, '13', sh.size_13) SEPARATOR ', ')
+      WHEN p.wear_type_bottom_or_top = 'belt' THEN GROUP_CONCAT(CONCAT_WS(':', '28', bt.size_28, '30', bt.size_30, '32', bt.size_32, '34', bt.size_34, '36', bt.size_36, '38', bt.size_38, '40', bt.size_40) SEPARATOR ', ')
+      WHEN p.wear_type_bottom_or_top = 'wallet' THEN GROUP_CONCAT(CONCAT_WS(':', 's', wl.s, 'm', wl.m, 'l', wl.l) SEPARATOR ', ')
+    END AS sizes
+  FROM products p
+  LEFT JOIN shoes_inventory sh ON p.id = sh.product_id AND p.wear_type_bottom_or_top = 'shoes'
+  LEFT JOIN belts_inventory bt ON p.id = bt.product_id AND p.wear_type_bottom_or_top = 'belt'
+  LEFT JOIN wallet_inventory wl ON p.id = wl.product_id AND p.wear_type_bottom_or_top = 'wallet'
+  WHERE p.wear_type_bottom_or_top IN ('shoes', 'belt', 'wallet')
+  GROUP BY p.id;
+`;
+
+  const querycategoryList = `
+      SELECT c.*, COUNT(p.id) AS product_count
+      FROM category c
+      LEFT JOIN products p ON c.id = p.category_id 
+      GROUP BY c.id;
+      `;
+
+  const colorlist = `
+      SELECT * FROM colors;
+      `;
+
+  try {
+    const [categories] = await connect.query(querycategoryList);
+    const [color_list] = await connect.query(colorlist);
+    const [results] = await connect.query(queryProduct);
+    console.log(results);
+    return res.render("accessories", {
+      products: results, categories: categories, color_list: color_list,
+    });
+  } catch (error) {
+    console.error("Database query error:", error);
+    res.status(500).send("Internal Server Error");
+  }
+});
 
 
 router.get("/blogs", async (req, res) => {
@@ -347,17 +390,44 @@ router.get("/blogs", async (req, res) => {
   }
 });
 
+
 router.get("/product-detail/:id", async (req, res) => {
   try {
     const user = req.session.user;
     const productId = req.params.id;
 
-    // Fetch wear type of the product
+
     const [productRows] = await connect.query(
-      "SELECT * FROM products WHERE id = ?",
+      `SELECT 
+          p.*, 
+          c.id AS category_id, 
+          c.category_name 
+       FROM products p 
+       INNER JOIN category c ON p.category_id = c.id  
+       WHERE p.id = ?`,
       [productId]
     );
 
+    if (productRows.length === 0) {
+      await connect.end();
+      return res.status(404).send("Product not found");
+    }
+
+    const product = productRows[0];
+    const wearType = product.wear_type_bottom_or_top;
+    const product_varient_name = product.unique_batch_id;
+
+    // Fetch product images
+    const [product_images] = await connect.query(
+      "SELECT * FROM Product_Images WHERE product_id = ?",
+      [productId]
+    );
+
+    // Fetch related variant products
+    const [variantProducts] = await connect.query(
+      "SELECT * FROM products WHERE unique_batch_id = ?",
+      [product_varient_name]
+    );
 
     // Fetch reviews with all details
     const [reviews] = await connect.query(
@@ -367,8 +437,7 @@ router.get("/product-detail/:id", async (req, res) => {
       [productId]
     );
 
-
-    // Fetch total review count
+    // Fetch total review count and average rating
     const [reviewSummary] = await connect.query(
       `SELECT COUNT(*) as total_reviews, AVG(star_rating) as average_rating
        FROM order_items
@@ -377,11 +446,10 @@ router.get("/product-detail/:id", async (req, res) => {
     );
 
     const totalReviews = reviewSummary[0].total_reviews;
-
     const averageRating = reviewSummary[0].average_rating;
 
 
-    // Fetch review counts
+    // Fetch review counts grouped by star rating
     const [reviewCounts] = await connect.query(
       `SELECT star_rating, COUNT(*) as count
        FROM order_items
@@ -396,47 +464,29 @@ router.get("/product-detail/:id", async (req, res) => {
       4: 0,
       3: 0,
       2: 0,
-      1: 0,
+      1: 0
     };
 
-    // Populate the review count map with actual data
     reviewCounts.forEach(review => {
       reviewCountMap[review.star_rating] = review.count;
     });
 
-
-    if (productRows.length === 0) {
-      return res.status(404).send("Product not found");
-    }
-    const wearType = productRows[0].wear_type_bottom_or_top;
-    const product_varient_name = productRows[0].varient_name;
-
-    const queryVariantProducts = `
-      SELECT * 
-      FROM products 
-      WHERE varient_name = ?;
-    `;
-
-    const [variantProducts] = await connect.query(queryVariantProducts, [
-      product_varient_name,
-    ]);
-
     // Fetch sizes based on wear type
-    let sizeQuery, sizeRows;
+    let sizeQuery;
     if (wearType === "top") {
       sizeQuery = `SELECT xs, s, m, l, xl, xxl, xxxl, xxxxl FROM topwear_inventory_with_sizes WHERE product_id = ?`;
     } else if (wearType === "bottom") {
       sizeQuery = `SELECT size_28, size_30, size_32, size_34, size_36, size_38, size_40, size_42, size_44, size_46 FROM bottom_wear_inventory_with_sizes WHERE product_id = ?`;
     } else if (wearType === "shoes") {
-      sizeQuery = `SELECT size_6 , size_7 , size_8 , size_9 , size_10, size_11 , size_12, size_13  FROM shoes_inventory WHERE product_id = ?`;
+      sizeQuery = `SELECT size_6, size_7, size_8, size_9, size_10, size_11, size_12, size_13 FROM shoes_inventory WHERE product_id = ?`;
     } else if (wearType === "belt") {
-      sizeQuery = `SELECT size_28, size_30, size_32, size_34, size_36, size_38, size_40  FROM belts_inventory WHERE product_id = ?`;
+      sizeQuery = `SELECT size_28, size_30, size_32, size_34, size_36, size_38, size_40 FROM belts_inventory WHERE product_id = ?`;
     } else if (wearType === "wallet") {
       sizeQuery = `SELECT s, m, l FROM wallet_inventory WHERE product_id = ?`;
     }
-    if (sizeQuery) {
-      [sizeRows] = await connect.query(sizeQuery, [productId]);
-    }
+
+    const [sizeRows] = sizeQuery ? await connect.query(sizeQuery, [productId]) : [[]];
+
     const sizes = {};
     if (sizeRows && sizeRows.length > 0) {
       for (const [size, value] of Object.entries(sizeRows[0])) {
@@ -458,31 +508,7 @@ router.get("/product-detail/:id", async (req, res) => {
       }
     }
 
-    const [rows] = await connect.query(
-      `SELECT 
-          p.*,
-          c.id AS category_id,
-          c.category_name,
-          s.id AS subcategory_id,
-          s.sub_category_name
-       FROM products p
-       INNER JOIN category c ON p.category_id = c.id 
-       INNER JOIN sub_category s ON p.subcategory_id = s.id 
-       WHERE p.id = ?`,
-      [productId]
-    );
-
-    if (rows.length === 0) {
-      return res.status(404).send("Product not found");
-    }
-
-    const product = rows[0];
-
-    const [product_images] = await connect.query(
-      "SELECT * FROM Product_Images WHERE product_id = ?",
-      [productId]
-    );
-
+    // Check if the product is in the user's favorites
     let isInFavorites = false;
     if (req.session.user) {
       const [favoriteRows] = await connect.query(
@@ -490,9 +516,8 @@ router.get("/product-detail/:id", async (req, res) => {
         [user.id, productId]
       );
       isInFavorites = favoriteRows.length > 0;
-    } else {
-      isInFavorites = false;
     }
+
 
     // Render product detail page
     res.render("product-detail", {
@@ -504,9 +529,9 @@ router.get("/product-detail/:id", async (req, res) => {
       variantProducts,
       isInFavorites,
       totalReviews,
-      averageRating,
+      averageRating: averageRating,
       reviews,
-      reviewCountMap,
+      reviewCountMap
     });
   } catch (error) {
     console.error(error);
@@ -1202,6 +1227,22 @@ router.post("/submit-review", async (req, res) => {
        WHERE order_id = ? AND product_id = ? AND id = ? AND user_id = ?`,
       [rating, review, orderId, productId, orderItemId, userId]
     );
+
+
+    // Fetch total review count and average rating
+    const [reviewSummary] = await connect.query(
+      `SELECT AVG(star_rating) as average_rating
+       FROM order_items
+       WHERE product_id = ? AND isReviewed = 1`,
+      [productId]
+    );
+
+    const averageRating = reviewSummary[0].average_rating;
+    // Update the overall rating of the product
+    await connect.query(
+      'UPDATE products SET overall_rating = ? WHERE id = ?',
+      [averageRating, productId]
+    );
     res.redirect(`/order-detail/${orderId}`);
   } catch (error) {
     console.error(error);
@@ -1323,10 +1364,6 @@ router.get("/add-address", (req, res) => {
   res.render("add-address", { user, address });
 });
 
-// router.get("/my-wishlist", (req, res) => {
-//   const user = req.session.user;
-//   res.render("my-wishlist", { user });
-// });
 router.get("/my-wishlist", async (req, res) => {
   const user = req.session.user;
   if (!user) {

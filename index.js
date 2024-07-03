@@ -47,7 +47,6 @@ app.use(async (req, res, next) => {
   try {
     const [categories] = await connect.query("SELECT * FROM category");
     const [contentArray] = await connect.query("SELECT * FROM alfa_content");
-    const [accessories] = await connect.query("SELECT * FROM accessories");
 
     if (!req.session.user) {
       if (!req.session.cart) {
@@ -68,7 +67,6 @@ app.use(async (req, res, next) => {
     res.locals.alfa_team = req.session.alfa_team;
 
     res.locals.categories = categories;
-    res.locals.accessories = accessories;
     res.locals.content = contentArray[0];
     next();
   } catch (error) {
@@ -125,10 +123,6 @@ app.use("/admin/", newProduct);
 
 app.get('/order-history', (req, res) => {
   return res.render('order-history')
-});
-
-app.get('/accessories', (req, res) => {
-  return res.render('accessories')
 });
 
 app.get('/my-profile', async (req, res) => {

@@ -118,26 +118,26 @@
 
                                                     <% } %>
 
-                                                    <div class="image-grid-wrapper" style="display: flex;">
-                                                        <% if (relatedProduct.images.length> 0) { %>
-                                                            <% relatedProduct.images.forEach((image, index)=> { %>
-                                                                <div class="image-items">
-                                                                    <label class="image-input">
-                                                                        <input type="file"
-                                                                            name="image<%= index + 1 %>"
-                                                                            accept="image/png,image/jpeg"
-                                                                            max-size="10000000">
-                                                                        <input type="hidden" name="image_ids[]"
-                                                                            value="<%= image.id %>">
-                                                                        <img class="c-img"
-                                                                            src="../../product_images/<%= image.image_path %>"
-                                                                            alt="Product Image">
-                                                                    </label>
-                                                                </div>
-                                                                <% }) %>
-                                                                    <% } %>
-                                                    </div>
-                                                  <h4>Product Images</h4>
+                                                        <div class="image-grid-wrapper" style="display: flex;">
+                                                            <% if (relatedProduct.images.length> 0) { %>
+                                                                <% relatedProduct.images.forEach((image, index)=> { %>
+                                                                    <div class="image-items">
+                                                                        <label class="image-input">
+                                                                            <input type="file"
+                                                                                name="image<%= index + 1 %>"
+                                                                                accept="image/png,image/jpeg"
+                                                                                max-size="10000000">
+                                                                            <input type="hidden" name="image_ids[]"
+                                                                                value="<%= image.id %>">
+                                                                            <img class="c-img"
+                                                                                src="../../product_images/<%= image.image_path %>"
+                                                                                alt="Product Image">
+                                                                        </label>
+                                                                    </div>
+                                                                    <% }) %>
+                                                                        <% } %>
+                                                        </div>
+                                                        <h4>Product Images</h4>
 
                                                         <button type="submit">Update Related Product <%= index + 1 %>
                                                         </button>
@@ -493,135 +493,311 @@
 
                                 </div>
 
-                            <script>
-                                function addProductForm() {
-                                    var newProductDiv = document.getElementById('new-product');
-                                    if (newProductDiv.style.display === 'none' || newProductDiv.style.display === '') {
-                                        newProductDiv.style.display = 'block';
-                                    } else {
-                                        newProductDiv.style.display = 'none';
+                                <script>
+                                    function addProductForm() {
+                                        var newProductDiv = document.getElementById('new-product');
+                                        if (newProductDiv.style.display === 'none' || newProductDiv.style.display === '') {
+                                            newProductDiv.style.display = 'block';
+                                        } else {
+                                            newProductDiv.style.display = 'none';
+                                        }
                                     }
-                                }
-                            </script>
-                            <script>
-                                function ImageInput(element) {
-                                    // Variables
-                                    var $wrapper = element;
-                                    var $file = $wrapper.querySelector('input[type=file]');
-                                    var $input = $wrapper.querySelector('input[type=hidden]');
-                                    var $img = $wrapper.querySelector('img');
-                                    var maxSize = Number($file.getAttribute('max-size'));
-                                    var types = $file.accept.split(',');
+                                </script>
+                                <script>
+                                    function ImageInput(element) {
+                                        // Variables
+                                        var $wrapper = element;
+                                        var $file = $wrapper.querySelector('input[type=file]');
+                                        var $input = $wrapper.querySelector('input[type=hidden]');
+                                        var $img = $wrapper.querySelector('img');
+                                        var maxSize = Number($file.getAttribute('max-size'));
+                                        var types = $file.accept.split(',');
 
-                                    var api = {
-                                        onInvalid: onInvalid,
-                                        onChanged: onChanged,
+                                        var api = {
+                                            onInvalid: onInvalid,
+                                            onChanged: onChanged,
+                                        };
+
+                                        // Methods
+                                        function fileHandler(e) {
+                                            var file = $file.files.length && $file.files[0];
+
+                                            if (!file) return;
+
+                                            var errors = checkValidity(file);
+
+                                            if (errors) {
+                                                api.onInvalid(errors);
+                                                $file.value = null;
+                                                return;
+                                            }
+
+                                            api.onChanged(file, update, $wrapper);
+                                        }
+
+                                        function humanizeFormat(string) {
+                                            return string.replace(/.*?\//, '');
+                                        }
+
+                                        function checkValidity(file) {
+                                            var errors = [];
+
+                                            types.includes(file.type) || errors.push('Format file harus: ' + types.map(humanizeFormat).join(', '));
+                                            file.size < maxSize || errors.push('Ukuran file maksimal ' + maxSize / 1000000 + 'MB');
+
+                                            return errors.length ? errors : false;
+                                        }
+
+                                        function getFileData(file, callback) {
+                                            var reader = new FileReader();
+
+                                            reader.addEventListener("load", function () {
+                                                callback(reader.result);
+                                            }, false);
+
+                                            if (file) {
+                                                reader.readAsDataURL(file);
+                                            }
+                                        }
+
+                                        function update(data) {
+                                            $img.src = data;
+                                            $input.value = data;
+                                        }
+
+                                        function onInvalid(errors) {
+                                            alert(errors.join('. '));
+                                        }
+
+                                        function onChanged(file, update, $wrapper) {
+                                            console.log('.onChanged called');
+                                            getFileData(file, update);
+                                        }
+
+                                        // Init
+                                        $file.addEventListener('change', fileHandler);
+
+                                        return api;
                                     };
 
-                                    // Methods
-                                    function fileHandler(e) {
-                                        var file = $file.files.length && $file.files[0];
+                                    function initImageInputs() {
+                                        document.querySelectorAll('.image-input').forEach(_ => {
+                                            var imageInput = new ImageInput(_);
+                                            _.addEventListener("click", (e) => {
+                                                if (e.target.classList.contains('image-remove')) {
+                                                    _.remove();
+                                                }
+                                            });
 
-                                        if (!file) return;
-
-                                        var errors = checkValidity(file);
-
-                                        if (errors) {
-                                            api.onInvalid(errors);
-                                            $file.value = null;
-                                            return;
-                                        }
-
-                                        api.onChanged(file, update, $wrapper);
-                                    }
-
-                                    function humanizeFormat(string) {
-                                        return string.replace(/.*?\//, '');
-                                    }
-
-                                    function checkValidity(file) {
-                                        var errors = [];
-
-                                        types.includes(file.type) || errors.push('Format file harus: ' + types.map(humanizeFormat).join(', '));
-                                        file.size < maxSize || errors.push('Ukuran file maksimal ' + maxSize / 1000000 + 'MB');
-
-                                        return errors.length ? errors : false;
-                                    }
-
-                                    function getFileData(file, callback) {
-                                        var reader = new FileReader();
-
-                                        reader.addEventListener("load", function () {
-                                            callback(reader.result);
-                                        }, false);
-
-                                        if (file) {
-                                            reader.readAsDataURL(file);
-                                        }
-                                    }
-
-                                    function update(data) {
-                                        $img.src = data;
-                                        $input.value = data;
-                                    }
-
-                                    function onInvalid(errors) {
-                                        alert(errors.join('. '));
-                                    }
-
-                                    function onChanged(file, update, $wrapper) {
-                                        console.log('.onChanged called');
-                                        getFileData(file, update);
-                                    }
-
-                                    // Init
-                                    $file.addEventListener('change', fileHandler);
-
-                                    return api;
-                                };
-
-                                function initImageInputs() {
-                                    document.querySelectorAll('.image-input').forEach(_ => {
-                                        var imageInput = new ImageInput(_);
-                                        _.addEventListener("click", (e) => {
-                                            if (e.target.classList.contains('image-remove')) {
-                                                _.remove();
-                                            }
-                                        });
-
-                                        if (_.classList.contains('withAjax')) {
-                                            imageInput.onChanged = customOnChanged;
-                                        }
-
-                                        function customOnChanged(file, update, $el) {
-                                            if (!$el.nextElementSibling) {
-                                                var $remove = document.createElement('button');
-                                                $remove.className = "image-remove";
-
-                                                var $new = $el.cloneNode(true);
-                                                $new.querySelector('input[type=hidden]').value = "";
-                                                $new.querySelector('input[type=file]').value = "";
-                                                $new.querySelector('img').src = "";
-
-                                                $el.parentElement.append($new);
-                                                $el.append($remove);
-
-                                                var imageInput = new ImageInput($new);
+                                            if (_.classList.contains('withAjax')) {
                                                 imageInput.onChanged = customOnChanged;
                                             }
 
-                                            $el.classList.add('isUploading');
-                                            setTimeout(function () {
-                                                update('https://placekitten.com/200/300');
-                                                $el.classList.remove("isUploading");
-                                            }, 3000);
-                                        }
-                                    });
-                                }
+                                            function customOnChanged(file, update, $el) {
+                                                if (!$el.nextElementSibling) {
+                                                    var $remove = document.createElement('button');
+                                                    $remove.className = "image-remove";
 
-                                initImageInputs();
-                            </script>
+                                                    var $new = $el.cloneNode(true);
+                                                    $new.querySelector('input[type=hidden]').value = "";
+                                                    $new.querySelector('input[type=file]').value = "";
+                                                    $new.querySelector('img').src = "";
+
+                                                    $el.parentElement.append($new);
+                                                    $el.append($remove);
+
+                                                    var imageInput = new ImageInput($new);
+                                                    imageInput.onChanged = customOnChanged;
+                                                }
+
+                                                $el.classList.add('isUploading');
+                                                setTimeout(function () {
+                                                    update('https://placekitten.com/200/300');
+                                                    $el.classList.remove("isUploading");
+                                                }, 3000);
+                                            }
+                                        });
+                                    }
+
+                                    initImageInputs();
+                                </script>
 
 </body>
 
 </html>
+
+
+<!-- 
+// router.get("/product-detail/:id", async (req, res) => {
+//   try {
+//     const user = req.session.user;
+//     const productId = req.params.id;
+
+//     // Fetch wear type of the product
+//     const [productRows] = await connect.query(
+//       "SELECT * FROM products WHERE id = ?",
+//       [productId]
+//     );
+
+
+//     // Fetch reviews with all details
+//     const [reviews] = await connect.query(
+//       `SELECT * 
+//        FROM order_items
+//        WHERE product_id = ? AND isReviewed = 1`,
+//       [productId]
+//     );
+
+
+//     // Fetch total review count
+//     const [reviewSummary] = await connect.query(
+//       `SELECT COUNT(*) as total_reviews, AVG(star_rating) as average_rating
+//        FROM order_items
+//        WHERE product_id = ? AND isReviewed = 1`,
+//       [productId]
+//     );
+
+//     const totalReviews = reviewSummary[0].total_reviews;
+
+//     const averageRating = reviewSummary[0].average_rating;
+
+
+//     // Update the overall rating of the product
+//     const [updateResult] = await connect.query(
+//       'UPDATE products SET overall_rating = ? WHERE id = ?',
+//       [averageRating, productId]
+//     );
+
+
+//     // Fetch review counts
+//     const [reviewCounts] = await connect.query(
+//       `SELECT star_rating, COUNT(*) as count
+//        FROM order_items
+//        WHERE product_id = ? AND isReviewed = 1
+//        GROUP BY star_rating
+//        ORDER BY star_rating DESC`,
+//       [productId]
+//     );
+
+//     const reviewCountMap = {
+//       5: 0,
+//       4: 0,
+//       3: 0,
+//       2: 0,
+//       1: 0,
+//     };
+
+//     // Populate the review count map with actual data
+//     reviewCounts.forEach(review => {
+//       reviewCountMap[review.star_rating] = review.count;
+//     });
+
+//     if (productRows.length === 0) {
+//       return res.status(404).send("Product not found");
+//     }
+//     const wearType = productRows[0].wear_type_bottom_or_top;
+//     const product_varient_name = productRows[0].varient_name;
+
+//     const queryVariantProducts = `
+//       SELECT * 
+//       FROM products 
+//       WHERE varient_name = ?;
+//     `;
+
+//     const [variantProducts] = await connect.query(queryVariantProducts, [
+//       product_varient_name,
+//     ]);
+
+//     // Fetch sizes based on wear type
+//     let sizeQuery, sizeRows;
+//     if (wearType === "top") {
+//       sizeQuery = `SELECT xs, s, m, l, xl, xxl, xxxl, xxxxl FROM topwear_inventory_with_sizes WHERE product_id = ?`;
+//     } else if (wearType === "bottom") {
+//       sizeQuery = `SELECT size_28, size_30, size_32, size_34, size_36, size_38, size_40, size_42, size_44, size_46 FROM bottom_wear_inventory_with_sizes WHERE product_id = ?`;
+//     } else if (wearType === "shoes") {
+//       sizeQuery = `SELECT size_6 , size_7 , size_8 , size_9 , size_10, size_11 , size_12, size_13  FROM shoes_inventory WHERE product_id = ?`;
+//     } else if (wearType === "belt") {
+//       sizeQuery = `SELECT size_28, size_30, size_32, size_34, size_36, size_38, size_40  FROM belts_inventory WHERE product_id = ?`;
+//     } else if (wearType === "wallet") {
+//       sizeQuery = `SELECT s, m, l FROM wallet_inventory WHERE product_id = ?`;
+//     }
+//     if (sizeQuery) {
+//       [sizeRows] = await connect.query(sizeQuery, [productId]);
+//     }
+//     const sizes = {};
+//     if (sizeRows && sizeRows.length > 0) {
+//       for (const [size, value] of Object.entries(sizeRows[0])) {
+//         if (value) {
+//           sizes[size.replace("_", " ")] = value;
+//         } else {
+//           if (wearType === "top" && !size.startsWith("size_")) {
+//             sizes[size.replace("_", " ")] = value;
+//           } else if (wearType === "bottom" && size.startsWith("size_")) {
+//             sizes[size.replace("_", " ")] = value;
+//           } else if (wearType === "shoes" && size.startsWith("size_")) {
+//             sizes[size.replace("_", " ")] = value;
+//           } else if (wearType === "belt" && size.startsWith("size_")) {
+//             sizes[size.replace("_", " ")] = value;
+//           } else if (wearType === "wallet" && !size.startsWith("size_")) {
+//             sizes[size.replace("_", " ")] = value;
+//           }
+//         }
+//       }
+//     }
+
+//     const [rows] = await connect.query(
+//       `SELECT 
+//           p.*,
+//           c.id AS category_id,
+//           c.category_name,
+//           s.id AS subcategory_id,
+//           s.sub_category_name
+//        FROM products p
+//        INNER JOIN category c ON p.category_id = c.id 
+//        INNER JOIN sub_category s ON p.subcategory_id = s.id 
+//        WHERE p.id = ?`,
+//       [productId]
+//     );
+
+//     if (rows.length === 0) {
+//       return res.status(404).send("Product not found");
+//     }
+
+//     const product = rows[0];
+
+//     const [product_images] = await connect.query(
+//       "SELECT * FROM Product_Images WHERE product_id = ?",
+//       [productId]
+//     );
+
+//     let isInFavorites = false;
+//     if (req.session.user) {
+//       const [favoriteRows] = await connect.query(
+//         "SELECT * FROM users_favorites WHERE user_id = ? AND product_id = ?",
+//         [user.id, productId]
+//       );
+//       isInFavorites = favoriteRows.length > 0;
+//     } else {
+//       isInFavorites = false;
+//     }
+
+//     // Render product detail page
+//     res.render("product-detail", {
+//       user,
+//       product,
+//       product_images,
+//       sizes,
+//       wearType,
+//       variantProducts,
+//       isInFavorites,
+//       totalReviews,
+//       averageRating,
+//       reviews,
+//       reviewCountMap,
+//     });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).send("Internal Server Error");
+//   }
+// });
+ -->
