@@ -11,6 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const rows = Array.from(tbody.getElementsByTagName('tr'));
         rows.forEach(row => {
             const text = row.innerText.toLowerCase();
+            console.log(text)
             row.style.display = text.includes(filter) ? '' : 'none';
         });
     };
