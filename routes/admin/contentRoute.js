@@ -20,6 +20,9 @@ router.get('/about-content', async (req, res) => {
  router.get('/contact-info',(req,res) =>{
    return res.render('admin/contact-info');
 })
+router.get('/review-list',(req,res) =>{
+  return res.render('admin/review-list');
+})
 
 
  

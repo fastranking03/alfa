@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alfa Admin | Review List</title>
+    <%- include('includes/head') %>
+</head>
+<style>
+    .review-status{
+     position: relative;
+    }
+     .review-dropdown ul{
+         padding: 0;
+         list-style: none;
+     }
+     .review-action .review-anchor{
+         background-color: #FFF;
+         border: 1px solid #D3D3D4;
+         padding: 3px 8px 4px;
+         border-radius: 17px;
+         text-decoration: none;
+         color: #000;
+         font-size: 15px;
+         font-weight: 500;
+     }
+     .review-dropdown{
+         display: none;
+         background-color: #FFF;
+         border: 1px solid rgba(0, 0, 0, 0.1);
+         box-shadow: inherit;
+         font-size: 14px;
+         border-radius: 3px;
+         position: absolute;
+         width: 60%;
+         top: 30px;
+      }
+      .review-item{
+         padding: 9px 9px 0;
+         text-decoration: none;
+         color: #000;
+         font-size: 15px;
+         font-weight: 500;
+      }
+      .review-dropdown ul li{
+         margin: 6px 0 5px;
+      }
+ </style>
+<body class="admin-body">
+    <div class="main-admin-warpper">
+        <%- include('includes/header') %>
+            <div class="alfa-admin-wrapper">
+                <div class="admin-side-nav">
+                    <%- include('includes/sidebar') %>
+                    <div class="admin-main-layout">
+                        <div class="admin-bradcrumb">
+                            <div class="admin-brudcrumb-title">
+                                <h3>Review List</h3>
+                            </div>
+                            <div class="adminRightWrapper">
+                                <div class="search-wrapper position-relative">
+                                    <span><i class="fa-solid fa-magnifying-glass"></i></span>
+                                    <input type="search" name="search" class="table-search" placeholder="Search" id="search">
+                                </div>
+                                <div class="export-wrap">
+                                    <a href="#" class="admin-btn" id="export-btn">Export</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="product-list">
+                            <div class="table-list-head">
+                                <div class="alfa-data-search">
+                                    <div class="select-warpper">
+                                        <div class="table-selects">
+                                            <select name="" id="" class="table-select">
+                                                <option value="all">All</option>
+                                                <option value="">One</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="table-list-btn">
+                                    <div class="table-btn">
+                                        <!-- <a href="/admin/add-blog">Add Blog</a> -->
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="responsive-table">
+                                <table class="alfa-table">
+                                    <thead>
+                                      <tr>
+                                        <th>ID</th>
+                                        <th>Product</th>
+                                        <th>User Name</th>
+                                        <th>Start</th>
+                                        <th>Comment</th>
+                                        <th>Action</th>
+                                       </tr>
+                                    </thead>
+                                  
+                                    <tbody id="order-tbody">
+                                        <tr>
+                                            <td>1</td>
+                                            <td>Cotton Shirt</td>
+                                            <td>Shivam Dubey</td>
+                                            <td>4 Start</td>
+                                            <td>The quality of this product is amazing comfort to wear</td>
+                                            <td>
+                                                <div class="review-status">
+                                                     <div class="review-action">
+                                                         <a class="review-anchor" id="clickDropdown"><span><i class="fa-regular fa-circle-dot text-warning"></i></span> Pending <span><i class="fa-solid fa-arrow-down"></i></span></a>
+                                                     </div>
+                                                     <div class="review-dropdown" id="openDropdown">
+                                                         <ul>
+                                                            <li><a href="" class="review-item"><span><i class="fa-regular fa-circle-dot approve text-success"></i></span> Approve</a></li>
+                                                            <li><a href="" class="review-item"><span><i class="fa-regular fa-circle-dot reject text-danger"></i></span> Reject</a></li>
+                                                            <!-- <li><a href="" class="review-item"><span><i class="fa-regular fa-circle-dot pending text-warning"></i></span> Pending</a></li> -->
+                                                         </ul>
+                                                     </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                             <div class="table-pagination-wrapper">
+                                <div class="table-pagination" id="pagination">
+                                    <a href="#" class="pagination-previous"><span><i class="fa-solid fa-angle-left"></i></span></a>
+                                    <a href="#" class="page-items active">1</a>
+                                    <a href="#" class="page-items">2</a>
+                                    <a href="#" class="pagination-next" style="color: #005D67;"><span><i class="fa-solid fa-angle-right"></i></span></a>
+                                </div>
+                            </div>
+                         </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+    <script>
+        var clickDropdown = document.getElementById("clickDropdown");
+          var openDropdown = document.getElementById("openDropdown");
+
+          clickDropdown.addEventListener("click", function() {
+              if (openDropdown.style.display === "none" || openDropdown.style.display === "") {
+                  openDropdown.style.display = "block";
+              } else {
+                  openDropdown.style.display = "none";
+              }
+          });
+
+      </script>
+    <%- include('includes/foot') %>
+</body>
+</html>
