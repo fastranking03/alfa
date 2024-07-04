@@ -6,6 +6,38 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Alfa Admin | Order Details</title>
     <%- include('includes/head') %>
+        <style>
+            .status-button {
+                padding: 10px 20px;
+                margin: 5px;
+                text-decoration: none;
+                color: #fff;
+                background-color: #00392c;
+                /* Red for all buttons initially */
+                border-radius: 4px;
+                font-size: 14px;
+                font-weight: 500;
+                display: inline-block;
+                transition: background-color 0.3s ease;
+                cursor: pointer;
+            }
+
+            .status-button:hover {
+                background-color: #38a798;
+            }
+
+            .status-button.active {
+                background-color: #96e22c;
+                color: black;
+                font-weight: 600;
+                font-size: x-large;
+            }
+
+            .status-button.updating {
+                background-color: #38a798;
+                /* Red when updating */
+            }
+        </style>
 </head>
 
 <body class="admin-body">
@@ -34,6 +66,7 @@
                                             <div class="od-header">
                                                 <div class="od-left">
                                                     <h4>Order Id <%=order.order_id %>
+
                                                     </h4>
                                                     <p>
                                                         <%=formattedDateTime %>
@@ -114,7 +147,7 @@
                                                         <div class="alfa-text">Delivery Fee</div>
                                                         <div class="alfa-price">
                                                             <span id="Delivery-ajax"> £ <%=order.delivery_charges %>
-                                                                    </span>
+                                                            </span>
                                                         </div>
                                                     </li>
                                                 </ul>
@@ -126,12 +159,44 @@
                                                         <div class="alfa-text">Total Cost</div>
                                                         <div class="alfa-price">
                                                             <span id="totalPrice-ajax"> £ <%=order.total_payable %>
-                                                                    </span>
+                                                            </span>
                                                         </div>
                                                     </li>
                                                 </ul>
                                             </div>
                                         </div>
+                                        <div class="order-status-buttons-wrapper mt-3">
+                                            <!-- Buttons for changing order status -->
+                                            <div class="status-buttons text-center mx-auto">
+                                                <button
+                                                    class="status-button <%= order.order_status === 'order placed' ? 'active' : '' %>"
+                                                    data-status="order placed" data-order-id="<%= order.order_id %>"
+                                                    data-email="<%=order.user_email  %>">
+                                                    Order Placed
+                                                </button>
+                                                <button
+                                                    class="status-button <%= order.order_status === 'processing' ? 'active' : '' %>"
+                                                    data-status="processing" data-order-id="<%= order.order_id %>"
+                                                    data-email="<%=order.user_email %>">
+                                                    In Process
+                                                </button>
+                                                <button
+                                                    class="status-button <%= order.order_status === 'out for delivery' ? 'active' : '' %>"
+                                                    data-status="out for delivery" data-order-id="<%= order.order_id %>"
+                                                    data-email="<%=order.user_email %>">
+                                                    Out For Delivery
+                                                </button>
+                                                <button
+                                                    class="status-button <%= order.order_status === 'shipped' ? 'active' : '' %>"
+                                                    data-status="shipped" data-order-id="<%= order.order_id %>"
+                                                    data-email="<%=order.user_email %>">
+                                                    Order Shipped
+                                                </button>
+                                            </div>
+
+                                        </div>
+
+
                                         <div class="od-left-wrapper mt-3">
                                             <div class="od-header">
                                                 <div class="od-left">
@@ -171,6 +236,8 @@
                                                 </div>
                                             </div>
                                         </div>
+
+
                                     </div>
                                     <div class="col-md-4">
                                         <div class="od-left-wrapper">
@@ -220,6 +287,10 @@
                                             </div>
                                         </div>
 
+                                        <div>
+
+                                        </div>
+
                                     </div>
                                 </div>
                             </div>
@@ -228,6 +299,52 @@
             </div>
     </div>
     </div>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.status-button').on('click', function () {
+                const status = $(this).data('status');
+                const orderId = $(this).data('order-id');
+                const email = $(this).data('email');
+
+                $.ajax({
+                    url: '/admin/update-order-status',
+                    type: 'POST',
+                    contentType: 'application/json',
+                    data: JSON.stringify({ status: status, orderId: orderId, email: email }),
+                    success: function (result) {
+                        if (result.success) {
+                            // Remove active class from all buttons
+                            $('.status-button').removeClass('active');
+
+                            // Add active class to the clicked button
+                            $(`.status-button[data-status="${status}"]`).addClass('active').addClass('disabled');
+
+                            // Enable the next button in the sequence
+                            const statusOrder = ['order placed', 'processing', 'out for delivery', 'shipped'];
+                            const currentIndex = statusOrder.indexOf(status);
+
+                            if (currentIndex > -1 && currentIndex < statusOrder.length - 1) {
+                                const nextStatus = statusOrder[currentIndex + 1];
+                                $(`.status-button[data-status="${nextStatus}"]`).removeClass('disabled');
+                            }
+                        } else {
+                            alert('Failed to update status: ' + result.error);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.error('Error:', error);
+                        alert('An error occurred while updating the status.');
+                    }
+                });
+            });
+        });
+    </script>
+
+
+    </script>
+
+
 </body>
 
 </html>

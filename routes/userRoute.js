@@ -229,8 +229,7 @@ router.post("/login", async (req, res) => {
 
     const productIdToAdd = req.session.productToWishlist;
     if (productIdToAdd) {
-      // Clear product ID from session
-      console.log("jxasdgcsflkd");
+
       console.log("id", productIdToAdd);
 
       console.log("User:", user[0].id);

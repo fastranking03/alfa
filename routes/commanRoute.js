@@ -172,9 +172,10 @@ router.post("/place-order", async (req, res) => {
 
     // Insert new order
     const insertOrderQuery = `
-      INSERT INTO orders (order_id, user_id, user_name , total_payable, vat, delivery_charges, sub_total, total_mrp, discount_amount, address_id) 
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      INSERT INTO orders (order_id, user_id, user_name , total_payable, vat, delivery_charges, sub_total, total_mrp, discount_amount, address_id , order_status) 
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ? , "order placed")
     `;
+
     const insertOrderValues = [
       newOrderId,
       userId,
