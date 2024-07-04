@@ -60,18 +60,14 @@
                                     <tbody id="order-tbody">
                                       <% categories.forEach((category, index) => { %>
                                         <tr>
-                                          <td><%= index + 1 %></td>
-                                 
-                                        <td><%= category.category_name %></td>
-                    
-                                        <td><img src="../../category_images/<%=category.category_image %>" alt="Category Image" style="width: 50px;  max-height: 50px;"></td>
-                    
-                                        <td><%= category.created_at.toLocaleString('en-GB', { timeZone: 'Europe/London', dateStyle: 'medium', timeStyle: 'medium' }) %></td>
-                    
-                    
-                                        <td>
-                                          <a href="/admin/edit-category/<%= category.id %>" class="btn-item btn-edit"><span><i class="fa-solid fa-pen-to-square"></i></span></a> 
-                                          <a href="/admin/delete-category/<%= category.id %>" class="btn-item btn-delete"><span><i class="fa-solid fa-trash"></i></span></a>
+                                        <td><%= index + 1 %></td>
+                                         <td><%= category.category_name %></td>
+                                         <td><img src="../../category_images/<%=category.category_image %>" alt="Category Image" style="width: 50px;  max-height: 50px;"></td>
+                                         <td><%= category.created_at.toLocaleString('en-GB', { timeZone: 'Europe/London', dateStyle: 'medium', timeStyle: 'medium' }) %></td>
+                                         <td>
+                                            <a href="/admin/edit-category/<%= category.id %>" class="btn-item btn-edit"><span><i class="fa-solid fa-pen-to-square"></i></span></a> 
+                                            <a href="/admin/delete-category/<%= category.id %>" class="btn-item btn-delete"><span><i class="fa-solid fa-trash"></i></span></a>
+                                         </td>
                                       </tr>
                                       <% }); %>
                                     </tbody>

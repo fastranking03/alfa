@@ -52,6 +52,13 @@
     .review-dropdown ul li {
         margin: 6px 0 5px;
     }
+    .comman-bg{
+        outline: none;
+        color: #fff;
+        border: none;
+        padding: 5px 4px;
+        border-radius: 20px;
+    }
 </style>
 
 <body class="admin-body">
@@ -98,7 +105,7 @@
                                     <table class="alfa-table">
                                         <thead>
                                             <tr>
-                                                <th>ID</th>
+                                                <th>Sr.No</th>
                                                 <th>Product</th>
                                                 <th>User Name</th>
                                                 <th>Stars</th>
@@ -107,10 +114,10 @@
                                             </tr>
                                         </thead>
                                         <tbody id="order-tbody">
-                                            <% reviews.forEach(function(review) { %>
+                                            <% reviews.forEach(function(review,index) { %>
                                                 <tr>
                                                     <td>
-                                                        <%= review.id %>
+                                                        <%= index + 1 %>
                                                     </td>
                                                     <td>
                                                         <%= review.product_name %>
@@ -119,31 +126,22 @@
                                                         <%= review.user_name %>
                                                     </td>
                                                     <td>
-                                                        <%= review.star_rating %> Stars
+                                                        <%= review.star_rating %> <span class="alfa-start"><i class="fa-solid fa-star" style="color: #005d67;"></i></span>
                                                     </td>
                                                     <td>
                                                         <%= review.review%>
                                                     </td>
-
-                                                    <td>
+                                                     <td>
                                                         <div class="review-status">
                                                             <select name="review_status"
                                                                 id="review_status_<%= review.id %>"
-                                                                data-review-id="<%= review.id %>"
-                                                                style="background-color: <% if (review.isReviewApproved === 0) { %>#f8d7da; border-color: #f5c6cb; <% } else { %>#d4edda; border-color: #c3e6cb; <% } %>">
-                                                                <option value="0" <% if (review.isReviewApproved===0) {
-                                                                    %>
-                                                                    selected <% } %>>Not Approved</option>
-                                                                <option value="1" <% if (review.isReviewApproved===1) {
-                                                                    %>
-                                                                    selected <% } %>>Approved</option>
+                                                                data-review-id="<%= review.id %>" class="comman-bg <% if (review.isReviewApproved === 0) { %>bg-danger<% } else { %>bg-success<% } %>">
+                                                                <option value="0" <% if (review.isReviewApproved===0) {  %> selected <% } %>> <span><i class="fa-regular fa-circle-dot text-danger"></i></span> Not Approved</option>
+                                                                <option value="1" <% if (review.isReviewApproved===1) {  %> selected <% } %>> <span><i class="fa-regular fa-circle-dot text-success"></i></span> Approved</option>
                                                             </select>
                                                         </div>
                                                     </td>
-
-
-
-                                                </tr>
+                                                 </tr>
                                                 <% }); %>
                                         </tbody>
                                     </table>
@@ -179,6 +177,7 @@
                     success: function (response) {
                         // Optionally handle the response
                         alert('Review status updated successfully!');
+                        window.location.reload();
                     },
                     error: function (xhr, status, error) {
                         // Optionally handle the error

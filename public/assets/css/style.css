@@ -3030,9 +3030,9 @@ font-size: 14px;
   display: none;
   opacity: 0;
   font-weight: 400;
-  /* transition: right 0.5s ease, opacity 0.5s ease; */
+  transition: right 0.5s ease, opacity 0.5s ease;
 }
 .comman-message .message-alert h6.showss {
   display: none;
-  /* animation: slideInRight 0.5s forwards; */
+  animation: slideInRight 0.5s forwards;
 }
