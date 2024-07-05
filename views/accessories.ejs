@@ -126,11 +126,11 @@
                     </div>
                     <div class="product-category mt-4">
                       <div class="cat-title">
-                        <h4 class="product-h4">Categories</h4>
+                        <h4 class="product-h4">Accessories</h4>
                       </div>
                       <div class="product-cat-type">
                         <ul class="product-cat-list">
-                          <% categories.forEach(category=> { %>
+                          <% categories.filter(category=> category.isAccessories).forEach(category=> { %>
                             <li>
                               <a href="category/<%= category.category_name %>">
                                 <button class="cat-item">
@@ -139,6 +139,8 @@
                                 </button></a>
                             </li>
                             <% }); %>
+
+
                         </ul>
                       </div>
                     </div>
@@ -173,133 +175,140 @@
                         <h4 class="product-h4">Size</h4>
                       </div>
 
-                      <p>Wallet sizes</p>
-                      <div class="product-size-list">
-                        <ul id="walletSizeFilters">
-                          <li>
-                            <div class="product-checkout">
-                              <input type="checkbox" class="size-checkbox" id="sizeS" value="S" />
-                              <label for="sizeS" class="size-item">S</label>
-                            </div>
-                          </li>
-                          <li>
-                            <div class="product-checkout">
-                              <input type="checkbox" class="size-checkbox" id="sizeM" value="M" />
-                              <label for="sizeM" class="size-item">M</label>
-                            </div>
-                          </li>
-                          <li>
-                            <div class="product-checkout">
-                              <input type="checkbox" class="size-checkbox" id="sizeL" value="L" />
-                              <label for="sizeL" class="size-item">L</label>
-                            </div>
-                          </li>
-                        </ul>
-                      </div>
-                      <hr>
+                      <%if(category_name== 'Wallets' || category_name=='all' ){ %>
+                        <p>Wallet sizes</p>
+                        <div class="product-size-list">
+                          <ul id="walletSizeFilters">
+                            <li>
+                              <div class="product-checkout">
+                                <input type="checkbox" class="size-checkbox" id="sizeS" value="S" />
+                                <label for="sizeS" class="size-item">S</label>
+                              </div>
+                            </li>
+                            <li>
+                              <div class="product-checkout">
+                                <input type="checkbox" class="size-checkbox" id="sizeM" value="M" />
+                                <label for="sizeM" class="size-item">M</label>
+                              </div>
+                            </li>
+                            <li>
+                              <div class="product-checkout">
+                                <input type="checkbox" class="size-checkbox" id="sizeL" value="L" />
+                                <label for="sizeL" class="size-item">L</label>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                        <hr>
+                        <% }%>
+                          <%if(category_name=='Shoes' || category_name=='all' ){ %>
 
-                      <p>Shoes sizes [UK]</p>
-                      <div class="product-size-list">
-                        <ul id="shoesSizeFilters">
-                          <li>
-                            <div class="product-checkout">
-                              <input type="checkbox" class="size-checkbox" id="size6" value="6" />
-                              <label for="size6" class="size-item">6</label>
+                            <p>Shoes sizes [UK]</p>
+                            <div class="product-size-list">
+                              <ul id="shoesSizeFilters">
+                                <li>
+                                  <div class="product-checkout">
+                                    <input type="checkbox" class="size-checkbox" id="size6" value="6" />
+                                    <label for="size6" class="size-item">6</label>
+                                  </div>
+                                </li>
+                                <li>
+                                  <div class="product-checkout">
+                                    <input type="checkbox" class="size-checkbox" id="size7" value="7" />
+                                    <label for="size7" class="size-item">7</label>
+                                  </div>
+                                </li>
+                                <li>
+                                  <div class="product-checkout">
+                                    <input type="checkbox" class="size-checkbox" id="size8" value="8" />
+                                    <label for="size8" class="size-item">8</label>
+                                  </div>
+                                </li>
+                                <li>
+                                  <div class="product-checkout">
+                                    <input type="checkbox" class="size-checkbox" id="size9" value="9" />
+                                    <label for="size9" class="size-item">9</label>
+                                  </div>
+                                </li>
+                                <li>
+                                  <div class="product-checkout">
+                                    <input type="checkbox" class="size-checkbox" id="size10" value="10" />
+                                    <label for="size10" class="size-item">10</label>
+                                  </div>
+                                </li>
+                                <li>
+                                  <div class="product-checkout">
+                                    <input type="checkbox" class="size-checkbox" id="size11" value="11" />
+                                    <label for="size11" class="size-item">11</label>
+                                  </div>
+                                </li>
+                                <li>
+                                  <div class="product-checkout">
+                                    <input type="checkbox" class="size-checkbox" id="size12" value="12" />
+                                    <label for="size12" class="size-item">12</label>
+                                  </div>
+                                </li>
+                                <li>
+                                  <div class="product-checkout">
+                                    <input type="checkbox" class="size-checkbox" id="size13" value="13" />
+                                    <label for="size13" class="size-item">13</label>
+                                  </div>
+                                </li>
+                              </ul>
                             </div>
-                          </li>
-                          <li>
-                            <div class="product-checkout">
-                              <input type="checkbox" class="size-checkbox" id="size7" value="7" />
-                              <label for="size7" class="size-item">7</label>
-                            </div>
-                          </li>
-                          <li>
-                            <div class="product-checkout">
-                              <input type="checkbox" class="size-checkbox" id="size8" value="8" />
-                              <label for="size8" class="size-item">8</label>
-                            </div>
-                          </li>
-                          <li>
-                            <div class="product-checkout">
-                              <input type="checkbox" class="size-checkbox" id="size9" value="9" />
-                              <label for="size9" class="size-item">9</label>
-                            </div>
-                          </li>
-                          <li>
-                            <div class="product-checkout">
-                              <input type="checkbox" class="size-checkbox" id="size10" value="10" />
-                              <label for="size10" class="size-item">10</label>
-                            </div>
-                          </li>
-                          <li>
-                            <div class="product-checkout">
-                              <input type="checkbox" class="size-checkbox" id="size11" value="11" />
-                              <label for="size11" class="size-item">11</label>
-                            </div>
-                          </li>
-                          <li>
-                            <div class="product-checkout">
-                              <input type="checkbox" class="size-checkbox" id="size12" value="12" />
-                              <label for="size12" class="size-item">12</label>
-                            </div>
-                          </li>
-                          <li>
-                            <div class="product-checkout">
-                              <input type="checkbox" class="size-checkbox" id="size13" value="13" />
-                              <label for="size13" class="size-item">13</label>
-                            </div>
-                          </li>
-                        </ul>
-                      </div>
-                      <hr>
+                            <hr>
+                            <% } %>
+                              <%if(category_name=='Belts' || category_name=='all' ){ %>
 
-                      <p>Belt sizes</p>
-                      <div class="product-size-list">
-                        <ul id="beltSizeFilters">
-                          <li>
-                            <div class="product-checkout">
-                              <input type="checkbox" class="size-checkbox" id="size28" value="28" />
-                              <label for="size28" class="size-item">28</label>
-                            </div>
-                          </li>
-                          <li>
-                            <div class="product-checkout">
-                              <input type="checkbox" class="size-checkbox" id="size30" value="30" />
-                              <label for="size30" class="size-item">30</label>
-                            </div>
-                          </li>
-                          <li>
-                            <div class="product-checkout">
-                              <input type="checkbox" class="size-checkbox" id="size32" value="32" />
-                              <label for="size32" class="size-item">32</label>
-                            </div>
-                          </li>
-                          <li>
-                            <div class="product-checkout">
-                              <input type="checkbox" class="size-checkbox" id="size34" value="34" />
-                              <label for="size34" class="size-item">34</label>
-                            </div>
-                          </li>
-                          <li>
-                            <div class="product-checkout">
-                              <input type="checkbox" class="size-checkbox" id="size36" value="36" />
-                              <label for="size36" class="size-item">36</label>
-                            </div>
-                          </li>
-                          <li>
-                            <div class="product-checkout">
-                              <input type="checkbox" class="size-checkbox" id="size38" value="38" />
-                              <label for="size38" class="size-item">38</label>
-                            </div>
-                          </li>
-                          <li>
-                            <div class="product-checkout">
-                              <input type="checkbox" class="size-checkbox" id="size40" value="40" />
-                              <label for="size40" class="size-item">40</label>
-                            </div>
-                          </li>
-                        </ul>
-                      </div>
+                                <p>Belt sizes</p>
+                                <div class="product-size-list">
+                                  <ul id="beltSizeFilters">
+                                    <li>
+                                      <div class="product-checkout">
+                                        <input type="checkbox" class="size-checkbox" id="size28" value="28" />
+                                        <label for="size28" class="size-item">28</label>
+                                      </div>
+                                    </li>
+                                    <li>
+                                      <div class="product-checkout">
+                                        <input type="checkbox" class="size-checkbox" id="size30" value="30" />
+                                        <label for="size30" class="size-item">30</label>
+                                      </div>
+                                    </li>
+                                    <li>
+                                      <div class="product-checkout">
+                                        <input type="checkbox" class="size-checkbox" id="size32" value="32" />
+                                        <label for="size32" class="size-item">32</label>
+                                      </div>
+                                    </li>
+                                    <li>
+                                      <div class="product-checkout">
+                                        <input type="checkbox" class="size-checkbox" id="size34" value="34" />
+                                        <label for="size34" class="size-item">34</label>
+                                      </div>
+                                    </li>
+                                    <li>
+                                      <div class="product-checkout">
+                                        <input type="checkbox" class="size-checkbox" id="size36" value="36" />
+                                        <label for="size36" class="size-item">36</label>
+                                      </div>
+                                    </li>
+                                    <li>
+                                      <div class="product-checkout">
+                                        <input type="checkbox" class="size-checkbox" id="size38" value="38" />
+                                        <label for="size38" class="size-item">38</label>
+                                      </div>
+                                    </li>
+                                    <li>
+                                      <div class="product-checkout">
+                                        <input type="checkbox" class="size-checkbox" id="size40" value="40" />
+                                        <label for="size40" class="size-item">40</label>
+                                      </div>
+                                    </li>
+                                  </ul>
+                                </div>
+                                <% } %>
+
                     </div>
 
                     <div class="product-filter">
@@ -468,134 +477,139 @@
                 <h4 class="product-h4">Size</h4>
               </div>
 
-              <p>Wallet sizes</p>
-              <div class="product-size-list">
-                <ul id="walletSizeFilters">
-                  <li>
-                    <div class="product-checkout">
-                      <input type="checkbox" class="size-checkbox" id="sizeS" value="S" />
-                      <label for="sizeS" class="size-item">S</label>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="product-checkout">
-                      <input type="checkbox" class="size-checkbox" id="sizeM" value="M" />
-                      <label for="sizeM" class="size-item">M</label>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="product-checkout">
-                      <input type="checkbox" class="size-checkbox" id="sizeL" value="L" />
-                      <label for="sizeL" class="size-item">L</label>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-              <hr>
+              <%if(category_name=='wallet' ){ %>
+                <p>Wallet sizes</p>
+                <div class="product-size-list">
+                  <ul id="walletSizeFilters">
+                    <li>
+                      <div class="product-checkout">
+                        <input type="checkbox" class="size-checkbox" id="sizeS" value="S" />
+                        <label for="sizeS" class="size-item">S</label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="product-checkout">
+                        <input type="checkbox" class="size-checkbox" id="sizeM" value="M" />
+                        <label for="sizeM" class="size-item">M</label>
+                      </div>
+                    </li>
+                    <li>
+                      <div class="product-checkout">
+                        <input type="checkbox" class="size-checkbox" id="sizeL" value="L" />
+                        <label for="sizeL" class="size-item">L</label>
+                      </div>
+                    </li>
+                  </ul>
+                </div>
+                <hr>
+                <% } else if(category_name=='shoes' ){ %>
 
-              <p>Shoes sizes [UK]</p>
-              <div class="product-size-list">
-                <ul id="shoesSizeFilters">
-                  <li>
-                    <div class="product-checkout">
-                      <input type="checkbox" class="size-checkbox" id="size6" value="6" />
-                      <label for="size6" class="size-item">6</label>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="product-checkout">
-                      <input type="checkbox" class="size-checkbox" id="size7" value="7" />
-                      <label for="size7" class="size-item">7</label>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="product-checkout">
-                      <input type="checkbox" class="size-checkbox" id="size8" value="8" />
-                      <label for="size8" class="size-item">8</label>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="product-checkout">
-                      <input type="checkbox" class="size-checkbox" id="size9" value="9" />
-                      <label for="size9" class="size-item">9</label>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="product-checkout">
-                      <input type="checkbox" class="size-checkbox" id="size10" value="10" />
-                      <label for="size10" class="size-item">10</label>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="product-checkout">
-                      <input type="checkbox" class="size-checkbox" id="size11" value="11" />
-                      <label for="size11" class="size-item">11</label>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="product-checkout">
-                      <input type="checkbox" class="size-checkbox" id="size12" value="12" />
-                      <label for="size12" class="size-item">12</label>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="product-checkout">
-                      <input type="checkbox" class="size-checkbox" id="size13" value="13" />
-                      <label for="size13" class="size-item">13</label>
-                    </div>
-                  </li>
-                </ul>
-              </div>
-              <hr>
+                  <p>Shoes sizes [UK]</p>
+                  <div class="product-size-list">
+                    <ul id="shoesSizeFilters">
+                      <li>
+                        <div class="product-checkout">
+                          <input type="checkbox" class="size-checkbox" id="size6" value="6" />
+                          <label for="size6" class="size-item">6</label>
+                        </div>
+                      </li>
+                      <li>
+                        <div class="product-checkout">
+                          <input type="checkbox" class="size-checkbox" id="size7" value="7" />
+                          <label for="size7" class="size-item">7</label>
+                        </div>
+                      </li>
+                      <li>
+                        <div class="product-checkout">
+                          <input type="checkbox" class="size-checkbox" id="size8" value="8" />
+                          <label for="size8" class="size-item">8</label>
+                        </div>
+                      </li>
+                      <li>
+                        <div class="product-checkout">
+                          <input type="checkbox" class="size-checkbox" id="size9" value="9" />
+                          <label for="size9" class="size-item">9</label>
+                        </div>
+                      </li>
+                      <li>
+                        <div class="product-checkout">
+                          <input type="checkbox" class="size-checkbox" id="size10" value="10" />
+                          <label for="size10" class="size-item">10</label>
+                        </div>
+                      </li>
+                      <li>
+                        <div class="product-checkout">
+                          <input type="checkbox" class="size-checkbox" id="size11" value="11" />
+                          <label for="size11" class="size-item">11</label>
+                        </div>
+                      </li>
+                      <li>
+                        <div class="product-checkout">
+                          <input type="checkbox" class="size-checkbox" id="size12" value="12" />
+                          <label for="size12" class="size-item">12</label>
+                        </div>
+                      </li>
+                      <li>
+                        <div class="product-checkout">
+                          <input type="checkbox" class="size-checkbox" id="size13" value="13" />
+                          <label for="size13" class="size-item">13</label>
+                        </div>
+                      </li>
+                    </ul>
+                  </div>
+                  <hr>
+                  <% }else if(category_name=='shoes' ){ %>
 
-              <p>Belt sizes</p>
-              <div class="product-size-list">
-                <ul id="beltSizeFilters">
-                  <li>
-                    <div class="product-checkout">
-                      <input type="checkbox" class="size-checkbox" id="size28" value="28" />
-                      <label for="size28" class="size-item">28</label>
+                    <p>Belt sizes</p>
+                    <div class="product-size-list">
+                      <ul id="beltSizeFilters">
+                        <li>
+                          <div class="product-checkout">
+                            <input type="checkbox" class="size-checkbox" id="size28" value="28" />
+                            <label for="size28" class="size-item">28</label>
+                          </div>
+                        </li>
+                        <li>
+                          <div class="product-checkout">
+                            <input type="checkbox" class="size-checkbox" id="size30" value="30" />
+                            <label for="size30" class="size-item">30</label>
+                          </div>
+                        </li>
+                        <li>
+                          <div class="product-checkout">
+                            <input type="checkbox" class="size-checkbox" id="size32" value="32" />
+                            <label for="size32" class="size-item">32</label>
+                          </div>
+                        </li>
+                        <li>
+                          <div class="product-checkout">
+                            <input type="checkbox" class="size-checkbox" id="size34" value="34" />
+                            <label for="size34" class="size-item">34</label>
+                          </div>
+                        </li>
+                        <li>
+                          <div class="product-checkout">
+                            <input type="checkbox" class="size-checkbox" id="size36" value="36" />
+                            <label for="size36" class="size-item">36</label>
+                          </div>
+                        </li>
+                        <li>
+                          <div class="product-checkout">
+                            <input type="checkbox" class="size-checkbox" id="size38" value="38" />
+                            <label for="size38" class="size-item">38</label>
+                          </div>
+                        </li>
+                        <li>
+                          <div class="product-checkout">
+                            <input type="checkbox" class="size-checkbox" id="size40" value="40" />
+                            <label for="size40" class="size-item">40</label>
+                          </div>
+                        </li>
+                      </ul>
                     </div>
-                  </li>
-                  <li>
-                    <div class="product-checkout">
-                      <input type="checkbox" class="size-checkbox" id="size30" value="30" />
-                      <label for="size30" class="size-item">30</label>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="product-checkout">
-                      <input type="checkbox" class="size-checkbox" id="size32" value="32" />
-                      <label for="size32" class="size-item">32</label>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="product-checkout">
-                      <input type="checkbox" class="size-checkbox" id="size34" value="34" />
-                      <label for="size34" class="size-item">34</label>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="product-checkout">
-                      <input type="checkbox" class="size-checkbox" id="size36" value="36" />
-                      <label for="size36" class="size-item">36</label>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="product-checkout">
-                      <input type="checkbox" class="size-checkbox" id="size38" value="38" />
-                      <label for="size38" class="size-item">38</label>
-                    </div>
-                  </li>
-                  <li>
-                    <div class="product-checkout">
-                      <input type="checkbox" class="size-checkbox" id="size40" value="40" />
-                      <label for="size40" class="size-item">40</label>
-                    </div>
-                  </li>
-                </ul>
-              </div>
+                    <% } %>
             </div>
+
             <div class="product-filter">
               <div class="filter-title">
                 <h4 class="product-h4">Filter by price</h4>
@@ -605,8 +619,8 @@
                   <div class="price-range-slider">
                     Price:
                     <span class="rangeValues">$10 - $100</span>
-                    <input value="10" min="10" max="100" step="10" class="price-range-input" type="range" />
-                    <input value="100" min="10" max="100" step="10" class="price-range-input" type="range" />
+                    <input value="10" min="10" max="300" step="10" class="price-range-input" type="range" />
+                    <input value="100" min="10" max="300" step="10" class="price-range-input" type="range" />
                   </div>
                 </div>
               </div>

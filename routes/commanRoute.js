@@ -320,12 +320,14 @@ router.get("/product", async (req, res) => {
     const [results] = await connect.query(queryProduct);
     const [categories] = await connect.query(querycategoryList);
     const [color_list] = await connect.query(colorlist);
+    const wearType = "all";
 
     res.render("product", {
       user,
       products: results,
       categories: categories,
       color_list: color_list,
+      wearType: wearType,
     });
   } catch (error) {
     console.error("Database query error:", error);
@@ -367,7 +369,7 @@ router.get("/accessories", async (req, res) => {
     const [results] = await connect.query(queryProduct);
     console.log(results);
     return res.render("accessories", {
-      products: results, categories: categories, color_list: color_list,
+      products: results, categories: categories, color_list: color_list, category_name: "all"
     });
   } catch (error) {
     console.error("Database query error:", error);

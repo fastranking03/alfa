@@ -41,20 +41,22 @@ router.get("/:categoryName", async (req, res) => {
         let total_product_count = productRows.length;
 
         if (productRows.length === 0) {
-            res.render("product", {
+            res.render("accessories", {
                 products: productRows,
                 categories: categories,
                 product_count: total_product_count,
+                category_name: categoryName,
             });
         }
 
         // res.render('products', { products: productRows });
 
-        res.render("product", {
+        res.render("accessories", {
             products: productRows,
             categories: categories,
             product_count: total_product_count,
             color_list: color_list,
+            category_name: categoryName,
         });
     } catch (err) {
         res.status(500).json({ message: err.message });
