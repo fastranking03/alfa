@@ -191,6 +191,7 @@ router.post("/login", async (req, res) => {
         const checkCartItemQuery = `
           SELECT * FROM users_cart WHERE user_id = ? AND product_id = ? AND selected_size = ?
         `;
+
         const [existingCartItem] = await connect.query(checkCartItemQuery, [
           user[0].id,
           product_id,
@@ -435,14 +436,33 @@ router.post("/alfa-login", async (req, res) => {
     // Check user status
     if (user[0].current_status === "active") {
       // Generate JWT token
-      const token = jwt.sign(
+      const accessToken = jwt.sign(
         { id: user[0].id, email: user[0].email, role: user[0].role, current_status: user[0].current_status },
         process.env.JWT_SECRET,
-        { expiresIn: '1d' }
+        { expiresIn: '30m' }
       );
-      console.log('Generated Token:', token);
+
+      const refreshToken = jwt.sign(
+        { id: user[0].id, email: user[0].email, role: user[0].role, current_status: user[0].current_status },
+        process.env.REFRESH_TOKEN_SECRET,
+        { expiresIn: '30d' }
+      );
+
+      const expiresAt = new Date();
+      expiresAt.setDate(expiresAt.getDate() + 30);
+      const expiresAtFormatted = expiresAt.toISOString().slice(0, 19).replace('T', ' ');
+
+
+      await connect.query(
+        "UPDATE alfa_personal_staff SET refresh_token = ?, token_expiry_date = ? WHERE id = ?",
+        [refreshToken, expiresAtFormatted, user[0].id]
+      );
+
+      console.log('Generated Token:', accessToken);
+      console.log('refresh Token :', refreshToken);
       // Store token in a cookie
-      res.cookie('token', token, { httpOnly: true });
+      res.cookie('accessToken', accessToken, { httpOnly: true });
+      res.cookie('refreshToken', refreshToken, { httpOnly: true });
 
       // Store user data in session
       req.session.alfa_team = user[0];
@@ -456,4 +476,5 @@ router.post("/alfa-login", async (req, res) => {
     res.render("alfa-login", { error: "Error in login" });
   }
 });
+
 export default router;
