@@ -1611,7 +1611,8 @@ a {
  }
  .alfa-pro-detail-wrapper .d-item img{
   height: 600px;
-  object-fit: contain;
+  object-fit: fill;
+  object-position: top;
  }
  .alfa-pro-detail-wrapper .d-item .pd-img{
   object-fit: contain;
