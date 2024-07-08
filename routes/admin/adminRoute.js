@@ -587,5 +587,28 @@ router.post('/update-order-status', async (req, res) => {
   }
 });
 
+router.get('/products-in-cart', async (req, res) => {
+  try {
+    const [best_products_in_cart] = await connect.query(`
+       SELECT p.*, uc.item_count
+      FROM (
+        SELECT product_id, COUNT(*) AS item_count
+        FROM users_cart 
+        GROUP BY product_id
+        ORDER BY item_count DESC
+        LIMIT 10
+      ) AS uc
+      JOIN products AS p ON uc.product_id = p.id
+      ORDER BY uc.item_count DESC;
+    `);
+
+    // Render the template with the data
+    return res.render('admin/best_products_in_cart', { best_products_in_cart });
+  } catch (error) {
+    console.error('Error fetching top-performing products:', error);
+    res.status(500).json({ success: false, error: 'Internal Server Error' });
+  }
+});
+
 
 export default router;

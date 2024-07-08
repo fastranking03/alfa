@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alfa Admin | Dashboard</title>
+    <%- include('includes/head') %>
+</head>
+
+<body>
+    <div class="main-admin-warpper">
+        <%- include('includes/header') %>
+            <div class="alfa-admin-wrapper">
+                <div class="admin-side-nav">
+                    <%- include('includes/sidebar') %>
+                        <div class="admin-main-layout">
+                            <div class="admin-bradcrumb">
+                                <div class="admin-brudcrumb-title">
+                                    <h3>Product List</h3>
+                                </div>
+                                <div class="adminRightWrapper">
+                                    <div class="search-wrapper position-relative">
+                                        <span><i class="fa-solid fa-magnifying-glass"></i></span>
+                                        <input type="search" name="search" class="table-search" placeholder="Search"
+                                            id="search">
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div class="product-list">
+                                <% if (best_products_in_cart && best_products_in_cart.length> 0) { %>
+                                    <div class="table-responsive">
+                                        <table class="alfa-table">
+                                            <thead class="table-dark">
+                                                <tr>
+                                                    <th>S NO .</th>
+                                                    <th>Product ID</th>
+                                                    <th>Product Image</th>
+                                                    <th>MRP Price</th>
+                                                    <th>Discount</th>
+                                                    <th>Displaying Price</th>
+                                                    <th>Count</th>
+
+                                                </tr>
+                                            </thead>
+                                            <tbody id="order-tbody">
+                                                <% best_products_in_cart.forEach((product , index)=> { %>
+                                                    <tr>
+
+                                                        <td>
+                                                            <%=index+1 %>
+                                                        </td>
+                                                        <td>
+                                                            <%= product.id %>
+                                                        </td>
+                                                        <td>
+                                                            <div class="admin-product">
+                                                                <span> <img
+                                                                        src="../../product_images/<%= product.product_main_image %>"
+                                                                        alt=""
+                                                                        style="width: 40px; height: 40px;"></span>
+                                                                <h6>
+                                                                    <%= product.product_name %>
+                                                                </h6>
+                                                            </div>
+                                                        </td>
+                                                        <td>£ <%= product.product_price %>
+                                                        </td>
+                                                        <td>
+                                                            £ <%= product.discount_on_product %> %
+                                                        </td>
+                                                        <td>
+                                                            £ <%=(product.product_price * (1 -
+                                                                (product.discount_on_product / 100))).toFixed(2) %>
+                                                        </td>
+                                                        <td>
+                                                            <%= product.item_count %>
+                                                        </td>
+
+
+
+                                                    </tr>
+                                                    <% }); %>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="table-pagination-wrapper">
+                                        <div class="table-pagination" id="pagination">
+                                            <a href="#" class="pagination-previous"><span><i
+                                                        class="fa-solid fa-angle-left"></i></span></a>
+                                            <a href="#" class="page-items active">1</a>
+                                            <a href="#" class="page-items">2</a>
+                                            <a href="#" class="pagination-next" style="color: #005D67;"><span><i
+                                                        class="fa-solid fa-angle-right"></i></span></a>
+                                        </div>
+                                    </div>
+                                    <% } else { %>
+                                        <p>No products found.</p>
+                                        <% } %>
+                            </div>
+                        </div>
+                </div>
+            </div>
+    </div>
+
+    <%- include('includes/foot') %>
+</body>
+
+</html>

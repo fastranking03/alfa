@@ -179,8 +179,6 @@ router.post("/login", async (req, res) => {
 
     res.cookie('token', token, { httpOnly: true });
 
-
-
     // Store user data in session
     req.session.user = user[0];
 
