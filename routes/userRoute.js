@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import connect from "../db/connect.js";
 // import { userLogIn } from "../middleware/protected.js";
 import nodemailer from "nodemailer";
+import jwt from "jsonwebtoken";
 
 const router = express.Router();
 
@@ -170,6 +171,14 @@ router.post("/login", async (req, res) => {
       return res.render("login", { error: "Invalid Email or Password" });
     }
 
+    const token = jwt.sign(
+      { id: user[0].id, email: user[0].email, role: user[0].role, current_status: user[0].current_status },
+      process.env.JWT_SECRET,
+      { expiresIn: '1d' }
+    );
+
+    res.cookie('token', token, { httpOnly: true });
+
     // Store user data in session
     req.session.user = user[0];
 
@@ -229,8 +238,7 @@ router.post("/login", async (req, res) => {
 
     const productIdToAdd = req.session.productToWishlist;
     if (productIdToAdd) {
-      // Clear product ID from session
-      console.log("jxasdgcsflkd");
+
       console.log("id", productIdToAdd);
 
       console.log("User:", user[0].id);
@@ -406,13 +414,11 @@ router.get("/alfa-login", (req, res) => {
 });
 
 
-// alfa login staff or admin
-
 router.post("/alfa-login", async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    // Query user details including verified status
+    // Query user details
     const alfa_query = "SELECT * FROM alfa_personal_staff WHERE email = ?";
     const [user] = await connect.query(alfa_query, [email]);
 
@@ -420,18 +426,31 @@ router.post("/alfa-login", async (req, res) => {
     if (user.length === 0) {
       return res.render("alfa-login", { error: "Email is not registered." });
     }
-    else if (password == user[0].password) {
-      req.session.alfa_team = user[0];
-    } else {
+
+    // Check if the provided password matches the stored password
+    if (password != user[0].password) {
       return res.render("alfa-login", { error: "Invalid Email or Password" });
     }
 
+    // Check user status
     if (user[0].current_status === "active") {
+      // Generate JWT token
+      const token = jwt.sign(
+        { id: user[0].id, email: user[0].email, role: user[0].role, current_status: user[0].current_status },
+        process.env.JWT_SECRET,
+        { expiresIn: '1d' }
+      );
+      console.log('Generated Token:', token);
+      // Store token in a cookie
+      res.cookie('token', token, { httpOnly: true });
+
+      // Store user data in session
+      req.session.alfa_team = user[0];
+
       return res.redirect("/admin");
     } else {
       return res.redirect('/alfa-login');
     }
-
   } catch (error) {
     console.error("Error logging in:", error);
     res.render("alfa-login", { error: "Error in login" });

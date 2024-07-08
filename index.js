@@ -1,5 +1,6 @@
 import express from "express";
 import path from "path";
+import dotenv from "dotenv";
 import userRoute from "./routes/userRoute.js";
 import commanRoute from "./routes/commanRoute.js";
 import adminRoute from "./routes/admin/adminRoute.js";
@@ -18,12 +19,15 @@ import blogRoute from './routes/admin/blogRoute.js';
 import contentRoute from './routes/admin/contentRoute.js';
 import newProduct from './routes/admin/newProduct.js';
 import accessoriesRoutes from './routes/accessoriesRoutes.js';
+import jwt from "jsonwebtoken";
 
 import session from "express-session";
+import cookieParser from "cookie-parser";
 import slugify from "slugify";
 import { fileURLToPath } from "url";
 
 import connect from "./db/connect.js";
+dotenv.config();
 
 const app = express();
 
@@ -34,6 +38,7 @@ const __dirname = path.dirname(__filename);
 
 app.use(express.json()); //For parsing application/json
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 app.use(
   session({
     secret: "user",
@@ -100,6 +105,24 @@ app.use("/", placeOrderRoute);
 app.use("/category/", CategoryRoutes);
 app.use("/accessory/", accessoriesRoutes);
 
+
+// Middleware to check for valid JWT token
+function verifyToken(req, res, next) {
+  const token = req.cookies.token;
+  if (!token) {
+    return res.redirect('/alfa-login');
+  }
+
+  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
+    if (err) {
+      return res.redirect('/alfa-login');
+    }
+    req.user = decoded;
+    next();
+  });
+}
+
+
 function isAdminOrStaffAndActive(req, res, next) {
   if (req.session.alfa_team) {
     if ((req.session.alfa_team.role === 'admin' || req.session.alfa_team.role === 'staff') && req.session.alfa_team.current_status === 'active') {
@@ -109,7 +132,7 @@ function isAdminOrStaffAndActive(req, res, next) {
   return res.redirect("/alfa-login");
 }
 
-app.use("/admin/", isAdminOrStaffAndActive);;
+app.use("/admin/", verifyToken, isAdminOrStaffAndActive);
 
 app.use("/admin/", adminRoute);
 app.use("/admin/", bannerRoute);
@@ -121,11 +144,11 @@ app.use("/admin/", blogRoute);
 app.use("/admin/", contentRoute);
 app.use("/admin/", newProduct);
 
-app.get('/order-history', (req, res) => {
-  return res.render('order-history')
-});
+// app.get('/order-history', verifyToken, (req, res) => {
+//   return res.render('order-history')
+// });
 
-app.get('/my-profile', async (req, res) => {
+app.get('/my-profile', verifyToken, async (req, res) => {
   try {
     // Fetch user details from the user_registration table
     const userId = req.session.user.id;
@@ -148,7 +171,7 @@ app.get('/my-profile', async (req, res) => {
   }
 });
 
-app.post('/payment', (req, res) => {
+app.post('/payment', verifyToken, (req, res) => {
   let { cartItemscheckoutpage, total_mrp, discount_on_mrp, subtotal, vat, delivery_charges, total_payable, selectedAddress } = req.body;
   cartItemscheckoutpage = JSON.parse(cartItemscheckoutpage);
   return res.render('payment', {

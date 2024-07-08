@@ -4,7 +4,7 @@ import connect from "../db/connect.js";
 const router = express.Router();
 
 // Route to display products in a single category
-router.get("/:categoryName", async (req, res) => { 
+router.get("/:categoryName", async (req, res) => {
   const categoryName = req.params.categoryName;
   const querycategoryList = `
   SELECT c.*, COUNT(p.id) AS product_count
@@ -16,7 +16,7 @@ router.get("/:categoryName", async (req, res) => {
     const [categories] = await connect.query(querycategoryList);
     // First, find the category ID based on the category name
     const [categoryRows] = await connect.query(
-      "SELECT id FROM category WHERE category_name = ?",
+      "SELECT * FROM category WHERE category_name = ?",
       [categoryName]
     );
     if (categoryRows.length === 0) {
@@ -24,6 +24,7 @@ router.get("/:categoryName", async (req, res) => {
     }
 
     const categoryId = categoryRows[0].id;
+    const wearType = categoryRows[0].wear_type;
 
     // Then, select all products with the found category ID
     const [productRows] = await connect.query(
@@ -34,25 +35,27 @@ router.get("/:categoryName", async (req, res) => {
     const colorlist = `
       SELECT * FROM colors;
       `;
-      const [color_list] = await connect.query(colorlist);
+    const [color_list] = await connect.query(colorlist);
 
     let total_product_count = productRows.length;
 
     if (productRows.length === 0) {
-      res.render("product", { 
+      res.render("product", {
         products: productRows,
         categories: categories,
-        product_count : total_product_count,
+        product_count: total_product_count,
+        wearType: wearType,
       });
     }
 
     // res.render('products', { products: productRows });
 
-    res.render("product", { 
+    res.render("product", {
       products: productRows,
       categories: categories,
-      product_count : total_product_count,
-      color_list: color_list ,
+      product_count: total_product_count,
+      color_list: color_list,
+      wearType: wearType,
     });
   } catch (err) {
     res.status(500).json({ message: err.message });

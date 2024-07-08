@@ -57,8 +57,6 @@
         border: 1px solid rgb(66, 66, 66);
         /* Black border */
       }
-
-     
     </style>
 </head>
 </head>
@@ -112,7 +110,8 @@
                       </div>
                       <div class="product-cat-type">
                         <ul class="product-cat-list">
-                          <% categories.forEach(category=> { %>
+
+                          <% categories.filter(Category=>! Category.isAccessories).forEach(category=> { %>
                             <li>
                               <a href="category/<%= category.category_name %>">
                                 <button class="cat-item">
@@ -152,88 +151,91 @@
 
                     <div class="product-size">
                       <div class="filter-title">
-                        <h4 class="product-h4">Size w</h4>
+                        <h4 class="product-h4">Size </h4>
                       </div>
-                      <div class="product-size-list">
-                        <ul id="sizeFilters">
-                          <li>
-                            <div class="product-checkout">
-                              <input type="checkbox" class="size-checkbox" id="sizeS" value="S" />
-                              <label for="sizeS" class="size-item">S</label>
-                            </div>
-                          </li>
-                          <li>
-                            <div class="product-checkout">
-                              <input type="checkbox" class="size-checkbox" id="sizeM" value="M" />
-                              <label for="sizeM" class="size-item">M</label>
-                            </div>
-                          </li>
-                          <li>
-                            <div class="product-checkout">
-                              <input type="checkbox" class="size-checkbox" id="sizeL" value="L" />
-                              <label for="sizeL" class="size-item">L</label>
-                            </div>
-                          </li>
-                          <li>
-                            <div class="product-checkout">
-                              <input type="checkbox" class="size-checkbox" id="sizeXL" value="XL" />
-                              <label for="sizeXL" class="size-item">XL</label>
-                            </div>
-                          </li>
-                          <li>
-                            <div class="product-checkout">
-                              <input type="checkbox" class="size-checkbox" id="sizeXXL" value="XXL" />
-                              <label for="sizeXXL" class="size-item">XXL</label>
-                            </div>
-                          </li>
-                        </ul>
-                      </div>
-                      <hr>
-                      <div class="product-size-list">
-                        <ul id="bottomWearSizeFilters">
-                          <li>
-                            <div class="product-checkout">
-                              <input type="checkbox" class="size-checkbox" id="bottomSize28" value="28" />
-                              <label for="bottomSize28" class="size-item">28</label>
-                            </div>
-                          </li>
-                          <li>
-                            <div class="product-checkout">
-                              <input type="checkbox" class="size-checkbox" id="bottomSize30" value="30" />
-                              <label for="bottomSize30" class="size-item">30</label>
-                            </div>
-                          </li>
-                          <li>
-                            <div class="product-checkout">
-                              <input type="checkbox" class="size-checkbox" id="bottomSize32" value="32" />
-                              <label for="bottomSize32" class="size-item">32</label>
-                            </div>
-                          </li>
-                          <li>
-                            <div class="product-checkout">
-                              <input type="checkbox" class="size-checkbox" id="bottomSize34" value="34" />
-                              <label for="bottomSize34" class="size-item">34</label>
-                            </div>
-                          </li>
-                          <li>
-                            <div class="product-checkout">
-                              <input type="checkbox" class="size-checkbox" id="bottomSize36" value="36" />
-                              <label for="bottomSize36" class="size-item">36</label>
-                            </div>
-                          </li>
-                          <li>
-                            <div class="product-checkout">
-                              <input type="checkbox" class="size-checkbox" id="bottomSize38" value="38" />
-                              <label for="bottomSize38" class="size-item">38</label>
-                            </div>
-                          </li>
-                          <li>
-                            <div class="product-checkout">
-                              <input type="checkbox" class="size-checkbox" id="bottomSize40" value="40" />
-                              <label for="bottomSize40" class="size-item">40</label>
-                            </div>
-                          </li>
-                          <!-- <li>
+                      <% if(wearType=='top' || wearType=='all' ){ %>
+                        <div class="product-size-list">
+                          <ul id="sizeFilters">
+                            <li>
+                              <div class="product-checkout">
+                                <input type="checkbox" class="size-checkbox" id="sizeS" value="S" />
+                                <label for="sizeS" class="size-item">S</label>
+                              </div>
+                            </li>
+                            <li>
+                              <div class="product-checkout">
+                                <input type="checkbox" class="size-checkbox" id="sizeM" value="M" />
+                                <label for="sizeM" class="size-item">M</label>
+                              </div>
+                            </li>
+                            <li>
+                              <div class="product-checkout">
+                                <input type="checkbox" class="size-checkbox" id="sizeL" value="L" />
+                                <label for="sizeL" class="size-item">L</label>
+                              </div>
+                            </li>
+                            <li>
+                              <div class="product-checkout">
+                                <input type="checkbox" class="size-checkbox" id="sizeXL" value="XL" />
+                                <label for="sizeXL" class="size-item">XL</label>
+                              </div>
+                            </li>
+                            <li>
+                              <div class="product-checkout">
+                                <input type="checkbox" class="size-checkbox" id="sizeXXL" value="XXL" />
+                                <label for="sizeXXL" class="size-item">XXL</label>
+                              </div>
+                            </li>
+                          </ul>
+                        </div>
+                        <% } %>
+                          <hr>
+                          <% if(wearType=='bottom' || wearType=='all' ){ %>
+                            <div class="product-size-list">
+                              <ul id="bottomWearSizeFilters">
+                                <li>
+                                  <div class="product-checkout">
+                                    <input type="checkbox" class="size-checkbox" id="bottomSize28" value="28" />
+                                    <label for="bottomSize28" class="size-item">28</label>
+                                  </div>
+                                </li>
+                                <li>
+                                  <div class="product-checkout">
+                                    <input type="checkbox" class="size-checkbox" id="bottomSize30" value="30" />
+                                    <label for="bottomSize30" class="size-item">30</label>
+                                  </div>
+                                </li>
+                                <li>
+                                  <div class="product-checkout">
+                                    <input type="checkbox" class="size-checkbox" id="bottomSize32" value="32" />
+                                    <label for="bottomSize32" class="size-item">32</label>
+                                  </div>
+                                </li>
+                                <li>
+                                  <div class="product-checkout">
+                                    <input type="checkbox" class="size-checkbox" id="bottomSize34" value="34" />
+                                    <label for="bottomSize34" class="size-item">34</label>
+                                  </div>
+                                </li>
+                                <li>
+                                  <div class="product-checkout">
+                                    <input type="checkbox" class="size-checkbox" id="bottomSize36" value="36" />
+                                    <label for="bottomSize36" class="size-item">36</label>
+                                  </div>
+                                </li>
+                                <li>
+                                  <div class="product-checkout">
+                                    <input type="checkbox" class="size-checkbox" id="bottomSize38" value="38" />
+                                    <label for="bottomSize38" class="size-item">38</label>
+                                  </div>
+                                </li>
+                                <li>
+                                  <div class="product-checkout">
+                                    <input type="checkbox" class="size-checkbox" id="bottomSize40" value="40" />
+                                    <label for="bottomSize40" class="size-item">40</label>
+                                  </div>
+                                </li>
+                                <!-- <li>
                             <div class="product-checkout">
                               <input type="checkbox" class="size-checkbox" id="bottomSize42" value="42" />
                               <label for="bottomSize42" class="size-item">42</label>
@@ -251,8 +253,9 @@
                               <label for="bottomSize46" class="size-item">46</label>
                             </div>
                           </li> -->
-                        </ul>
-                      </div>
+                              </ul>
+                            </div>
+                            <% } %>
                     </div>
 
                     <div class="product-filter">
@@ -308,7 +311,7 @@
                                   <span class="mrp-price">
                                     £<%=product.product_price %></span>
                                   <span class="discount-text">
-                                    (<%=product.discount_on_product %>% OFF
+                                    (<%=product.discount_on_product %> % OFF
                                       )</span>
                                 </h5>
                               </div>
@@ -546,8 +549,8 @@
             }
           });
         </script>
- 
- 
+
+
         <!-- End -->
         <script>
           // Add event listener to the "Add to Favorites" button
@@ -577,12 +580,12 @@
                   .then((data) => {
                     if (data.success) {
                       // Show popup alert
-                        cartMessage.textContent = data.message;
-                        cartMessage.style.display = "block";
-                        setTimeout(() => {
-                          cartMessage.style.display = "none"
-                        }, 4000)
- 
+                      cartMessage.textContent = data.message;
+                      cartMessage.style.display = "block";
+                      setTimeout(() => {
+                        cartMessage.style.display = "none"
+                      }, 4000)
+
                       // Update wishlist count in the span
                       const wishlistLi = document.querySelector("#wishlist");
                       if (wishlistLi) {
@@ -594,11 +597,11 @@
                       }
                     } else {
                       cartMessage.textContent = data.message;
-                        cartMessage.style.display = "block";
-                        setTimeout(() => {
-                          cartMessage.style.display = "none"
-                        }, 4000)
-                      
+                      cartMessage.style.display = "block";
+                      setTimeout(() => {
+                        cartMessage.style.display = "none"
+                      }, 4000)
+
                     }
                   })
                   .catch((error) => {

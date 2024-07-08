@@ -3,6 +3,7 @@ import connect from '../../db/connect.js'; // Adjust path as per your file struc
 import upload from '../../uploadConfig.js'; // Adjust path as per your file structure
 import fs from 'fs';
 import path from 'path';
+import nodemailer from "nodemailer";
 
 const router = express.Router();
 
@@ -318,19 +319,19 @@ router.get('/order-details', (req, res) => {
   res.render("admin/order-details");
 });
 
+
+
+
 router.get("/order-details/:orderId", async (req, res) => {
   const { orderId } = req.params;
 
   try {
-    const [orderReows] = await connect.query(
-      "SELECT * FROM orders WHERE order_id = ? ",
-      [orderId]
-    );
 
     const [orderRows] = await connect.query(
-      `SELECT o.*, ua.name AS user_name,ua.full_address AS address, ua.locality AS locality, ua.country AS country, ua.state AS state,ua.city AS city,  ua.email AS email , ua.phone AS user_phone, ua.pincode AS user_pincode, ua.created_at AS address_created_at
+      `SELECT o.*, ua.name AS user_name,ua.full_address AS address, ua.locality AS locality, ua.country AS country, ua.state AS state,ua.city AS city,  ua.email AS email , ua.phone AS user_phone, ua.pincode AS user_pincode, ua.created_at AS address_created_at ,  ur.email AS user_email
        FROM orders o
        JOIN user_address ua ON o.address_id = ua.id
+       JOIN user_registration ur ON o.user_id = ur.id
        WHERE o.order_id = ?`,
       [orderId]
     );
@@ -367,6 +368,9 @@ router.get("/order-details/:orderId", async (req, res) => {
     res.status(500).send("Server error");
   }
 });
+
+
+
 
 router.get('/add-new-varient', (req, res) => {
   res.render("admin/add-new-varient");
@@ -540,5 +544,71 @@ router.get('/update-staff/:id', isAdminAndActive, async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
+
+
+
+// Route to update order status
+router.post('/update-order-status', async (req, res) => {
+  const { status, orderId, email } = req.body; // Get the status, orderId, and email from form data
+
+  if (!status || !orderId || !email) {
+    return res.status(400).json({ success: false, error: 'Missing required fields' });
+  }
+
+  try {
+
+    const updateQuery = 'UPDATE orders SET order_status = ? WHERE order_id = ?';
+    await connect.query(updateQuery, [status, orderId]);
+
+
+    const transporter = nodemailer.createTransport({
+      host: "smtp.gmail.com",
+      port: 587,
+      secure: false,
+      auth: {
+        user: "jaydenmitchell0282@gmail.com",
+        pass: "rtcslwgbcgxkoibh",
+      },
+    });
+
+    // Send email notification
+    await transporter.sendMail({
+      from: "fastranking08@gmail.com",
+      to: email,
+      subject: "Order Status Update",
+      text: `Your order status has been updated to: ${status}`,
+    });
+
+    // Respond with success
+    res.json({ success: true, status, orderId });
+  } catch (error) {
+    console.error('Error updating order status:', error);
+    res.status(500).json({ success: false, error: 'Internal Server Error' });
+  }
+});
+
+router.get('/products-in-cart', async (req, res) => {
+  try {
+    const [best_products_in_cart] = await connect.query(`
+       SELECT p.*, uc.item_count
+      FROM (
+        SELECT product_id, COUNT(*) AS item_count
+        FROM users_cart 
+        GROUP BY product_id
+        ORDER BY item_count DESC
+        LIMIT 10
+      ) AS uc
+      JOIN products AS p ON uc.product_id = p.id
+      ORDER BY uc.item_count DESC;
+    `);
+
+    // Render the template with the data
+    return res.render('admin/best_products_in_cart', { best_products_in_cart });
+  } catch (error) {
+    console.error('Error fetching top-performing products:', error);
+    res.status(500).json({ success: false, error: 'Internal Server Error' });
+  }
+});
+
 
 export default router;

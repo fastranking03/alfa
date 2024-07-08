@@ -172,9 +172,10 @@ router.post("/place-order", async (req, res) => {
 
     // Insert new order
     const insertOrderQuery = `
-      INSERT INTO orders (order_id, user_id, user_name , total_payable, vat, delivery_charges, sub_total, total_mrp, discount_amount, address_id) 
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      INSERT INTO orders (order_id, user_id, user_name , total_payable, vat, delivery_charges, sub_total, total_mrp, discount_amount, address_id , order_status) 
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ? , "order placed")
     `;
+
     const insertOrderValues = [
       newOrderId,
       userId,
@@ -319,12 +320,14 @@ router.get("/product", async (req, res) => {
     const [results] = await connect.query(queryProduct);
     const [categories] = await connect.query(querycategoryList);
     const [color_list] = await connect.query(colorlist);
+    const wearType = "all";
 
     res.render("product", {
       user,
       products: results,
       categories: categories,
       color_list: color_list,
+      wearType: wearType,
     });
   } catch (error) {
     console.error("Database query error:", error);
@@ -366,7 +369,7 @@ router.get("/accessories", async (req, res) => {
     const [results] = await connect.query(queryProduct);
     console.log(results);
     return res.render("accessories", {
-      products: results, categories: categories, color_list: color_list,
+      products: results, categories: categories, color_list: color_list, category_name: "all"
     });
   } catch (error) {
     console.error("Database query error:", error);
@@ -433,7 +436,7 @@ router.get("/product-detail/:id", async (req, res) => {
     const [reviews] = await connect.query(
       `SELECT * 
        FROM order_items
-       WHERE product_id = ? AND isReviewed = 1`,
+       WHERE product_id = ? AND isReviewApproved = 1`,
       [productId]
     );
 
@@ -441,10 +444,10 @@ router.get("/product-detail/:id", async (req, res) => {
     const [reviewSummary] = await connect.query(
       `SELECT COUNT(*) as total_reviews, AVG(star_rating) as average_rating
        FROM order_items
-       WHERE product_id = ? AND isReviewed = 1`,
+       WHERE product_id = ? AND isReviewApproved = 1`,
       [productId]
     );
-    // comtent
+
     const totalReviews = reviewSummary[0].total_reviews;
     const averageRating = reviewSummary[0].average_rating;
 
@@ -453,7 +456,7 @@ router.get("/product-detail/:id", async (req, res) => {
     const [reviewCounts] = await connect.query(
       `SELECT star_rating, COUNT(*) as count
        FROM order_items
-       WHERE product_id = ? AND isReviewed = 1
+       WHERE product_id = ? AND isReviewApproved = 1
        GROUP BY star_rating
        ORDER BY star_rating DESC`,
       [productId]
