@@ -70,6 +70,8 @@ app.use(async (req, res, next) => {
     res.locals.session = req.session;
     res.locals.user = req.session.user;
     res.locals.alfa_team = req.session.alfa_team;
+    res.locals.promi_discount = req.session.alfa_team;
+
 
     res.locals.categories = categories;
     res.locals.content = contentArray[0];
@@ -218,7 +220,7 @@ app.use("/admin/", newProduct);
 //   return res.render('order-history')
 // });
 
-app.get('/my-profile', verifyToken, async (req, res) => {
+app.get('/my-profile', async (req, res) => {
   try {
     // Fetch user details from the user_registration table
     const userId = req.session.user.id;
@@ -241,7 +243,7 @@ app.get('/my-profile', verifyToken, async (req, res) => {
   }
 });
 
-app.post('/payment', verifyToken, (req, res) => {
+app.post('/payment', (req, res) => {
   let { cartItemscheckoutpage, total_mrp, discount_on_mrp, subtotal, vat, delivery_charges, total_payable, selectedAddress } = req.body;
   cartItemscheckoutpage = JSON.parse(cartItemscheckoutpage);
   return res.render('payment', {

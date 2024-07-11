@@ -242,6 +242,31 @@ router.post("/place-order", async (req, res) => {
           WHERE product_id = ?
         `;
         await connect.query(updateInventoryQuery, [product.quantity, product.product_id]);
+      } else if (product_type === 'shoes') {
+        const sizeColumn = `size_${product.selected_size}`;
+        const updateInventoryQuery = `
+          UPDATE shoes_inventory
+          SET ${sizeColumn} = ${sizeColumn} - ? 
+          WHERE product_id = ?
+        `;
+        await connect.query(updateInventoryQuery, [product.quantity, product.product_id]);
+      } else if (product_type === 'belt') {
+        const sizeColumn = `size_${product.selected_size}`;
+        const updateInventoryQuery = `
+          UPDATE belts_inventory
+          SET ${sizeColumn} = ${sizeColumn} - ? 
+          WHERE product_id = ?
+        `;
+        await connect.query(updateInventoryQuery, [product.quantity, product.product_id]);
+      } else if (product_type === 'wallet') {
+
+        const sizeColumn = product.selected_size.toLowerCase();
+        const updateInventoryQuery = `
+          UPDATE wallet_inventory
+          SET ${sizeColumn} = ${sizeColumn} - ? 
+          WHERE product_id = ?
+        `;
+        await connect.query(updateInventoryQuery, [product.quantity, product.product_id]);
       } else {
         throw new Error("Unknown product type");
       }
@@ -679,18 +704,31 @@ router.get("/checkout", async (req, res) => {
       }
     });
 
+    const promo = req.session.promo || { promodiscount: 0, code_applied: false };
+    let promo_discount = 0;
+
     const vatRate = 0.2; // 20% VAT rate
-    const subtotal = (totalPrice - totalDiscount).toFixed(2);
+    const subtotal = parseFloat((totalPrice - totalDiscount).toFixed(2));
+    console.log("subtotal", subtotal);
+    let ispromoapplied = false;
+    if (promo.code_applied) {
+      promo_discount = (subtotal * (promo.promodiscount / 100)).toFixed(2);
+      promo_discount = parseFloat(promo_discount); // Ensure promo_discount is parsed as a float
+      ispromoapplied = true;
+    }
+
     const GST = (subtotal * vatRate).toFixed(2);
     const deliveryFee = 25;
     const totalCost = (
       parseFloat(totalPrice) +
       parseFloat(GST) +
       deliveryFee -
+      promo_discount -
       parseFloat(totalDiscount)
     ).toFixed(2);
 
-    // Filter items where stock is available for the selected size
+    delete req.session.promo;
+
     // Filter items where stock is available
     const cartItemsInStock = cartItems.filter((item) => {
       const stock = item.sizes;
@@ -712,9 +750,11 @@ router.get("/checkout", async (req, res) => {
       deliveryFee: deliveryFee.toFixed(2),
       totalCost,
       subtotal,
+      promo_discount,
       addresses,
       addressCount,
       cartItemsInStock,
+      ispromoapplied
     });
   } catch (error) {
     console.error("Error during checkout:", error);
@@ -932,7 +972,6 @@ router.get("/cart", async (req, res) => {
       });
 
       const cartItems = await Promise.all(cartItemPromises);
-
       // Calculate totals for items in stock
       let totalPrice = 0;
       let totalDiscount = 0;
@@ -989,14 +1028,27 @@ router.get("/cart", async (req, res) => {
         }
       });
 
+      const promo = req.session.promo || { promodiscount: 0, code_applied: false };
+      let promo_discount = 0;
+
+
+
       const vatRate = 0.2; // 20% VAT rate
-      const subtotal = (totalPrice - totalDiscount).toFixed(2);
+      const subtotal = parseFloat((totalPrice - totalDiscount).toFixed(2));
+      console.log("subtotal", subtotal);
+      if (promo.code_applied) {
+        promo_discount = (subtotal * (promo.promodiscount / 100)).toFixed(2);
+        promo_discount = parseFloat(promo_discount); // Ensure promo_discount is parsed as a float
+      }
+
+      console.log("promo_discount", promo_discount);
       const GST = (subtotal * vatRate).toFixed(2);
       const deliveryFee = 25;
       const totalCost = (
         parseFloat(totalPrice) +
         parseFloat(GST) +
         deliveryFee -
+        promo_discount -
         parseFloat(totalDiscount)
       ).toFixed(2);
 
@@ -1015,6 +1067,8 @@ router.get("/cart", async (req, res) => {
 
       res.render("my-cart", {
         user,
+        promo,
+        promo_discount,
         cartItems,
         addresses,
         totalPrice,
@@ -1026,6 +1080,7 @@ router.get("/cart", async (req, res) => {
         cartItemsInStock,
         cartItemsOutOfStock,
         isLoggedIn: !!user,
+
       });
     }
   } catch (error) {
@@ -1979,6 +2034,37 @@ router.get("/contact-us", (req, res) => {
   const user = req.session.user;
   res.render("contact-us", { user });
 });
+
+router.post("/promocode-check", async (req, res) => {
+  const user = req.session.user;
+  if (!user) {
+    return res.redirect("/login");
+  }
+
+  const coupon_name = req.body.coupon_name; // Correctly access coupon_name from req.body
+
+  try {
+    const [promoRows] = await connect.query(
+      `SELECT * FROM promo_code WHERE coupon_name = ? AND status = 'active' AND coupons_count > 0`,
+      [coupon_name]
+    );
+
+    if (promoRows.length === 0) {
+      return res.redirect("/cart"); // Correctly call res.redirect
+    }
+
+    req.session.promo = {
+      promodiscount: promoRows[0].discount,
+      code_applied: true
+    };
+
+    return res.redirect("/cart"); // Correctly call res.redirect
+  } catch (error) {
+    console.error("Error checking promo code:", error);
+    res.status(500).send("Internal Server Error"); // Send an error response in case of failure
+  }
+});
+
 
 
 
