@@ -118,33 +118,32 @@ async function verifyToken(req, res, next) {
   try {
     // Verify the access token
     const decodedAccessToken = jwt.verify(accessToken, process.env.JWT_SECRET);
-
-    // Set the user information in req.user
     req.user = decodedAccessToken;
 
-    // Continue to next middleware
     return next();
   } catch (accessTokenError) {
-    // If access token is expired, try to refresh using refresh token
+
     if (accessTokenError.name === 'TokenExpiredError' && refreshToken) {
       try {
-        // Verify the refresh token
+        console.log("1st", accessToken);
         const decodedRefreshToken = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
 
-        // Retrieve the stored refresh token from the database
         const refreshTokenQuery = "SELECT * FROM alfa_personal_staff WHERE  id = ? AND refresh_token = ?";
         const now = new Date();
         const [storedToken] = await connect.query(refreshTokenQuery, [decodedRefreshToken.id, refreshToken]);
 
-        if (storedToken.length === 0 || storedToken[0].token_expiry_date < now) {
+
+        const tokenExpiryDate = new Date(storedToken[0].token_expiry_date);
+        if (storedToken.length === 0 || tokenExpiryDate < now) {
+          console.log("2nd", accessToken);
           return res.redirect('/alfa-login');
         }
 
-        // Fetch the user details from the database to get role and status
         const userQuery = "SELECT id, email, role, current_status FROM alfa_personal_staff WHERE id = ?";
         const [userDetails] = await connect.query(userQuery, [decodedRefreshToken.id]);
 
         if (userDetails.length === 0) {
+          console.log("3rd", accessToken);
           return res.redirect('/alfa-login');
         }
 
@@ -152,7 +151,7 @@ async function verifyToken(req, res, next) {
         const newAccessToken = jwt.sign(
           { id: userDetails[0].id, email: userDetails[0].email, role: userDetails[0].role, current_status: userDetails[0].current_status },
           process.env.JWT_SECRET,
-          { expiresIn: '30m' }
+          { expiresIn: '1m' }
         );
 
         const newrefreshToken = jwt.sign(
@@ -161,29 +160,33 @@ async function verifyToken(req, res, next) {
           { expiresIn: '30d' }
         );
 
+
         const expiresAt = new Date();
         expiresAt.setDate(expiresAt.getDate() + 30);
+        const expiresAtFormatted = expiresAt.toISOString().slice(0, 19).replace('T', ' ');
+
+
 
         await connect.query(
           "UPDATE alfa_personal_staff SET refresh_token = ?, token_expiry_date = ? WHERE id = ?",
-          [newrefreshToken, expiresAt, userDetails[0].id]
+          [newrefreshToken, expiresAtFormatted, userDetails[0].id]
         );
 
-        // Update the access token in cookies
+        console.log("accessToken", newAccessToken);
+        console.log("refreshToken", newrefreshToken);
+
         res.cookie('accessToken', newAccessToken, { httpOnly: true });
         res.cookie('refreshToken', newrefreshToken, { httpOnly: true });
 
-        // Update req.userDetails with new decoded access token
 
         req.session.alfa_team = userDetails[0];
 
-        // Continue to next middleware
         return next();
       } catch (refreshTokenError) {
         return res.redirect('/alfa-login');
       }
     }
-
+    console.log("catch else ");
     return res.redirect('/alfa-login');
   }
 }

@@ -94,7 +94,8 @@
               <div class="product-row">
                 <div class="product-md-3">
                   <div class="product-left-wrapper">
-                    <div class="product-search">
+
+                    <!-- <div class="product-search">
                       <div class="search-title">
                         <h4 class="product-h4">Search Products</h4>
                       </div>
@@ -103,7 +104,20 @@
                         <input type="search" name="search" class="product-search-control"
                           placeholder="Search for products" id="" />
                       </div>
+                    </div> -->
+
+                    <div class="product-search">
+                      <div class="search-title">
+                        <h4 class="product-h4">Search Products </h4>
+                      </div>
+                      <div class="product-search">
+                        <span class="p-s-icon"><img src="assets/images/search.png" alt="" /></span>
+                        <input type="search" name="search" class="product-search-control"
+                          placeholder="Search for products" id="searchBar" />
+                      </div>
+                      <div id="suggestions" class="suggestions-dropdown"></div>
                     </div>
+
                     <div class="product-category mt-4">
                       <div class="cat-title">
                         <h4 class="product-h4">Categories</h4>
@@ -296,9 +310,11 @@
                           <div class="product-details shop-content">
                             <div class="product-nameprice">
                               <a href="/product-detail/<%= product.id %>">
-                                <h6>
-                                  <%= product.product_name %>
-                                </h6>
+                                <div class="product-name">
+                                  <h6>
+                                    <%= product.product_name %>
+                                  </h6>
+                                </div>
                                 <p class="product-short-desc">
                                   Lorem ipsum dolor sit...
                                 </p>
@@ -482,6 +498,43 @@
       <%- include('includes/footer') %>
 
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+        <script>
+          document.addEventListener('DOMContentLoaded', () => {
+            const searchBar = document.getElementById('searchBar');
+            const products = Array.from(document.querySelectorAll('.product-item'));
+
+            searchBar.addEventListener('input', () => {
+              const query = searchBar.value.toLowerCase().trim();
+
+              products.forEach(product => {
+                const productName = product.querySelector('.product-name h6').textContent.toLowerCase().trim();
+                // Normalize both product name and query by removing extra spaces
+                const normalizedProductName = productName.replace(/\s+/g, ' ');
+                const normalizedQuery = query.replace(/\s+/g, ' ');
+
+                if (normalizedProductName.includes(normalizedQuery)) {
+                  product.style.display = 'block'; // Show product if it matches the query
+                } else {
+                  product.style.display = 'none'; // Hide product if it does not match
+                }
+              });
+            });
+
+            // Hide suggestions dropdown when clicking outside
+            document.addEventListener('click', (event) => {
+              if (!event.target.closest('#searchBar')) {
+                // Hide suggestions if you have a suggestions dropdown
+                const suggestions = document.getElementById('suggestions');
+                if (suggestions) {
+                  suggestions.style.display = 'none'; // Ensure `suggestions` is defined and used properly
+                }
+              }
+            });
+          });
+        </script>
+
+
         <script>
           $(document).ready(function () {
             // Price Range Filter
@@ -601,7 +654,7 @@
                       setTimeout(() => {
                         cartMessage.style.display = "none"
                       }, 4000)
-
+                      window.location.href = '/login';
                     }
                   })
                   .catch((error) => {

@@ -439,7 +439,7 @@ router.post("/alfa-login", async (req, res) => {
       const accessToken = jwt.sign(
         { id: user[0].id, email: user[0].email, role: user[0].role, current_status: user[0].current_status },
         process.env.JWT_SECRET,
-        { expiresIn: '30m' }
+        { expiresIn: '1m' }
       );
 
       const refreshToken = jwt.sign(
@@ -458,8 +458,8 @@ router.post("/alfa-login", async (req, res) => {
         [refreshToken, expiresAtFormatted, user[0].id]
       );
 
-      console.log('Generated Token:', accessToken);
-      console.log('refresh Token :', refreshToken);
+      console.log("accessToken", accessToken);
+      console.log("refreshToken", refreshToken);
       // Store token in a cookie
       res.cookie('accessToken', accessToken, { httpOnly: true });
       res.cookie('refreshToken', refreshToken, { httpOnly: true });

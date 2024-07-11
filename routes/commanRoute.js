@@ -417,6 +417,20 @@ router.get("/product-detail/:id", async (req, res) => {
     }
 
     const product = productRows[0];
+    const categoryId = product.category_id;
+
+    const [relatedProducts] = await connect.query(
+      `SELECT 
+          p.*, 
+          c.id AS category_id, 
+          c.category_name 
+       FROM products p 
+       INNER JOIN category c ON p.category_id = c.id 
+       WHERE c.id = ? AND p.id != ? ORDER BY RAND()`, // Exclude the current product from related products
+      [categoryId, productId]
+    );
+
+
     const wearType = product.wear_type_bottom_or_top;
     const product_varient_name = product.unique_batch_id;
 
@@ -526,6 +540,7 @@ router.get("/product-detail/:id", async (req, res) => {
     res.render("product-detail", {
       user,
       product,
+      relatedProducts,
       product_images,
       sizes,
       wearType,
@@ -580,6 +595,30 @@ router.get("/checkout", async (req, res) => {
           [cartItem.product_id]
         );
         sizes = sizeRows[0];
+      } else if (cartItem.wear_type_bottom_or_top === "shoes") {
+        const [sizeRows] = await connect.query(
+          `SELECT size_6, size_7, size_8, size_9, size_10, size_11, size_12, size_13
+             FROM shoes_inventory
+             WHERE product_id = ?`,
+          [cartItem.product_id]
+        );
+        sizes = sizeRows[0];
+      } else if (cartItem.wear_type_bottom_or_top === "belt") {
+        const [sizeRows] = await connect.query(
+          `SELECT size_28, size_30, size_32, size_34, size_36, size_38, size_40  
+             FROM belts_inventory
+             WHERE product_id = ?`,
+          [cartItem.product_id]
+        );
+        sizes = sizeRows[0];
+      } else if (cartItem.wear_type_bottom_or_top === "wallet") {
+        const [sizeRows] = await connect.query(
+          `SELECT s, m, l 
+             FROM wallet_inventory
+             WHERE product_id = ?`,
+          [cartItem.product_id]
+        );
+        sizes = sizeRows[0];
       }
       return {
         ...cartItem,
@@ -601,14 +640,36 @@ router.get("/checkout", async (req, res) => {
       const selectedSize = item.selected_size;
       // Determine the stock for the selected size
       let stock = null;
-      if (item.wear_type_bottom_or_top === "top") {
-        const selectedSizeLowerCase = selectedSize.toLowerCase();
-        stock = item.sizes ? item.sizes[selectedSizeLowerCase] : null;
-      } else if (item.wear_type_bottom_or_top === "bottom") {
+      if (selectedSize) {
+        // Log sizeKey and sizes for debugging
         const sizeKey = `size_${selectedSize}`;
+        // Ensure sizeKey is lowercase to match the object keys if necessary
         const sizeKeyLowerCase = sizeKey.toLowerCase();
-        stock = item.sizes ? item.sizes[sizeKeyLowerCase] : null;
+
+        console.log('Size Key:', sizeKeyLowerCase);
+        console.log('Available Sizes:', item.sizes);
+
+        if (item.wear_type_bottom_or_top === "top") {
+          const selectedSizeLowerCase = selectedSize.toLowerCase();
+          stock = item.sizes ? item.sizes[selectedSizeLowerCase] : null;
+        } else if (item.wear_type_bottom_or_top === "bottom") {
+          const sizeKey = `size_${selectedSize}`;
+          const sizeKeyLowerCase = sizeKey.toLowerCase();
+          stock = item.sizes ? item.sizes[sizeKeyLowerCase] : null;
+        } else if (item.wear_type_bottom_or_top === "shoes") {
+          const sizeKey = `size_${selectedSize}`;
+          const sizeKeyLowerCase = sizeKey.toLowerCase();
+          stock = item.sizes ? item.sizes[sizeKeyLowerCase] : null;
+        } else if (item.wear_type_bottom_or_top === "belt") {
+          const sizeKey = `size_${selectedSize}`;
+          const sizeKeyLowerCase = sizeKey.toLowerCase();
+          stock = item.sizes ? item.sizes[sizeKeyLowerCase] : null;
+        } else if (item.wear_type_bottom_or_top === "wallet") {
+          const selectedSizeLowerCase = selectedSize.toLowerCase();
+          stock = item.sizes ? item.sizes[selectedSizeLowerCase] : null;
+        }
       }
+
 
       if (stock && stock > 0) {
         // Include in calculations only if stock is available and greater than 0
@@ -629,20 +690,11 @@ router.get("/checkout", async (req, res) => {
       parseFloat(totalDiscount)
     ).toFixed(2);
 
-    // Filter items where stock is available
     // Filter items where stock is available for the selected size
+    // Filter items where stock is available
     const cartItemsInStock = cartItems.filter((item) => {
-      const selectedSize = item.selected_size;
-      let stock = null;
-      if (item.wear_type_bottom_or_top === "top") {
-        const selectedSizeLowerCase = selectedSize.toLowerCase();
-        stock = item.sizes ? item.sizes[selectedSizeLowerCase] : null;
-      } else if (item.wear_type_bottom_or_top === "bottom") {
-        const sizeKey = `size_${selectedSize}`;
-        const sizeKeyLowerCase = sizeKey.toLowerCase();
-        stock = item.sizes ? item.sizes[sizeKeyLowerCase] : null;
-      }
-      return stock && stock > 0;
+      const stock = item.sizes;
+      return stock && Object.values(stock).some((value) => value > 0);
     });
 
     // Query to get user addresses
@@ -1926,6 +1978,33 @@ router.post("/add-to-wishlist", async (req, res) => {
 router.get("/contact-us", (req, res) => {
   const user = req.session.user;
   res.render("contact-us", { user });
+});
+
+
+
+router.post('/get-in-touch-with-us', async (req, res) => {
+  const { name, email, contact, subject, message } = req.body;
+
+  // Validate input
+  if (!name || !email || !contact || !subject || !message) {
+    return res.status(400).json({ message: 'All fields are required' });
+  }
+
+  try {
+    // Insert form data into the database
+    const query = "INSERT INTO getintouchwithus (name, email, contact, subject, message) VALUES (?, ?, ?, ?, ?)";
+    await connect.query(query, [name, email, contact, subject, message]);
+
+    res.send(`
+      <script>
+        alert('Thank you for getting in touch with us! We will get back to you soon.');
+        window.location.href = '/';
+      </script>
+    `);
+  } catch (error) {
+    console.error('Error saving contact form data:', error);
+    res.status(500).json({ message: 'An error occurred while saving your message. Please try again later.' });
+  }
 });
 
 router.post("/save-profile", async (req, res) => {
