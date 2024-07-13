@@ -172,31 +172,31 @@
                           <ul id="sizeFilters">
                             <li>
                               <div class="product-checkout">
-                                <input type="checkbox" class="size-checkbox" id="sizeS" value="S" />
+                                <input type="checkbox" class="size-checkbox" id="sizeS" value="s" />
                                 <label for="sizeS" class="size-item">S</label>
                               </div>
                             </li>
                             <li>
                               <div class="product-checkout">
-                                <input type="checkbox" class="size-checkbox" id="sizeM" value="M" />
+                                <input type="checkbox" class="size-checkbox" id="sizeM" value="m" />
                                 <label for="sizeM" class="size-item">M</label>
                               </div>
                             </li>
                             <li>
                               <div class="product-checkout">
-                                <input type="checkbox" class="size-checkbox" id="sizeL" value="L" />
+                                <input type="checkbox" class="size-checkbox" id="sizeL" value="l" />
                                 <label for="sizeL" class="size-item">L</label>
                               </div>
                             </li>
                             <li>
                               <div class="product-checkout">
-                                <input type="checkbox" class="size-checkbox" id="sizeXL" value="XL" />
+                                <input type="checkbox" class="size-checkbox" id="sizeXL" value="xl" />
                                 <label for="sizeXL" class="size-item">XL</label>
                               </div>
                             </li>
                             <li>
                               <div class="product-checkout">
-                                <input type="checkbox" class="size-checkbox" id="sizeXXL" value="XXL" />
+                                <input type="checkbox" class="size-checkbox" id="sizeXXL" value="xxl" />
                                 <label for="sizeXXL" class="size-item">XXL</label>
                               </div>
                             </li>
@@ -443,31 +443,31 @@
                 <ul id="sizeFilters">
                   <li>
                     <div class="product-checkout">
-                      <input type="checkbox" class="size-checkbox" id="sizeS" value="S" />
+                      <input type="checkbox" class="size-checkbox" id="sizeS" value="s" />
                       <label for="sizeS" class="size-item">S</label>
                     </div>
                   </li>
                   <li>
                     <div class="product-checkout">
-                      <input type="checkbox" class="size-checkbox" id="sizeM" value="M" />
+                      <input type="checkbox" class="size-checkbox" id="sizeM" value="m" />
                       <label for="sizeM" class="size-item">M</label>
                     </div>
                   </li>
                   <li>
                     <div class="product-checkout">
-                      <input type="checkbox" class="size-checkbox" id="sizeL" value="L" />
+                      <input type="checkbox" class="size-checkbox" id="sizeL" value="l" />
                       <label for="sizeL" class="size-item">L</label>
                     </div>
                   </li>
                   <li>
                     <div class="product-checkout">
-                      <input type="checkbox" class="size-checkbox" id="sizeXL" value="XL" />
+                      <input type="checkbox" class="size-checkbox" id="sizeXL" value="xl" />
                       <label for="sizeXL" class="size-item">XL</label>
                     </div>
                   </li>
                   <li>
                     <div class="product-checkout">
-                      <input type="checkbox" class="size-checkbox" id="sizeXXL" value="XXL" />
+                      <input type="checkbox" class="size-checkbox" id="sizeXXL" value="xxl" />
                       <label for="sizeXXL" class="size-item">XXL</label>
                     </div>
                   </li>
@@ -571,18 +571,21 @@
               const selectedSizes = [];
               sizeCheckboxes.each(function () {
                 if ($(this).is(":checked")) {
-                  selectedSizes.push($(this).val().toLowerCase());
+                  selectedSizes.push($(this).val());
                 }
               });
 
               productItems.each(function () {
                 const productPrice = parseFloat($(this).data("price"));
                 const productColor = $(this).data("color").toLowerCase();
-                const productSizes = $(this)
-                  .data("size")
-                  .toLowerCase()
-                  .split(":")
-                  .filter((_, i) => i % 2 === 0); // Get sizes only
+                const sizeData = $(this).data("size").toLowerCase().split(":");
+                const productSizes = [];
+                for (let i = 0; i < sizeData.length; i += 2) {
+                  // Ensure size is not empty and value is numeric
+                  if (i + 1 < sizeData.length && sizeData[i + 1].trim() !== "" && !isNaN(sizeData[i + 1])) {
+                    productSizes.push(sizeData[i]);
+                  }
+                }
 
                 const matchesPrice =
                   productPrice >= minPrice && productPrice <= maxPrice;
