@@ -31,6 +31,47 @@
                 }
             });
         });
+    }); 
+</script>
+
+
+<script>
+    // List of common searches for men
+    const commonSearchesForMen = [
+        'Casual shirts', 'Dress shirts', 'T-shirts', 'Polo shirts', 'Button-up shirts',
+        'Slim-fit jeans', 'Skinny jeans', 'Regular-fit jeans', 'Chinos', 'Cargo pants',
+        'Leather jackets', 'Bomber jackets', 'Denim jackets', 'Trench coats', 'Parkas',
+        'Business suits', 'Blazers', 'Suit jackets', 'Tuxedos',
+        'Sneakers', 'Dress shoes', 'Casual loafers', 'Boots', 'Sandals',
+        'Running shoes', 'Gym shorts', 'Sports shirts', 'Track pants', 'Sweatshirts',
+        'Belts', 'Hats and caps', 'Wallets', 'Sunglasses', 'Scarves',
+        'Boxer briefs', 'Briefs', 'Athletic socks', 'Dress socks',
+        'Raincoats', 'Windbreakers', 'Down jackets',
+        'Suede shoes', 'Work boots', 'Summer suits', 'Winter coats'
+    ];
+
+    const searchInput = document.getElementById('searchInput');
+    const suggestionsDropdown = document.getElementById('suggestionsDropdown');
+
+    searchInput.addEventListener('input', function () {
+        const query = searchInput.value.trim().toLowerCase();
+
+        if (query.length > 1) {
+            const filteredSuggestions = commonSearchesForMen.filter(keyword => keyword.toLowerCase().includes(query));
+
+            suggestionsDropdown.innerHTML = '';
+            filteredSuggestions.forEach(suggestion => {
+                const suggestionItem = document.createElement('div');
+                suggestionItem.classList.add('suggestion-item');
+                suggestionItem.textContent = suggestion;
+                suggestionItem.addEventListener('click', () => {
+                    window.location.href = `/search-results?q=${encodeURIComponent(suggestion)}`;
+                });
+                suggestionsDropdown.appendChild(suggestionItem);
+            });
+        } else {
+            suggestionsDropdown.innerHTML = '';
+        }
     });
 
 </script>

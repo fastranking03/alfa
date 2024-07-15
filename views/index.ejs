@@ -6,15 +6,18 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Alfa Meanswear | Home</title>
   <meta name="robots" content="noindex">
+
   <%- include('includes/head') %>
+
 </head>
+
 <body>
   <!-- Loader -->
   <div class="page-loader" id="loader">
     <div class="spinner">
-       <div class="inner"></div>
+      <div class="inner"></div>
     </div>
-   </div>
+  </div>
 
   <div class="alfa-main-wraper" id="web-content">
     <%- include('includes/header') %>
@@ -150,7 +153,7 @@
                 <p>Preorder nor to receive exclusive deals & gifts</p>
               </div>
               <div class="arrival-wrapper">
-                <% lastProducts.forEach(product => { %>
+                <% lastProducts.forEach(product=> { %>
                   <div class="product-item product-item-2" data-color="<%= product.color %>">
                     <div class="produt-wrap">
                       <a href="/product-detail/<%= product.id %>">
@@ -166,14 +169,17 @@
                     <div class="product-details shop-content">
                       <div class="product-nameprice">
                         <a href="/product-detail/<%= product.id %>">
-                          <h6><%= product.name %></h6>
+                          <h6>
+                            <%= product.name %>
+                          </h6>
                           <p class="product-short-desc">
                             <%= product.product_description.substring(0, 20) %>...
                           </p>
                         </a>
                         <div class="product-price">
                           <h5>
-                            <span class="final-price">£<%= (product.product_price * (1 - product.discount_on_product / 100)).toFixed(2) %></span>
+                            <span class="final-price">£<%= (product.product_price * (1 - product.discount_on_product /
+                                100)).toFixed(2) %></span>
                             <span class="mrp-price">£<%= product.product_price %></span>
                             <span class="discount-text">(<%= product.discount_on_product %> OFF)</span>
                           </h5>
@@ -188,10 +194,10 @@
                       </div>
                     </div>
                   </div>
-                <% }) %>
- 
+                  <% }) %>
+
+              </div>
             </div>
-          </div>
         </section>
         <!-- END -->
         <!-- BESTSELLER -->
@@ -203,17 +209,20 @@
                 <p>Preorder nor to receive exclusive deals & gifts</p>
               </div>
               <div id="bestseller-carousel" class="bestseller-wrapper owl-carousel comman-nav">
-                <% bestSellers.forEach(product => { %>
+                <% bestSellers.forEach(product=> { %>
                   <div class="product-item product-item-2">
                     <div class="produt-wrap">
                       <img src="../product_images/<%= product.product_main_image %>" class="pro-img" alt="">
-                     
+
                     </div>
                     <div class="product-details">
                       <div class="product-nameprice">
-                        <h6><%= product.name %></h6>
+                        <h6>
+                          <%= product.name %>
+                        </h6>
                         <div class="product-price">
-                          <span class="final-price">£<%= (product.product_price * (1 - product.discount_on_product / 100)).toFixed(2) %></span>
+                          <span class="final-price">£<%= (product.product_price * (1 - product.discount_on_product /
+                              100)).toFixed(2) %></span>
                           <span class="mrp-price">£<%= product.product_price %></span>
                           <span class="discount-text">(<%= product.discount_on_product %> OFF)</span>
                         </div>
@@ -238,9 +247,9 @@
                       </div>
                     </div>
                   </div>
-                <% }) %>
+                  <% }) %>
               </div>
-              
+
             </div>
           </div>
         </section>
@@ -312,9 +321,7 @@
   </div>
   <%- include('includes/foot') %>
 
-    <script>
 
-    </script>
     <script>
       $(document).ready(function () {
         $("#hero-carousel").owlCarousel({
@@ -456,7 +463,7 @@
                   countTextSpan.textContent = data.favoritesCount;
                 }
               }
-            } else { 
+            } else {
               if (data.message === "Login First") {
                 window.location.href = "/login"; // Redirect to login page if not logged in
               }

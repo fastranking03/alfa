@@ -1866,6 +1866,13 @@ router.get("/order-detail/:orderId", async (req, res) => {
     if (orderRows.length > 0) {
       const order = orderRows[0];
 
+      // Calculate if the order is returnable
+      const currentDate = new Date();
+      const lastUpdatedDate = new Date(order.last_updated_at);
+      const daysSinceUpdate = Math.floor((currentDate - lastUpdatedDate) / (1000 * 60 * 60 * 24));
+      const isReturnable = (order.order_status === "shipped") && (daysSinceUpdate < 15);
+
+
       const [addressRows] = await connect.query(
         "SELECT * FROM user_address WHERE id = ?",
         [order.address_id]
@@ -1882,7 +1889,7 @@ router.get("/order-detail/:orderId", async (req, res) => {
         [orderId]
       );
 
-      res.render("order-detail", { order, orderItems, address });
+      res.render("order-detail", { order, orderItems, address, isReturnable });
     } else {
       res.status(404).send("Order not found");
     }
@@ -2186,4 +2193,32 @@ router.get("/return-order/:orderId", async (req, res) => {
 router.get('/privacy-policy', (req, res) => {
   return res.render("privacy-policy")
 })
+
+router.get('/search-products', async (req, res) => {
+  const query = req.query.query;
+
+  if (!query) {
+    return res.status(400).json({ error: 'Query parameter is required' });
+  }
+
+  try {
+    const searchQuery = `
+      SELECT 
+        id, 
+        product_name AS name, 
+        product_description AS description 
+      FROM products 
+      WHERE 
+        product_name LIKE ? 
+        OR product_description LIKE ?
+    `;
+    const [results] = await connect.query(searchQuery, [`%${query}%`, `%${query}%`]);
+
+    res.json(results);
+  } catch (error) {
+    console.error('Error fetching search results:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 export default router;
