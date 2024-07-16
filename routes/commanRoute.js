@@ -242,6 +242,31 @@ router.post("/place-order", async (req, res) => {
           WHERE product_id = ?
         `;
         await connect.query(updateInventoryQuery, [product.quantity, product.product_id]);
+      } else if (product_type === 'shoes') {
+        const sizeColumn = `size_${product.selected_size}`;
+        const updateInventoryQuery = `
+          UPDATE shoes_inventory
+          SET ${sizeColumn} = ${sizeColumn} - ? 
+          WHERE product_id = ?
+        `;
+        await connect.query(updateInventoryQuery, [product.quantity, product.product_id]);
+      } else if (product_type === 'belt') {
+        const sizeColumn = `size_${product.selected_size}`;
+        const updateInventoryQuery = `
+          UPDATE belts_inventory
+          SET ${sizeColumn} = ${sizeColumn} - ? 
+          WHERE product_id = ?
+        `;
+        await connect.query(updateInventoryQuery, [product.quantity, product.product_id]);
+      } else if (product_type === 'wallet') {
+
+        const sizeColumn = product.selected_size.toLowerCase();
+        const updateInventoryQuery = `
+          UPDATE wallet_inventory
+          SET ${sizeColumn} = ${sizeColumn} - ? 
+          WHERE product_id = ?
+        `;
+        await connect.query(updateInventoryQuery, [product.quantity, product.product_id]);
       } else {
         throw new Error("Unknown product type");
       }
@@ -417,6 +442,20 @@ router.get("/product-detail/:id", async (req, res) => {
     }
 
     const product = productRows[0];
+    const categoryId = product.category_id;
+
+    const [relatedProducts] = await connect.query(
+      `SELECT 
+          p.*, 
+          c.id AS category_id, 
+          c.category_name 
+       FROM products p 
+       INNER JOIN category c ON p.category_id = c.id 
+       WHERE c.id = ? AND p.id != ? ORDER BY RAND()`, // Exclude the current product from related products
+      [categoryId, productId]
+    );
+
+
     const wearType = product.wear_type_bottom_or_top;
     const product_varient_name = product.unique_batch_id;
 
@@ -526,6 +565,7 @@ router.get("/product-detail/:id", async (req, res) => {
     res.render("product-detail", {
       user,
       product,
+      relatedProducts,
       product_images,
       sizes,
       wearType,
@@ -580,6 +620,30 @@ router.get("/checkout", async (req, res) => {
           [cartItem.product_id]
         );
         sizes = sizeRows[0];
+      } else if (cartItem.wear_type_bottom_or_top === "shoes") {
+        const [sizeRows] = await connect.query(
+          `SELECT size_6, size_7, size_8, size_9, size_10, size_11, size_12, size_13
+             FROM shoes_inventory
+             WHERE product_id = ?`,
+          [cartItem.product_id]
+        );
+        sizes = sizeRows[0];
+      } else if (cartItem.wear_type_bottom_or_top === "belt") {
+        const [sizeRows] = await connect.query(
+          `SELECT size_28, size_30, size_32, size_34, size_36, size_38, size_40  
+             FROM belts_inventory
+             WHERE product_id = ?`,
+          [cartItem.product_id]
+        );
+        sizes = sizeRows[0];
+      } else if (cartItem.wear_type_bottom_or_top === "wallet") {
+        const [sizeRows] = await connect.query(
+          `SELECT s, m, l 
+             FROM wallet_inventory
+             WHERE product_id = ?`,
+          [cartItem.product_id]
+        );
+        sizes = sizeRows[0];
       }
       return {
         ...cartItem,
@@ -601,14 +665,36 @@ router.get("/checkout", async (req, res) => {
       const selectedSize = item.selected_size;
       // Determine the stock for the selected size
       let stock = null;
-      if (item.wear_type_bottom_or_top === "top") {
-        const selectedSizeLowerCase = selectedSize.toLowerCase();
-        stock = item.sizes ? item.sizes[selectedSizeLowerCase] : null;
-      } else if (item.wear_type_bottom_or_top === "bottom") {
+      if (selectedSize) {
+        // Log sizeKey and sizes for debugging
         const sizeKey = `size_${selectedSize}`;
+        // Ensure sizeKey is lowercase to match the object keys if necessary
         const sizeKeyLowerCase = sizeKey.toLowerCase();
-        stock = item.sizes ? item.sizes[sizeKeyLowerCase] : null;
+
+        console.log('Size Key:', sizeKeyLowerCase);
+        console.log('Available Sizes:', item.sizes);
+
+        if (item.wear_type_bottom_or_top === "top") {
+          const selectedSizeLowerCase = selectedSize.toLowerCase();
+          stock = item.sizes ? item.sizes[selectedSizeLowerCase] : null;
+        } else if (item.wear_type_bottom_or_top === "bottom") {
+          const sizeKey = `size_${selectedSize}`;
+          const sizeKeyLowerCase = sizeKey.toLowerCase();
+          stock = item.sizes ? item.sizes[sizeKeyLowerCase] : null;
+        } else if (item.wear_type_bottom_or_top === "shoes") {
+          const sizeKey = `size_${selectedSize}`;
+          const sizeKeyLowerCase = sizeKey.toLowerCase();
+          stock = item.sizes ? item.sizes[sizeKeyLowerCase] : null;
+        } else if (item.wear_type_bottom_or_top === "belt") {
+          const sizeKey = `size_${selectedSize}`;
+          const sizeKeyLowerCase = sizeKey.toLowerCase();
+          stock = item.sizes ? item.sizes[sizeKeyLowerCase] : null;
+        } else if (item.wear_type_bottom_or_top === "wallet") {
+          const selectedSizeLowerCase = selectedSize.toLowerCase();
+          stock = item.sizes ? item.sizes[selectedSizeLowerCase] : null;
+        }
       }
+
 
       if (stock && stock > 0) {
         // Include in calculations only if stock is available and greater than 0
@@ -618,31 +704,35 @@ router.get("/checkout", async (req, res) => {
       }
     });
 
+    const promo = req.session.promo || { promodiscount: 0, code_applied: false };
+    let promo_discount = 0;
+
     const vatRate = 0.2; // 20% VAT rate
-    const subtotal = (totalPrice - totalDiscount).toFixed(2);
+    const subtotal = parseFloat((totalPrice - totalDiscount).toFixed(2));
+    console.log("subtotal", subtotal);
+    let ispromoapplied = false;
+    if (promo.code_applied) {
+      promo_discount = (subtotal * (promo.promodiscount / 100)).toFixed(2);
+      promo_discount = parseFloat(promo_discount); // Ensure promo_discount is parsed as a float
+      ispromoapplied = true;
+    }
+
     const GST = (subtotal * vatRate).toFixed(2);
     const deliveryFee = 25;
     const totalCost = (
       parseFloat(totalPrice) +
       parseFloat(GST) +
       deliveryFee -
+      promo_discount -
       parseFloat(totalDiscount)
     ).toFixed(2);
 
+    delete req.session.promo;
+
     // Filter items where stock is available
-    // Filter items where stock is available for the selected size
     const cartItemsInStock = cartItems.filter((item) => {
-      const selectedSize = item.selected_size;
-      let stock = null;
-      if (item.wear_type_bottom_or_top === "top") {
-        const selectedSizeLowerCase = selectedSize.toLowerCase();
-        stock = item.sizes ? item.sizes[selectedSizeLowerCase] : null;
-      } else if (item.wear_type_bottom_or_top === "bottom") {
-        const sizeKey = `size_${selectedSize}`;
-        const sizeKeyLowerCase = sizeKey.toLowerCase();
-        stock = item.sizes ? item.sizes[sizeKeyLowerCase] : null;
-      }
-      return stock && stock > 0;
+      const stock = item.sizes;
+      return stock && Object.values(stock).some((value) => value > 0);
     });
 
     // Query to get user addresses
@@ -660,9 +750,11 @@ router.get("/checkout", async (req, res) => {
       deliveryFee: deliveryFee.toFixed(2),
       totalCost,
       subtotal,
+      promo_discount,
       addresses,
       addressCount,
       cartItemsInStock,
+      ispromoapplied
     });
   } catch (error) {
     console.error("Error during checkout:", error);
@@ -880,7 +972,6 @@ router.get("/cart", async (req, res) => {
       });
 
       const cartItems = await Promise.all(cartItemPromises);
-
       // Calculate totals for items in stock
       let totalPrice = 0;
       let totalDiscount = 0;
@@ -937,14 +1028,27 @@ router.get("/cart", async (req, res) => {
         }
       });
 
+      const promo = req.session.promo || { promodiscount: 0, code_applied: false };
+      let promo_discount = 0;
+
+
+
       const vatRate = 0.2; // 20% VAT rate
-      const subtotal = (totalPrice - totalDiscount).toFixed(2);
+      const subtotal = parseFloat((totalPrice - totalDiscount).toFixed(2));
+      console.log("subtotal", subtotal);
+      if (promo.code_applied) {
+        promo_discount = (subtotal * (promo.promodiscount / 100)).toFixed(2);
+        promo_discount = parseFloat(promo_discount); // Ensure promo_discount is parsed as a float
+      }
+
+      console.log("promo_discount", promo_discount);
       const GST = (subtotal * vatRate).toFixed(2);
       const deliveryFee = 25;
       const totalCost = (
         parseFloat(totalPrice) +
         parseFloat(GST) +
         deliveryFee -
+        promo_discount -
         parseFloat(totalDiscount)
       ).toFixed(2);
 
@@ -963,6 +1067,8 @@ router.get("/cart", async (req, res) => {
 
       res.render("my-cart", {
         user,
+        promo,
+        promo_discount,
         cartItems,
         addresses,
         totalPrice,
@@ -974,6 +1080,7 @@ router.get("/cart", async (req, res) => {
         cartItemsInStock,
         cartItemsOutOfStock,
         isLoggedIn: !!user,
+
       });
     }
   } catch (error) {
@@ -1759,6 +1866,13 @@ router.get("/order-detail/:orderId", async (req, res) => {
     if (orderRows.length > 0) {
       const order = orderRows[0];
 
+      // Calculate if the order is returnable
+      const currentDate = new Date();
+      const lastUpdatedDate = new Date(order.last_updated_at);
+      const daysSinceUpdate = Math.floor((currentDate - lastUpdatedDate) / (1000 * 60 * 60 * 24));
+      const isReturnable = (order.order_status === "shipped") && (daysSinceUpdate < 15);
+
+
       const [addressRows] = await connect.query(
         "SELECT * FROM user_address WHERE id = ?",
         [order.address_id]
@@ -1775,7 +1889,7 @@ router.get("/order-detail/:orderId", async (req, res) => {
         [orderId]
       );
 
-      res.render("order-detail", { order, orderItems, address });
+      res.render("order-detail", { order, orderItems, address, isReturnable });
     } else {
       res.status(404).send("Order not found");
     }
@@ -1928,6 +2042,64 @@ router.get("/contact-us", (req, res) => {
   res.render("contact-us", { user });
 });
 
+router.post("/promocode-check", async (req, res) => {
+  const user = req.session.user;
+  if (!user) {
+    return res.redirect("/login");
+  }
+
+  const coupon_name = req.body.coupon_name; // Correctly access coupon_name from req.body
+
+  try {
+    const [promoRows] = await connect.query(
+      `SELECT * FROM promo_code WHERE coupon_name = ? AND status = 'active' AND coupons_count > 0`,
+      [coupon_name]
+    );
+
+    if (promoRows.length === 0) {
+      return res.redirect("/cart"); // Correctly call res.redirect
+    }
+
+    req.session.promo = {
+      promodiscount: promoRows[0].discount,
+      code_applied: true
+    };
+
+    return res.redirect("/cart"); // Correctly call res.redirect
+  } catch (error) {
+    console.error("Error checking promo code:", error);
+    res.status(500).send("Internal Server Error"); // Send an error response in case of failure
+  }
+});
+
+
+
+
+router.post('/get-in-touch-with-us', async (req, res) => {
+  const { name, email, contact, subject, message } = req.body;
+
+  // Validate input
+  if (!name || !email || !contact || !subject || !message) {
+    return res.status(400).json({ message: 'All fields are required' });
+  }
+
+  try {
+    // Insert form data into the database
+    const query = "INSERT INTO getintouchwithus (name, email, contact, subject, message) VALUES (?, ?, ?, ?, ?)";
+    await connect.query(query, [name, email, contact, subject, message]);
+
+    res.send(`
+      <script>
+        alert('Thank you for getting in touch with us! We will get back to you soon.');
+        window.location.href = '/';
+      </script>
+    `);
+  } catch (error) {
+    console.error('Error saving contact form data:', error);
+    res.status(500).json({ message: 'An error occurred while saving your message. Please try again later.' });
+  }
+});
+
 router.post("/save-profile", async (req, res) => {
   const { user_id, name, email, phone, alt_phone } = req.body;
 
@@ -2021,4 +2193,32 @@ router.get("/return-order/:orderId", async (req, res) => {
 router.get('/privacy-policy', (req, res) => {
   return res.render("privacy-policy")
 })
+
+router.get('/search-products', async (req, res) => {
+  const query = req.query.query;
+
+  if (!query) {
+    return res.status(400).json({ error: 'Query parameter is required' });
+  }
+
+  try {
+    const searchQuery = `
+      SELECT 
+        id, 
+        product_name AS name, 
+        product_description AS description 
+      FROM products 
+      WHERE 
+        product_name LIKE ? 
+        OR product_description LIKE ?
+    `;
+    const [results] = await connect.query(searchQuery, [`%${query}%`, `%${query}%`]);
+
+    res.json(results);
+  } catch (error) {
+    console.error('Error fetching search results:', error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+});
+
 export default router;

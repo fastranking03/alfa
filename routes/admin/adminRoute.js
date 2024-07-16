@@ -557,8 +557,9 @@ router.post('/update-order-status', async (req, res) => {
 
   try {
 
-    const updateQuery = 'UPDATE orders SET order_status = ? WHERE order_id = ?';
+    const updateQuery = 'UPDATE orders SET order_status = ?, last_updated_at = NOW() WHERE order_id = ?';
     await connect.query(updateQuery, [status, orderId]);
+
 
 
     const transporter = nodemailer.createTransport({

@@ -126,8 +126,9 @@
     cursor: not-allowed;
   }
 </style>
- <body>
-  
+
+<body>
+
   <!-- Loader -->
   <div class="page-loader" id="loader">
     <div class="spinner">
@@ -218,12 +219,15 @@
                   <div class="price-review-warapper">
                     <div class="product-rating">
                       <h6>
-                        <%= (averageRating !==undefined && averageRating !==null) ? Number(averageRating).toFixed(2) : 'N/A' %>
-                        <span class="alfa-start"><i class="fa-solid fa-star"></i></span>
+                        <%= (averageRating !==undefined && averageRating !==null) ? Number(averageRating).toFixed(2)
+                          : 'N/A' %>
+                          <span class="alfa-start"><i class="fa-solid fa-star"></i></span>
                       </h6>
-                        <div class="border-width"></div>
-                        <span class="review-count"> <%=totalReviews %> Customer Review </span>
-                     </div>
+                      <div class="border-width"></div>
+                      <span class="review-count">
+                        <%=totalReviews %> Customer Review
+                      </span>
+                    </div>
                     <div class="product--price">
                       <h5>
                         <span class="final-prices fn-price">£<%=(product.product_price * (1 -
@@ -558,72 +562,57 @@
             </div>
           </div>
           <!-- End -->
-          <section class="mt-5" style="margin-bottom: 130px;">
-            <div class="container">
+
+
+          <section class="mt-80">
+            <div class="custom-container">
               <div class="alfa-bestsellerl">
-                <div class="alfa-title" style="text-align: left">
+                <div class="alfa-title">
                   <h3>You may also like</h3>
+                  <p>Preorder nor to receive exclusive deals & gifts</p>
                 </div>
-                <div id="maylike-carousel" class="bestseller-wrapper owl-carousel comman-nav">
-                  <div class="product-item product-item-2">
-                    <div class="produt-wrap">
-                      <img src="assets/images/alfa_products/shirt2.png" class="pro-img" alt="" />
-                    </div>
-                    <div class="product-details">
-                      <div class="product-nameprice">
-                        <h6>Alfa Mens Shirt</h6>
-                        <div class="product-price">
-                          <h4>£42.00</h4>
-                        </div>
-                        <div class="product-rating">
-                          <ul>
-                            <li>
-                              <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
-                              <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
-                              <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
-                              <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
-                              <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
-                            </li>
-                          </ul>
-                        </div>
+                <div id="bestseller-carousel" class="bestseller-wrapper owl-carousel comman-nav">
+                  <% relatedProducts.forEach(product=> { %>
+                    <div class="product-item product-item-2">
+                      <div class="produt-wrap">
+                        <img src="../product_images/<%= product.product_main_image %>" class="pro-img" alt="">
+
                       </div>
-                      <div class="product-btn">
-                        <div class="pro-whishlist">
-                          <a href=""><i class="fa-regular fa-heart"></i></a>
+                      <div class="product-details">
+                        <div class="product-nameprice">
+                          <h6>
+                            <%= product.name %>
+                          </h6>
+                          <div class="product-price">
+                            <span class="final-price">£<%= (product.product_price * (1 - product.discount_on_product /
+                                100)).toFixed(2) %></span>
+                            <span class="mrp-price">£<%= product.product_price %></span>
+                            <span class="discount-text">(<%= product.discount_on_product %> OFF)</span>
+                          </div>
+                          <div class="product-rating">
+                            <ul>
+                              <li>
+                                <a href=""><img src="assets/images/star.png" class="star-icon" alt=""></a>
+                                <a href=""><img src="assets/images/star.png" class="star-icon" alt=""></a>
+                                <a href=""><img src="assets/images/star.png" class="star-icon" alt=""></a>
+                                <a href=""><img src="assets/images/star.png" class="star-icon" alt=""></a>
+                                <a href=""><img src="assets/images/star.png" class="star-icon" alt=""></a>
+                              </li>
+                            </ul>
+                          </div>
                         </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="product-item product-item-2">
-                    <div class="produt-wrap">
-                      <img src="assets/images/alfa_products/shirt2.png" class="pro-img" alt="" />
-                    </div>
-                    <div class="product-details">
-                      <div class="product-nameprice">
-                        <h6>Alfa Mens Shirt</h6>
-                        <div class="product-price">
-                          <h4>£42.00</h4>
-                        </div>
-                        <div class="product-rating">
-                          <ul>
-                            <li>
-                              <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
-                              <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
-                              <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
-                              <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
-                              <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
-                            </li>
-                          </ul>
-                        </div>
-                      </div>
-                      <div class="product-btn">
-                        <div class="pro-whishlist">
-                          <a href=""><i class="fa-regular fa-heart"></i></a>
+                        <div class="product-btn">
+                          <div class="pro-whishlist">
+                            <a class="add-to-favorites" data-product-id="<%= product.id %>">
+                              <i class="fa-regular fa-heart"></i>
+                            </a>
+                          </div>
                         </div>
                       </div>
                     </div>
-                  </div>
+                    <% }) %>
                 </div>
+
               </div>
             </div>
           </section>

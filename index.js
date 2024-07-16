@@ -70,6 +70,8 @@ app.use(async (req, res, next) => {
     res.locals.session = req.session;
     res.locals.user = req.session.user;
     res.locals.alfa_team = req.session.alfa_team;
+    res.locals.promi_discount = req.session.alfa_team;
+
 
     res.locals.categories = categories;
     res.locals.content = contentArray[0];
@@ -106,21 +108,91 @@ app.use("/category/", CategoryRoutes);
 app.use("/accessory/", accessoriesRoutes);
 
 
-// Middleware to check for valid JWT token
-function verifyToken(req, res, next) {
-  const token = req.cookies.token;
-  if (!token) {
+// Middleware to verify and refresh JWT token
+async function verifyToken(req, res, next) {
+  const accessToken = req.cookies.accessToken;
+  const refreshToken = req.cookies.refreshToken;
+
+  if (!accessToken) {
     return res.redirect('/alfa-login');
   }
 
-  jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-    if (err) {
-      return res.redirect('/alfa-login');
+  try {
+    // Verify the access token
+    const decodedAccessToken = jwt.verify(accessToken, process.env.JWT_SECRET);
+    req.user = decodedAccessToken;
+
+    return next();
+  } catch (accessTokenError) {
+
+    if (accessTokenError.name === 'TokenExpiredError' && refreshToken) {
+      try {
+        console.log("1st", accessToken);
+        const decodedRefreshToken = jwt.verify(refreshToken, process.env.REFRESH_TOKEN_SECRET);
+
+        const refreshTokenQuery = "SELECT * FROM alfa_personal_staff WHERE  id = ? AND refresh_token = ?";
+        const now = new Date();
+        const [storedToken] = await connect.query(refreshTokenQuery, [decodedRefreshToken.id, refreshToken]);
+
+
+        const tokenExpiryDate = new Date(storedToken[0].token_expiry_date);
+        if (storedToken.length === 0 || tokenExpiryDate < now) {
+          console.log("2nd", accessToken);
+          return res.redirect('/alfa-login');
+        }
+
+        const userQuery = "SELECT id, email, role, current_status FROM alfa_personal_staff WHERE id = ?";
+        const [userDetails] = await connect.query(userQuery, [decodedRefreshToken.id]);
+
+        if (userDetails.length === 0) {
+          console.log("3rd", accessToken);
+          return res.redirect('/alfa-login');
+        }
+
+
+        const newAccessToken = jwt.sign(
+          { id: userDetails[0].id, email: userDetails[0].email, role: userDetails[0].role, current_status: userDetails[0].current_status },
+          process.env.JWT_SECRET,
+          { expiresIn: '1m' }
+        );
+
+        const newrefreshToken = jwt.sign(
+          { id: userDetails[0].id, email: userDetails[0].email, role: userDetails[0].role, current_status: userDetails[0].current_status },
+          process.env.REFRESH_TOKEN_SECRET,
+          { expiresIn: '30d' }
+        );
+
+
+        const expiresAt = new Date();
+        expiresAt.setDate(expiresAt.getDate() + 30);
+        const expiresAtFormatted = expiresAt.toISOString().slice(0, 19).replace('T', ' ');
+
+
+
+        await connect.query(
+          "UPDATE alfa_personal_staff SET refresh_token = ?, token_expiry_date = ? WHERE id = ?",
+          [newrefreshToken, expiresAtFormatted, userDetails[0].id]
+        );
+
+        console.log("accessToken", newAccessToken);
+        console.log("refreshToken", newrefreshToken);
+
+        res.cookie('accessToken', newAccessToken, { httpOnly: true });
+        res.cookie('refreshToken', newrefreshToken, { httpOnly: true });
+
+
+        req.session.alfa_team = userDetails[0];
+
+        return next();
+      } catch (refreshTokenError) {
+        return res.redirect('/alfa-login');
+      }
     }
-    req.user = decoded;
-    next();
-  });
+    console.log("catch else ");
+    return res.redirect('/alfa-login');
+  }
 }
+
 
 
 function isAdminOrStaffAndActive(req, res, next) {
@@ -148,7 +220,7 @@ app.use("/admin/", newProduct);
 //   return res.render('order-history')
 // });
 
-app.get('/my-profile', verifyToken, async (req, res) => {
+app.get('/my-profile', async (req, res) => {
   try {
     // Fetch user details from the user_registration table
     const userId = req.session.user.id;
@@ -171,7 +243,7 @@ app.get('/my-profile', verifyToken, async (req, res) => {
   }
 });
 
-app.post('/payment', verifyToken, (req, res) => {
+app.post('/payment', (req, res) => {
   let { cartItemscheckoutpage, total_mrp, discount_on_mrp, subtotal, vat, delivery_charges, total_payable, selectedAddress } = req.body;
   cartItemscheckoutpage = JSON.parse(cartItemscheckoutpage);
   return res.render('payment', {
@@ -190,5 +262,7 @@ const PORT = 8081;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
+
 
 

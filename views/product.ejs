@@ -94,7 +94,8 @@
               <div class="product-row">
                 <div class="product-md-3">
                   <div class="product-left-wrapper">
-                    <div class="product-search">
+
+                    <!-- <div class="product-search">
                       <div class="search-title">
                         <h4 class="product-h4">Search Products</h4>
                       </div>
@@ -103,7 +104,20 @@
                         <input type="search" name="search" class="product-search-control"
                           placeholder="Search for products" id="" />
                       </div>
+                    </div> -->
+
+                    <div class="product-search">
+                      <div class="search-title">
+                        <h4 class="product-h4">Search Products </h4>
+                      </div>
+                      <div class="product-search">
+                        <span class="p-s-icon"><img src="assets/images/search.png" alt="" /></span>
+                        <input type="search" name="search" class="product-search-control"
+                          placeholder="Search for products" id="searchBar" />
+                      </div>
+                      <div id="suggestions" class="suggestions-dropdown"></div>
                     </div>
+
                     <div class="product-category mt-4">
                       <div class="cat-title">
                         <h4 class="product-h4">Categories</h4>
@@ -158,31 +172,31 @@
                           <ul id="sizeFilters">
                             <li>
                               <div class="product-checkout">
-                                <input type="checkbox" class="size-checkbox" id="sizeS" value="S" />
+                                <input type="checkbox" class="size-checkbox" id="sizeS" value="s" />
                                 <label for="sizeS" class="size-item">S</label>
                               </div>
                             </li>
                             <li>
                               <div class="product-checkout">
-                                <input type="checkbox" class="size-checkbox" id="sizeM" value="M" />
+                                <input type="checkbox" class="size-checkbox" id="sizeM" value="m" />
                                 <label for="sizeM" class="size-item">M</label>
                               </div>
                             </li>
                             <li>
                               <div class="product-checkout">
-                                <input type="checkbox" class="size-checkbox" id="sizeL" value="L" />
+                                <input type="checkbox" class="size-checkbox" id="sizeL" value="l" />
                                 <label for="sizeL" class="size-item">L</label>
                               </div>
                             </li>
                             <li>
                               <div class="product-checkout">
-                                <input type="checkbox" class="size-checkbox" id="sizeXL" value="XL" />
+                                <input type="checkbox" class="size-checkbox" id="sizeXL" value="xl" />
                                 <label for="sizeXL" class="size-item">XL</label>
                               </div>
                             </li>
                             <li>
                               <div class="product-checkout">
-                                <input type="checkbox" class="size-checkbox" id="sizeXXL" value="XXL" />
+                                <input type="checkbox" class="size-checkbox" id="sizeXXL" value="xxl" />
                                 <label for="sizeXXL" class="size-item">XXL</label>
                               </div>
                             </li>
@@ -296,9 +310,11 @@
                           <div class="product-details shop-content">
                             <div class="product-nameprice">
                               <a href="/product-detail/<%= product.id %>">
-                                <h6>
-                                  <%= product.product_name %>
-                                </h6>
+                                <div class="product-name">
+                                  <h6>
+                                    <%= product.product_name %>
+                                  </h6>
+                                </div>
                                 <p class="product-short-desc">
                                   Lorem ipsum dolor sit...
                                 </p>
@@ -427,31 +443,31 @@
                 <ul id="sizeFilters">
                   <li>
                     <div class="product-checkout">
-                      <input type="checkbox" class="size-checkbox" id="sizeS" value="S" />
+                      <input type="checkbox" class="size-checkbox" id="sizeS" value="s" />
                       <label for="sizeS" class="size-item">S</label>
                     </div>
                   </li>
                   <li>
                     <div class="product-checkout">
-                      <input type="checkbox" class="size-checkbox" id="sizeM" value="M" />
+                      <input type="checkbox" class="size-checkbox" id="sizeM" value="m" />
                       <label for="sizeM" class="size-item">M</label>
                     </div>
                   </li>
                   <li>
                     <div class="product-checkout">
-                      <input type="checkbox" class="size-checkbox" id="sizeL" value="L" />
+                      <input type="checkbox" class="size-checkbox" id="sizeL" value="l" />
                       <label for="sizeL" class="size-item">L</label>
                     </div>
                   </li>
                   <li>
                     <div class="product-checkout">
-                      <input type="checkbox" class="size-checkbox" id="sizeXL" value="XL" />
+                      <input type="checkbox" class="size-checkbox" id="sizeXL" value="xl" />
                       <label for="sizeXL" class="size-item">XL</label>
                     </div>
                   </li>
                   <li>
                     <div class="product-checkout">
-                      <input type="checkbox" class="size-checkbox" id="sizeXXL" value="XXL" />
+                      <input type="checkbox" class="size-checkbox" id="sizeXXL" value="xxl" />
                       <label for="sizeXXL" class="size-item">XXL</label>
                     </div>
                   </li>
@@ -482,6 +498,43 @@
       <%- include('includes/footer') %>
 
         <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+        <script>
+          document.addEventListener('DOMContentLoaded', () => {
+            const searchBar = document.getElementById('searchBar');
+            const products = Array.from(document.querySelectorAll('.product-item'));
+
+            searchBar.addEventListener('input', () => {
+              const query = searchBar.value.toLowerCase().trim();
+
+              products.forEach(product => {
+                const productName = product.querySelector('.product-name h6').textContent.toLowerCase().trim();
+                // Normalize both product name and query by removing extra spaces
+                const normalizedProductName = productName.replace(/\s+/g, ' ');
+                const normalizedQuery = query.replace(/\s+/g, ' ');
+
+                if (normalizedProductName.includes(normalizedQuery)) {
+                  product.style.display = 'block'; // Show product if it matches the query
+                } else {
+                  product.style.display = 'none'; // Hide product if it does not match
+                }
+              });
+            });
+
+            // Hide suggestions dropdown when clicking outside
+            document.addEventListener('click', (event) => {
+              if (!event.target.closest('#searchBar')) {
+                // Hide suggestions if you have a suggestions dropdown
+                const suggestions = document.getElementById('suggestions');
+                if (suggestions) {
+                  suggestions.style.display = 'none'; // Ensure `suggestions` is defined and used properly
+                }
+              }
+            });
+          });
+        </script>
+
+
         <script>
           $(document).ready(function () {
             // Price Range Filter
@@ -518,18 +571,21 @@
               const selectedSizes = [];
               sizeCheckboxes.each(function () {
                 if ($(this).is(":checked")) {
-                  selectedSizes.push($(this).val().toLowerCase());
+                  selectedSizes.push($(this).val());
                 }
               });
 
               productItems.each(function () {
                 const productPrice = parseFloat($(this).data("price"));
                 const productColor = $(this).data("color").toLowerCase();
-                const productSizes = $(this)
-                  .data("size")
-                  .toLowerCase()
-                  .split(":")
-                  .filter((_, i) => i % 2 === 0); // Get sizes only
+                const sizeData = $(this).data("size").toLowerCase().split(":");
+                const productSizes = [];
+                for (let i = 0; i < sizeData.length; i += 2) {
+                  // Ensure size is not empty and value is numeric
+                  if (i + 1 < sizeData.length && sizeData[i + 1].trim() !== "" && !isNaN(sizeData[i + 1])) {
+                    productSizes.push(sizeData[i]);
+                  }
+                }
 
                 const matchesPrice =
                   productPrice >= minPrice && productPrice <= maxPrice;
@@ -601,7 +657,7 @@
                       setTimeout(() => {
                         cartMessage.style.display = "none"
                       }, 4000)
-
+                      window.location.href = '/login';
                     }
                   })
                   .catch((error) => {

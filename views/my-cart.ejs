@@ -284,7 +284,8 @@
                                       <div class="cart-quantity">
                                         <input type="text" name="product_quantity" value="<%=item.quantity %>"
                                           class="cart-value" data-product-id="<%= item.product_id %>"
-                                          data-cart-id="<%= item.cart_id %>" id="quantity-js" />
+                                          data-cart-id="<%= item.cart_id %>" data-product-name="<%= item.product_name%>"
+                                          id="quantity-js" />
                                       </div>
                                       <div class="right-input">
                                         <span class="increment"><i class="fa-solid fa-plus"></i></span>
@@ -390,10 +391,12 @@
                       <h4>Order Summary</h4>
                     </div>
                     <div class="promo-code-wrap">
-                      <input type="text" class="promo-input" placeholder="Promo Code" />
-                      <button type="submit" class="apply-btn" name="submit">
-                        Apply
-                      </button>
+                      <form action="promocode-check" method="post">
+                        <input type="text" name="coupon_name" class="promo-input" placeholder="Promo Code" />
+                        <button type="submit" class="apply-btn">
+                          Apply
+                        </button>
+                      </form>
                     </div>
 
                     <div class="alfa-cart-total">
@@ -427,30 +430,43 @@
                           </div>
                         </li>
 
-                        <li>
-                          <div class="alfa-text">VAT</div>
-                          <div class="alfa-price">
-                            £ <span id="GST-ajax">
-                              <%= GST %>
-                            </span>
-                          </div>
-                        </li>
-                        <li>
-                          <div class="alfa-text">Delivery Fee</div>
-                          <div class="alfa-price">
-                            £
-                            <% if (cartItemsInStock.length> 0) { %>
-                              <span id="Delivery-ajax">
-                                <%= deliveryFee %>
+                        <% if (promo.code_applied) { %>
+                          <li>
+                            <div class="alfa-text">Coupon Discount</div>
+                            <div class="alfa-price">
+                              - £
+                              <span id="totalDiscount-ajax">
+                                <%= promo_discount %>
                               </span>
-                              <% } else { %>
-                                <span id="Delivery-ajax">
-                                  0
+                            </div>
+                          </li>
+                          <% } %>
+
+
+                            <li>
+                              <div class="alfa-text">VAT</div>
+                              <div class="alfa-price">
+                                £ <span id="GST-ajax">
+                                  <%= GST %>
                                 </span>
-                                <% } %>
-                                  <!-- <span id="Delivery-ajax"><%= deliveryFee %></span> -->
-                          </div>
-                        </li>
+                              </div>
+                            </li>
+                            <li>
+                              <div class="alfa-text">Delivery Fee</div>
+                              <div class="alfa-price">
+                                £
+                                <% if (cartItemsInStock.length> 0) { %>
+                                  <span id="Delivery-ajax">
+                                    <%= deliveryFee %>
+                                  </span>
+                                  <% } else { %>
+                                    <span id="Delivery-ajax">
+                                      0
+                                    </span>
+                                    <% } %>
+                                      <!-- <span id="Delivery-ajax"><%= deliveryFee %></span> -->
+                              </div>
+                            </li>
                       </ul>
                     </div>
 
@@ -519,12 +535,13 @@
 
           const productId = productQuantityInput.getAttribute('data-product-id');
           const cartId = productQuantityInput.getAttribute('data-cart-id');
+          const productName = productQuantityInput.getAttribute('data-product-name');
 
           // Check if a size is selected for this product
           const selectedSize = document.querySelector(`input[name="selectedSize-${cartId}-${productId}"]:checked`);
           if (!selectedSize) {
             // Alert the user if no size is selected for this product
-            alert(`Please select a size for product ID ${productId}`);
+            alert(`Please select a size for  ${productName}`);
             event.preventDefault();
             return;
           }

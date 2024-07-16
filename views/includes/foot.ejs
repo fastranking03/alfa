@@ -7,12 +7,53 @@
 <script src="assets/js/my-cart-price.js"></script>
 <script src="assets/js/change-size.js"></script>
 
-<script> 
-// Loader
-  document.addEventListener("DOMContentLoaded", function() {
+<script>
+  document.getElementById('searchInput').addEventListener('input', function () {
+    const query = this.value;
+
+    if (query.length > 2) { // Only search if query is longer than 2 characters
+      fetch(`/search-products?query=${query}`)
+        .then(response => response.json())
+        .then(data => {
+          const dropdown = document.getElementById('searchResults');
+          dropdown.innerHTML = ''; // Clear previous results
+
+          if (data.length) {
+            data.forEach(product => {
+              const itemDiv = document.createElement('div');
+              itemDiv.classList.add('dropdown-item');
+
+              itemDiv.innerHTML = ` 
+                <div class="product-info">
+                  <strong>${product.name}</strong> 
+                </div>
+              `;
+
+              const a = document.createElement('a');
+              a.href = `/product-detail/${product.id}`;
+              a.appendChild(itemDiv);
+
+              dropdown.appendChild(a);
+            });
+            dropdown.classList.add('show');
+          } else {
+            dropdown.innerHTML = '<div class="dropdown-item">No Products found</div>';
+            dropdown.classList.add('show');
+          }
+        });
+    } else {
+      document.getElementById('searchResults').classList.remove('show');
+    }
+  });
+
+</script>
+
+<script>
+  // Loader
+  document.addEventListener("DOMContentLoaded", function () {
     var loader = document.getElementById('loader');
     var content = document.getElementById('web-content');
-    setTimeout(function() {
+    setTimeout(function () {
       loader.style.display = 'none';
       content.style.display = 'block';
     }, 2000);
@@ -140,7 +181,7 @@
       }
     });
   });
- 
+
   $(document).ready(function () {
     var $carousel = $('#product-detail-carousel').owlCarousel({
       loop: true,
@@ -163,11 +204,11 @@
         }
       }
     });
-   });
+  });
 
 
 
-  
+
   const accordionItemHeaders = document.querySelectorAll(".accordion-item-header");
   accordionItemHeaders.forEach(accordionItemHeader => {
     accordionItemHeader.addEventListener("click", event => {
@@ -214,4 +255,3 @@
     }
   };
 </script>
-

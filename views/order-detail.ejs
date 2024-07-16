@@ -297,24 +297,27 @@
                       </ul>
                     </div>
 
-                    <div class="alfa-checkout-wrapper">
-                      <a href="/cancel-order/<%=order.order_id  %>">
-                        <button type="button" class="checkout-btn">
-                          CANCEL ORDER
-                        </button>
-                      </a>
-                    </div>
+                    <% if(order.order_status=="processing" || order.order_status=="out for delivery" ||
+                      order.order_status=="order placed" ){ %>
+                      <div class="alfa-checkout-wrapper">
+                        <a href="/cancel-order/<%=order.order_id  %>">
+                          <button type="button" class="checkout-btn">
+                            CANCEL ORDER
+                          </button>
+                        </a>
+                      </div>
+                      <% } %>
 
-                    <br />
-
-                    <div class="alfa-checkout-wrapper">
-                      <a href="/return-order/<%=order.order_id  %>">
-                        <button type="button" class="checkout-btn">
-                          RETURN ORDER
-                        </button>
-                      </a>
-                    </div>
-
+                        <br />
+                        <% if(isReturnable){ %>
+                          <div class="alfa-checkout-wrapper">
+                            <a href="/return-order/<%=order.order_id  %>">
+                              <button type="button" class="checkout-btn">
+                                RETURN ORDER
+                              </button>
+                            </a>
+                          </div>
+                          <% } %>
                   </div>
                 </div>
               </div>

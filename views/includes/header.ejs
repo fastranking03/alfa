@@ -44,11 +44,15 @@
                 </div>
             </div>
             <div class="right-header-wrapper">
+
                 <div class="alfa-search">
                     <span><img src="assets/images/search.png" alt="" /></span>
                     <input type="search" name="search" class="alfa-search-control" placeholder="Search for products"
-                        id="" />
+                        id="searchInput" />
+                    <div id="searchResults" class="dropdown-content"></div>
                 </div>
+
+
                 <div class="header-icons">
                     <ul>
                         <li class="position-relative user-card-visible">
@@ -167,6 +171,9 @@
                                 <a href="/my-wishlist">
                                     <div class="alfa-icon-flex">
                                         <img src="assets/images/heart.png" width="100%" alt="">
+                                        <span class="product-count">
+                                            <%= session.wishlistCount !==undefined ? session.wishlistCount : 'null' %>
+                                        </span>
                                         <span>Wishlist</span>
                                     </div>
                                 </a>
@@ -174,7 +181,9 @@
                             <li>
                                 <a href="/cart">
                                     <div class="alfa-icon-flex position-relative">
-                                        <span class="product-count">1</span>
+                                        <span class="product-count">
+                                            <%= session.cartCount !==undefined ? session.cartCount : 'null' %>
+                                        </span>
                                         <img src="assets/images/cart.png" width="100%" alt="">
                                         <span>Cart</span>
                                     </div>

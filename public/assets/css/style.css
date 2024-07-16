@@ -3037,3 +3037,52 @@ font-size: 14px;
   display: none;
   animation: slideInRight 0.5s forwards;
 }
+ 
+    .alfa-search {
+      position: relative;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: white;
+      min-width: 281px;
+      border: 1px solid #ccc;
+      z-index: 1;
+      height: auto;
+      max-height: 350px;
+      scroll-behavior: smooth;
+      overflow-x: scroll;
+    }
+
+    .dropdown-content a {
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      color: black;
+    }
+
+    .dropdown-item {
+      display: flex;
+      align-items: center;
+      padding: 8px 12px;
+    }
+
+    .dropdown-item img {
+      width: 50px;
+      height: auto;
+      margin-right: 10px;
+    }
+
+    .product-info {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .dropdown-content a:hover {
+      background-color: #ddd;
+    }
+
+    .show {
+      display: block;
+    } 

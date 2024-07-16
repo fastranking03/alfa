@@ -1,15 +1,16 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Alfa Meanswear | Product Details</title>
-    <%- include('includes/head') %>
-  </head>
 
-  <body>
-    <div class="alfa-main-wraper">
-      <%- include('includes/header') %>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alfa Meanswear | Product Details</title>
+  <%- include('includes/head') %>
+</head>
+
+<body>
+  <div class="alfa-main-wraper">
+    <%- include('includes/header') %>
       <div class="mt-100 mt-150">
         <div class="checkout-wrapper margin-160">
           <div class="container">
@@ -22,56 +23,60 @@
                     </div>
                   </div>
 
-                  <form
-                  id="checkoutForm"
-                  action="payment"
-                  method="post"
-                >
+                  <form id="checkoutForm" action="payment" method="post">
 
-                  <div class="shipping-address">
-                    <% if (addresses.length > 0) { %>
-                      <% addresses.forEach((address, index) => { %>
-                        <div class="shipping-address-display" style="display: block">
-                          <div class="alfa-defaul-wrapper">
-                            <h6><%= index === 0 ? 'Default Address' : 'Address' %></h6>
-                            <div class="alfa-action-warapper">
-                              <!-- <a href="/remove-address/<%= address.id %>" class="add-action-btn">Remove</a> -->
-                              <a href="/edit-address/<%= address.id %>" class="add-action-btn">Edit</a>
+                    <div class="shipping-address">
+                      <% if (addresses.length> 0) { %>
+                        <% addresses.forEach((address, index)=> { %>
+                          <div class="shipping-address-display" style="display: block">
+                            <div class="alfa-defaul-wrapper">
+                              <h6>
+                                <%= index===0 ? 'Default Address' : 'Address' %>
+                              </h6>
+                              <div class="alfa-action-warapper">
+                                <!-- <a href="/remove-address/<%= address.id %>" class="add-action-btn">Remove</a> -->
+                                <a href="/edit-address/<%= address.id %>" class="add-action-btn">Edit</a>
+                              </div>
+                            </div>
+                            <div class="address-content">
+                              <div class="shipper-name">
+                                <%= address.name %>
+                              </div>
+                              <div class="address-type">
+                                <input type="radio" id="address-<%= address.id %>" name="selectedAddress"
+                                  value="<%= address.id %>" class="radio-input" <%=index===0 ? 'checked' : '' %> />
+                                <label for="address-<%= address.id %>">Home</label>
+                              </div>
+                              <div class="shipper-email">
+                                <p>Email: <%= address.email %>
+                                </p>
+                                <p>Mobile: <%= address.phone %>
+                                </p>
+                              </div>
+                              <div class="shipper-address">
+                                <%= address.address %>, <%= address.city %>, <%= address.postcode %>, <%=
+                                        address.country %>
+                              </div>
                             </div>
                           </div>
-                          <div class="address-content">
-                            <div class="shipper-name"><%= address.name %></div>
-                            <div class="address-type">
-                              <input type="radio" id="address-<%= address.id %>" name="selectedAddress" value="<%= address.id %>" class="radio-input" <%= index === 0 ? 'checked' : '' %> />
-                              <label for="address-<%= address.id %>">Home</label>
-                            </div>
-                            <div class="shipper-email">
-                              <p>Email: <%= address.email %></p>
-                              <p>Mobile: <%= address.phone %></p>
-                            </div>
-                            <div class="shipper-address">
-                              <%= address.address %>, <%= address.city %>, <%= address.postcode %>, <%= address.country %>
+                          <% }); %>
+                            <% } else { %>
+                              <p>No addresses found. Please add a new address.</p>
+                              <% } %>
+                    </div>
+
+                    <% if(addressCount <=1){ %>
+                      <div class="new-adderss-wrapper">
+                        <a href="add-address" style="color: #000">
+                          <div class="add-address">
+                            <div class="shipping-text">
+                              <span><i class="fa-solid fa-plus"></i></span>
+                              Add New Address
                             </div>
                           </div>
-                        </div>
-                      <% }); %>
-                    <% } else { %>
-                      <p>No addresses found. Please add a new address.</p>
-                    <% } %>
-                  </div>
-                  
-                  <% if(addressCount <=1){ %>
-                  <div class="new-adderss-wrapper">
-                    <a href="add-address" style="color: #000">
-                      <div class="add-address">
-                        <div class="shipping-text">
-                          <span><i class="fa-solid fa-plus"></i></span>
-                          Add New Address
-                        </div>
+                        </a>
                       </div>
-                    </a>
-                  </div>
-                  <%}  %>
+                      <%} %>
 
                 </div>
               </div>
@@ -80,7 +85,9 @@
                 <div class="checkout-item-wrapper mt-5">
                   <div class="item-counts">
                     <div class="counts">
-                      <h6><%= cartItemsInStock.length %> Items</h6>
+                      <h6>
+                        <%= cartItemsInStock.length %> Items
+                      </h6>
                     </div>
                     <div class="items-timing">
                       <span>Arrives by April 3 to April 9th </span>
@@ -88,121 +95,109 @@
                   </div>
                   <div class="checkout-cart-wrapper">
                     <div class="checkout-wrapp">
-                      <% cartItemsInStock.forEach(item => { %>
-                      <div class="check-item">
-                        <div class="check-item-left">
-                          <div class="check-item-image">
-                            <img
-                              src="../product_images/<%= item.product_main_image %>"
-                              class="check-image"
-                              alt=""
-                            />
+                      <% cartItemsInStock.forEach(item=> { %>
+                        <div class="check-item">
+                          <div class="check-item-left">
+                            <div class="check-item-image">
+                              <img src="../product_images/<%= item.product_main_image %>" class="check-image" alt="" />
+                            </div>
+                            <!-- <h2><%=item.cart_id  %></h2> -->
+                            <div class="checkout-cont">
+                              <h4>
+                                <%= item.product_name %>
+                              </h4>
+                              <div class="checkout-rest-cont">
+                                <p>Color : <%= item.colour %>
+                                </p>
+                                <p>Size : <%= item.selected_size %>
+                                </p>
+                                <p>Qty : <%= item.quantity %>
+                                </p>
+                              </div>
+                            </div>
                           </div>
-                          <!-- <h2><%=item.cart_id  %></h2> -->
-                          <div class="checkout-cont">
-                            <h4><%= item.product_name %></h4>
-                            <div class="checkout-rest-cont">
-                              <p>Color : <%= item.colour %></p>
-                              <p>Size : <%= item.selected_size %></p>
-                              <p>Qty : <%= item.quantity %></p>
+                          <div class="check-item-right">
+                            <div class="check-price">
+                              <h5>
+                                <span class="final-price">£<%= (item.product_price * (1 - (item.discount_on_product /
+                                    100))).toFixed(2) %></span>
+                                <span class="mrp-price">£<%= item.product_price %></span>
+                              </h5>
                             </div>
                           </div>
                         </div>
-                        <div class="check-item-right">
-                          <div class="check-price">
-                            <h5>
-                              <span class="final-price"
-                                >£<%= (item.product_price * (1 -
-                                (item.discount_on_product / 100))).toFixed(2)
-                                %></span
-                              >
-                              <span class="mrp-price"
-                                >£<%= item.product_price %></span
-                              >
-                            </h5>
-                          </div>
-                        </div>
-                      </div>
-                      <% }); %>
+                        <% }); %>
                     </div>
                     <div class="alfa-cart-total">
                       <ul>
                         <li>
                           <div class="alfa-text">Total MRP</div>
-                          <div class="alfa-price">£<%=totalPrice %>  </div>
+                          <div class="alfa-price">£<%=totalPrice %>
+                          </div>
                         </li>
 
                         <li>
                           <div class="alfa-text">Discount on MRP </div>
-                          <div class="alfa-price">- £<%=totalDiscount %></div>
+                          <div class="alfa-price">- £<%=totalDiscount %>
+                          </div>
                         </li>
 
                         <li>
                           <div class="alfa-text">Sub Total</div>
-                          <div class="alfa-price"> £ <%=subtotal %></div>
+                          <div class="alfa-price"> £ <%=subtotal %>
+                          </div>
                         </li>
 
+                        <% if (ispromoapplied) { %>
+                          <li>
+                            <div class="alfa-text"> Coupon Discount</div>
+                            <div class="alfa-price">- £ <%=promo_discount %>
+                            </div>
+                          </li>
+                          <% }%>
 
+                            <li>
+                              <div class="alfa-text">Vat ( 20% )</div>
 
-                        <li>
-                          <div class="alfa-text">Vat ( 20% )</div>
+                              <div class="alfa-price">£ <%=vat %>
+                              </div>
+                            </li>
+                            <li>
+                              <div class="alfa-text">Delivery Fee</div>
 
-                          <div class="alfa-price">£ <%=vat %></div>
-                        </li>
-                        <li>
-                          <div class="alfa-text">Delivery Fee</div>
-
-                          <div class="alfa-price">£<%=deliveryFee %></div>
-                        </li>
+                              <div class="alfa-price">£<%=deliveryFee %>
+                              </div>
+                            </li>
                       </ul>
                     </div>
                     <div class="alfa-cart-total">
                       <ul>
                         <li>
                           <div class="alfa-text">Total Cost</div>
-                          <div class="alfa-price">£ <%=totalCost %></div>
+                          <div class="alfa-price">£ <%=totalCost %>
+                          </div>
                         </li>
                       </ul>
                     </div>
 
-                  
-                      <input
-                        type="hidden"
-                        name="cartItemscheckoutpage"
-                        value="<%= JSON.stringify(cartItemsInStock) %>"
-                      />
 
-                      <input
-                        type="hidden"
-                        name="total_mrp"
-                        value="<%= totalPrice %>"
-                      />
-                      <input
-                        type="hidden"
-                        name="discount_on_mrp"
-                        value="<%= totalDiscount %>"
-                      />
+                    <input type="hidden" name="cartItemscheckoutpage" value="<%= JSON.stringify(cartItemsInStock) %>" />
 
-                      <input type="hidden" name="subtotal" value="<%= subtotal  %>">
-                      <input type="hidden" name="vat" value="<%= vat %>" />
+                    <input type="hidden" name="total_mrp" value="<%= totalPrice %>" />
+                    <input type="hidden" name="discount_on_mrp" value="<%= totalDiscount %>" />
 
-                      <input
-                        type="hidden"
-                        name="delivery_charges"
-                        value="<%= deliveryFee %>"
-                      />
+                    <input type="hidden" name="subtotal" value="<%= subtotal  %>">
+                    <input type="hidden" name="vat" value="<%= vat %>" />
 
-                      <input
-                        type="hidden"
-                        name="total_payable"
-                        value="<%= totalCost %>"
-                      />
- 
-                      <div class="alfa-checkout-wrapper">
-                        <button type="submit" class="checkout-btn">
-                          Pay Now
-                        </button>
-                      </div>
+                    <input type="hidden" name="delivery_charges" value="<%= deliveryFee %>" />
+
+                    <input type="hidden" name="total_payable" value="<%= totalCost %>" />
+
+                    <div class="alfa-checkout-wrapper">
+                      <button type="submit" class="checkout-btn">
+                        Pay Now
+                      </button>
+                    </div>
                     </form>
                   </div>
                 </div>
@@ -213,8 +208,9 @@
       </div>
       <!-- Footer -->
       <%- include('includes/footer') %>
-      <!-- End -->
-    </div>
-    <%- include('includes/foot') %>
-  </body>
+        <!-- End -->
+  </div>
+  <%- include('includes/foot') %>
+</body>
+
 </html>
