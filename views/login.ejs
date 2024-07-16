@@ -9,10 +9,10 @@
 </head>
 
 <body>
-    <div class="alfa-main-wraper"> 
+    <div class="alfa-main-wraper">
         <%- include('includes/header') %>
             <div class="mt-100">
-                 <div class="user-container">
+                <div class="user-container">
                     <div class="user-banner-wrapper">
                         <div class="t-banner">
                             <img src="assets/images/loginImg.png" alt="">
@@ -31,13 +31,13 @@
                                     <div class="option-ul">
                                         <ul>
                                             <li>
-                                                <a href=""><img src="assets/images/google.png" alt=""></a>
+                                                <a href="/auth/google"><img src="assets/images/google.png" alt=""></a>
                                             </li>
                                             <li>
-                                                <a href=""><img src="assets/images/fb.png" alt=""></a>
+                                                <a href="/auth/facebook"><img src="assets/images/fb.png" alt=""></a>
                                             </li>
                                             <li>
-                                                <a href=""><img src="assets/images/apple.png" alt=""></a>
+                                                <a href="/auth/github"><img src="assets/images/github.png" alt=""> </a>
                                             </li>
                                         </ul>
                                     </div>
@@ -46,9 +46,11 @@
                                     </div>
                                 </div>
                                 <div class="error-message" style="color: red;">
-                                    <% if (typeof error !== 'undefined') { %>
-                                        <p><%= error %></p>
-                                    <% } %>
+                                    <% if (typeof error !=='undefined' ) { %>
+                                        <p>
+                                            <%= error %>
+                                        </p>
+                                        <% } %>
                                 </div>
                                 <div class="main-form">
                                     <form action="/login" method="post" id="loginForm">
@@ -58,7 +60,8 @@
                                                     <label for="Email">Email ID</label>
                                                     <input type="text" class="form-input" name="email" id="emailInput"
                                                         placeholder="Enter your Email ID">
-                                                    <div id="emailError" style="color: red; display: none;">Please enter a valid email address.</div>
+                                                    <div id="emailError" style="color: red; display: none;">Please enter
+                                                        a valid email address.</div>
                                                 </div>
                                             </div>
                                             <div class="col-md-12">
@@ -66,7 +69,8 @@
                                                     <label for="Password">Password</label>
                                                     <input type="password" class="form-input" name="password"
                                                         id="passwordView" placeholder="Enter your Password">
-                                                    <span id="onEyeClick"><i id="eyeView" class="fa-regular fa-eye-slash"></i></span>
+                                                    <span id="onEyeClick"><i id="eyeView"
+                                                            class="fa-regular fa-eye-slash"></i></span>
                                                 </div>
                                             </div>
                                             <div class="text-end user-forget">
@@ -94,11 +98,11 @@
             </div>
     </div>
     <script>
-      var onEyeClick = document.getElementById("onEyeClick");
+        var onEyeClick = document.getElementById("onEyeClick");
         var passwordView = document.getElementById("passwordView");
         var eyeView = document.getElementById("eyeView");
 
-        onEyeClick.addEventListener('click', function() {
+        onEyeClick.addEventListener('click', function () {
             if (passwordView.type == "text") {
                 passwordView.type = "password";
                 eyeView.classList.remove("fa-eye");
@@ -116,7 +120,7 @@
             const loginForm = document.getElementById("loginForm");
 
             emailInput.addEventListener("input", function () {
-                 const emailValue = emailInput.value;
+                const emailValue = emailInput.value;
                 if (validateEmail(emailValue)) {
                     emailError.style.display = "none";
                     document.getElementById("login").classList.add("user-btn-primary")
@@ -125,7 +129,7 @@
                     document.getElementById("login").classList.remove("user-btn-primary")
                 }
             });
-            
+
             loginForm.addEventListener("submit", function (event) {
                 const emailValue = emailInput.value;
                 if (!validateEmail(emailValue)) {

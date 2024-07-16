@@ -1,5 +1,9 @@
 import express from "express";
 import path from "path";
+import passport from "passport";
+import { Strategy as GoogleStrategy } from "passport-google-oauth20";
+import { Strategy as GitHubStrategy } from 'passport-github2';
+import { Strategy as FacebookStrategy } from 'passport-facebook';
 import dotenv from "dotenv";
 import userRoute from "./routes/userRoute.js";
 import commanRoute from "./routes/commanRoute.js";
@@ -88,6 +92,63 @@ app.set("view engine", "ejs");
 app.set("views", path.resolve("./views"));
 app.use(express.static("public"));
 
+
+
+
+passport.use(new GoogleStrategy({
+  clientID: process.env.GOOGLE_CLIENT_ID,
+  clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+  callbackURL: "/auth/google/callback"
+},
+  async (accessToken, refreshToken, profile, done) => {
+    try {
+      // Check if user exists with Google ID 
+      let [user] = await connect.query("SELECT * FROM user_registration WHERE email = ?", [profile.emails[0].value]);
+
+      if (!user.length) {
+        // If user does not exist, create a new record
+        const newUser = {
+          name: profile.displayName,
+          email: profile.emails[0].value,
+          password: '', // Handle password differently or leave it empty
+          otp: '', // Default value
+          status: 'active', // Default to active
+          phone_no: '', // Default value
+          alt_phone_no: '', // Default value
+          verified: '1', // Mark as verified if using OAuth
+          refresh_token: '', // Default empty value or handle accordingly 
+          token_expiry_date: '',
+        };
+
+        await connect.query("INSERT INTO user_registration SET ?", newUser);
+        [user] = await connect.query("SELECT * FROM user_registration WHERE email = ?", [profile.emails[0].value]);
+      }
+
+
+      // Generate JWT token
+      const token = jwt.sign({ id: user[0].id, email: user[0].email, verified: user[0].verified }, process.env.JWT_SECRET, { expiresIn: '30m' });
+      return done(null, { user: user[0], token });
+    } catch (error) {
+      return done(error, null);
+    }
+  }));
+
+
+
+passport.serializeUser((user, done) => {
+  done(null, user);
+});
+
+passport.deserializeUser((obj, done) => {
+  done(null, obj);
+});
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+
+
 // Serve static files (like uploaded images)
 app.use("/banner_images", express.static("banner_images"));
 app.use("/category_images", express.static("category_images"));
@@ -107,6 +168,50 @@ app.use("/", placeOrderRoute);
 app.use("/category/", CategoryRoutes);
 app.use("/accessory/", accessoriesRoutes);
 
+
+// Google OAuth Routes
+app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+
+app.get('/auth/google/callback',
+  passport.authenticate('google', { failureRedirect: '/login' }),
+  async (req, res) => {
+    try {
+      const { user, token } = req.user;
+
+      // Generate a new refresh token
+      const refreshToken = jwt.sign(
+        { id: user.id, email: user.email },
+        process.env.REFRESH_TOKEN_SECRET,
+        { expiresIn: '30d' }
+      );
+
+      // Calculate token expiry date
+      const expiresAt = new Date();
+      expiresAt.setDate(expiresAt.getDate() + 30);
+      const expiresAtFormatted = expiresAt.toISOString().slice(0, 19).replace('T', ' ');
+
+      // Update refresh token and expiry date in the `alfa_personal_staff` table
+
+      await connect.query(
+        "UPDATE user_registration SET refresh_token = ?, token_expiry_date = ? WHERE id = ?",
+        [refreshToken, expiresAtFormatted, user.id]
+      );
+
+      // Set cookies for tokens
+      res.cookie('accessToken', token, { httpOnly: true });
+      res.cookie('refreshToken', refreshToken, { httpOnly: true });
+
+      // Store user data in session
+      req.session.user = user;
+
+      // Redirect to admin page or any protected route
+      return res.redirect("/");
+    } catch (error) {
+      console.error("Error during Google callback:", error);
+      return res.redirect('/login');
+    }
+  }
+);
 
 // Middleware to verify and refresh JWT token
 async function verifyToken(req, res, next) {
@@ -262,7 +367,5 @@ const PORT = 8081;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
-
-
 
 
