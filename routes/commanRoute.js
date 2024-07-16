@@ -872,8 +872,12 @@ router.get("/cart", async (req, res) => {
         parseFloat(totalDiscount)
       ).toFixed(2);
 
+
+      const promo = req.session.promo || { promodiscount: 0, code_applied: false };
+
       res.render("my-cart", {
         user,
+        promo,
         cartItems: cartItemsWithSizes,
         totalPrice,
         subtotal,
@@ -2204,17 +2208,21 @@ router.get('/search-products', async (req, res) => {
   try {
     const searchQuery = `
       SELECT 
-        id, 
-        product_name AS name, 
-        product_description AS description 
-      FROM products 
+        p.id, 
+        p.product_name AS name, 
+        p.product_description AS description,
+        p.product_main_image AS image,
+        c.category_name AS category
+      FROM products p
+      JOIN category c ON p.category_id = c.id
       WHERE 
-        product_name LIKE ? 
-        OR product_description LIKE ?
+        p.product_name LIKE ? 
+        OR p.product_description LIKE ?
     `;
-    const [results] = await connect.query(searchQuery, [`%${query}%`, `%${query}%`]);
+    const searchValue = `%${query}%`;
+    const [rows] = await connect.query(searchQuery, [searchValue, searchValue]);
 
-    res.json(results);
+    res.json(rows);
   } catch (error) {
     console.error('Error fetching search results:', error);
     res.status(500).json({ error: 'Internal Server Error' });
