@@ -251,7 +251,7 @@ router.post("/place-order", async (req, res) => {
         `;
         await connect.query(updateInventoryQuery, [product.quantity, product.product_id]);
       } else if (product_type === 'belt') {
-        const sizeColumn = `size_${product.selected_size}`;
+        const sizeColumn = product.selected_size.toLowerCase();
         const updateInventoryQuery = `
           UPDATE belts_inventory
           SET ${sizeColumn} = ${sizeColumn} - ? 
@@ -630,7 +630,7 @@ router.get("/checkout", async (req, res) => {
         sizes = sizeRows[0];
       } else if (cartItem.wear_type_bottom_or_top === "belt") {
         const [sizeRows] = await connect.query(
-          `SELECT size_28, size_30, size_32, size_34, size_36, size_38, size_40  
+          `SELECT s, m, l, xl, 2xl, 3xl
              FROM belts_inventory
              WHERE product_id = ?`,
           [cartItem.product_id]
@@ -686,9 +686,8 @@ router.get("/checkout", async (req, res) => {
           const sizeKeyLowerCase = sizeKey.toLowerCase();
           stock = item.sizes ? item.sizes[sizeKeyLowerCase] : null;
         } else if (item.wear_type_bottom_or_top === "belt") {
-          const sizeKey = `size_${selectedSize}`;
-          const sizeKeyLowerCase = sizeKey.toLowerCase();
-          stock = item.sizes ? item.sizes[sizeKeyLowerCase] : null;
+          const selectedSizeLowerCase = selectedSize.toLowerCase();
+          stock = item.sizes ? item.sizes[selectedSizeLowerCase] : null;
         } else if (item.wear_type_bottom_or_top === "wallet") {
           const selectedSizeLowerCase = selectedSize.toLowerCase();
           stock = item.sizes ? item.sizes[selectedSizeLowerCase] : null;
