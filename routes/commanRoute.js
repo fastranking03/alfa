@@ -522,7 +522,7 @@ router.get("/product-detail/:id", async (req, res) => {
     } else if (wearType === "shoes") {
       sizeQuery = `SELECT size_6, size_7, size_8, size_9, size_10, size_11, size_12, size_13 FROM shoes_inventory WHERE product_id = ?`;
     } else if (wearType === "belt") {
-      sizeQuery = `SELECT size_28, size_30, size_32, size_34, size_36, size_38, size_40 FROM belts_inventory WHERE product_id = ?`;
+      sizeQuery = `SELECT s, m, l, xl, 2xl, 3xl FROM belts_inventory WHERE product_id = ?`;
     } else if (wearType === "wallet") {
       sizeQuery = `SELECT s, m, l FROM wallet_inventory WHERE product_id = ?`;
     }
@@ -541,7 +541,7 @@ router.get("/product-detail/:id", async (req, res) => {
             sizes[size.replace("_", " ")] = value;
           } else if (wearType === "shoes" && size.startsWith("size_")) {
             sizes[size.replace("_", " ")] = value;
-          } else if (wearType === "belt" && size.startsWith("size_")) {
+          } else if (wearType === "belt" && !size.startsWith("size_")) {
             sizes[size.replace("_", " ")] = value;
           } else if (wearType === "wallet" && !size.startsWith("size_")) {
             sizes[size.replace("_", " ")] = value;
@@ -954,7 +954,7 @@ router.get("/cart", async (req, res) => {
           sizes = sizeRows[0];
         } else if (cartItem.wear_type_bottom_or_top === "belt") {
           const [sizeRows] = await connect.query(
-            `SELECT size_28, size_30, size_32, size_34, size_36, size_38, size_40  
+            `SELECT s, m, l, xl, 2xl, 3xl
              FROM belts_inventory
              WHERE product_id = ?`,
             [cartItem.product_id]
@@ -997,7 +997,7 @@ router.get("/cart", async (req, res) => {
           console.log('Size Key:', sizeKeyLowerCase);
           console.log('Available Sizes:', item.sizes);
 
-          if (item.wear_type_bottom_or_top === "top") {
+          if (item.wear_type_bottom_or_top === "top" || item.wear_type_bottom_or_top === "belt" || item.wear_type_bottom_or_top === "wallet") {
             const selectedSizeLowerCase = selectedSize.toLowerCase();
             stock = item.sizes ? item.sizes[selectedSizeLowerCase] : null;
           } else if (item.wear_type_bottom_or_top === "bottom") {
@@ -1012,9 +1012,6 @@ router.get("/cart", async (req, res) => {
             const sizeKey = `size_${selectedSize}`;
             const sizeKeyLowerCase = sizeKey.toLowerCase();
             stock = item.sizes ? item.sizes[sizeKeyLowerCase] : null;
-          } else if (item.wear_type_bottom_or_top === "wallet") {
-            const selectedSizeLowerCase = selectedSize.toLowerCase();
-            stock = item.sizes ? item.sizes[selectedSizeLowerCase] : null;
           }
         }
 
@@ -1143,7 +1140,7 @@ router.post("/update-quantity", async (req, res) => {
           sizes = sizeRows[0];
         } else if (cartItem.wear_type_bottom_or_top === "belt") {
           const [sizeRows] = await connect.query(
-            `SELECT size_28, size_30, size_32, size_34, size_36, size_38, size_40 
+            `SELECT s, m, l, xl, 2xl, 3xl
              FROM belts_inventory
              WHERE product_id = ?`,
             [cartItem.product_id]
@@ -1320,6 +1317,7 @@ router.post("/update-quantity", async (req, res) => {
   }
 });
 
+
 router.post("/submit-review", async (req, res) => {
   const user = req.session.user;
   if (!user) {
@@ -1363,8 +1361,6 @@ router.post("/submit-review", async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
-
-
 
 
 

@@ -92,13 +92,12 @@ app.set("view engine", "ejs");
 app.set("views", path.resolve("./views"));
 app.use(express.static("public"));
 
-
-
-
 passport.use(new GoogleStrategy({
   clientID: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  callbackURL: "/auth/google/callback"
+  callbackURL: process.env.NODE_ENV === 'production'
+    ? "https://s9wyglh.localto.net/auth/google/callback"
+    : "http://localhost:8081/auth/google/callback"
 },
   async (accessToken, refreshToken, profile, done) => {
     try {
@@ -134,6 +133,99 @@ passport.use(new GoogleStrategy({
   }));
 
 
+passport.use(new FacebookStrategy({
+  clientID: process.env.FACEBOOK_APP_ID,
+  clientSecret: process.env.FACEBOOK_APP_SECRET,
+  callbackURL: process.env.NODE_ENV === 'production'
+    ? "https://s9wyglh.localto.net/auth/facebook/callback"
+    : "http://localhost:8081/auth/facebook/callback",
+  profileFields: ['id', 'emails', 'name']
+},
+  async (accessToken, refreshToken, profile, done) => {
+    try {
+      // Check if user exists with Google ID 
+
+      const email = profile.emails ? profile.emails[0].value : null;
+      if (!email) {
+        return done(new Error('No email found in Facebook profile'), null);
+      }
+      let [user] = await connect.query("SELECT * FROM user_registration WHERE email = ?", [profile.emails[0].value]);
+
+      // Construct the name from profile.name object
+      const givenName = profile.name ? profile.name.givenName : 'Anonymous';
+      const familyName = profile.name ? profile.name.familyName : '';
+      const fullName = `${givenName} ${familyName}`.trim() || 'Anonymous';
+
+      if (!user.length) {
+        // If user does not exist, create a new record
+        const newUser = {
+          name: fullName,
+          email: profile.emails[0].value,
+          password: '', // Handle password differently or leave it empty
+          otp: '', // Default value
+          status: 'active', // Default to active
+          phone_no: '', // Default value
+          alt_phone_no: '', // Default value
+          verified: '1', // Mark as verified if using OAuth
+          refresh_token: '', // Default empty value or handle accordingly 
+          token_expiry_date: '',
+        };
+
+        await connect.query("INSERT INTO user_registration SET ?", newUser);
+        [user] = await connect.query("SELECT * FROM user_registration WHERE email = ?", [profile.emails[0].value]);
+      }
+
+
+      // Generate JWT token
+      const token = jwt.sign({ id: user[0].id, email: user[0].email, verified: user[0].verified }, process.env.JWT_SECRET, { expiresIn: '30m' });
+      return done(null, { user: user[0], token });
+    } catch (error) {
+      return done(error, null);
+    }
+  }));
+
+
+
+passport.use(new GitHubStrategy({
+  clientID: process.env.GITHUB_CLIENT_ID,
+  clientSecret: process.env.GITHUB_CLIENT_SECRET,
+  callbackURL: process.env.NODE_ENV === 'production'
+    ? "https://s9wyglh.localto.net/auth/github/callback"
+    : "http://localhost:8081/auth/github/callback",
+  scope: ['user:email']
+},
+  async (accessToken, refreshToken, profile, done) => {
+    try {
+      // Check if user exists with Google ID 
+      let [user] = await connect.query("SELECT * FROM user_registration WHERE email = ?", [profile.emails[0].value]);
+
+      if (!user.length) {
+        // If user does not exist, create a new record
+        const newUser = {
+          name: profile.displayName,
+          email: profile.emails[0].value,
+          password: '', // Handle password differently or leave it empty
+          otp: '', // Default value
+          status: 'active', // Default to active
+          phone_no: '', // Default value
+          alt_phone_no: '', // Default value
+          verified: '1', // Mark as verified if using OAuth
+          refresh_token: '', // Default empty value or handle accordingly 
+          token_expiry_date: '',
+        };
+
+        await connect.query("INSERT INTO user_registration SET ?", newUser);
+        [user] = await connect.query("SELECT * FROM user_registration WHERE email = ?", [profile.emails[0].value]);
+      }
+
+
+      // Generate JWT token
+      const token = jwt.sign({ id: user[0].id, email: user[0].email, verified: user[0].verified }, process.env.JWT_SECRET, { expiresIn: '30m' });
+      return done(null, { user: user[0], token });
+    } catch (error) {
+      return done(error, null);
+    }
+  }));
 
 passport.serializeUser((user, done) => {
   done(null, user);
@@ -171,6 +263,8 @@ app.use("/accessory/", accessoriesRoutes);
 
 // Google OAuth Routes
 app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
+app.get('/auth/github', passport.authenticate('github', { scope: ['user:email'] }));
+app.get('/auth/facebook', passport.authenticate('facebook', { scope: ['email'] }));
 
 app.get('/auth/google/callback',
   passport.authenticate('google', { failureRedirect: '/login' }),
@@ -206,12 +300,101 @@ app.get('/auth/google/callback',
 
       // Redirect to admin page or any protected route
       return res.redirect("/");
+
     } catch (error) {
       console.error("Error during Google callback:", error);
       return res.redirect('/login');
     }
   }
 );
+
+
+app.get('/auth/facebook/callback',
+  passport.authenticate('facebook', { failureRedirect: '/login' }),
+  async (req, res) => {
+    try {
+      const { user, token } = req.user;
+
+      // Generate a new refresh token
+      const refreshToken = jwt.sign(
+        { id: user.id, email: user.email },
+        process.env.REFRESH_TOKEN_SECRET,
+        { expiresIn: '30d' }
+      );
+
+      // Calculate token expiry date
+      const expiresAt = new Date();
+      expiresAt.setDate(expiresAt.getDate() + 30);
+      const expiresAtFormatted = expiresAt.toISOString().slice(0, 19).replace('T', ' ');
+
+      // Update refresh token and expiry date in the `alfa_personal_staff` table
+
+      await connect.query(
+        "UPDATE user_registration SET refresh_token = ?, token_expiry_date = ? WHERE id = ?",
+        [refreshToken, expiresAtFormatted, user.id]
+      );
+
+      // Set cookies for tokens
+      res.cookie('accessToken', token, { httpOnly: true });
+      res.cookie('refreshToken', refreshToken, { httpOnly: true });
+
+      // Store user data in session
+      req.session.user = user;
+
+      // Redirect to admin page or any protected route
+      return res.redirect("/");
+
+    } catch (error) {
+      console.error("Error during Google callback:", error);
+      return res.redirect('/login');
+    }
+  }
+);
+
+app.get('/auth/github/callback',
+  passport.authenticate('github', { failureRedirect: '/login' }),
+  async (req, res) => {
+    try {
+      const { user, token } = req.user;
+
+      // Generate a new refresh token
+      const refreshToken = jwt.sign(
+        { id: user.id, email: user.email },
+        process.env.REFRESH_TOKEN_SECRET,
+        { expiresIn: '30d' }
+      );
+
+      // Calculate token expiry date
+      const expiresAt = new Date();
+      expiresAt.setDate(expiresAt.getDate() + 30);
+      const expiresAtFormatted = expiresAt.toISOString().slice(0, 19).replace('T', ' ');
+
+      // Update refresh token and expiry date in the `alfa_personal_staff` table
+
+      await connect.query(
+        "UPDATE user_registration SET refresh_token = ?, token_expiry_date = ? WHERE id = ?",
+        [refreshToken, expiresAtFormatted, user.id]
+      );
+
+      // Set cookies for tokens
+      res.cookie('accessToken', token, { httpOnly: true });
+      res.cookie('refreshToken', refreshToken, { httpOnly: true });
+
+      // Store user data in session
+      req.session.user = user;
+
+      // Redirect to admin page or any protected route
+      return res.redirect("/");
+
+    } catch (error) {
+      console.error("Error during Google callback:", error);
+      return res.redirect('/login');
+    }
+  }
+);
+
+
+
 
 // Middleware to verify and refresh JWT token
 async function verifyToken(req, res, next) {

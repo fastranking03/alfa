@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <!-- <base href="https://diz5s9u.localto.net/"> -->
+  <!-- <base href="https://s9wyglh.localto.net/"> -->
   <base href="http://localhost:8081" />
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -283,7 +283,7 @@
                                     </label>
                                   </li>
                                   <% } %>
-                                    <% } else if(wearType==='top' ){ %>
+                                    <% } else if (wearType==='top' || wearType==='belt' || wearType==='wallet' ) { %>
                                       <li>
                                         <input type="radio" id="size-<%= size %>" name="selectedSize"
                                           value="<%= size.toUpperCase() %>" <%=stock> 0 ? '' : 'disabled' %> required />
@@ -294,13 +294,13 @@
                                           </span>
                                         </label>
                                       </li>
-                                      <% } else if(wearType==='shoes' ){ %>
+                                      <% } else if (wearType==='shoes' ) { %>
                                         <% const numericSize=size.match(/\d+/); %>
                                           <% if (numericSize && numericSize.length> 0) { %>
                                             <li>
                                               <input type="radio" id="size-<%= numericSize[0] %>" name="selectedSize"
-                                                value="<%= numericSize[0] %>" <%=stock> 0 ? '' :
-                                              'disabled' %> required />
+                                                value="<%= numericSize[0] %>" <%=stock> 0 ? '' : 'disabled' %> required
+                                              />
                                               <label for="size-<%= numericSize[0] %>"
                                                 class="size-item <%= stock > 0 ? '' : 'disabled' %>">
                                                 <span class="size">
@@ -309,38 +309,11 @@
                                               </label>
                                             </li>
                                             <% } %>
-                                              <% } else if(wearType==='belt' ){ %>
-                                                <% const numericSize=size.match(/\d+/); %>
-                                                  <% if (numericSize && numericSize.length> 0) { %>
-                                                    <li>
-                                                      <input type="radio" id="size-<%= numericSize[0] %>"
-                                                        name="selectedSize" value="<%= numericSize[0] %>" <%=stock> 0
-                                                      ? '' : 'disabled' %> required />
-                                                      <label for="size-<%= numericSize[0] %>"
-                                                        class="size-item <%= stock > 0 ? '' : 'disabled' %>">
-                                                        <span class="size">
-                                                          <%= numericSize[0] %>
-                                                        </span>
-                                                      </label>
-                                                    </li>
+                                              <% } %>
+                                                <% } %>
+                                                  <% } else { %>
+                                                    <p class="unavailableSize">Currently Out Of Stock</p>
                                                     <% } %>
-                                                      <% } else if(wearType==='wallet' ){ %>
-                                                        <li>
-                                                          <input type="radio" id="size-<%= size %>" name="selectedSize"
-                                                            value="<%= size.toUpperCase() %>" <%=stock> 0 ? '' :
-                                                          'disabled' %> required />
-                                                          <label for="size-<%= size %>"
-                                                            class="size-item <%= stock > 0 ? '' : 'disabled' %>">
-                                                            <span class="size">
-                                                              <%= size.toUpperCase() %>
-                                                            </span>
-                                                          </label>
-                                                        </li>
-                                                        <% } %>
-                                                          <% } %>
-                                                            <% } else { %>
-                                                              <p class="unavailableSize">Currently Out Of Stock</p>
-                                                              <% } %>
                       </ul>
                     </div>
 
