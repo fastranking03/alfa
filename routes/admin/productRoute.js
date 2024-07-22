@@ -375,13 +375,13 @@ router.post('/product-update', upload.any(), async (req, res) => {
     } else if (product_type === "belt") {
       updateInventoryQuery = `
         UPDATE belts_inventory
-        SET size_28 = ?, size_30 = ?, size_32 = ?, size_34 = ?, size_36 = ?,
-            size_38 = ?, size_40 = ? 
+        SET s = ?, m = ?, l = ?, xl = ?, 2xl = ?,
+            3xl = ? 
         WHERE product_id = ?;
       `;
       inventoryValues = [
-        req.body.size_28, req.body.size_30, req.body.size_32, req.body.size_34, req.body.size_36,
-        req.body.size_38, req.body.size_40, related_product_id
+        req.body.size_s, req.body.size_m, req.body.size_l, req.body.size_xl, req.body.size_2xl, req.body.size_3xl,
+        related_product_id
       ];
     } else if (product_type === "wallet") {
       updateInventoryQuery = `

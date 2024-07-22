@@ -251,7 +251,7 @@ router.post("/place-order", async (req, res) => {
         `;
         await connect.query(updateInventoryQuery, [product.quantity, product.product_id]);
       } else if (product_type === 'belt') {
-        const sizeColumn = `size_${product.selected_size}`;
+        const sizeColumn = product.selected_size.toLowerCase();
         const updateInventoryQuery = `
           UPDATE belts_inventory
           SET ${sizeColumn} = ${sizeColumn} - ? 
@@ -522,7 +522,7 @@ router.get("/product-detail/:id", async (req, res) => {
     } else if (wearType === "shoes") {
       sizeQuery = `SELECT size_6, size_7, size_8, size_9, size_10, size_11, size_12, size_13 FROM shoes_inventory WHERE product_id = ?`;
     } else if (wearType === "belt") {
-      sizeQuery = `SELECT size_28, size_30, size_32, size_34, size_36, size_38, size_40 FROM belts_inventory WHERE product_id = ?`;
+      sizeQuery = `SELECT s, m, l, xl, 2xl, 3xl FROM belts_inventory WHERE product_id = ?`;
     } else if (wearType === "wallet") {
       sizeQuery = `SELECT s, m, l FROM wallet_inventory WHERE product_id = ?`;
     }
@@ -541,7 +541,7 @@ router.get("/product-detail/:id", async (req, res) => {
             sizes[size.replace("_", " ")] = value;
           } else if (wearType === "shoes" && size.startsWith("size_")) {
             sizes[size.replace("_", " ")] = value;
-          } else if (wearType === "belt" && size.startsWith("size_")) {
+          } else if (wearType === "belt" && !size.startsWith("size_")) {
             sizes[size.replace("_", " ")] = value;
           } else if (wearType === "wallet" && !size.startsWith("size_")) {
             sizes[size.replace("_", " ")] = value;
@@ -630,7 +630,7 @@ router.get("/checkout", async (req, res) => {
         sizes = sizeRows[0];
       } else if (cartItem.wear_type_bottom_or_top === "belt") {
         const [sizeRows] = await connect.query(
-          `SELECT size_28, size_30, size_32, size_34, size_36, size_38, size_40  
+          `SELECT s, m, l, xl, 2xl, 3xl
              FROM belts_inventory
              WHERE product_id = ?`,
           [cartItem.product_id]
@@ -686,9 +686,8 @@ router.get("/checkout", async (req, res) => {
           const sizeKeyLowerCase = sizeKey.toLowerCase();
           stock = item.sizes ? item.sizes[sizeKeyLowerCase] : null;
         } else if (item.wear_type_bottom_or_top === "belt") {
-          const sizeKey = `size_${selectedSize}`;
-          const sizeKeyLowerCase = sizeKey.toLowerCase();
-          stock = item.sizes ? item.sizes[sizeKeyLowerCase] : null;
+          const selectedSizeLowerCase = selectedSize.toLowerCase();
+          stock = item.sizes ? item.sizes[selectedSizeLowerCase] : null;
         } else if (item.wear_type_bottom_or_top === "wallet") {
           const selectedSizeLowerCase = selectedSize.toLowerCase();
           stock = item.sizes ? item.sizes[selectedSizeLowerCase] : null;
@@ -872,8 +871,12 @@ router.get("/cart", async (req, res) => {
         parseFloat(totalDiscount)
       ).toFixed(2);
 
+
+      const promo = req.session.promo || { promodiscount: 0, code_applied: false };
+
       res.render("my-cart", {
         user,
+        promo,
         cartItems: cartItemsWithSizes,
         totalPrice,
         subtotal,
@@ -950,7 +953,7 @@ router.get("/cart", async (req, res) => {
           sizes = sizeRows[0];
         } else if (cartItem.wear_type_bottom_or_top === "belt") {
           const [sizeRows] = await connect.query(
-            `SELECT size_28, size_30, size_32, size_34, size_36, size_38, size_40  
+            `SELECT s, m, l, xl, 2xl, 3xl
              FROM belts_inventory
              WHERE product_id = ?`,
             [cartItem.product_id]
@@ -993,7 +996,7 @@ router.get("/cart", async (req, res) => {
           console.log('Size Key:', sizeKeyLowerCase);
           console.log('Available Sizes:', item.sizes);
 
-          if (item.wear_type_bottom_or_top === "top") {
+          if (item.wear_type_bottom_or_top === "top" || item.wear_type_bottom_or_top === "belt" || item.wear_type_bottom_or_top === "wallet") {
             const selectedSizeLowerCase = selectedSize.toLowerCase();
             stock = item.sizes ? item.sizes[selectedSizeLowerCase] : null;
           } else if (item.wear_type_bottom_or_top === "bottom") {
@@ -1008,9 +1011,6 @@ router.get("/cart", async (req, res) => {
             const sizeKey = `size_${selectedSize}`;
             const sizeKeyLowerCase = sizeKey.toLowerCase();
             stock = item.sizes ? item.sizes[sizeKeyLowerCase] : null;
-          } else if (item.wear_type_bottom_or_top === "wallet") {
-            const selectedSizeLowerCase = selectedSize.toLowerCase();
-            stock = item.sizes ? item.sizes[selectedSizeLowerCase] : null;
           }
         }
 
@@ -1139,7 +1139,7 @@ router.post("/update-quantity", async (req, res) => {
           sizes = sizeRows[0];
         } else if (cartItem.wear_type_bottom_or_top === "belt") {
           const [sizeRows] = await connect.query(
-            `SELECT size_28, size_30, size_32, size_34, size_36, size_38, size_40 
+            `SELECT s, m, l, xl, 2xl, 3xl
              FROM belts_inventory
              WHERE product_id = ?`,
             [cartItem.product_id]
@@ -1316,6 +1316,7 @@ router.post("/update-quantity", async (req, res) => {
   }
 });
 
+
 router.post("/submit-review", async (req, res) => {
   const user = req.session.user;
   if (!user) {
@@ -1359,8 +1360,6 @@ router.post("/submit-review", async (req, res) => {
     res.status(500).send('Internal Server Error');
   }
 });
-
-
 
 
 
@@ -2204,17 +2203,21 @@ router.get('/search-products', async (req, res) => {
   try {
     const searchQuery = `
       SELECT 
-        id, 
-        product_name AS name, 
-        product_description AS description 
-      FROM products 
+        p.id, 
+        p.product_name AS name, 
+        p.product_description AS description,
+        p.product_main_image AS image,
+        c.category_name AS category
+      FROM products p
+      JOIN category c ON p.category_id = c.id
       WHERE 
-        product_name LIKE ? 
-        OR product_description LIKE ?
+        p.product_name LIKE ? 
+        OR p.product_description LIKE ?
     `;
-    const [results] = await connect.query(searchQuery, [`%${query}%`, `%${query}%`]);
+    const searchValue = `%${query}%`;
+    const [rows] = await connect.query(searchQuery, [searchValue, searchValue]);
 
-    res.json(results);
+    res.json(rows);
   } catch (error) {
     console.error('Error fetching search results:', error);
     res.status(500).json({ error: 'Internal Server Error' });

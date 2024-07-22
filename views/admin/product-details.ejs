@@ -30,6 +30,7 @@
         box-shadow: 0 1px 10px 0 hsla(0, 0%, 0, 0.15);
         margin: 0px 6px 0px 0;
     }
+
     .isUploading::after {
         content: "";
         display: inline-block;
@@ -83,7 +84,7 @@
     }
 </style>
 <style>
-   .isUploading::before {
+    .isUploading::before {
         display: none;
     }
 
@@ -120,6 +121,7 @@
         height: 350px;
     }
 </style>
+
 <body>
     <div class="main-admin-warpper">
         <%- include('includes/header') %>
@@ -449,10 +451,27 @@
                                                                         <div class="row mt-2">
                                                                             <div class="col-md-3">
                                                                                 <div class="from-group">
-                                                                                    <label for="Catename">Size
-                                                                                        28</label>
-                                                                                    <input type="number" name="size_28"
-                                                                                        value="<%=relatedProduct.inventory.size_28
+                                                                                    <label for="Catename">Size S</label>
+                                                                                    <input type="number" name="size_s"
+                                                                                        value="<%=relatedProduct.inventory.size_s
+                                                                                        %>" min="0"
+                                                                                        class="form-control" required>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-md-3">
+                                                                                <div class="from-group">
+                                                                                    <label for="Catename">Size M</label>
+                                                                                    <input type="number" name="size_m"
+                                                                                        value="<%=relatedProduct.inventory.size_m
+                                                                                        %>" min="0"
+                                                                                        class="form-control" required>
+                                                                                </div>
+                                                                            </div>
+                                                                            <div class="col-md-3">
+                                                                                <div class="from-group">
+                                                                                    <label for="Catename">Size L</label>
+                                                                                    <input type="number" name="size_l"
+                                                                                        value="<%=relatedProduct.inventory.size_l
                                                                                         %>" min="0"
                                                                                         class="form-control" required>
                                                                                 </div>
@@ -460,9 +479,9 @@
                                                                             <div class="col-md-3">
                                                                                 <div class="from-group">
                                                                                     <label for="Catename">Size
-                                                                                        30</label>
-                                                                                    <input type="number" name="size_30"
-                                                                                        value="<%=relatedProduct.inventory.size_30
+                                                                                        XL</label>
+                                                                                    <input type="number" name="size_xl"
+                                                                                        value="<%=relatedProduct.inventory.size_xl
                                                                                         %>" min="0"
                                                                                         class="form-control" required>
                                                                                 </div>
@@ -470,9 +489,9 @@
                                                                             <div class="col-md-3">
                                                                                 <div class="from-group">
                                                                                     <label for="Catename">Size
-                                                                                        32</label>
-                                                                                    <input type="number" name="size_32"
-                                                                                        value="<%=relatedProduct.inventory.size_32
+                                                                                        2XL</label>
+                                                                                    <input type="number" name="size_2xl"
+                                                                                        value="<%=relatedProduct.inventory.size_2xl
                                                                                         %>" min="0"
                                                                                         class="form-control" required>
                                                                                 </div>
@@ -480,43 +499,14 @@
                                                                             <div class="col-md-3">
                                                                                 <div class="from-group">
                                                                                     <label for="Catename">Size
-                                                                                        34</label>
-                                                                                    <input type="number" name="size_34"
-                                                                                        value="<%=relatedProduct.inventory.size_34
+                                                                                        3XL</label>
+                                                                                    <input type="number" name="size_3xl"
+                                                                                        value="<%=relatedProduct.inventory.size_3xl
                                                                                         %>" min="0"
                                                                                         class="form-control" required>
                                                                                 </div>
                                                                             </div>
-                                                                            <div class="col-md-3">
-                                                                                <div class="from-group">
-                                                                                    <label for="Catename">Size
-                                                                                        36</label>
-                                                                                    <input type="number" name="size_36"
-                                                                                        value="<%=relatedProduct.inventory.size_36
-                                                                                        %>" min="0"
-                                                                                        class="form-control" required>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="col-md-3">
-                                                                                <div class="from-group">
-                                                                                    <label for="Catename">Size
-                                                                                        38</label>
-                                                                                    <input type="number" name="size_38"
-                                                                                        value="<%=relatedProduct.inventory.size_38
-                                                                                        %>" min="0"
-                                                                                        class="form-control" required>
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="col-md-3">
-                                                                                <div class="from-group">
-                                                                                    <label for="Catename">Size
-                                                                                        40</label>
-                                                                                    <input type="number" name="size_40"
-                                                                                        value="<%=relatedProduct.inventory.size_40
-                                                                                        %>" min="0"
-                                                                                        class="form-control" required>
-                                                                                </div>
-                                                                            </div>
+
 
                                                                         </div>
                                                                         <% } else if (weartype==='wallet' ) { %>
@@ -629,101 +619,285 @@
                                                 </div>
 
                                             </div>
-                                        </form>
+                                </form>
 
-                                            <div class="col-md-4">
-                                                <div class="from-group">
-                                                    <label for="Catename">Product Title</label>
-                                                    <input type="text" name="common_product_title" class="form-control"
-                                                        placeholder="Enter Product Title"
-                                                        value="<%=product.product_title  %>" readonly>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="row">
-                                            <div class="col-md-12 mt-4">
-                                                <div class="from-group">
-                                                    <label for="Catename">Product Description</label>
-                                                    <textarea type="color" name="common_product_description"
-                                                        class="form-control" style="height: 200px;"
-                                                        placeholder="Enter Category Name"
-                                                        readonly>  <%=product.product_description %> </textarea>
-                                                </div>
-                                            </div>
-                                        </div>
+                                <div class="col-md-4">
+                                    <div class="from-group">
+                                        <label for="Catename">Product Title</label>
+                                        <input type="text" name="common_product_title" class="form-control"
+                                            placeholder="Enter Product Title" value="<%=product.product_title  %>"
+                                            readonly>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12 mt-4">
+                                    <div class="from-group">
+                                        <label for="Catename">Product Description</label>
+                                        <textarea type="color" name="common_product_description" class="form-control"
+                                            style="height: 200px;" placeholder="Enter Category Name"
+                                            readonly>  <%=product.product_description %> </textarea>
+                                    </div>
+                                </div>
+                            </div>
 
-                                        <div class="row mt-3">
-                                            <div class="product-cart-wraps">
-                                                <div class="product-title-text ">
-                                                    <h4>Information</h4>
+                            <div class="row mt-3">
+                                <div class="product-cart-wraps">
+                                    <div class="product-title-text ">
+                                        <h4>Information</h4>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <div class="from-group">
+                                                <label for="Catename">Product Information</label>
+                                                <textarea class="form-control" name="product_info" id=""
+                                                    readonly><%=product.product_information %></textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="from-group">
+                                                <label for="Catename">Shipping Information</label>
+                                                <textarea class="form-control" name="Shipping_info" id=""
+                                                    readonly> <%=product.shipping_information %> </textarea>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-12">
+                                            <div class="from-group">
+                                                <label for="Catename">Return Policy</label>
+                                                <textarea class="form-control" name="return_policy" id=""
+                                                    readonly> <%=product.return_policy %> </textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="product-title-text mt-3">
+                                <h4>Pricing</h4>
+                            </div>
+                            <div class="product-detail product" id="products">
+                                <div class="">
+                                </div>
+                                <div class="row mt-2">
+                                    <div class="col-md-3">
+                                        <div class="from-group">
+                                            <label for="Catename">MRP</label>
+                                            <input type="text" name="product_mrp" class="form-control"
+                                                placeholder="Enter Product MRP">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="from-group">
+                                            <label for="Catename">Discount</label>
+                                            <input type="text" name="product_discount" class="form-control"
+                                                placeholder="Enter  Discount">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <div class="from-group">
+                                            <label for="Catename">Color</label>
+                                            <input type="text" name="product_colour" class="form-control"
+                                                placeholder="Enter Product Color" required>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="product-title-text mt-4">
+                                    <h4>Size Detail</h4>
+                                </div>
+                                <% if (weartype==='top' ) { %>
+                                    <div class="row mt-2">
+                                        <div class="col-md-3">
+                                            <div class="from-group">
+                                                <label for="Catename">Size XS</label>
+                                                <input type="number" name="size_xs" value="0" min="0"
+                                                    class="form-control" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="from-group">
+                                                <label for="Catename">Size S</label>
+                                                <input type="number" name="size_s" value="0" min="0"
+                                                    class="form-control" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="from-group">
+                                                <label for="Catename">Size M</label>
+                                                <input type="number" name="size_m" value="0" min="0"
+                                                    class="form-control" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="from-group">
+                                                <label for="Catename">Size L</label>
+                                                <input type="number" name="size_l" value="0" min="0"
+                                                    class="form-control" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="from-group">
+                                                <label for="Catename">Size XL</label>
+                                                <input type="number" name="size_xl" value="0" min="0"
+                                                    class="form-control" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="from-group">
+                                                <label for="Catename">Size XXL</label>
+                                                <input type="number" name="size_xxl" value="0" min="0"
+                                                    class="form-control" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="from-group">
+                                                <label for="Catename">Size XXXL</label>
+                                                <input type="number" name="size_xxxl" value="0" min="0"
+                                                    class="form-control" required>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <div class="from-group">
+                                                <label for="Catename">Size XXXXL</label>
+                                                <input type="number" name="size_xxxxl" value="0" min="0"
+                                                    class="form-control" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <% } else if (weartype==='bottom' ) { %>
+                                        <div class="row mt-2">
+                                            <div class="col-md-3">
+                                                <div class="from-group">
+                                                    <label for="Catename">Size 28</label>
+                                                    <input type="number" name="size_28" value="0" min="0"
+                                                        class="form-control" required>
                                                 </div>
-                                                <div class="row">
-                                                    <div class="col-md-12">
-                                                        <div class="from-group">
-                                                            <label for="Catename">Product Information</label>
-                                                            <textarea class="form-control" name="product_info" id=""
-                                                                readonly><%=product.product_information %></textarea>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="from-group">
-                                                            <label for="Catename">Shipping Information</label>
-                                                            <textarea class="form-control" name="Shipping_info" id=""
-                                                                readonly> <%=product.shipping_information %> </textarea>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-md-12">
-                                                        <div class="from-group">
-                                                            <label for="Catename">Return Policy</label>
-                                                            <textarea class="form-control" name="return_policy" id=""
-                                                                readonly> <%=product.return_policy %> </textarea>
-                                                        </div>
-                                                    </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="from-group">
+                                                    <label for="Catename">Size 30</label>
+                                                    <input type="number" name="size_30" value="0" min="0"
+                                                        class="form-control" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="from-group">
+                                                    <label for="Catename">Size 32</label>
+                                                    <input type="number" name="size_33" value="0" min="0"
+                                                        class="form-control" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="from-group">
+                                                    <label for="Catename">Size 34</label>
+                                                    <input type="number" name="size_34" value="0" min="0"
+                                                        class="form-control" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="from-group">
+                                                    <label for="Catename">Size 36</label>
+                                                    <input type="number" name="size_36" value="0" min="0"
+                                                        class="form-control" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="from-group">
+                                                    <label for="Catename">Size 38</label>
+                                                    <input type="number" name="size_38" value="0" min="0"
+                                                        class="form-control" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="from-group">
+                                                    <label for="Catename">Size 40</label>
+                                                    <input type="number" name="size_40" value="0" min="0"
+                                                        class="form-control" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="from-group">
+                                                    <label for="Catename">Size 42</label>
+                                                    <input type="number" name="size_42" value="0" min="0"
+                                                        class="form-control" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="from-group">
+                                                    <label for="Catename">Size 44</label>
+                                                    <input type="number" name="size_44" value="0" min="0"
+                                                        class="form-control" required>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-3">
+                                                <div class="from-group">
+                                                    <label for="Catename">Size 46</label>
+                                                    <input type="number" name="size_46" value="0" min="0"
+                                                        class="form-control" required>
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="product-title-text mt-3">
-                                            <h4>Pricing</h4>
-                                        </div>
-                                        <div class="product-detail product" id="products">
-                                            <div class="">
-                                            </div>
+                                        <% } else if (weartype==='shoes' ) { %>
                                             <div class="row mt-2">
                                                 <div class="col-md-3">
                                                     <div class="from-group">
-                                                        <label for="Catename">MRP</label>
-                                                        <input type="text" name="product_mrp" class="form-control"
-                                                            placeholder="Enter Product MRP">
+                                                        <label for="Catename">Size 6 UK</label>
+                                                        <input type="number" name="size_06_uk" value="0" min="0"
+                                                            class="form-control" required>
                                                     </div>
                                                 </div>
                                                 <div class="col-md-3">
                                                     <div class="from-group">
-                                                        <label for="Catename">Discount</label>
-                                                        <input type="text" name="product_discount" class="form-control"
-                                                            placeholder="Enter  Discount">
+                                                        <label for="Catename">Size 7 UK</label>
+                                                        <input type="number" name="size_07_uk" value="0" min="0"
+                                                            class="form-control" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="from-group">
+                                                        <label for="Catename">Size 8 UK</label>
+                                                        <input type="number" name="size_08_uk" value="0" min="0"
+                                                            class="form-control" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="from-group">
+                                                        <label for="Catename">Size 9 UK</label>
+                                                        <input type="number" name="size_09_uk" value="0" min="0"
+                                                            class="form-control" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="from-group">
+                                                        <label for="Catename">Size 10 UK</label>
+                                                        <input type="number" name="size_10_uk" value="0" min="0"
+                                                            class="form-control" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="from-group">
+                                                        <label for="Catename">Size 11 UK</label>
+                                                        <input type="number" name="size_11_uk" value="0" min="0"
+                                                            class="form-control" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="from-group">
+                                                        <label for="Catename">Size 12 UK</label>
+                                                        <input type="number" name="size_12_uk" value="0" min="0"
+                                                            class="form-control" required>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-3">
+                                                    <div class="from-group">
+                                                        <label for="Catename">Size 13 UK</label>
+                                                        <input type="number" name="size_13_uk" value="0" min="0"
+                                                            class="form-control" required>
                                                     </div>
                                                 </div>
 
-                                                <div class="col-md-3">
-                                                    <div class="from-group">
-                                                        <label for="Catename">Color</label>
-                                                        <input type="text" name="product_colour" class="form-control"
-                                                            placeholder="Enter Product Color" required>
-                                                    </div>
-                                                </div>
                                             </div>
-                                            <div class="product-title-text mt-4">
-                                                <h4>Size Detail</h4>
-                                            </div>
-                                            <% if (weartype==='top' ) { %>
+                                            <% } else if (weartype==='belt' ) { %>
                                                 <div class="row mt-2">
-                                                    <div class="col-md-3">
-                                                        <div class="from-group">
-                                                            <label for="Catename">Size XS</label>
-                                                            <input type="number" name="size_xs" value="0" min="0"
-                                                                class="form-control" required>
-                                                        </div>
-                                                    </div>
                                                     <div class="col-md-3">
                                                         <div class="from-group">
                                                             <label for="Catename">Size S</label>
@@ -754,486 +928,280 @@
                                                     </div>
                                                     <div class="col-md-3">
                                                         <div class="from-group">
-                                                            <label for="Catename">Size XXL</label>
-                                                            <input type="number" name="size_xxl" value="0" min="0"
+                                                            <label for="Catename">Size 2XL</label>
+                                                            <input type="number" name="size_2xl" value="0" min="0"
                                                                 class="form-control" required>
                                                         </div>
                                                     </div>
                                                     <div class="col-md-3">
                                                         <div class="from-group">
-                                                            <label for="Catename">Size XXXL</label>
-                                                            <input type="number" name="size_xxxl" value="0" min="0"
+                                                            <label for="Catename">Size XL</label>
+                                                            <input type="number" name="size_3xl" value="0" min="0"
                                                                 class="form-control" required>
                                                         </div>
                                                     </div>
-                                                    <div class="col-md-3">
-                                                        <div class="from-group">
-                                                            <label for="Catename">Size XXXXL</label>
-                                                            <input type="number" name="size_xxxxl" value="0" min="0"
-                                                                class="form-control" required>
-                                                        </div>
-                                                    </div>
+
+
                                                 </div>
-                                                <% } else if (weartype==='bottom' ) { %>
+                                                <% } else if (weartype==='wallet' ) { %>
                                                     <div class="row mt-2">
                                                         <div class="col-md-3">
                                                             <div class="from-group">
-                                                                <label for="Catename">Size 28</label>
-                                                                <input type="number" name="size_28" value="0" min="0"
+                                                                <label for="Catename">Size S</label>
+                                                                <input type="number" name="size_s" value="0" min="0"
                                                                     class="form-control" required>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-3">
                                                             <div class="from-group">
-                                                                <label for="Catename">Size 30</label>
-                                                                <input type="number" name="size_30" value="0" min="0"
+                                                                <label for="Catename">Size M</label>
+                                                                <input type="number" name="size_m" value="0" min="0"
                                                                     class="form-control" required>
                                                             </div>
                                                         </div>
                                                         <div class="col-md-3">
                                                             <div class="from-group">
-                                                                <label for="Catename">Size 32</label>
-                                                                <input type="number" name="size_33" value="0" min="0"
+                                                                <label for="Catename">Size L</label>
+                                                                <input type="number" name="size_l" value="0" min="0"
                                                                     class="form-control" required>
                                                             </div>
                                                         </div>
-                                                        <div class="col-md-3">
-                                                            <div class="from-group">
-                                                                <label for="Catename">Size 34</label>
-                                                                <input type="number" name="size_34" value="0" min="0"
-                                                                    class="form-control" required>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <div class="from-group">
-                                                                <label for="Catename">Size 36</label>
-                                                                <input type="number" name="size_36" value="0" min="0"
-                                                                    class="form-control" required>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <div class="from-group">
-                                                                <label for="Catename">Size 38</label>
-                                                                <input type="number" name="size_38" value="0" min="0"
-                                                                    class="form-control" required>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <div class="from-group">
-                                                                <label for="Catename">Size 40</label>
-                                                                <input type="number" name="size_40" value="0" min="0"
-                                                                    class="form-control" required>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <div class="from-group">
-                                                                <label for="Catename">Size 42</label>
-                                                                <input type="number" name="size_42" value="0" min="0"
-                                                                    class="form-control" required>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <div class="from-group">
-                                                                <label for="Catename">Size 44</label>
-                                                                <input type="number" name="size_44" value="0" min="0"
-                                                                    class="form-control" required>
-                                                            </div>
-                                                        </div>
-                                                        <div class="col-md-3">
-                                                            <div class="from-group">
-                                                                <label for="Catename">Size 46</label>
-                                                                <input type="number" name="size_46" value="0" min="0"
-                                                                    class="form-control" required>
-                                                            </div>
-                                                        </div>
+
                                                     </div>
-                                                    <% } else if (weartype==='shoes' ) { %>
-                                                        <div class="row mt-2">
-                                                            <div class="col-md-3">
-                                                                <div class="from-group">
-                                                                    <label for="Catename">Size 6 UK</label>
-                                                                    <input type="number" name="size_06_uk" value="0"
-                                                                        min="0" class="form-control" required>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <div class="from-group">
-                                                                    <label for="Catename">Size 7 UK</label>
-                                                                    <input type="number" name="size_07_uk" value="0"
-                                                                        min="0" class="form-control" required>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <div class="from-group">
-                                                                    <label for="Catename">Size 8 UK</label>
-                                                                    <input type="number" name="size_08_uk" value="0"
-                                                                        min="0" class="form-control" required>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <div class="from-group">
-                                                                    <label for="Catename">Size 9 UK</label>
-                                                                    <input type="number" name="size_09_uk" value="0"
-                                                                        min="0" class="form-control" required>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <div class="from-group">
-                                                                    <label for="Catename">Size 10 UK</label>
-                                                                    <input type="number" name="size_10_uk" value="0"
-                                                                        min="0" class="form-control" required>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <div class="from-group">
-                                                                    <label for="Catename">Size 11 UK</label>
-                                                                    <input type="number" name="size_11_uk" value="0"
-                                                                        min="0" class="form-control" required>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <div class="from-group">
-                                                                    <label for="Catename">Size 12 UK</label>
-                                                                    <input type="number" name="size_12_uk" value="0"
-                                                                        min="0" class="form-control" required>
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-md-3">
-                                                                <div class="from-group">
-                                                                    <label for="Catename">Size 13 UK</label>
-                                                                    <input type="number" name="size_13_uk" value="0"
-                                                                        min="0" class="form-control" required>
-                                                                </div>
-                                                            </div>
+                                                    <% } %>
 
-                                                        </div>
-                                                        <% } else if (weartype==='belt' ) { %>
-                                                            <div class="row mt-2">
-                                                                <div class="col-md-3">
-                                                                    <div class="from-group">
-                                                                        <label for="Catename">Size 28</label>
-                                                                        <input type="number" name="size_28" value="0"
-                                                                            min="0" class="form-control" required>
+                                                        <!-- images -->
+                                                        <div class="row mt-3">
+                                                            <div class="col-md-6">
+                                                                <div class="product-cart-wrap">
+                                                                    <div class="product-title-text">
+                                                                        <h4>Media</h4>
                                                                     </div>
-                                                                </div>
-                                                                <div class="col-md-3">
-                                                                    <div class="from-group">
-                                                                        <label for="Catename">Size 30</label>
-                                                                        <input type="number" name="size_30" value="0"
-                                                                            min="0" class="form-control" required>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-3">
-                                                                    <div class="from-group">
-                                                                        <label for="Catename">Size 32</label>
-                                                                        <input type="number" name="size_32" value="0"
-                                                                            min="0" class="form-control" required>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-3">
-                                                                    <div class="from-group">
-                                                                        <label for="Catename">Size 34</label>
-                                                                        <input type="number" name="size_34" value="0"
-                                                                            min="0" class="form-control" required>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-3">
-                                                                    <div class="from-group">
-                                                                        <label for="Catename">Size 36</label>
-                                                                        <input type="number" name="size_36" value="0"
-                                                                            min="0" class="form-control" required>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-3">
-                                                                    <div class="from-group">
-                                                                        <label for="Catename">Size 38</label>
-                                                                        <input type="number" name="size_38" value="0"
-                                                                            min="0" class="form-control" required>
-                                                                    </div>
-                                                                </div>
-                                                                <div class="col-md-3">
-                                                                    <div class="from-group">
-                                                                        <label for="Catename">Size 40</label>
-                                                                        <input type="number" name="size_40" value="0"
-                                                                            min="0" class="form-control" required>
-                                                                    </div>
-                                                                </div>
-
-                                                            </div>
-                                                            <% } else if (weartype==='wallet' ) { %>
-                                                                <div class="row mt-2">
-                                                                    <div class="col-md-3">
-                                                                        <div class="from-group">
-                                                                            <label for="Catename">Size S</label>
-                                                                            <input type="number" name="size_s" value="0"
-                                                                                min="0" class="form-control" required>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-md-3">
-                                                                        <div class="from-group">
-                                                                            <label for="Catename">Size M</label>
-                                                                            <input type="number" name="size_m" value="0"
-                                                                                min="0" class="form-control" required>
-                                                                        </div>
-                                                                    </div>
-                                                                    <div class="col-md-3">
-                                                                        <div class="from-group">
-                                                                            <label for="Catename">Size L</label>
-                                                                            <input type="number" name="size_l" value="0"
-                                                                                min="0" class="form-control" required>
-                                                                        </div>
-                                                                    </div>
-
-                                                                </div>
-                                                                <% } %>
-
-                                                                    <!-- images -->
-                                                                    <div class="row mt-3">
-                                                                        <div class="col-md-6">
-                                                                            <div class="product-cart-wrap">
-                                                                                <div class="product-title-text">
-                                                                                    <h4>Media</h4>
-                                                                                </div>
-                                                                                <div class="row">
-                                                                                    <div class="col-md-12">
-                                                                                        <div class="from-group">
-                                                                                            <label
-                                                                                                class="image-input main-image-input">
-                                                                                                <input type="file"
-                                                                                                    name="product_main_image"
-                                                                                                    accept="image/png,image/jpeg"
-                                                                                                    max-size="10000000">
-                                                                                                <input type="hidden"
-                                                                                                    name="product_main_image">
-                                                                                                <img class="c-img"
-                                                                                                    src="" alt="">
-                                                                                            </label>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                    <div class="col-md-6">
-                                                                                        <div
-                                                                                            class="image-grid-wrapper mt-2 d-flex">
-                                                                                            <div class="image-items">
-                                                                                                <label
-                                                                                                    class="image-input">
-                                                                                                    <input type="file"
-                                                                                                        name="image1"
-                                                                                                        accept="image/png,image/jpeg"
-                                                                                                        max-size="10000000">
-                                                                                                    <input type="hidden"
-                                                                                                        name="image1">
-                                                                                                    <img class="c-img"
-                                                                                                        src="" alt="">
-                                                                                                </label>
-                                                                                            </div>
-                                                                                            <div class="image-items">
-                                                                                                <label
-                                                                                                    class="image-input">
-                                                                                                    <input type="file"
-                                                                                                        name="image2"
-                                                                                                        accept="image/png,image/jpeg"
-                                                                                                        max-size="10000000">
-                                                                                                    <input type="hidden"
-                                                                                                        name="image2">
-                                                                                                    <img class="c-img"
-                                                                                                        src="" alt="">
-                                                                                                </label>
-                                                                                            </div>
-                                                                                            <div class="image-items">
-                                                                                                <label
-                                                                                                    class="image-input">
-                                                                                                    <input type="file"
-                                                                                                        name="image3"
-                                                                                                        accept="image/png,image/jpeg"
-                                                                                                        max-size="10000000">
-                                                                                                    <input type="hidden"
-                                                                                                        name="">
-                                                                                                    <img class="c-img"
-                                                                                                        src="" alt="">
-                                                                                                </label>
-                                                                                            </div>
-                                                                                            <div class="image-items">
-                                                                                                <label
-                                                                                                    class="image-input">
-                                                                                                    <input type="file"
-                                                                                                        name="image4"
-                                                                                                        accept="image/png,image/jpeg"
-                                                                                                        max-size="10000000">
-                                                                                                    <input type="hidden"
-                                                                                                        name="">
-                                                                                                    <img class="c-img"
-                                                                                                        src="" alt="">
-                                                                                                </label>
-                                                                                            </div>
-                                                                                            <div class="image-items">
-                                                                                                <label
-                                                                                                    class="image-input">
-                                                                                                    <input type="file"
-                                                                                                        name="image5"
-                                                                                                        accept="image/png,image/jpeg"
-                                                                                                        max-size="10000000">
-                                                                                                    <input type="hidden"
-                                                                                                        name="">
-                                                                                                    <img class="c-img"
-                                                                                                        src="" alt="">
-                                                                                                </label>
-                                                                                            </div>
-                                                                                        </div>
-                                                                                    </div>
-                                                                                </div>
-
+                                                                    <div class="row">
+                                                                        <div class="col-md-12">
+                                                                            <div class="from-group">
+                                                                                <label
+                                                                                    class="image-input main-image-input">
+                                                                                    <input type="file"
+                                                                                        name="product_main_image"
+                                                                                        accept="image/png,image/jpeg"
+                                                                                        max-size="10000000">
+                                                                                    <input type="hidden"
+                                                                                        name="product_main_image">
+                                                                                    <img class="c-img" src="" alt="">
+                                                                                </label>
                                                                             </div>
                                                                         </div>
                                                                         <div class="col-md-6">
-
+                                                                            <div class="image-grid-wrapper mt-2 d-flex">
+                                                                                <div class="image-items">
+                                                                                    <label class="image-input">
+                                                                                        <input type="file" name="image1"
+                                                                                            accept="image/png,image/jpeg"
+                                                                                            max-size="10000000">
+                                                                                        <input type="hidden"
+                                                                                            name="image1">
+                                                                                        <img class="c-img" src=""
+                                                                                            alt="">
+                                                                                    </label>
+                                                                                </div>
+                                                                                <div class="image-items">
+                                                                                    <label class="image-input">
+                                                                                        <input type="file" name="image2"
+                                                                                            accept="image/png,image/jpeg"
+                                                                                            max-size="10000000">
+                                                                                        <input type="hidden"
+                                                                                            name="image2">
+                                                                                        <img class="c-img" src=""
+                                                                                            alt="">
+                                                                                    </label>
+                                                                                </div>
+                                                                                <div class="image-items">
+                                                                                    <label class="image-input">
+                                                                                        <input type="file" name="image3"
+                                                                                            accept="image/png,image/jpeg"
+                                                                                            max-size="10000000">
+                                                                                        <input type="hidden" name="">
+                                                                                        <img class="c-img" src=""
+                                                                                            alt="">
+                                                                                    </label>
+                                                                                </div>
+                                                                                <div class="image-items">
+                                                                                    <label class="image-input">
+                                                                                        <input type="file" name="image4"
+                                                                                            accept="image/png,image/jpeg"
+                                                                                            max-size="10000000">
+                                                                                        <input type="hidden" name="">
+                                                                                        <img class="c-img" src=""
+                                                                                            alt="">
+                                                                                    </label>
+                                                                                </div>
+                                                                                <div class="image-items">
+                                                                                    <label class="image-input">
+                                                                                        <input type="file" name="image5"
+                                                                                            accept="image/png,image/jpeg"
+                                                                                            max-size="10000000">
+                                                                                        <input type="hidden" name="">
+                                                                                        <img class="c-img" src=""
+                                                                                            alt="">
+                                                                                    </label>
+                                                                                </div>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
 
-                                        </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="col-md-6">
 
-                                        <div class="row mt-3">
-                                            <div class="admin-submit-btn d-flex" style="gap: 10px;">
-                                                <button type="submit" class="btn-submit">Submit</button>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </form>
+                                                            </div>
+                                                        </div>
 
                             </div>
+
+                            <div class="row mt-3">
+                                <div class="admin-submit-btn d-flex" style="gap: 10px;">
+                                    <button type="submit" class="btn-submit">Submit</button>
+                                </div>
+                            </div>
+
                         </div>
-                        <script>
-                            function addProductForm() {
-                                var newProductDiv = document.getElementById('new-product');
-                                console.log(newProductDiv);
-                                if (newProductDiv.style.display === 'none' || newProductDiv.style.display === '') {
-                                    newProductDiv.style.display = 'block';
-                                    newProductDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        </form>
 
-                                } else {
-                                    newProductDiv.style.display = 'none';
-                                }
+                </div>
+            </div>
+            <script>
+                function addProductForm() {
+                    var newProductDiv = document.getElementById('new-product');
+                    console.log(newProductDiv);
+                    if (newProductDiv.style.display === 'none' || newProductDiv.style.display === '') {
+                        newProductDiv.style.display = 'block';
+                        newProductDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+                    } else {
+                        newProductDiv.style.display = 'none';
+                    }
+                }
+
+            </script>
+            <script>
+                function ImageInput(element) {
+                    // Variables
+                    var $wrapper = element;
+                    var $file = $wrapper.querySelector('input[type=file]');
+                    var $input = $wrapper.querySelector('input[type=hidden]');
+                    var $img = $wrapper.querySelector('img');
+                    var maxSize = Number($file.getAttribute('max-size'));
+                    var types = $file.accept.split(',');
+
+                    var api = {
+                        onInvalid: onInvalid,
+                        onChanged: onChanged,
+                    };
+
+                    // Methods
+                    function fileHandler(e) {
+                        var file = $file.files.length && $file.files[0];
+
+                        if (!file) return;
+
+                        var errors = checkValidity(file);
+
+                        if (errors) {
+                            api.onInvalid(errors);
+                            $file.value = null;
+                            return;
+                        }
+
+                        api.onChanged(file, update, $wrapper);
+                    }
+
+                    function humanizeFormat(string) {
+                        return string.replace(/.*?\//, '');
+                    }
+
+                    function checkValidity(file) {
+                        var errors = [];
+
+                        types.includes(file.type) || errors.push('Format file harus: ' + types.map(humanizeFormat).join(', '));
+                        file.size < maxSize || errors.push('Ukuran file maksimal ' + maxSize / 1000000 + 'MB');
+
+                        return errors.length ? errors : false;
+                    }
+
+                    function getFileData(file, callback) {
+                        var reader = new FileReader();
+
+                        reader.addEventListener("load", function () {
+                            callback(reader.result);
+                        }, false);
+
+                        if (file) {
+                            reader.readAsDataURL(file);
+                        }
+                    }
+
+                    function update(data) {
+                        $img.src = data;
+                        $input.value = data;
+                    }
+
+                    function onInvalid(errors) {
+                        alert(errors.join('. '));
+                    }
+
+                    function onChanged(file, update, $wrapper) {
+                        console.log('.onChanged called');
+                        getFileData(file, update);
+                    }
+
+                    // Init
+                    $file.addEventListener('change', fileHandler);
+
+                    return api;
+                };
+
+                function initImageInputs() {
+                    document.querySelectorAll('.image-input').forEach(_ => {
+                        var imageInput = new ImageInput(_);
+                        _.addEventListener("click", (e) => {
+                            if (e.target.classList.contains('image-remove')) {
+                                _.remove();
+                            }
+                        });
+
+                        if (_.classList.contains('withAjax')) {
+                            imageInput.onChanged = customOnChanged;
+                        }
+
+                        function customOnChanged(file, update, $el) {
+                            if (!$el.nextElementSibling) {
+                                var $remove = document.createElement('button');
+                                $remove.className = "image-remove";
+
+                                var $new = $el.cloneNode(true);
+                                $new.querySelector('input[type=hidden]').value = "";
+                                $new.querySelector('input[type=file]').value = "";
+                                $new.querySelector('img').src = "";
+
+                                $el.parentElement.append($new);
+                                $el.append($remove);
+
+                                var imageInput = new ImageInput($new);
+                                imageInput.onChanged = customOnChanged;
                             }
 
-                        </script>
-                        <script>
-                            function ImageInput(element) {
-                                // Variables
-                                var $wrapper = element;
-                                var $file = $wrapper.querySelector('input[type=file]');
-                                var $input = $wrapper.querySelector('input[type=hidden]');
-                                var $img = $wrapper.querySelector('img');
-                                var maxSize = Number($file.getAttribute('max-size'));
-                                var types = $file.accept.split(',');
+                            $el.classList.add('isUploading');
+                            setTimeout(function () {
+                                update('https://placekitten.com/200/300');
+                                $el.classList.remove("isUploading");
+                            }, 3000);
+                        }
+                    });
+                }
 
-                                var api = {
-                                    onInvalid: onInvalid,
-                                    onChanged: onChanged,
-                                };
-
-                                // Methods
-                                function fileHandler(e) {
-                                    var file = $file.files.length && $file.files[0];
-
-                                    if (!file) return;
-
-                                    var errors = checkValidity(file);
-
-                                    if (errors) {
-                                        api.onInvalid(errors);
-                                        $file.value = null;
-                                        return;
-                                    }
-
-                                    api.onChanged(file, update, $wrapper);
-                                }
-
-                                function humanizeFormat(string) {
-                                    return string.replace(/.*?\//, '');
-                                }
-
-                                function checkValidity(file) {
-                                    var errors = [];
-
-                                    types.includes(file.type) || errors.push('Format file harus: ' + types.map(humanizeFormat).join(', '));
-                                    file.size < maxSize || errors.push('Ukuran file maksimal ' + maxSize / 1000000 + 'MB');
-
-                                    return errors.length ? errors : false;
-                                }
-
-                                function getFileData(file, callback) {
-                                    var reader = new FileReader();
-
-                                    reader.addEventListener("load", function () {
-                                        callback(reader.result);
-                                    }, false);
-
-                                    if (file) {
-                                        reader.readAsDataURL(file);
-                                    }
-                                }
-
-                                function update(data) {
-                                    $img.src = data;
-                                    $input.value = data;
-                                }
-
-                                function onInvalid(errors) {
-                                    alert(errors.join('. '));
-                                }
-
-                                function onChanged(file, update, $wrapper) {
-                                    console.log('.onChanged called');
-                                    getFileData(file, update);
-                                }
-
-                                // Init
-                                $file.addEventListener('change', fileHandler);
-
-                                return api;
-                            };
-
-                            function initImageInputs() {
-                                document.querySelectorAll('.image-input').forEach(_ => {
-                                    var imageInput = new ImageInput(_);
-                                    _.addEventListener("click", (e) => {
-                                        if (e.target.classList.contains('image-remove')) {
-                                            _.remove();
-                                        }
-                                    });
-
-                                    if (_.classList.contains('withAjax')) {
-                                        imageInput.onChanged = customOnChanged;
-                                    }
-
-                                    function customOnChanged(file, update, $el) {
-                                        if (!$el.nextElementSibling) {
-                                            var $remove = document.createElement('button');
-                                            $remove.className = "image-remove";
-
-                                            var $new = $el.cloneNode(true);
-                                            $new.querySelector('input[type=hidden]').value = "";
-                                            $new.querySelector('input[type=file]').value = "";
-                                            $new.querySelector('img').src = "";
-
-                                            $el.parentElement.append($new);
-                                            $el.append($remove);
-
-                                            var imageInput = new ImageInput($new);
-                                            imageInput.onChanged = customOnChanged;
-                                        }
-
-                                        $el.classList.add('isUploading');
-                                        setTimeout(function () {
-                                            update('https://placekitten.com/200/300');
-                                            $el.classList.remove("isUploading");
-                                        }, 3000);
-                                    }
-                                });
-                            }
-
-                            initImageInputs();
-                        </script>
+                initImageInputs();
+            </script>
 
 </body>
 
