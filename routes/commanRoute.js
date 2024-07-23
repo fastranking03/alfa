@@ -2193,6 +2193,22 @@ router.get('/privacy-policy', (req, res) => {
   return res.render("privacy-policy")
 })
 
+router.get('/term-condition', (req, res) => {
+  return res.render("term-condition")
+})
+
+router.get('/user-guideline', (req, res) => {
+  return res.render("user-guideline")
+})
+
+router.get('/cookie-policy', (req, res) => {
+  return res.render("cookie-policy")
+})
+
+router.get('/refund-policy', (req, res) => {
+  return res.render("refund-policy")
+})
+
 router.get('/search-products', async (req, res) => {
   const query = req.query.query;
 
