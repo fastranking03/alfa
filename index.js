@@ -24,6 +24,7 @@ import contentRoute from './routes/admin/contentRoute.js';
 import newProduct from './routes/admin/newProduct.js';
 import accessoriesRoutes from './routes/accessoriesRoutes.js';
 import jwt from "jsonwebtoken";
+import stripePackage from 'stripe';
 
 import session from "express-session";
 import cookieParser from "cookie-parser";
@@ -32,7 +33,7 @@ import { fileURLToPath } from "url";
 
 import connect from "./db/connect.js";
 dotenv.config();
-
+const stripe = stripePackage(process.env.STRIPE_SECRET_KEY);
 const app = express();
 
 app.use("/banner_images", express.static("banner_images"));
@@ -95,9 +96,7 @@ app.use(express.static("public"));
 passport.use(new GoogleStrategy({
   clientID: process.env.GOOGLE_CLIENT_ID,
   clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-  callbackURL: process.env.NODE_ENV === 'production'
-    ? "https://s9wyglh.localto.net/auth/google/callback"
-    : "http://localhost:8081/auth/google/callback"
+  callbackURL: "http://localhost:8081/auth/google/callback",
 },
   async (accessToken, refreshToken, profile, done) => {
     try {
@@ -136,9 +135,7 @@ passport.use(new GoogleStrategy({
 passport.use(new FacebookStrategy({
   clientID: process.env.FACEBOOK_APP_ID,
   clientSecret: process.env.FACEBOOK_APP_SECRET,
-  callbackURL: process.env.NODE_ENV === 'production'
-    ? "https://s9wyglh.localto.net/auth/facebook/callback"
-    : "http://localhost:8081/auth/facebook/callback",
+  callbackURL: "http://localhost:8081/auth/facebook/callback",
   profileFields: ['id', 'emails', 'name']
 },
   async (accessToken, refreshToken, profile, done) => {
@@ -189,9 +186,7 @@ passport.use(new FacebookStrategy({
 passport.use(new GitHubStrategy({
   clientID: process.env.GITHUB_CLIENT_ID,
   clientSecret: process.env.GITHUB_CLIENT_SECRET,
-  callbackURL: process.env.NODE_ENV === 'production'
-    ? "https://s9wyglh.localto.net/auth/github/callback"
-    : "http://localhost:8081/auth/github/callback",
+  callbackURL: "http://localhost:8081/auth/github/callback",
   scope: ['user:email']
 },
   async (accessToken, refreshToken, profile, done) => {

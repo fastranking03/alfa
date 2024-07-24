@@ -26,16 +26,17 @@ router.get("/cart/add/:productId", async (req, res) => {
     let product_id = req.params.productId;
     let selected_size = null;
     let qty = 1;
- 
+
     req.session.cart = req.session.cart || [];
 
     const cartItems = req.session.cart || [];
 
-    const cartItem = { 
-    cart_id: cartItems.length + 1,
-    product_id,
-    selected_size,
-    quantity: qty, };
+    const cartItem = {
+      cart_id: cartItems.length + 1,
+      product_id,
+      selected_size,
+      quantity: qty,
+    };
 
     const itemExists = req.session.cart.some(
       (item) => item.product_id === product_id

@@ -297,7 +297,7 @@
                           data-price="<%=(product.product_price * (1 - (product.discount_on_product / 100))).toFixed(2) %>"
                           data-color="<%= product.colour %>" data-size="<%= product.sizes %>">
                           <div class="produt-wrap">
-                            <a href="/product-detail/<%= product.id %> ">
+                            <a href="/product-detail/<%= product.product_title_slug %>/<%= product.id %>">
                               <img src="../product_images/<%= product.product_main_image%> %>" class="pro-img" alt="" />
                             </a>
                           </div>

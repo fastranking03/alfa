@@ -2,6 +2,9 @@ import express from "express";
 import connect from "../../db/connect.js";
 import { v4 as uuidv4 } from "uuid";
 import upload from '../../uploadConfig.js'; // Adjust path as per your file structure
+
+import slugify from "slugify";
+
 const router = express.Router();
 
 router.get("/add-product", async (req, res) => {
@@ -121,16 +124,16 @@ router.post("/addProducts", upload.fields([
   };
 
 
-
+  const tile_slug = slugify(common_product_title, { lower: true, strict: true });
 
   const insertQuery = `
     INSERT INTO products (
       category_id, subcategory_id, product_name, product_price, 
-      discount_on_product, product_title, product_description, wear_type_bottom_or_top, 
+      discount_on_product, product_title , product_title_slug , product_description, wear_type_bottom_or_top,
       colour, unique_batch_id , product_information , shipping_information , return_policy,
       product_main_image 
     ) 
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ? );
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ? );
   `;
 
   const values = [
@@ -140,6 +143,7 @@ router.post("/addProducts", upload.fields([
     product_mrp,
     product_discount,
     common_product_title,
+    tile_slug,
     common_product_description,
     productType,
     product_colour,

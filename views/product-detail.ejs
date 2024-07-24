@@ -2,10 +2,21 @@
 <html lang="en">
 
 <head>
-  <!-- <base href="https://s9wyglh.localto.net/"> -->
   <base href="http://localhost:8081" />
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Dynamic Meta Tags -->
+  <meta name="description" content="<%= product.product_description %>" />
+  <meta name="keywords" content="<%= product.product_keywords %>" /> <!-- Assuming you have a keywords field -->
+  <meta property="og:title" content="<%= product.product_title %>" />
+  <meta property="og:description" content="<%= product.product_description %>" />
+  <meta property="og:image" content="http://localhost:8081/product_images/<%= product.product_main_image %>" />
+  <meta property="og:url"
+    content="http://localhost:8081/product-detail/<%= product.product_title_slug %>/<%= product.id %>" />
+  <!-- <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="<%= product.product_title %>" />
+  <meta name="twitter:description" content="<%= product.product_description %>" />
+  <meta name="twitter:image" content="http://localhost:8081/product_images/<%= product.product_main_image %>" /> -->
   <title>Alfa Meanswear | Product Details</title>
   <%- include('includes/head') %>
 </head>

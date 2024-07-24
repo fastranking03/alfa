@@ -419,7 +419,8 @@ router.get("/blogs", async (req, res) => {
 });
 
 
-router.get("/product-detail/:id", async (req, res) => {
+
+router.get("/product-detail/:slug/:id", async (req, res) => {
   try {
     const user = req.session.user;
     const productId = req.params.id;
