@@ -366,7 +366,7 @@ router.get("/accessories", async (req, res) => {
   SELECT p.*,
     CASE
       WHEN p.wear_type_bottom_or_top = 'shoes' THEN GROUP_CONCAT(CONCAT_WS(':', '6', sh.size_6, '7', sh.size_7, '8', sh.size_8, '9', sh.size_9, '10', sh.size_10, '11', sh.size_11, '12', sh.size_12, '13', sh.size_13) SEPARATOR ', ')
-      WHEN p.wear_type_bottom_or_top = 'belt' THEN GROUP_CONCAT(CONCAT_WS(':', '28', bt.size_28, '30', bt.size_30, '32', bt.size_32, '34', bt.size_34, '36', bt.size_36, '38', bt.size_38, '40', bt.size_40) SEPARATOR ', ')
+      WHEN p.wear_type_bottom_or_top = 'belt' THEN GROUP_CONCAT(CONCAT_WS(':', 's', bt.s, 'm', bt.m, 'l', bt.l, 'xl', bt.xl, '2xl', bt.2xl, '3xl', bt.2xl ) SEPARATOR ', ')
       WHEN p.wear_type_bottom_or_top = 'wallet' THEN GROUP_CONCAT(CONCAT_WS(':', 's', wl.s, 'm', wl.m, 'l', wl.l) SEPARATOR ', ')
     END AS sizes
   FROM products p

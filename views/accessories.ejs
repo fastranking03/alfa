@@ -273,48 +273,43 @@
                               <%if(category_name=='Belts' || category_name=='all' ){ %>
 
                                 <p>Belt sizes</p>
+
                                 <div class="product-size-list">
                                   <ul id="beltSizeFilters">
                                     <li>
                                       <div class="product-checkout">
-                                        <input type="checkbox" class="size-checkbox" id="size28" value="28" />
-                                        <label for="size28" class="size-item">28</label>
+                                        <input type="checkbox" class="size-checkbox" id="size_s" value="s" />
+                                        <label for="size_s" class="size-item">S</label>
                                       </div>
                                     </li>
                                     <li>
                                       <div class="product-checkout">
-                                        <input type="checkbox" class="size-checkbox" id="size30" value="30" />
-                                        <label for="size30" class="size-item">30</label>
+                                        <input type="checkbox" class="size-checkbox" id="size_m" value="m" />
+                                        <label for="size_m" class="size-item">M</label>
                                       </div>
                                     </li>
                                     <li>
                                       <div class="product-checkout">
-                                        <input type="checkbox" class="size-checkbox" id="size32" value="32" />
-                                        <label for="size32" class="size-item">32</label>
+                                        <input type="checkbox" class="size-checkbox" id="size_l" value="l" />
+                                        <label for="size_l" class="size-item">L</label>
                                       </div>
                                     </li>
                                     <li>
                                       <div class="product-checkout">
-                                        <input type="checkbox" class="size-checkbox" id="size34" value="34" />
-                                        <label for="size34" class="size-item">34</label>
+                                        <input type="checkbox" class="size-checkbox" id="size_xl" value="xl" />
+                                        <label for="size_xl" class="size-item">XL</label>
                                       </div>
                                     </li>
                                     <li>
                                       <div class="product-checkout">
-                                        <input type="checkbox" class="size-checkbox" id="size36" value="36" />
-                                        <label for="size36" class="size-item">36</label>
+                                        <input type="checkbox" class="size-checkbox" id="size_2xl" value="2xl" />
+                                        <label for="size_xxl" class="size-item">2XL</label>
                                       </div>
                                     </li>
                                     <li>
                                       <div class="product-checkout">
-                                        <input type="checkbox" class="size-checkbox" id="size38" value="38" />
-                                        <label for="size38" class="size-item">38</label>
-                                      </div>
-                                    </li>
-                                    <li>
-                                      <div class="product-checkout">
-                                        <input type="checkbox" class="size-checkbox" id="size40" value="40" />
-                                        <label for="size40" class="size-item">40</label>
+                                        <input type="checkbox" class="size-checkbox" id="size_3xl" value="3xl" />
+                                        <label for="size_xxxl" class="size-item">3XL</label>
                                       </div>
                                     </li>
                                   </ul>
@@ -348,7 +343,7 @@
                           data-price="<%=(product.product_price * (1 - (product.discount_on_product / 100))).toFixed(2) %>"
                           data-color="<%= product.colour %>" data-size="<%= product.sizes %>">
                           <div class="produt-wrap">
-                            <a href="/product-detail/<%= product.id %> ">
+                            <a href="/product-detail/<%= product.product_title_slug%>/<%= product.id %> ">
                               <img src="../product_images/<%= product.product_main_image%> %>" class="pro-img" alt="" />
                             </a>
                           </div>
@@ -573,7 +568,7 @@
                     </ul>
                   </div>
                   <hr>
-                  <% }else if(category_name=='shoes' ){ %>
+                  <% }else if(category_name=='belt' ){ %>
 
                     <p>Belt sizes</p>
                     <div class="product-size-list">
@@ -684,6 +679,7 @@
           });
         </script>
 
+
         <script>
           $(document).ready(function () {
             // Price Range Filter
@@ -691,11 +687,16 @@
             const productItems = $(".product-item");
             const rangeValues = document.querySelectorAll(".rangeValues");
 
+            // Log the elements being selected for debugging
+            console.log("Price Inputs:", priceInputs);
+            console.log("Product Items:", productItems);
+            console.log("Range Values:", rangeValues);
+
             priceInputs.forEach((input) => {
               input.addEventListener("input", applyFilters);
             });
 
-            // Color Filter
+            // Color and Size Filter
             const colorCheckboxes = $(".cat-checkbox");
             const sizeCheckboxes = $(".size-checkbox");
 
@@ -703,9 +704,10 @@
             sizeCheckboxes.on("change", applyFilters);
 
             function applyFilters() {
-              const minPrice = parseInt(priceInputs[0].value);
-              const maxPrice = parseInt(priceInputs[1].value);
+              const minPrice = parseInt(priceInputs[0].value) || 0;
+              const maxPrice = parseInt(priceInputs[1].value) || Infinity;
 
+              // Update the price range display
               rangeValues.forEach((rangeValue) => {
                 rangeValue.textContent = `$${minPrice} - $${maxPrice}`;
               });
@@ -724,6 +726,10 @@
                 }
               });
 
+              // Log selected filters for debugging
+              console.log("Selected Colors:", selectedColors);
+              console.log("Selected Sizes:", selectedSizes);
+
               productItems.each(function () {
                 const productPrice = parseFloat($(this).data("price"));
                 const productColor = $(this).data("color").toLowerCase();
@@ -733,14 +739,14 @@
                   .split(":")
                   .filter((_, i) => i % 2 === 0); // Get sizes only
 
-                const matchesPrice =
-                  productPrice >= minPrice && productPrice <= maxPrice;
-                const matchesColor =
-                  selectedColors.length === 0 ||
-                  selectedColors.includes(productColor);
-                const matchesSize =
-                  selectedSizes.length === 0 ||
-                  selectedSizes.some((size) => productSizes.includes(size));
+                const matchesPrice = productPrice >= minPrice && productPrice <= maxPrice;
+                const matchesColor = selectedColors.length === 0 || selectedColors.includes(productColor);
+                const matchesSize = selectedSizes.length === 0 || selectedSizes.some((size) => productSizes.includes(size));
+
+                // Log the matching logic for debugging
+                console.log(`Product Price: ${productPrice}, Matches Price: ${matchesPrice}`);
+                console.log(`Product Color: ${productColor}, Matches Color: ${matchesColor}`);
+                console.log(`Product Sizes: ${productSizes}, Matches Size: ${matchesSize}`);
 
                 if (matchesPrice && matchesColor && matchesSize) {
                   $(this).show();
@@ -751,7 +757,8 @@
             }
           });
         </script>
-        <!-- End -->
+
+
         <script>
           // Add event listener to the "Add to Favorites" button
           document.addEventListener("DOMContentLoaded", function () {
