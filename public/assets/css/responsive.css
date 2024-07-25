@@ -347,8 +347,11 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+        position: relative;
     }
-
+  .mb-60{
+    margin-bottom: 100px;
+  }
     .alfa-icon-flex img {
         width: 28px;
     }
@@ -356,7 +359,15 @@
     .alfa-icon-flex span {
         font-size: 13px;
     }
-
+   .wishlist-cont{
+    right: 5px !important
+   }
+   .read-more-btn {
+      padding: 8px 14px;
+    }
+    .blog-image img{
+        height: auto;
+    }
     .menu-icon img {
         width: 30px;
     }
