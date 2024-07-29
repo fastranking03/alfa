@@ -156,7 +156,7 @@
                 <% lastProducts.forEach(product=> { %>
                   <div class="product-item product-item-2" data-color="<%= product.color %>">
                     <div class="produt-wrap">
-                      <a href="/product-detail/<%= product.id %>">
+                      <a href="/product-detail/<%= product.	product_title_slug %>/<%= product.id %>">
                         <img src="../product_images/<%= product.product_main_image %>" class="pro-img" alt="">
                       </a>
                     </div>
@@ -212,7 +212,11 @@
                 <% bestSellers.forEach(product=> { %>
                   <div class="product-item product-item-2">
                     <div class="produt-wrap">
-                      <img src="../product_images/<%= product.product_main_image %>" class="pro-img" alt="">
+
+                      <a href="/product-detail/<%= product.	product_title_slug %>/<%= product.id %>">
+                        <img src="../product_images/<%= product.product_main_image %>" class="pro-img" alt="">
+
+                      </a>
 
                     </div>
                     <div class="product-details">
