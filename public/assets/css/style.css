@@ -3095,3 +3095,6 @@ font-size: 14px;
       object-fit: contain;
       height: 270px;
     }
+    .empty-icon img{
+      width: 100%;
+    }
