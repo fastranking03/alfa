@@ -2,7 +2,7 @@
 <html lang="en">
 
 <head>
-  <base href="http://localhost:8081" />
+  <base href="http://31.187.72.76:3000/">
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <!-- Dynamic Meta Tags -->
@@ -429,42 +429,39 @@
                       </p>
                     </div>
                   </div>
-                  <% 
-                
-                  const ratings = {
-                    5: reviewCountMap[5],
-                    4: reviewCountMap[4],
-                    3: reviewCountMap[3],
-                    2: reviewCountMap[2],
-                    1: reviewCountMap[1]
-                  };
-                
-                  const getPercentage = (count) => (count / totalReviews) * 100;
-                  const backgroundColors = {
+                  <% const ratings={ 5: reviewCountMap[5], 4: reviewCountMap[4], 3: reviewCountMap[3], 2:
+                    reviewCountMap[2], 1: reviewCountMap[1] }; const getPercentage=(count)=> (count / totalReviews) *
+                    100;
+                    const backgroundColors = {
                     5: '#14958f',
                     4: '#72bfbc',
                     3: '#fcb301',
                     2: '#f16565',
                     1: '#d9534f'
-                  };
-                %>
-                
-                <div class="review-rating-progress">
-                  <% Object.keys(ratings).reverse().forEach(rating => { %>
-                    <div class="rating-count-ravegrage">
-                      <div class="rate_and_start"><%= rating %> <span><i class="fa-solid fa-star pro-start"></i></span></div>
-                      <div class="rating-progress">
-                        <div class="rating-bar" style="width: <%= getPercentage(ratings[rating]) %>%; background: <%= backgroundColors[rating] %>;">
-                          <p class="rating-percent"></p>
+                    };
+                    %>
+
+                    <div class="review-rating-progress">
+                      <% Object.keys(ratings).reverse().forEach(rating=> { %>
+                        <div class="rating-count-ravegrage">
+                          <div class="rate_and_start">
+                            <%= rating %> <span><i class="fa-solid fa-star pro-start"></i></span>
+                          </div>
+                          <div class="rating-progress">
+                            <div class="rating-bar"
+                              style="width: <%= getPercentage(ratings[rating]) %>%; background: <%= backgroundColors[rating] %>;">
+                              <p class="rating-percent"></p>
+                            </div>
+                          </div>
+                          <div class="total-idivitual-review">
+                            <span>
+                              <%= ratings[rating] %>
+                            </span>
+                          </div>
                         </div>
-                      </div>
-                      <div class="total-idivitual-review">
-                        <span><%= ratings[rating] %></span>
-                      </div>
+                        <% }) %>
                     </div>
-                  <% }) %>
-                </div>
-                
+
                 </div>
                 <hr>
                 <div class="review-content-wrapper">
@@ -527,8 +524,9 @@
                   <% relatedProducts.forEach(product=> { %>
                     <div class="product-item product-item-2">
                       <div class="produt-wrap">
-                        <img src="../product_images/<%= product.product_main_image %>" class="pro-img" alt="">
 
+                        <a href="/product-detail/<%= product.	product_title_slug %>/<%= product.id %>">
+                          <img src="../product_images/<%= product.product_main_image %>" class="pro-img" alt=""> </a>
                       </div>
                       <div class="product-details">
                         <div class="product-nameprice">

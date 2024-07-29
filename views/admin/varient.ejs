@@ -1,106 +1,102 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Alfa Admin | Customer List</title>
-    <%- include('includes/head') %>
-  </head>
 
-  <body class="admin-body">
-    <div class="main-admin-warpper">
-      <%- include('includes/header') %>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alfa Admin | Customer List</title>
+  <%- include('includes/head') %>
+</head>
+
+<body class="admin-body">
+  <div class="main-admin-warpper">
+    <%- include('includes/header') %>
       <div class="alfa-admin-wrapper">
         <div class="admin-side-nav">
           <%- include('includes/sidebar') %>
-          <div class="admin-main-layout">
-            <div class="admin-bradcrumb">
-              <div class="admin-brudcrumb-title">
-                <h3>Customer List</h3>
-              </div>
-              <div class="adminRightWrapper">
-                <div class="search-wrapper position-relative">
-                  <span><i class="fa-solid fa-magnifying-glass"></i></span>
-                  <input
-                    type="search"
-                    name="search"
-                    class="table-search"
-                    placeholder="Search"
-                    id="search"
-                  />
+            <div class="admin-main-layout">
+              <div class="admin-bradcrumb">
+                <div class="admin-brudcrumb-title">
+                  <h3>Customer List</h3>
                 </div>
-                <div class="export-wrap">
-                  <a href="#" class="admin-btn" id="export-btn">Export</a>
+                <div class="adminRightWrapper">
+                  <div class="search-wrapper position-relative">
+                    <span><i class="fa-solid fa-magnifying-glass"></i></span>
+                    <input type="search" name="search" class="table-search" placeholder="Search" id="search" />
+                  </div>
+                  <div class="export-wrap">
+                    <a href="#" class="admin-btn" id="export-btn">Export</a>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="product-list">
-              <div class="table-list-head">
-                <div class="alfa-data-search">
-                  <div class="select-warpper">
-                    <div class="table-selects">
-                      <select name="" id="" class="table-select">
-                        <option value="all">All</option>
-                        <option value="">One</option>
-                      </select>
+              <div class="product-list">
+                <div class="table-list-head">
+                  <div class="alfa-data-search">
+                    <div class="select-warpper">
+                      <div class="table-selects">
+                        <select name="" id="" class="table-select">
+                          <option value="all">All</option>
+                          <option value="">One</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="table-list-btn">
+                    <div class="table-btn">
+                      <h4>Add New Varient</h4><a href="/admin/add-new-varient"> </a>
                     </div>
                   </div>
                 </div>
-                <div class="table-list-btn">
-                  <div class="table-btn">
-                    <h4>Add New Varient</h4><a href="/admin/add-new-varient"> </a>
+
+                <div class="responsive-table">
+                  <table class="alfa-table">
+                    <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th>Varient Name</th>
+                        <th>Created At</th>
+                        <th>Add Products in Varient</th>
+                      </tr>
+                    </thead>
+                    <tbody id="order-tbody">
+                      <% variants.forEach(variant=> { %>
+                        <tr>
+                          <td>
+                            <%= variant.id %>
+                          </td>
+
+                          <td>
+                            <%= variant.varient_name %>
+                          </td>
+
+                          <td>
+                            <%= variant.created_at %>
+                          </td>
+
+                          <td>
+                            <a href="/admin/add-product-in/<%=variant.varient_name  %>"
+                              class="btn-item btn-edit"><span>Add Products in this Varient</span></a>
+                          </td>
+                        </tr>
+                        <% }); %>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="table-pagination-wrapper">
+                  <div class="table-pagination" id="pagination">
+                    <a href="#" class="pagination-previous"><span><i class="fa-solid fa-angle-left"></i></span></a>
+                    <a href="#" class="page-items active">1</a>
+                    <a href="#" class="page-items">2</a>
+                    <a href="#" class="pagination-next" style="color: #005d67"><span><i
+                          class="fa-solid fa-angle-right"></i></span></a>
                   </div>
                 </div>
               </div>
-
-              <div class="responsive-table">
-                <table class="alfa-table">
-                  <thead>
-                    <tr>
-                      <th>ID</th>
-                      <th>Varient Name</th>
-                      <th>Created At</th>
-                      <th>Add Products in Varient</th>
-                    </tr>
-                  </thead>
-                  <tbody id="order-tbody">
-                    <% variants.forEach(variant => { %>
-                    <tr>
-                      <td><%= variant.id %></td>
-
-                      <td><%= variant.varient_name %></td>
-
-                      <td><%= variant.created_at %></td>
-
-                      <td>
-                        <a
-                          href="/admin/add-product-in/<%=variant.varient_name  %>"
-                          class="btn-item btn-edit"
-                          ><span>Add Products in this Varient</span></a
-                        >
-                      </td>
-                    </tr>
-                    <% }); %>
-                  </tbody>
-                </table>
-              </div>
-              <div class="table-pagination-wrapper">
-                <div class="table-pagination" id="pagination">
-                  <a href="#" class="pagination-previous"
-                    ><span><i class="fa-solid fa-angle-left"></i></span
-                  ></a>
-                  <a href="#" class="page-items active">1</a>
-                  <a href="#" class="page-items">2</a>
-                  <a href="#" class="pagination-next" style="color: #005d67"
-                    ><span><i class="fa-solid fa-angle-right"></i></span
-                  ></a>
-                </div>
-              </div>
             </div>
-          </div>
         </div>
       </div>
-    </div>
-    <%- include('includes/foot') %>
-  </body>
+  </div>
+  <%- include('includes/foot') %>
+</body>
+
 </html>
