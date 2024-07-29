@@ -234,8 +234,6 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 
-
-
 // Serve static files (like uploaded images)
 app.use("/banner_images", express.static("banner_images"));
 app.use("/category_images", express.static("category_images"));
