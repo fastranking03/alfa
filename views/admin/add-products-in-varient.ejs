@@ -1,165 +1,175 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <base href="http://localhost:8081" target="" />
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Alfa Admin | Customer List</title>
-    <%- include('includes/head') %>
-  </head>
 
-  <body class="admin-body">
-    <div class="main-admin-warpper">
-      <%- include('includes/header') %>
+<head>
+  <base href="http://31.187.72.76:3000/">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alfa Admin | Customer List</title>
+  <%- include('includes/head') %>
+</head>
+
+<body class="admin-body">
+  <div class="main-admin-warpper">
+    <%- include('includes/header') %>
       <div class="alfa-admin-wrapper">
         <div class="admin-side-nav">
           <%- include('includes/sidebar') %>
-          <div class="admin-main-layout">
-            <div class="admin-bradcrumb">
-              <div class="admin-brudcrumb-title">
-                <h3>Customer List</h3>
-              </div>
-              <div class="adminRightWrapper">
-                <div class="search-wrapper position-relative">
-                  <span><i class="fa-solid fa-magnifying-glass"></i></span>
-                  <input
-                    type="search"
-                    name="search"
-                    class="table-search"
-                    placeholder="Search"
-                    id="search"
-                  />
+            <div class="admin-main-layout">
+              <div class="admin-bradcrumb">
+                <div class="admin-brudcrumb-title">
+                  <h3>Customer List</h3>
                 </div>
-                <div class="export-wrap">
-                  <a href="#" class="admin-btn" id="export-btn">Export</a>
+                <div class="adminRightWrapper">
+                  <div class="search-wrapper position-relative">
+                    <span><i class="fa-solid fa-magnifying-glass"></i></span>
+                    <input type="search" name="search" class="table-search" placeholder="Search" id="search" />
+                  </div>
+                  <div class="export-wrap">
+                    <a href="#" class="admin-btn" id="export-btn">Export</a>
+                  </div>
                 </div>
               </div>
-            </div>
-            <div class="product-list">
-              <div class="table-list-head">
-                <div class="alfa-data-search">
-                  <div class="select-warpper">
-                    <div class="table-selects">
-                      <select name="" id="" class="table-select">
-                        <option value="all">All</option>
-                        <option value="">One</option>
-                      </select>
+              <div class="product-list">
+                <div class="table-list-head">
+                  <div class="alfa-data-search">
+                    <div class="select-warpper">
+                      <div class="table-selects">
+                        <select name="" id="" class="table-select">
+                          <option value="all">All</option>
+                          <option value="">One</option>
+                        </select>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="table-list-btn">
+                    <div class="table-btn">
+                      <a href="/admin/add-banner"> </a>
                     </div>
                   </div>
                 </div>
-                <div class="table-list-btn">
-                  <div class="table-btn">
-                    <a href="/admin/add-banner"> </a>
+
+                <H1>ALREADY EXIST IN VARIENT</H1>
+                <div class="responsive-table">
+                  <table class="alfa-table">
+                    <thead class="table-dark">
+                      <tr>
+                        <th></th>
+                        <th>ID</th>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Discount</th>
+                        <th>Created At</th>
+                      </tr>
+                    </thead>
+                    <tbody id="order-tbody">
+                      <% products_in_varient.forEach(product=> { %>
+                        <tr>
+                          <td>
+                            <div class="product-checkbox">
+                              <input type="checkbox" name="checkbox" />
+                            </div>
+                          </td>
+                          <td>
+                            <%= product.id %>
+                          </td>
+                          <td>
+                            <div class="admin-product">
+                              <span>
+                                <img src="../../product_images/<%= product.product_main_image %>" alt=""
+                                  style="width: 40px; height: 40px" /></span>
+                              <h6>
+                                <%= product.product_name %>
+                              </h6>
+                            </div>
+                          </td>
+                          <td>£<%= product.product_price %>
+                          </td>
+                          <td>
+                            <%= product.discount_on_product %> %
+                          </td>
+                          <td>
+                            <%= product.created_at.toLocaleString() %>
+                          </td>
+                        </tr>
+                        <% }); %>
+                    </tbody>
+                  </table>
+                </div>
+                <br />
+                <hr />
+                <br />
+                <h1>ADD NEW</h1>
+                <div class="responsive-table">
+                  <div class="table-responsive">
+                    <form action="/admin/add-product-in-varient" method="post">
+                      <input type="hidden" name="variantName" value="<%=variant_name  %>" id="">
+                      <table class="alfa-table">
+                        <thead class="table-dark">
+                          <tr>
+                            <th></th>
+                            <th>ID</th>
+                            <th>Product</th>
+                            <th>Price</th>
+                            <th>Discount</th>
+                            <th>Created At</th>
+                          </tr>
+                        </thead>
+                        <tbody id="order-tbody">
+                          <% all_products.forEach(product=> { %>
+                            <tr>
+                              <td>
+                                <div class="product-checkbox">
+                                  <input type="checkbox" name="selectedProducts" id="product<%= product.id %>"
+                                    value="<%= product.id %>" />
+                                </div>
+                              </td>
+                              <td>
+                                <%= product.id %>
+                              </td>
+                              <td>
+                                <div class="admin-product">
+                                  <span>
+                                    <img src="../../product_images/<%= product.product_main_image %>" alt=""
+                                      style="width: 40px; height: 40px" />
+                                  </span>
+                                  <h6>
+                                    <%= product.product_name %>
+                                  </h6>
+                                </div>
+                              </td>
+                              <td>£<%= product.product_price %>
+                              </td>
+                              <td>
+                                <%= product.discount_on_product %> %
+                              </td>
+                              <td>
+                                <%= product.created_at.toLocaleString() %>
+                              </td>
+                            </tr>
+                            <% }); %>
+                        </tbody>
+                      </table>
+                      <button type="submit">Add Products to Variant</button>
+                    </form>
+
+                  </div>
+                </div>
+                <div class="table-pagination-wrapper">
+                  <div class="table-pagination" id="pagination">
+                    <a href="#" class="pagination-previous"><span><i class="fa-solid fa-angle-left"></i></span></a>
+                    <a href="#" class="page-items active">1</a>
+                    <a href="#" class="page-items">2</a>
+                    <a href="#" class="pagination-next" style="color: #005d67"><span><i
+                          class="fa-solid fa-angle-right"></i></span></a>
                   </div>
                 </div>
               </div>
-
-              <H1>ALREADY EXIST IN VARIENT</H1>
-              <div class="responsive-table">
-                <table class="alfa-table">
-                  <thead class="table-dark">
-                    <tr>
-                      <th></th>
-                      <th>ID</th>
-                      <th>Product</th>
-                      <th>Price</th>
-                      <th>Discount</th>
-                      <th>Created At</th>
-                    </tr>
-                  </thead>
-                  <tbody id="order-tbody">
-                    <% products_in_varient.forEach(product => { %>
-                    <tr>
-                      <td>
-                        <div class="product-checkbox">
-                          <input type="checkbox" name="checkbox" />
-                        </div>
-                      </td>
-                      <td><%= product.id %></td>
-                      <td>
-                        <div class="admin-product">
-                          <span>
-                            <img
-                              src="../../product_images/<%= product.product_main_image %>"
-                              alt=""
-                              style="width: 40px; height: 40px"
-                          /></span>
-                          <h6><%= product.product_name %></h6>
-                        </div>
-                      </td>
-                      <td>£<%= product.product_price %></td>
-                      <td><%= product.discount_on_product %> %</td>
-                      <td><%= product.created_at.toLocaleString() %></td>
-                    </tr>
-                    <% }); %>
-                  </tbody>
-                </table>
-              </div>
-              <br />
-              <hr />
-              <br />
-              <h1>ADD NEW</h1>
-              <div class="responsive-table">
-                <div class="table-responsive">
-                    <form action="/admin/add-product-in-varient" method="post">
-                        <input type="hidden" name="variantName" value="<%=variant_name  %>" id="">
-                        <table class="alfa-table">
-                          <thead class="table-dark">
-                            <tr>
-                              <th></th>
-                              <th>ID</th>
-                              <th>Product</th>
-                              <th>Price</th>
-                              <th>Discount</th>
-                              <th>Created At</th>
-                            </tr>
-                          </thead>
-                          <tbody id="order-tbody">
-                            <% all_products.forEach(product => { %>
-                              <tr>
-                                <td>
-                                  <div class="product-checkbox">
-                                    <input type="checkbox" name="selectedProducts" id="product<%= product.id %>" value="<%= product.id %>" />
-                                  </div>
-                                </td>
-                                <td><%= product.id %></td>
-                                <td>
-                                  <div class="admin-product">
-                                    <span>
-                                      <img src="../../product_images/<%= product.product_main_image %>" alt="" style="width: 40px; height: 40px" />
-                                    </span>
-                                    <h6><%= product.product_name %></h6>
-                                  </div>
-                                </td>
-                                <td>£<%= product.product_price %></td>
-                                <td><%= product.discount_on_product %> %</td>
-                                <td><%= product.created_at.toLocaleString() %></td>
-                              </tr>
-                            <% }); %>
-                          </tbody>
-                        </table>
-                        <button type="submit">Add Products to Variant</button>
-                      </form>
-                      
-                </div>
-              </div>
-              <div class="table-pagination-wrapper">
-                <div class="table-pagination" id="pagination">
-                  <a href="#" class="pagination-previous"
-                    ><span><i class="fa-solid fa-angle-left"></i></span
-                  ></a>
-                  <a href="#" class="page-items active">1</a>
-                  <a href="#" class="page-items">2</a>
-                  <a href="#" class="pagination-next" style="color: #005d67"
-                    ><span><i class="fa-solid fa-angle-right"></i></span
-                  ></a>
-                </div>
-              </div>
             </div>
-          </div>
         </div>
       </div>
-    </div>
-    <%- include('includes/foot') %>
-  </body>
+  </div>
+  <%- include('includes/foot') %>
+</body>
+
 </html>

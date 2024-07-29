@@ -1,16 +1,17 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <base href="http://localhost:8081" target="" />
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Alfa Meanswear | Home</title>
-    <%- include('includes/head') %>
-  </head>
 
-  <body>
-    <div class="alfa-main-wraper">
-      <%- include('includes/header') %>
+<head>
+  <base href="http://31.187.72.76:3000/">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alfa Meanswear | Home</title>
+  <%- include('includes/head') %>
+</head>
+
+<body>
+  <div class="alfa-main-wraper">
+    <%- include('includes/header') %>
       <div class="mt-100">
         <!-- HERO SECTION -->
         <section class="hero-section position-relative">
@@ -30,10 +31,8 @@
                         </h3>
                       </div>
                       <div class="alfa-discover-btn">
-                        <a href="" class="alfa-btn"
-                          >Discover Now
-                          <img src="assets/images/arrow-right.png" alt=""
-                        /></a>
+                        <a href="" class="alfa-btn">Discover Now
+                          <img src="assets/images/arrow-right.png" alt="" /></a>
                       </div>
                     </div>
                   </div>
@@ -61,83 +60,82 @@
           <div class="container">
             <div class="alfa-new-arrival">
               <div class="alfa-title">
-                <h4>categories: <%= category.category_name %></h4>
+                <h4>categories: <%= category.category_name %>
+                </h4>
 
                 <p>Preorder nor to receive exclusive deals & gifts</p>
               </div>
-            
+
               <div class="product-grid">
-                <% products.forEach(product => { %>
-                <div class="product-item">
-                  <div class="produt-wrap">
-                    <a href="/product-detail/<%= product.id %> ">
-                      <img
-                        src="../product_images/<%= product.product_main_image%> %>"
-                        class="pro-img"
-                        alt=""
-                      />
-                    </a>
+                <% products.forEach(product=> { %>
+                  <div class="product-item">
+                    <div class="produt-wrap">
+                      <a href="/product-detail/<%= product.id %> ">
+                        <img src="../product_images/<%= product.product_main_image%> %>" class="pro-img" alt="" />
+                      </a>
 
-                    <div class="product-btn">
-                      <div class="pro-whishlist">
+                      <div class="product-btn">
+                        <div class="pro-whishlist">
 
-                  <a  class="add-to-favorites" data-product-id="<%= product.id %>">
-                    <img src="assets/images/heart.png" alt="Add to Favorites" />
-                  </a>
+                          <a class="add-to-favorites" data-product-id="<%= product.id %>">
+                            <img src="assets/images/heart.png" alt="Add to Favorites" />
+                          </a>
 
-                      </div>
+                        </div>
 
-                      <div class="pro-view">
-                        <a href="/product-detail/<%= product.id %>"
-                          ><img src="assets/images/eye.png" alt=""
-                        /></a>
+                        <div class="pro-view">
+                          <a href="/product-detail/<%= product.id %>"><img src="assets/images/eye.png" alt="" /></a>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                  <div class="product-add-to-card-wrap">
-                   
+                    <div class="product-add-to-card-wrap">
 
-                    <button class="add-to-cart" data-product-id="<%= product.id %>">
-                      Add to Cart
-                    </button>
-                     
-                  </button>
-                  </div>
-                  <div class="product-details shop-content">
-                    <a href="/product-detail/<%= product.id %>"
-                      ><h6><%= product.product_name %> </h6></a
-                    > <span>
-                      
-                    </span>
-                    <div class="product-price">
-                      <h5>
-                         <span class="mrp-price" style="font-size: 16px;"> £<%=product.product_price %></span>
-                         <span class="final-price" >£<%=(product.product_price * (1 - (product.discount_on_product / 100))).toFixed(2) %></span> 
-                         <span style="font-size: 15px;color:rgb(193, 196, 196)"> (<%=product.discount_on_product %>% OFF )</span>
-                      </h5>
-                    </div>
-                    
 
-                    <div class="product-color-option">
-                      <ul>
-                        <li>
-                          <a href="" class="p-option-item c1 active"></a>
-                        </li>
-                        <li><a href="" class="p-option-item c2"></a></li>
-                        <li><a href="" class="p-option-item c3"></a></li>
-                        <li><a href="" style="color: #000">+More</a></li>
-                      </ul>
+                      <button class="add-to-cart" data-product-id="<%= product.id %>">
+                        Add to Cart
+                      </button>
+
+                      </button>
+                    </div>
+                    <div class="product-details shop-content">
+                      <a href="/product-detail/<%= product.id %>">
+                        <h6>
+                          <%= product.product_name %>
+                        </h6>
+                      </a> <span>
+
+                      </span>
+                      <div class="product-price">
+                        <h5>
+                          <span class="mrp-price" style="font-size: 16px;"> £<%=product.product_price %></span>
+                          <span class="final-price">£<%=(product.product_price * (1 - (product.discount_on_product /
+                              100))).toFixed(2) %></span>
+                          <span style="font-size: 15px;color:rgb(193, 196, 196)"> (<%=product.discount_on_product %>%
+                              OFF )</span>
+                        </h5>
+                      </div>
+
+
+                      <div class="product-color-option">
+                        <ul>
+                          <li>
+                            <a href="" class="p-option-item c1 active"></a>
+                          </li>
+                          <li><a href="" class="p-option-item c2"></a></li>
+                          <li><a href="" class="p-option-item c3"></a></li>
+                          <li><a href="" style="color: #000">+More</a></li>
+                        </ul>
+                      </div>
                     </div>
                   </div>
-                </div>
-                <% }); %>
+                  <% }); %>
               </div>
             </div>
           </div>
         </section>
         <!-- END -->
-       
-         <!-- BESTSELLER -->
+
+        <!-- BESTSELLER -->
         <section class="mt-80">
           <div class="container-fluid">
             <div class="alfa-bestsellerl">
@@ -145,23 +143,16 @@
                 <h3>Best Seller</h3>
                 <p>Preorder nor to receive exclusive deals & gifts</p>
               </div>
-              <div
-                id="bestseller-carousel"
-                class="bestseller-wrapper owl-carousel comman-nav"
-              >
+              <div id="bestseller-carousel" class="bestseller-wrapper owl-carousel comman-nav">
                 <div class="product-item">
                   <div class="produt-wrap">
                     <img src="assets/images/cat1.png" class="pro-img" alt="" />
                     <div class="product-btn">
                       <div class="pro-whishlist">
-                        <a href=""
-                          ><img src="assets/images/heart.png" alt=""
-                        /></a>
+                        <a href=""><img src="assets/images/heart.png" alt="" /></a>
                       </div>
                       <div class="pro-view">
-                        <a href=""
-                          ><img src="assets/images/eye.png" alt=""
-                        /></a>
+                        <a href=""><img src="assets/images/eye.png" alt="" /></a>
                       </div>
                     </div>
                   </div>
@@ -174,36 +165,11 @@
                     <div class="product-rating">
                       <ul>
                         <li>
-                          <a href=""
-                            ><img
-                              src="assets/images/star.png"
-                              class="star-icon"
-                              alt=""
-                          /></a>
-                          <a href=""
-                            ><img
-                              src="assets/images/star.png"
-                              class="star-icon"
-                              alt=""
-                          /></a>
-                          <a href=""
-                            ><img
-                              src="assets/images/star.png"
-                              class="star-icon"
-                              alt=""
-                          /></a>
-                          <a href=""
-                            ><img
-                              src="assets/images/star.png"
-                              class="star-icon"
-                              alt=""
-                          /></a>
-                          <a href=""
-                            ><img
-                              src="assets/images/star.png"
-                              class="star-icon"
-                              alt=""
-                          /></a>
+                          <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
+                          <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
+                          <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
+                          <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
+                          <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
                         </li>
                       </ul>
                     </div>
@@ -215,14 +181,10 @@
                     <img src="assets/images/cat2.png" class="pro-img" alt="" />
                     <div class="product-btn">
                       <div class="pro-whishlist">
-                        <a href=""
-                          ><img src="assets/images/heart.png" alt=""
-                        /></a>
+                        <a href=""><img src="assets/images/heart.png" alt="" /></a>
                       </div>
                       <div class="pro-view">
-                        <a href=""
-                          ><img src="assets/images/eye.png" alt=""
-                        /></a>
+                        <a href=""><img src="assets/images/eye.png" alt="" /></a>
                       </div>
                     </div>
                   </div>
@@ -234,37 +196,12 @@
                     <div class="product-rating">
                       <ul>
                         <li>
-                          <a href=""
-                            ><img
-                              src="assets/images/star.png"
-                              class="star-icon"
-                              alt=""
-                          /></a>
-                          <a href=""
-                            ><img
-                              src="assets/images/star.png"
-                              class="star-icon"
-                              alt=""
-                          /></a>
+                          <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
+                          <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
 
-                          <a href=""
-                            ><img
-                              src="assets/images/star.png"
-                              class="star-icon"
-                              alt=""
-                          /></a>
-                          <a href=""
-                            ><img
-                              src="assets/images/star.png"
-                              class="star-icon"
-                              alt=""
-                          /></a>
-                          <a href=""
-                            ><img
-                              src="assets/images/star.png"
-                              class="star-icon"
-                              alt=""
-                          /></a>
+                          <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
+                          <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
+                          <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
                         </li>
                       </ul>
                     </div>
@@ -275,14 +212,10 @@
                     <img src="assets/images/cat3.png" class="pro-img" alt="" />
                     <div class="product-btn">
                       <div class="pro-whishlist">
-                        <a href=""
-                          ><img src="assets/images/heart.png" alt=""
-                        /></a>
+                        <a href=""><img src="assets/images/heart.png" alt="" /></a>
                       </div>
                       <div class="pro-view">
-                        <a href=""
-                          ><img src="assets/images/eye.png" alt=""
-                        /></a>
+                        <a href=""><img src="assets/images/eye.png" alt="" /></a>
                       </div>
                     </div>
                   </div>
@@ -294,36 +227,11 @@
                     <div class="product-rating">
                       <ul>
                         <li>
-                          <a href=""
-                            ><img
-                              src="assets/images/star.png"
-                              class="star-icon"
-                              alt=""
-                          /></a>
-                          <a href=""
-                            ><img
-                              src="assets/images/star.png"
-                              class="star-icon"
-                              alt=""
-                          /></a>
-                          <a href=""
-                            ><img
-                              src="assets/images/star.png"
-                              class="star-icon"
-                              alt=""
-                          /></a>
-                          <a href=""
-                            ><img
-                              src="assets/images/star.png"
-                              class="star-icon"
-                              alt=""
-                          /></a>
-                          <a href=""
-                            ><img
-                              src="assets/images/star.png"
-                              class="star-icon"
-                              alt=""
-                          /></a>
+                          <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
+                          <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
+                          <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
+                          <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
+                          <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
                         </li>
                       </ul>
                     </div>
@@ -334,35 +242,20 @@
           </div>
         </section>
         <!-- END -->
-         
+
         <!-- PARTNER -->
         <section class="mt-80">
           <div class="partner-wrapper">
             <div class="container">
-              <div
-                id="partner-carousel"
-                class="partner-wrap-grid owl-carousel comman-nav"
-              >
+              <div id="partner-carousel" class="partner-wrap-grid owl-carousel comman-nav">
                 <div class="partner-item">
-                  <img
-                    src="assets/images/brand.png"
-                    class="partner-img"
-                    alt=""
-                  />
+                  <img src="assets/images/brand.png" class="partner-img" alt="" />
                 </div>
                 <div class="partner-item">
-                  <img
-                    src="assets/images/brand02.png"
-                    class="partner-img"
-                    alt=""
-                  />
+                  <img src="assets/images/brand02.png" class="partner-img" alt="" />
                 </div>
                 <div class="partner-item">
-                  <img
-                    src="assets/images/brand03.png"
-                    class="partner-img"
-                    alt=""
-                  />
+                  <img src="assets/images/brand03.png" class="partner-img" alt="" />
                 </div>
               </div>
             </div>
@@ -371,10 +264,10 @@
         <!-- END -->
         <!-- FOOTER -->
         <%- include('includes/footer') %>
-        <!-- END -->
+          <!-- END -->
       </div>
-    </div>
-    <%- include('includes/foot') %>
+  </div>
+  <%- include('includes/foot') %>
 
     <script>
       // Add event listener to the "Add to Favorites" button
@@ -573,6 +466,7 @@
         });
       });
     </script>
-    
-  </body>
+
+</body>
+
 </html>
