@@ -23,6 +23,7 @@ import blogRoute from './routes/admin/blogRoute.js';
 import contentRoute from './routes/admin/contentRoute.js';
 import newProduct from './routes/admin/newProduct.js';
 import accessoriesRoutes from './routes/accessoriesRoutes.js';
+import paypalRoutes from './routes/paypalRoutes.js';
 import jwt from "jsonwebtoken";
 import stripePackage from 'stripe';
 
@@ -252,7 +253,7 @@ app.use("/", cartRoute);
 app.use("/", placeOrderRoute);
 app.use("/category/", CategoryRoutes);
 app.use("/accessory/", accessoriesRoutes);
-
+app.use("/paypal", paypalRoutes);
 
 // Google OAuth Routes
 app.get('/auth/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
@@ -386,9 +387,7 @@ app.get('/auth/github/callback',
   }
 );
 
-
-
-
+ 
 // Middleware to verify and refresh JWT token
 async function verifyToken(req, res, next) {
   const accessToken = req.cookies.accessToken;

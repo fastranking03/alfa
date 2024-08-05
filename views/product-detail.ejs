@@ -429,42 +429,39 @@
                       </p>
                     </div>
                   </div>
-                  <% 
-                
-                  const ratings = {
-                    5: reviewCountMap[5],
-                    4: reviewCountMap[4],
-                    3: reviewCountMap[3],
-                    2: reviewCountMap[2],
-                    1: reviewCountMap[1]
-                  };
-                
-                  const getPercentage = (count) => (count / totalReviews) * 100;
-                  const backgroundColors = {
+                  <% const ratings={ 5: reviewCountMap[5], 4: reviewCountMap[4], 3: reviewCountMap[3], 2:
+                    reviewCountMap[2], 1: reviewCountMap[1] }; const getPercentage=(count)=> (count / totalReviews) *
+                    100;
+                    const backgroundColors = {
                     5: '#14958f',
                     4: '#72bfbc',
                     3: '#fcb301',
                     2: '#f16565',
                     1: '#d9534f'
-                  };
-                %>
-                
-                <div class="review-rating-progress">
-                  <% Object.keys(ratings).reverse().forEach(rating => { %>
-                    <div class="rating-count-ravegrage">
-                      <div class="rate_and_start"><%= rating %> <span><i class="fa-solid fa-star pro-start"></i></span></div>
-                      <div class="rating-progress">
-                        <div class="rating-bar" style="width: <%= getPercentage(ratings[rating]) %>%; background: <%= backgroundColors[rating] %>;">
-                          <p class="rating-percent"></p>
+                    };
+                    %>
+
+                    <div class="review-rating-progress">
+                      <% Object.keys(ratings).reverse().forEach(rating=> { %>
+                        <div class="rating-count-ravegrage">
+                          <div class="rate_and_start">
+                            <%= rating %> <span><i class="fa-solid fa-star pro-start"></i></span>
+                          </div>
+                          <div class="rating-progress">
+                            <div class="rating-bar"
+                              style="width: <%= getPercentage(ratings[rating]) %>%; background: <%= backgroundColors[rating] %>;">
+                              <p class="rating-percent"></p>
+                            </div>
+                          </div>
+                          <div class="total-idivitual-review">
+                            <span>
+                              <%= ratings[rating] %>
+                            </span>
+                          </div>
                         </div>
-                      </div>
-                      <div class="total-idivitual-review">
-                        <span><%= ratings[rating] %></span>
-                      </div>
+                        <% }) %>
                     </div>
-                  <% }) %>
-                </div>
-                
+
                 </div>
                 <hr>
                 <div class="review-content-wrapper">

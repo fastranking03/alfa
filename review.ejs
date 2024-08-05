@@ -152,3 +152,95 @@
     <%- include('includes/foot') %>
 </body>
 </html>
+
+
+
+
+
+
+
+
+
+<!-- 
+
+<script>
+            paypal.Buttons({
+                createOrder: function (data, actions) {
+                    return fetch('/paypal/create-paypal-transaction', {
+                        method: 'post',
+                        headers: {
+                            'content-type': 'application/json'
+                        }
+                    }).then(function (res) {
+                        return res.json();
+                    }).then(function (data) {
+                        return data.id;
+                    });
+                },
+                onApprove: function (data, actions) {
+                    return fetch('/paypal/capture-paypal-transaction', {
+                        method: 'post',
+                        body: JSON.stringify({ orderID: data.orderID }),
+                        headers: {
+                            'content-type': 'application/json'
+                        }
+                    }).then(function (res) {
+                        return res.json();
+                    }).then(function (details) {
+                        alert('Transaction completed by ' + details.payer.name.given_name);
+                        // You can redirect to a success page or update the UI accordingly
+                    });
+                }
+            }).render('#paypal-button-container');
+        </script>
+-->
+
+
+import express from 'express';
+import pkg from '@paypal/checkout-server-sdk';
+
+const { core, orders } = pkg;
+const router = express.Router();
+
+// PayPal environment setup
+const environment = new core.SandboxEnvironment('AdOg9K3leJKNveSuGNSMZAyyN0QN7GufIn0GRmFyp1MZzHcOsjXCd0z5yXEk7I8msFWWWLJkz0bsFi2F', 'EJXATkjtt5anMZsbWEG5qqd10-01xRWmITbPvXVjd3om0D9PsDIlJPdIa1rLuaL5pJLPwJtsNWDwjYmZ');
+const client = new core.PayPalHttpClient(environment);
+
+router.post('/create-paypal-transaction', async (req, res) => {
+    const request = new orders.OrdersCreateRequest();
+    request.prefer("return=representation");
+    request.requestBody({
+        intent: 'CAPTURE',
+        purchase_units: [{
+            amount: {
+                currency_code: 'USD',
+                value: req.body.amount // Use the amount passed from the frontend
+            }
+        }]
+    });
+
+    try {
+        const order = await client.execute(request);
+        res.json(order.result);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Something went wrong');
+    }
+});
+
+// Capture PayPal transaction
+router.post('/capture-paypal-transaction', async (req, res) => {
+    const { orderID } = req.body;
+    const request = new orders.OrdersCaptureRequest(orderID);
+    request.requestBody({});
+
+    try {
+        const capture = await client.execute(request);
+        res.json(capture.result);
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Something went wrong');
+    }
+});
+
+export default router;
