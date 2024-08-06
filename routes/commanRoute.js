@@ -2,9 +2,7 @@ import express from "express";
 import connect from "../db/connect.js"; // Adjust the path as necessary
 import slugify from "slugify";
 
-
-
-
+ 
 import paypal from '@paypal/checkout-server-sdk';
 import { client as payPalClient } from '../paypalconfig.js';
 
