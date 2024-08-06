@@ -17,7 +17,7 @@ router.post('/create-paypal-transaction', async (req, res) => {
                 value: req.body.amount  // Use dynamic amount from the request body
             }
         }]
-    });
+    }); 
 
     try {
         const order = await client.execute(request);
