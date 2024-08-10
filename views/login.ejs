@@ -33,12 +33,12 @@
                                             <li>
                                                 <a href="/auth/google"><img src="assets/images/google.png" alt=""></a>
                                             </li>
-                                            <li>
+                                            <!-- <li>
                                                 <a href="/auth/facebook"><img src="assets/images/fb.png" alt=""></a>
                                             </li>
                                             <li>
                                                 <a href="/auth/github"><img src="assets/images/github.png" alt=""> </a>
-                                            </li>
+                                            </li> -->
                                         </ul>
                                     </div>
                                     <div class="user-else-option">
@@ -98,53 +98,53 @@
             </div>
     </div>
     <%- include('includes/foot') %>
-    <script>
-        var onEyeClick = document.getElementById("onEyeClick");
-        var passwordView = document.getElementById("passwordView");
-        var eyeView = document.getElementById("eyeView");
+        <script>
+            var onEyeClick = document.getElementById("onEyeClick");
+            var passwordView = document.getElementById("passwordView");
+            var eyeView = document.getElementById("eyeView");
 
-        onEyeClick.addEventListener('click', function () {
-            if (passwordView.type == "text") {
-                passwordView.type = "password";
-                eyeView.classList.remove("fa-eye");
-                eyeView.classList.add("fa-eye-slash");
-            } else {
-                passwordView.type = "text";
-                eyeView.classList.remove("fa-eye-slash");
-                eyeView.classList.add("fa-eye");
-            }
-        });
-
-        document.addEventListener("DOMContentLoaded", function () {
-            const emailInput = document.getElementById("emailInput");
-            const emailError = document.getElementById("emailError");
-            const loginForm = document.getElementById("loginForm");
-
-            emailInput.addEventListener("input", function () {
-                const emailValue = emailInput.value;
-                if (validateEmail(emailValue)) {
-                    emailError.style.display = "none";
-                    document.getElementById("login").classList.add("user-btn-primary")
+            onEyeClick.addEventListener('click', function () {
+                if (passwordView.type == "text") {
+                    passwordView.type = "password";
+                    eyeView.classList.remove("fa-eye");
+                    eyeView.classList.add("fa-eye-slash");
                 } else {
-                    emailError.style.display = "block";
-                    document.getElementById("login").classList.remove("user-btn-primary")
+                    passwordView.type = "text";
+                    eyeView.classList.remove("fa-eye-slash");
+                    eyeView.classList.add("fa-eye");
                 }
             });
 
-            loginForm.addEventListener("submit", function (event) {
-                const emailValue = emailInput.value;
-                if (!validateEmail(emailValue)) {
-                    emailError.style.display = "block";
-                    event.preventDefault();
+            document.addEventListener("DOMContentLoaded", function () {
+                const emailInput = document.getElementById("emailInput");
+                const emailError = document.getElementById("emailError");
+                const loginForm = document.getElementById("loginForm");
+
+                emailInput.addEventListener("input", function () {
+                    const emailValue = emailInput.value;
+                    if (validateEmail(emailValue)) {
+                        emailError.style.display = "none";
+                        document.getElementById("login").classList.add("user-btn-primary")
+                    } else {
+                        emailError.style.display = "block";
+                        document.getElementById("login").classList.remove("user-btn-primary")
+                    }
+                });
+
+                loginForm.addEventListener("submit", function (event) {
+                    const emailValue = emailInput.value;
+                    if (!validateEmail(emailValue)) {
+                        emailError.style.display = "block";
+                        event.preventDefault();
+                    }
+                });
+                function validateEmail(email) {
+                    const emailPattern = /^[A-Za-z0-9\._%+\-]+@[A-Za-z0-9\.\-]+\.[A-Za-z]{2,}$/;
+                    return emailPattern.test(email);
                 }
             });
-            function validateEmail(email) {
-                const emailPattern = /^[A-Za-z0-9\._%+\-]+@[A-Za-z0-9\.\-]+\.[A-Za-z]{2,}$/;
-                return emailPattern.test(email);
-            }
-        });
 
-    </script>
+        </script>
 </body>
 
 </html>

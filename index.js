@@ -387,7 +387,7 @@ app.get('/auth/github/callback',
   }
 );
 
- 
+
 // Middleware to verify and refresh JWT token
 async function verifyToken(req, res, next) {
   const accessToken = req.cookies.accessToken;
@@ -538,7 +538,7 @@ app.post('/payment', (req, res) => {
   });
 });
 
-const PORT = 3000;
+const PORT = 8081;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
