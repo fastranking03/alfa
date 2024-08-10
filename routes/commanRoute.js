@@ -137,189 +137,6 @@ router.get("/delete-from-wishlist/:favoriteId", async (req, res) => {
 });
 
 // Route for the product page
-router.post("/place-order", async (req, res) => {
-  const user = req.session.user;
-
-  if (!user) {
-    return res.redirect("/login"); // Redirect to the login page if the user is not logged in
-  }
-
-  const userId = user ? user.id : null;
-  const userName = user.name;
-  const {
-    cartItemscheckoutpage,
-    total_mrp,
-    discount_amount,
-    subtotal,
-    vat,
-    deliveryFee,
-    total_payable,
-    address_id,
-  } = req.body;
-
-  try {
-    // Parse cartItemscheckoutpage if passed as JSON string
-    const parsedCartItems = JSON.parse(cartItemscheckoutpage);
- 
-    // Start a transaction
-    await connect.query("START TRANSACTION");
-
-    // Generate new order ID
-    const [lastOrderRow] = await connect.query(
-      "SELECT order_id FROM orders ORDER BY order_id DESC LIMIT 1"
-    );
-    let newOrderId = "ALOI000001";
-    if (lastOrderRow.length > 0) {
-      const lastOrderId = lastOrderRow[0].order_id;
-      const lastOrderNumber = parseInt(lastOrderId.slice(4));
-      const nextOrderNumber = lastOrderNumber + 1;
-      newOrderId = "ALOI" + nextOrderNumber.toString().padStart(6, "0");
-    }
-
-    // Insert new order
-    const insertOrderQuery = `
-      INSERT INTO orders (order_id, user_id, user_name , total_payable, vat, delivery_charges, sub_total, total_mrp, discount_amount, address_id , order_status) 
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ? , "order placed")
-    `;
-
-    const insertOrderValues = [
-      newOrderId,
-      userId,
-      userName,
-      parseFloat(total_payable),
-      parseFloat(vat),
-      parseFloat(deliveryFee),
-      parseFloat(subtotal),
-      parseFloat(total_mrp),
-      parseFloat(discount_amount),
-      parseInt(address_id),
-    ];
-
-    const [insertOrderResult] = await connect.query(
-      insertOrderQuery,
-      insertOrderValues
-    );
-
-    if (insertOrderResult.affectedRows !== 1) {
-      throw new Error("Failed to insert into orders table");
-    }
-
-    // Insert order items only if the order insertion is successful
-    for (const product of parsedCartItems) {
-      const product_type = product.wear_type_bottom_or_top;
-      const insertOrderItemQuery = `
-        INSERT INTO order_items (order_id, user_id ,user_name , product_id, quantity, price, discount_on_product	, size, colour ) 
-        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-      `;
-      const insertOrderItemValues = [
-        newOrderId,
-        userId,
-        userName,
-        product.product_id,
-        product.quantity,
-        parseFloat(product.product_price),
-        product.discount_on_product,
-        product.selected_size,
-        product.colour,
-      ];
-      const [insertOrderItemResult] = await connect.query(
-        insertOrderItemQuery,
-        insertOrderItemValues
-      );
-
-      if (insertOrderItemResult.affectedRows !== 1) {
-        throw new Error("Failed to insert order item");
-      }
-      // updating inventory
-
-      if (product_type === 'top') {
-        const sizeColumn = product.selected_size.toLowerCase();
-        const updateInventoryQuery = `
-          UPDATE topwear_inventory_with_sizes
-          SET ${sizeColumn} = ${sizeColumn} - ? 
-          WHERE product_id = ?
-        `;
-        await connect.query(updateInventoryQuery, [product.quantity, product.product_id]);
-      } else if (product_type === 'bottom') {
-        const sizeColumn = `size_${product.selected_size}`;
-        const updateInventoryQuery = `
-          UPDATE bottom_wear_inventory_with_sizes
-          SET ${sizeColumn} = ${sizeColumn} - ? 
-          WHERE product_id = ?
-        `;
-        await connect.query(updateInventoryQuery, [product.quantity, product.product_id]);
-      } else if (product_type === 'shoes') {
-        const sizeColumn = `size_${product.selected_size}`;
-        const updateInventoryQuery = `
-          UPDATE shoes_inventory
-          SET ${sizeColumn} = ${sizeColumn} - ? 
-          WHERE product_id = ?
-        `;
-        await connect.query(updateInventoryQuery, [product.quantity, product.product_id]);
-      } else if (product_type === 'belt') {
-        const sizeColumn = product.selected_size.toLowerCase();
-        const updateInventoryQuery = `
-          UPDATE belts_inventory
-          SET ${sizeColumn} = ${sizeColumn} - ? 
-          WHERE product_id = ?
-        `;
-        await connect.query(updateInventoryQuery, [product.quantity, product.product_id]);
-      } else if (product_type === 'wallet') {
-
-        const sizeColumn = product.selected_size.toLowerCase();
-        const updateInventoryQuery = `
-          UPDATE wallet_inventory
-          SET ${sizeColumn} = ${sizeColumn} - ? 
-          WHERE product_id = ?
-        `;
-        await connect.query(updateInventoryQuery, [product.quantity, product.product_id]);
-      } else {
-        throw new Error("Unknown product type");
-      }
-    }
-
-    // Delete items from the cart after placing the order
-    const cartIds = parsedCartItems.map((item) => item.cart_id);
-    await connect.query(
-      "DELETE FROM users_cart WHERE user_id = ? AND id IN (?)",
-      [userId, cartIds]
-    );
-
-    // Commit the transaction after all queries succeed
-    await connect.query("COMMIT");
-
-    // Fetch order details and items for confirmation page
-    const [orderDetails] = await connect.query(
-      `SELECT o.*, a.name, a.email, a.phone, a.pincode, a.full_address 
-       FROM orders o
-       JOIN user_address a ON o.address_id = a.id
-       WHERE o.order_id = ?`,
-      [newOrderId]
-    );
-
-    const [orderItems] = await connect.query(
-      `SELECT oi.*, p.product_name, p.product_title, p.product_description, p.product_main_image
-       FROM order_items oi 
-       JOIN products p ON oi.product_id = p.id 
-       WHERE oi.order_id = ?`,
-      [newOrderId]
-    );
-
-    // Render the order confirmation page with order details
-    res.render("order-confirm", {
-      orderDetails: orderDetails[0], // Assuming orderDetails is an array and you want the first item
-      orderItems,
-      user,
-    });
-  } catch (error) {
-    console.error("Error placing order:", error);
-    await connect.query("ROLLBACK"); // Rollback the transaction in case of an error
-    res.status(500).send("Failed to place order");
-  }
-});
-
-
-
 // router.post("/place-order", async (req, res) => {
 //   const user = req.session.user;
 
@@ -341,75 +158,6 @@ router.post("/place-order", async (req, res) => {
 //   } = req.body;
 
 //   try {
-//     // Parse cartItemscheckoutpage if passed as JSON string
-//     const parsedCartItems = JSON.parse(cartItemscheckoutpage);
-
-//     // 1. Create the order in PayPal
-//     const request = new paypal.orders.OrdersCreateRequest();
-//     request.prefer("return=representation");
-//     request.requestBody({
-//       intent: 'CAPTURE',
-//       purchase_units: [{
-//         amount: {
-//           currency_code: 'GBP',
-//           value: total_payable
-//         }
-//       }],
-//       application_context: {
-//         return_url: 'http://localhost:8081/paypal-callback',
-//         cancel_url: 'http://localhost:8081/cart'
-//       }
-//     });
-
-//     const createOrder = await payPalClient.execute(request);
-//     const orderId = createOrder.result.id;
-
-//     // Redirect the user to PayPal approval URL
-//     const approveUrl = createOrder.result.links.find(link => link.rel === 'approve').href;
-//     res.redirect(approveUrl);
-//   } catch (error) {
-//     console.error("Error creating PayPal order:", error);
-//     res.status(500).send("Failed to create PayPal order");
-//   }
-// });
-
-// router.get("/paypal-callback", async (req, res) => {
-//   const { token, PayerID } = req.query;
-//   const user = req.session.user;
-
-//   if (!token || !PayerID || !user) {
-//     return res.redirect("/cart"); // Redirect to cart if missing params or user not logged in
-//   }
-
-//   try {
-//     // 2. Capture the payment
-//     const captureRequest = new paypal.orders.OrdersCaptureRequest(token);
-//     captureRequest.requestBody({});
-//     const capture = await payPalClient.execute(captureRequest);
-
-//     if (capture.result.status !== 'COMPLETED') {
-//       throw new Error('Payment not successful');
-//     }
-
-//     // Extract PayPal transaction details
-//     const transactionId = capture.result.id;
-//     const payerId = capture.result.payer.payer_id;
-//     const amount = capture.result.purchase_units[0].amount.value;
-//     const currency = capture.result.purchase_units[0].amount.currency_code;
-//     const status = capture.result.status;
-
-//     // Assuming req.session.cartData contains cart items and order details
-//     const {
-//       cartItemscheckoutpage,
-//       total_mrp,
-//       discount_amount,
-//       subtotal,
-//       vat,
-//       deliveryFee,
-//       total_payable,
-//       address_id,
-//     } = req.session.cartData;
-
 //     // Parse cartItemscheckoutpage if passed as JSON string
 //     const parsedCartItems = JSON.parse(cartItemscheckoutpage);
 
@@ -436,8 +184,8 @@ router.post("/place-order", async (req, res) => {
 
 //     const insertOrderValues = [
 //       newOrderId,
-//       user.id,
-//       user.name,
+//       userId,
+//       userName,
 //       parseFloat(total_payable),
 //       parseFloat(vat),
 //       parseFloat(deliveryFee),
@@ -460,13 +208,13 @@ router.post("/place-order", async (req, res) => {
 //     for (const product of parsedCartItems) {
 //       const product_type = product.wear_type_bottom_or_top;
 //       const insertOrderItemQuery = `
-//         INSERT INTO order_items (order_id, user_id ,user_name , product_id, quantity, price, discount_on_product, size, colour ) 
+//         INSERT INTO order_items (order_id, user_id ,user_name , product_id, quantity, price, discount_on_product	, size, colour ) 
 //         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
 //       `;
 //       const insertOrderItemValues = [
 //         newOrderId,
-//         user.id,
-//         user.name,
+//         userId,
+//         userName,
 //         product.product_id,
 //         product.quantity,
 //         parseFloat(product.product_price),
@@ -483,20 +231,58 @@ router.post("/place-order", async (req, res) => {
 //         throw new Error("Failed to insert order item");
 //       }
 //       // updating inventory
-//       const sizeColumn = `size_${product.selected_size.toLowerCase()}`;
-//       const updateInventoryQuery = `
-//         UPDATE ${product_type}_inventory
-//         SET ${sizeColumn} = ${sizeColumn} - ? 
-//         WHERE product_id = ?
-//       `;
-//       await connect.query(updateInventoryQuery, [product.quantity, product.product_id]);
+
+//       if (product_type === 'top') {
+//         const sizeColumn = product.selected_size.toLowerCase();
+//         const updateInventoryQuery = `
+//           UPDATE topwear_inventory_with_sizes
+//           SET ${sizeColumn} = ${sizeColumn} - ? 
+//           WHERE product_id = ?
+//         `;
+//         await connect.query(updateInventoryQuery, [product.quantity, product.product_id]);
+//       } else if (product_type === 'bottom') {
+//         const sizeColumn = `size_${product.selected_size}`;
+//         const updateInventoryQuery = `
+//           UPDATE bottom_wear_inventory_with_sizes
+//           SET ${sizeColumn} = ${sizeColumn} - ? 
+//           WHERE product_id = ?
+//         `;
+//         await connect.query(updateInventoryQuery, [product.quantity, product.product_id]);
+//       } else if (product_type === 'shoes') {
+//         const sizeColumn = `size_${product.selected_size}`;
+//         const updateInventoryQuery = `
+//           UPDATE shoes_inventory
+//           SET ${sizeColumn} = ${sizeColumn} - ? 
+//           WHERE product_id = ?
+//         `;
+//         await connect.query(updateInventoryQuery, [product.quantity, product.product_id]);
+//       } else if (product_type === 'belt') {
+//         const sizeColumn = product.selected_size.toLowerCase();
+//         const updateInventoryQuery = `
+//           UPDATE belts_inventory
+//           SET ${sizeColumn} = ${sizeColumn} - ? 
+//           WHERE product_id = ?
+//         `;
+//         await connect.query(updateInventoryQuery, [product.quantity, product.product_id]);
+//       } else if (product_type === 'wallet') {
+
+//         const sizeColumn = product.selected_size.toLowerCase();
+//         const updateInventoryQuery = `
+//           UPDATE wallet_inventory
+//           SET ${sizeColumn} = ${sizeColumn} - ? 
+//           WHERE product_id = ?
+//         `;
+//         await connect.query(updateInventoryQuery, [product.quantity, product.product_id]);
+//       } else {
+//         throw new Error("Unknown product type");
+//       }
 //     }
 
 //     // Delete items from the cart after placing the order
 //     const cartIds = parsedCartItems.map((item) => item.cart_id);
 //     await connect.query(
 //       "DELETE FROM users_cart WHERE user_id = ? AND id IN (?)",
-//       [user.id, cartIds]
+//       [userId, cartIds]
 //     );
 
 //     // Commit the transaction after all queries succeed
@@ -531,6 +317,220 @@ router.post("/place-order", async (req, res) => {
 //     res.status(500).send("Failed to place order");
 //   }
 // });
+
+
+
+router.post("/place-order", async (req, res) => {
+  const user = req.session.user;
+
+  if (!user) {
+    return res.redirect("/login"); // Redirect to the login page if the user is not logged in
+  }
+
+  const userId = user ? user.id : null;
+  const userName = user.name;
+  const {
+    cartItemscheckoutpage,
+    total_mrp,
+    discount_amount,
+    subtotal,
+    vat,
+    deliveryFee,
+    total_payable,
+    address_id,
+  } = req.body;
+
+  try {
+    // Parse cartItemscheckoutpage if passed as JSON string
+    const parsedCartItems = JSON.parse(cartItemscheckoutpage);
+
+    // 1. Create the order in PayPal
+    const request = new paypal.orders.OrdersCreateRequest();
+    request.prefer("return=representation");
+    request.requestBody({
+      intent: 'CAPTURE',
+      purchase_units: [{
+        amount: {
+          currency_code: 'GBP',
+          value: total_payable
+        }
+      }],
+      application_context: {
+        return_url: 'http://localhost:8081/paypal-callback',
+        cancel_url: 'http://localhost:8081/cart'
+      }
+    });
+
+    const createOrder = await payPalClient.execute(request);
+    const orderId = createOrder.result.id;
+
+    // Redirect the user to PayPal approval URL
+    const approveUrl = createOrder.result.links.find(link => link.rel === 'approve').href;
+    res.redirect(approveUrl);
+  } catch (error) {
+    console.error("Error creating PayPal order:", error);
+    res.status(500).send("Failed to create PayPal order");
+  }
+});
+
+router.get("/paypal-callback", async (req, res) => {
+  const { token, PayerID } = req.query;
+  const user = req.session.user;
+
+  if (!token || !PayerID || !user) {
+    return res.redirect("/cart"); // Redirect to cart if missing params or user not logged in
+  }
+
+  try {
+    // 2. Capture the payment
+    const captureRequest = new paypal.orders.OrdersCaptureRequest(token);
+    captureRequest.requestBody({});
+    const capture = await payPalClient.execute(captureRequest);
+
+    if (capture.result.status !== 'COMPLETED') {
+      throw new Error('Payment not successful');
+    }
+
+    // Extract PayPal transaction details
+    const transactionId = capture.result.id;
+    const payerId = capture.result.payer.payer_id;
+    const amount = capture.result.purchase_units[0].amount.value;
+    const currency = capture.result.purchase_units[0].amount.currency_code;
+    const status = capture.result.status;
+
+    // Assuming req.session.cartData contains cart items and order details
+    const {
+      cartItemscheckoutpage,
+      total_mrp,
+      discount_amount,
+      subtotal,
+      vat,
+      deliveryFee,
+      total_payable,
+      address_id,
+    } = req.session.cartData;
+
+    // Parse cartItemscheckoutpage if passed as JSON string
+    const parsedCartItems = JSON.parse(cartItemscheckoutpage);
+
+    // Start a transaction
+    await connect.query("START TRANSACTION");
+
+    // Generate new order ID
+    const [lastOrderRow] = await connect.query(
+      "SELECT order_id FROM orders ORDER BY order_id DESC LIMIT 1"
+    );
+    let newOrderId = "ALOI000001";
+    if (lastOrderRow.length > 0) {
+      const lastOrderId = lastOrderRow[0].order_id;
+      const lastOrderNumber = parseInt(lastOrderId.slice(4));
+      const nextOrderNumber = lastOrderNumber + 1;
+      newOrderId = "ALOI" + nextOrderNumber.toString().padStart(6, "0");
+    }
+
+    // Insert new order
+    const insertOrderQuery = `
+      INSERT INTO orders (order_id, user_id, user_name , total_payable, vat, delivery_charges, sub_total, total_mrp, discount_amount, address_id , order_status) 
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ? , "order placed")
+    `;
+
+    const insertOrderValues = [
+      newOrderId,
+      user.id,
+      user.name,
+      parseFloat(total_payable),
+      parseFloat(vat),
+      parseFloat(deliveryFee),
+      parseFloat(subtotal),
+      parseFloat(total_mrp),
+      parseFloat(discount_amount),
+      parseInt(address_id),
+    ];
+
+    const [insertOrderResult] = await connect.query(
+      insertOrderQuery,
+      insertOrderValues
+    );
+
+    if (insertOrderResult.affectedRows !== 1) {
+      throw new Error("Failed to insert into orders table");
+    }
+
+    // Insert order items only if the order insertion is successful
+    for (const product of parsedCartItems) {
+      const product_type = product.wear_type_bottom_or_top;
+      const insertOrderItemQuery = `
+        INSERT INTO order_items (order_id, user_id ,user_name , product_id, quantity, price, discount_on_product, size, colour ) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `;
+      const insertOrderItemValues = [
+        newOrderId,
+        user.id,
+        user.name,
+        product.product_id,
+        product.quantity,
+        parseFloat(product.product_price),
+        product.discount_on_product,
+        product.selected_size,
+        product.colour,
+      ];
+      const [insertOrderItemResult] = await connect.query(
+        insertOrderItemQuery,
+        insertOrderItemValues
+      );
+
+      if (insertOrderItemResult.affectedRows !== 1) {
+        throw new Error("Failed to insert order item");
+      }
+      // updating inventory
+      const sizeColumn = `size_${product.selected_size.toLowerCase()}`;
+      const updateInventoryQuery = `
+        UPDATE ${product_type}_inventory
+        SET ${sizeColumn} = ${sizeColumn} - ? 
+        WHERE product_id = ?
+      `;
+      await connect.query(updateInventoryQuery, [product.quantity, product.product_id]);
+    }
+
+    // Delete items from the cart after placing the order
+    const cartIds = parsedCartItems.map((item) => item.cart_id);
+    await connect.query(
+      "DELETE FROM users_cart WHERE user_id = ? AND id IN (?)",
+      [user.id, cartIds]
+    );
+
+    // Commit the transaction after all queries succeed
+    await connect.query("COMMIT");
+
+    // Fetch order details and items for confirmation page
+    const [orderDetails] = await connect.query(
+      `SELECT o.*, a.name, a.email, a.phone, a.pincode, a.full_address 
+       FROM orders o
+       JOIN user_address a ON o.address_id = a.id
+       WHERE o.order_id = ?`,
+      [newOrderId]
+    );
+
+    const [orderItems] = await connect.query(
+      `SELECT oi.*, p.product_name, p.product_title, p.product_description, p.product_main_image
+       FROM order_items oi 
+       JOIN products p ON oi.product_id = p.id 
+       WHERE oi.order_id = ?`,
+      [newOrderId]
+    );
+
+    // Render the order confirmation page with order details
+    res.render("order-confirm", {
+      orderDetails: orderDetails[0], // Assuming orderDetails is an array and you want the first item
+      orderItems,
+      user,
+    });
+  } catch (error) {
+    console.error("Error placing order:", error);
+    await connect.query("ROLLBACK"); // Rollback the transaction in case of an error
+    res.status(500).send("Failed to place order");
+  }
+});
 
 router.get("/product", async (req, res) => {
   const user = req.session.user;
