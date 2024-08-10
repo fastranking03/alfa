@@ -251,6 +251,7 @@ app.use("/", productsRoute);
 app.use("/", favoritesRoute);
 app.use("/", cartRoute);
 app.use("/", placeOrderRoute);
+
 app.use("/category/", CategoryRoutes);
 app.use("/accessory/", accessoriesRoutes);
 app.use("/paypal", paypalRoutes);
@@ -387,7 +388,7 @@ app.get('/auth/github/callback',
   }
 );
 
- 
+
 // Middleware to verify and refresh JWT token
 async function verifyToken(req, res, next) {
   const accessToken = req.cookies.accessToken;
