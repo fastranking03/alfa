@@ -2,8 +2,8 @@
 <html lang="en">
 
 <head>
-  <base href="http://localhost:8081" />
-  <!-- <base href="https://s9wyglh.localto.net/"> -->
+
+  <base href="https://www.alfa-menswear.com/" />
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Alfa Meanswear | Product</title>
@@ -95,16 +95,7 @@
                 <div class="product-md-3">
                   <div class="product-left-wrapper">
 
-                    <!-- <div class="product-search">
-                      <div class="search-title">
-                        <h4 class="product-h4">Search Products</h4>
-                      </div>
-                      <div class="product-search">
-                        <span class="p-s-icon"><img src="assets/images/search.png" alt="" /></span>
-                        <input type="search" name="search" class="product-search-control"
-                          placeholder="Search for products" id="" />
-                      </div>
-                    </div> -->
+
 
                     <div class="product-search">
                       <div class="search-title">
@@ -127,7 +118,7 @@
 
                           <% categories.filter(Category=>! Category.isAccessories).forEach(category=> { %>
                             <li>
-                              <a href="category/<%= category.category_name %>">
+                              <a href="category/<%= category.category_name.toLowerCase() %>">
                                 <button class="cat-item">
                                   <%= category.category_name %>
                                     <span class="cat-span">( <%=category.product_count %> )</span>
@@ -168,8 +159,14 @@
                         <h4 class="product-h4">Size </h4>
                       </div>
                       <% if(wearType=='top' || wearType=='all' ){ %>
-                        <div class="product-size-list">
+                        <div class="product-size-list product-size-list2">
                           <ul id="sizeFilters">
+                            <li>
+                              <div class="product-checkout">
+                                <input type="checkbox" class="size-checkbox" id="sizeXS" value="xs" />
+                                <label for="sizeXS" class="size-item">XS</label>
+                              </div>
+                            </li>
                             <li>
                               <div class="product-checkout">
                                 <input type="checkbox" class="size-checkbox" id="sizeS" value="s" />
@@ -197,7 +194,19 @@
                             <li>
                               <div class="product-checkout">
                                 <input type="checkbox" class="size-checkbox" id="sizeXXL" value="xxl" />
-                                <label for="sizeXXL" class="size-item">XXL</label>
+                                <label for="sizeXXL" class="size-item">2XL</label>
+                              </div>
+                            </li>
+                            <li>
+                              <div class="product-checkout">
+                                <input type="checkbox" class="size-checkbox" id="sizeXXXL" value="xxxl" />
+                                <label for="sizeXXXL" class="size-item">3XL</label>
+                              </div>
+                            </li>
+                            <li>
+                              <div class="product-checkout">
+                                <input type="checkbox" class="size-checkbox" id="sizeXXXXL" value="xxxxl" />
+                                <label for="sizeXXXXL" class="size-item">4XL</label>
                               </div>
                             </li>
                           </ul>
@@ -249,14 +258,14 @@
                                     <label for="bottomSize40" class="size-item">40</label>
                                   </div>
                                 </li>
-                                <!-- <li>
+                                <li>
                             <div class="product-checkout">
                               <input type="checkbox" class="size-checkbox" id="bottomSize42" value="42" />
                               <label for="bottomSize42" class="size-item">42</label>
                             </div>
                           </li>
                           <li>
-                            <div class="product-checkout">
+                            <!-- <div class="product-checkout">
                               <input type="checkbox" class="size-checkbox" id="bottomSize44" value="44" />
                               <label for="bottomSize44" class="size-item">44</label>
                             </div>
@@ -270,19 +279,104 @@
                               </ul>
                             </div>
                             <% } %>
+
+                              <% if(wearType=='suit' || wearType=='all' ){ %>
+                                <div class="product-size-list">
+                                  <ul id="bottomWearSizeFilters">
+
+                                    <li>
+                                      <div class="product-checkout">
+                                        <input type="checkbox" class="size-checkbox" id="suitSize34" value="34" />
+                                        <label for="suitSize34" class="size-item">34</label>
+                                      </div>
+                                    </li>
+                                    <li>
+                                      <div class="product-checkout">
+                                        <input type="checkbox" class="size-checkbox" id="suitSize36" value="36" />
+                                        <label for="suitSize36" class="size-item">36</label>
+                                      </div>
+                                    </li>
+                                    <li>
+                                      <div class="product-checkout">
+                                        <input type="checkbox" class="size-checkbox" id="suitSize38" value="38" />
+                                        <label for="suitSize38" class="size-item">38</label>
+                                      </div>
+                                    </li>
+                                    <li>
+                                      <div class="product-checkout">
+                                        <input type="checkbox" class="size-checkbox" id="suitSize40" value="40" />
+                                        <label for="suitSize40" class="size-item">40</label>
+                                      </div>
+                                    </li>
+
+                                    <li>
+                                      <div class="product-checkout">
+                                        <input type="checkbox" class="size-checkbox" id="suitSize42" value="42" />
+                                        <label for="suitSize42" class="size-item">42</label>
+                                      </div>
+                                    </li>
+                                    <li>
+                                      <div class="product-checkout">
+                                        <input type="checkbox" class="size-checkbox" id="suitSize44" value="44" />
+                                        <label for="suitSize44" class="size-item">44</label>
+                                      </div>
+                                    </li>
+                                    <li>
+                                      <div class="product-checkout">
+                                        <input type="checkbox" class="size-checkbox" id="suitSize46" value="46" />
+                                        <label for="suitSize46" class="size-item">46</label>
+                                      </div>
+                                    </li>
+
+                                    <li>
+                                      <div class="product-checkout">
+                                        <input type="checkbox" class="size-checkbox" id="suitSize48" value="48" />
+                                        <label for="suitSize48" class="size-item">48</label>
+                                      </div>
+                                    </li>
+                                    <li>
+                                      <div class="product-checkout">
+                                        <input type="checkbox" class="size-checkbox" id="suitSize50" value="50" />
+                                        <label for="suitSize50" class="size-item">50</label>
+                                      </div>
+                                    </li>
+                                    <li>
+                                      <div class="product-checkout">
+                                        <input type="checkbox" class="size-checkbox" id="suitSize52" value="52" />
+                                        <label for="suitSize52" class="size-item">52</label>
+                                      </div>
+                                    </li>
+                                    <li>
+                                      <div class="product-checkout">
+                                        <input type="checkbox" class="size-checkbox" id="suitSize54" value="54" />
+                                        <label for="suitSize54" class="size-item">54</label>
+                                      </div>
+                                    </li>
+                                    <li>
+                                      <div class="product-checkout">
+                                        <input type="checkbox" class="size-checkbox" id="suitSize56" value="56" />
+                                        <label for="suitSize56" class="size-item">56</label>
+                                      </div>
+                                    </li>
+
+                                  </ul>
+                                </div>
+                                <% } %>
+
+
                     </div>
 
                     <div class="product-filter">
                       <div class="filter-title">
-                        <h4 class="product-h4">Filter by price</h4>
+                        <h4 class="product-h4">Filter by price yes</h4>
                       </div>
                       <div class="price-range-wrapper">
                         <div class="price-slider">
                           <div class="price-range-slider">
                             Price:
                             <span class="rangeValues"> </span>
-                            <input value="10" min="10" max="100" step="10" class="price-range-input" type="range" />
-                            <input value="100" min="10" max="100" step="10" class="price-range-input" type="range" />
+                            <input value="10" min="10" max="1000" step="10" class="price-range-input" type="range" />
+                            <input value="1000" min="10" max="1000" step="10" class="price-range-input" type="range" />
                           </div>
                         </div>
                       </div>
@@ -297,7 +391,7 @@
                           data-price="<%=(product.product_price * (1 - (product.discount_on_product / 100))).toFixed(2) %>"
                           data-color="<%= product.colour %>" data-size="<%= product.sizes %>">
                           <div class="produt-wrap">
-                            <a href="/product-detail/<%= product.id %> ">
+                            <a href="/product-detail/<%= product.product_title_slug %>/<%= product.id %>">
                               <img src="../product_images/<%= product.product_main_image%> %>" class="pro-img" alt="" />
                             </a>
                           </div>
@@ -309,15 +403,16 @@
                           </div>
                           <div class="product-details shop-content">
                             <div class="product-nameprice">
-                              <a href="/product-detail/<%= product.id %>">
+                              <a href="/product-detail/<%= product.product_title_slug %>/<%= product.id %>">
                                 <div class="product-name">
-                                  <h6>
+                                  <h2>
                                     <%= product.product_name %>
-                                  </h6>
+                                  </h2>
                                 </div>
                                 <p class="product-short-desc">
-                                  Lorem ipsum dolor sit...
+                                  <%= product.product_description.substring(0, 30) %>...
                                 </p>
+
                               </a>
 
                               <div class="product-price">
@@ -326,9 +421,7 @@
                                       (product.discount_on_product / 100))).toFixed(2) %></span>
                                   <span class="mrp-price">
                                     £<%=product.product_price %></span>
-                                  <span class="discount-text">
-                                    (<%=product.discount_on_product %> % OFF
-                                      )</span>
+                                  
                                 </h5>
                               </div>
                             </div>
@@ -483,9 +576,11 @@
                 <div class="price-slider">
                   <div class="price-range-slider">
                     Price:
-                    <span class="rangeValues">$10 - $100</span>
-                    <input value="10" min="10" max="100" step="10" class="price-range-input" type="range" />
-                    <input value="100" min="10" max="100" step="10" class="price-range-input" type="range" />
+                    <span class="rangeValues"> £ 10 - £ 1000</span>
+                    <input value="10" id="min-price" min="10" max="1000" step="10" class="price-range-input"
+                      type="range" />
+                    <input value="1000" id="max-price" min="10" max="1000" step="10" class="price-range-input"
+                      type="range" />
                   </div>
                 </div>
               </div>
@@ -534,78 +629,66 @@
           });
         </script>
 
-
+ 
+<!-- working -->
         <script>
-          $(document).ready(function () {
-            // Price Range Filter
-            const priceInputs = document.querySelectorAll(".price-range-input");
-            const productItems = $(".product-item");
-            const rangeValues = document.querySelectorAll(".rangeValues");
+          document.addEventListener('DOMContentLoaded', function () {
+            const sizeCheckboxes = document.querySelectorAll('.size-checkbox');
+            const colorCheckboxes = document.querySelectorAll('.cat-checkbox');
+            const priceInputs = document.querySelectorAll('.price-range-input');
+            const rangeValues = document.querySelector('.rangeValues');
 
-            priceInputs.forEach((input) => {
-              input.addEventListener("input", applyFilters);
-            });
+            function updateRangeValues() {
+              const minPrice = parseFloat(priceInputs[0].value);
+              const maxPrice = parseFloat(priceInputs[1].value);
+              rangeValues.textContent = `$${minPrice} - $${maxPrice}`;
+            }
 
-            // Color Filter
-            const colorCheckboxes = $(".cat-checkbox");
-            const sizeCheckboxes = $(".size-checkbox");
+            function filterProducts() {
+              // Get selected sizes, colors, and price range
+              const selectedSizes = Array.from(sizeCheckboxes)
+                .filter(checkbox => checkbox.checked)
+                .map(cb => cb.value);
+              const selectedColors = Array.from(colorCheckboxes)
+                .filter(checkbox => checkbox.checked)
+                .map(cb => cb.value);
+              const priceMin = Math.min(parseFloat(priceInputs[0].value), parseFloat(priceInputs[1].value));
+              const priceMax = Math.max(parseFloat(priceInputs[0].value), parseFloat(priceInputs[1].value));
 
-            colorCheckboxes.on("change", applyFilters);
-            sizeCheckboxes.on("change", applyFilters);
+              updateRangeValues();
+              // Get all product items
+              const products = document.querySelectorAll('.product-item');
 
-            function applyFilters() {
-              const minPrice = parseInt(priceInputs[0].value);
-              const maxPrice = parseInt(priceInputs[1].value);
+              // Loop through each product and apply filters
+              products.forEach(product => {
+                const productSize = product.getAttribute('data-size').split(':'); // Use ':' to split sizes
+                const productColor = product.getAttribute('data-color');
+                const productPrice = parseFloat(product.getAttribute('data-price'));
 
-              rangeValues.forEach((rangeValue) => {
-                rangeValue.textContent = `$${minPrice} - $${maxPrice}`;
-              });
+                // Check if product matches selected size, color, and price
+                const matchesSize = selectedSizes.length === 0 || selectedSizes.some(size => productSize.includes(size));
+                const matchesColor = selectedColors.length === 0 || selectedColors.includes(productColor);
+                const matchesPrice = productPrice >= priceMin && productPrice <= priceMax;
 
-              const selectedColors = [];
-              colorCheckboxes.each(function () {
-                if ($(this).is(":checked")) {
-                  selectedColors.push($(this).val().toLowerCase());
-                }
-              });
-
-              const selectedSizes = [];
-              sizeCheckboxes.each(function () {
-                if ($(this).is(":checked")) {
-                  selectedSizes.push($(this).val());
-                }
-              });
-
-              productItems.each(function () {
-                const productPrice = parseFloat($(this).data("price"));
-                const productColor = $(this).data("color").toLowerCase();
-                const sizeData = $(this).data("size").toLowerCase().split(":");
-                const productSizes = [];
-                for (let i = 0; i < sizeData.length; i += 2) {
-                  // Ensure size is not empty and value is numeric
-                  if (i + 1 < sizeData.length && sizeData[i + 1].trim() !== "" && !isNaN(sizeData[i + 1])) {
-                    productSizes.push(sizeData[i]);
-                  }
-                }
-
-                const matchesPrice =
-                  productPrice >= minPrice && productPrice <= maxPrice;
-                const matchesColor =
-                  selectedColors.length === 0 ||
-                  selectedColors.includes(productColor);
-                const matchesSize =
-                  selectedSizes.length === 0 ||
-                  selectedSizes.some((size) => productSizes.includes(size));
-
-                if (matchesPrice && matchesColor && matchesSize) {
-                  $(this).show();
+                // Display the product if all conditions match, otherwise hide it
+                if (matchesSize && matchesColor && matchesPrice) {
+                  product.style.display = 'block';
                 } else {
-                  $(this).hide();
+                  product.style.display = 'none';
                 }
               });
             }
-          });
-        </script>
 
+            // Attach event listeners to filters
+            sizeCheckboxes.forEach(checkbox => checkbox.addEventListener('change', filterProducts));
+            colorCheckboxes.forEach(checkbox => checkbox.addEventListener('change', filterProducts));
+            priceInputs.forEach(input => {
+              input.addEventListener('input', filterProducts);
+              input.addEventListener('input', updateRangeValues);
+            });
+          });
+
+        </script>
 
         <!-- End -->
         <script>

@@ -1,7 +1,7 @@
 <div>
     <footer class="footer">
         <div class="footer-wrapper">
-            <div class="alfa-subscription">
+            <div class="alfa-subscription d-none">
                 <div class="subs-text">
                     <h3> Subscribe & get 20% Discount</h3>
                 </div>
@@ -23,8 +23,8 @@
                             <img src="assets/images/alfa-logo.png" alt="">
                         </div>
                         <div class="footer-about">
-                            <p>
-                                Lorem ipsum dolor sit amet, consectetur <br> adipiscing elit. Nam luctus
+                            <p>At Alfa, our mission is to empower men with confidence <br> and style through exceptional
+                                clothing and unparalleled service.</p>
                         </div>
                         <div class="footer-customer-care">
                             <div class="fojkjkffdfd">
@@ -40,9 +40,9 @@
                                 <h6>Follow Us:</h6>
                             </div>
                             <ul class="comman-ul">
-                                <li><a href=""><img src="assets/images/facebook.png" class="social-icon" alt=""></a>
+                                <li><a href="https://www.facebook.com/AlfaMenswear/?locale=en_GB" target="_blank"><img src="assets/images/facebook.png" class="social-icon" alt=""></a>
                                 </li>
-                                <li><a href=""><img src="assets/images/instagram.png" class="social-icon" alt=""></a>
+                                <li><a href="https://www.instagram.com/alfa.menswear/"  target="_blank"><img src="assets/images/instagram.png" class="social-icon" alt=""></a>
                                 </li>
                                 <li><a href=""><img src="assets/images/twitter.png" class="social-icon" alt=""></a></li>
                                 <li><a href=""><img src="assets/images/youtube.png" class="social-icon" alt=""></a></li>
@@ -72,7 +72,7 @@
                                 <ul class="footer-link-ul comman-ul">
 
                                     <% categories.filter(category=> !category.isAccessories).forEach(category => { %>
-                                        <li><a href="/category/<%= category.category_name %>" class="menu-item">
+                                        <li><a href="/category/<%= category.category_name.toLowerCase() %>" class="menu-item">
                                                 <%= category.category_name %>
                                             </a></li>
                                         <% }); %>
@@ -98,6 +98,6 @@
         </div>
     </footer>
     <div class="footer-copy-right">
-        <p>@2024 alfamenswear</p>
+        <p>©2024 alfamenswear</p>
     </div>
 </div>

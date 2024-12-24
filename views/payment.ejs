@@ -6,6 +6,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Alfa Meanswear | Product Details</title>
     <%- include('includes/head') %>
+        <!-- <script
+            src="https://www.paypal.com/sdk/js?client-id=AdOg9K3leJKNveSuGNSMZAyyN0QN7GufIn0GRmFyp1MZzHcOsjXCd0z5yXEk7I8msFWWWLJkz0bsFi2F"></script> -->
 </head>
 
 <body>
@@ -16,103 +18,13 @@
                     <div class="container">
                         <div class="address-t-wrapper">
                             <div class="shiping-title">
-                                <h5>Select Payment Method</h5>
+                                <!-- <h5>Select Payment Method</h5> -->
                             </div>
                         </div>
                         <div class="row mt-3">
-                            <div class="col-md-8">
-                                <div class="alfa-checkout-address">
-
-                                    <div class="shipping-address payment-section">
-                                        <div class="payment-wrapper">
-                                            <div class="payment-left-item">
-                                                <div class="pay-left-wrap">
-                                                    <div class="payment-text">
-                                                        <h6>Recommended</h6>
-                                                    </div>
-                                                    <div class="payment-by-wrapper">
-                                                        <ul>
-                                                            <li><a href=""><span><img class="payment-img"
-                                                                            src="assets/images/payment-icon/cash.png"
-                                                                            alt=""></span> Cash on Delivery
-                                                                    (Cash/UPI)</a></li>
-                                                            <li><a href=""><span><img class="payment-img"
-                                                                            src="assets/images/payment-icon/cd.png"
-                                                                            alt=""></span> Credit/Debit Card</a></li>
-                                                            <li><a href=""><span><img class="payment-img"
-                                                                            src="assets/images/payment-icon/wallet.png"
-                                                                            alt=""></span> Wallets</a></li>
-                                                            <li><a href=""><span><img class="payment-img"
-                                                                            src="assets/images/payment-icon/paylater.png"
-                                                                            alt=""></span> Pay Later</a></li>
-                                                            <li><a href=""><span><img class="payment-img"
-                                                                            src="assets/images/payment-icon/emi.png"
-                                                                            alt=""></span> EMI</a></li>
-                                                            <li><a href=""><span><img class="payment-img"
-                                                                            src="assets/images/payment-icon/netbanking.png"
-                                                                            alt=""></span> Net Banking</a></li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="payment-right-item">
-                                                <div class="payment-right-wrap">
-                                                    <div class="payment-text paymant2-text">
-                                                        <h6>Recommended Payment Options</h6>
-                                                    </div>
-                                                    <div class="recommanded-option">
-                                                        <ul>
-                                                            <li>
-                                                                <div class="recom-wrapper">
-                                                                    <div class="recom-checkbox">
-                                                                        <input type="radio" name="radio" id="radio"
-                                                                            value="radio1">
-                                                                        <label for="radio">Google Pay</label>
-                                                                    </div>
-                                                                    <div class="recom-check-img">
-                                                                        <img src="assets/images/payment-icon/googlePay.png"
-                                                                            alt="">
-                                                                    </div>
-                                                                </div>
-                                                            </li>
-                                                            <li>
-                                                                <div class="recom-wrapper">
-                                                                    <div class="recom-checkbox">
-                                                                        <input type="radio" name="radio" id="radio2"
-                                                                            value="radio2">
-                                                                        <label for="radio2">Cash on Delivery</label>
-                                                                    </div>
-                                                                    <div class="recom-check-img">
-                                                                        <img src="assets/images/payment-icon/cash2.png"
-                                                                            alt="">
-                                                                    </div>
-                                                                </div>
-                                                            </li>
-                                                            <li>
-                                                                <div class="recom-wrapper">
-                                                                    <div class="recom-checkbox">
-                                                                        <input type="radio" name="radio" id="radio3"
-                                                                            value="radio3">
-                                                                        <label for="radio3">Phone Pay</label>
-                                                                    </div>
-                                                                    <div class="recom-check-img">
-                                                                        <img src="assets/images/payment-icon/phonepay.png"
-                                                                            style="width: 20px;" alt="">
-                                                                    </div>
-                                                                </div>
-                                                            </li>
-                                                        </ul>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                </div>
-                            </div>
-                            <div class="col-md-4">
+                            
+                            <div class="col-md-8 text-center mx-auto">
                                 <div class="checkout-item-wrapper">
-
                                     <div class="checkout-cart-wrapper">
                                         <div class="alfa-cart-total">
                                             <div>
@@ -124,80 +36,54 @@
                                                     <div class="alfa-price">£ <%=total_mrp %>
                                                     </div>
                                                 </li>
-
                                                 <li>
                                                     <div class="alfa-text">Discount on MRP</div>
-
                                                     <div class="alfa-price">£ <%=discount_on_mrp %>
                                                     </div>
                                                 </li>
-
                                                 <li>
                                                     <div class="alfa-text">Sub Total</div>
-
                                                     <div class="alfa-price">£ <%=subtotal %>
                                                     </div>
                                                 </li>
-
                                                 <li>
-                                                    <div class="alfa-text">
-                                                        Shipping Charges
-                                                    </div>
+                                                    <div class="alfa-text">Shipping Charges</div>
                                                     <div class="alfa-price">£ <%=delivery_charges %>
                                                     </div>
                                                 </li>
-
-                                                <li>
-                                                    <div class="alfa-text">
-                                                        Vat
-                                                    </div>
+                                                <!-- <li>
+                                                    <div class="alfa-text">Vat</div>
                                                     <div class="alfa-price">£ <%=vat %>
                                                     </div>
-                                                </li>
-
- 
+                                                </li> -->
                                             </ul>
                                         </div>
-
                                         <div class="alfa-cart-total">
                                             <ul>
                                                 <li>
                                                     <div class="alfa-text">Total Cost</div>
-                                                    <div class="alfa-price">
-                                                        £ <%=total_payable %>
+                                                    <div class="alfa-price">£ <%=total_payable %>
                                                     </div>
                                                 </li>
                                             </ul>
                                         </div>
-
-                                        <!--  -->
-
                                         <form action="place-order" method="post">
-
-                                            <input type="hidden" name="address_id" value="<%=selectedAddress  %>">
-
+                                            <input type="hidden" name="address_id" id="cartItemscheckoutpage"
+                                                value="<%=selectedAddress %>">
                                             <input type="hidden" name="cartItemscheckoutpage"
                                                 value="<%= JSON.stringify(cartItemscheckoutpage) %>" />
-
                                             <input type="hidden" name="total_mrp" value="<%= total_mrp %>" />
-
                                             <input type="hidden" name="discount_amount"
                                                 value="<%= discount_on_mrp %>" />
-
                                             <input type="hidden" name="subtotal" value="<%= subtotal %>" />
-
-
                                             <input type="hidden" name="vat" value="<%= vat %>" />
                                             <input type="hidden" name="deliveryFee" value="<%= delivery_charges %>" />
                                             <input type="hidden" name="total_payable" value="<%= total_payable %>" />
-
-
-                                            <div class="complete-process-wrapper" style="text-align: right;">
-                                                <button type="submit" class="cart-btn add-to-cart">Complete
-                                                    Order</button>
+                                            <div class="complete-process-wrapper" style="text-align: center;">
+                                                <button type="submit" class="btn btn-warning add-to-cart">Complete Order
+                                                    Via PayPal Payment</button>
                                             </div>
                                         </form>
-
                                     </div>
                                 </div>
                             </div>
@@ -210,6 +96,55 @@
                 <!-- End -->
     </div>
     <%- include('includes/foot') %>
+
+        <!-- <script>
+            // Define JavaScript variables for EJS data
+            const totalAmount = document.querySelector('input[name="total_payable"]').value;
+            const currency = 'USD';
+            const description = 'Order Description';
+            const products = JSON.parse(document.querySelector('input[name="cartItemscheckoutpage"]').value);
+
+        </script> -->
+
+        <!-- <script>
+            paypal.Buttons({
+                createOrder: function (data, actions) {
+                    return fetch('/paypal/create-paypal-transaction', {
+                        method: 'post',
+                        headers: {
+                            'content-type': 'application/json'
+                        },
+                        body: JSON.stringify({
+                            amount: totalAmount,
+                            currency: currency,
+                            description: description,
+                            products: products
+                        })
+                    }).then(function (res) {
+                        return res.json();
+                    }).then(function (data) {
+                        return data.id;
+                    });
+                },
+                onApprove: function (data, actions) {
+                    return fetch('/paypal/capture-paypal-transaction', {
+                        method: 'post',
+                        body: JSON.stringify({ orderID: data.orderID }),
+                        headers: {
+                            'content-type': 'application/json'
+                        }
+                    }).then(function (res) {
+                        return res.json();
+                    }).then(function (details) {
+                        alert('Transaction completed by ' + details.payer.name.given_name);
+                        // You can redirect to a success page or update the UI accordingly
+                    });
+                }
+            }).render('#paypal-button-container');
+        </script> -->
+
+
+
 </body>
 
 </html>

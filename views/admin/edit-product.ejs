@@ -1,94 +1,104 @@
 <html lang="en">
+
 <head>
-<base href="http://localhost:8081"/>
+  <base href="https://alfa-menswear.com/" />
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Alfa Admin | Edit Product</title>
-  <%- include('includes/head') %> 
-  <link
-    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
-    rel="stylesheet"
-  />
- </head>
+  <%- include('includes/head') %>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" />
+</head>
 
 <body>
   <div class="main-admin-wrapper">
     <%- include('includes/header') %>
-    <div class="alfa-admin-wrapper">
-      <div class="admin-side-nav">
-        <%- include('includes/sidebar') %>
-        <div class="admin-main-layout">
-          <div class="admin-breadcrumb">
-            <div class="admin-breadcrumb-title">
-              <h4>Edit Product</h4>
+      <div class="alfa-admin-wrapper">
+        <div class="admin-side-nav">
+          <%- include('includes/sidebar') %>
+            <div class="admin-main-layout">
+              <div class="admin-breadcrumb">
+                <div class="admin-breadcrumb-title">
+                  <h4>Edit Product</h4>
+                </div>
+              </div>
+              <div class="admin-card">
+                <!-- Edit Product Form -->
+                <form action="/admin/edit-product-submit" method="POST" class="row g-3">
+                  <input type="hiddden" name="productId" value="<%= productId %>">
+
+                  <div class="col-md-3">
+                    <label for="product_name" class="form-label">Product Name:</label>
+                    <input type="text" id="product_name" name="product_name" class="form-control"
+                      value="<%= product.product_name %>" required>
+                  </div>
+
+                  <div class="col-md-3">
+                    <label for="product_price" class="form-label">Product Price:</label>
+                    <input type="text" id="product_price" name="product_price" class="form-control"
+                      value="<%= product.product_price %>" required>
+                  </div>
+
+                  <div class="col-md-3">
+                    <label for="discount_on_product" class="form-label">Discount:</label>
+                    <input type="text" id="discount_on_product" name="discount_on_product" class="form-control"
+                      value="<%= product.discount_on_product %>" required>
+                  </div>
+
+                  <div class="col-md-3">
+                    <label for="product_title" class="form-label">Product Title:</label>
+                    <input type="text" id="product_title" name="product_title" class="form-control"
+                      value="<%= product.product_title %>" required>
+                  </div>
+
+                  <div class="col-md-12">
+                    <label for="product_description" class="form-label">Product Description:</label>
+                    <textarea id="product_description" name="product_description" class="form-control"
+                      required><%= product.product_description %></textarea>
+                  </div>
+
+                  <div class="col-md-4">
+                    <label for="category_id" class="form-label">Category:</label>
+                    <select id="category_id" name="category_id" class="form-select" required>
+                      <option value="">Select Category</option>
+                      <% categories.forEach(category=> { %>
+                        <option value="<%= category.id %>" <%=(category.id===product.category_id) ? 'selected' : '' %>>
+                          <%= category.category_name %>
+                        </option>
+                        <% }) %>
+                    </select>
+                  </div>
+
+                  <div class="col-md-4">
+                    <label for="subcategory_id" class="form-label">Subcategory:</label>
+                    <select id="subcategory_id" name="subcategory_id" class="form-select" required>
+                      <% subcategories.forEach(subcategory=> { %>
+                        <option value="<%= subcategory.id %>" <%=(subcategory.id===product.subcategory_id) ? 'selected'
+                          : '' %>><%= subcategory.sub_category_name %>
+                        </option>
+                        <% }) %>
+                    </select>
+                  </div>
+
+                  <div class="col-md-4">
+                    <label for="wear_type_bottom_or_top" class="form-label">Wear Type:</label>
+                    <select id="wear_type_bottom_or_top" name="wear_type_bottom_or_top" class="form-select" required>
+                      <option value="top" <%=(product.wear_type_bottom_or_top==='top' ) ? 'selected' : '' %>>Top
+                      </option>
+                      <option value="bottom" <%=(product.wear_type_bottom_or_top==='bottom' ) ? 'selected' : '' %>
+                        >Bottom</option>
+                    </select>
+                  </div>
+
+                  <div class="col-12">
+                    <button type="submit" class="btn"
+                      style="color: aliceblue; background-color: rgb(15, 13, 13);">Update Product</button>
+                  </div>
+
+                </form>
+              </div>
             </div>
-          </div>
-          <div class="admin-card"> 
-            <!-- Edit Product Form -->
-            <form action="/admin/edit-product-submit" method="POST" class="row g-3">
-                <input type="hiddden" name="productId" value="<%= productId %>">
-
-              <div class="col-md-3">
-                <label for="product_name" class="form-label">Product Name:</label>
-                <input type="text" id="product_name" name="product_name" class="form-control" value="<%= product.product_name %>" required>
-              </div>
-
-              <div class="col-md-3">
-                <label for="product_price" class="form-label">Product Price:</label>
-                <input type="text" id="product_price" name="product_price" class="form-control" value="<%= product.product_price %>" required>
-              </div>
-              
-              <div class="col-md-3">
-                <label for="discount_on_product" class="form-label">Discount:</label>
-                <input type="text" id="discount_on_product" name="discount_on_product" class="form-control" value="<%= product.discount_on_product %>" required>
-              </div>
-              
-              <div class="col-md-3">
-                <label for="product_title" class="form-label">Product Title:</label>
-                <input type="text" id="product_title" name="product_title" class="form-control" value="<%= product.product_title %>" required>
-              </div>
-              
-              <div class="col-md-12">
-                <label for="product_description" class="form-label">Product Description:</label>
-                <textarea id="product_description" name="product_description" class="form-control" required><%= product.product_description %></textarea>
-              </div>
-              
-              <div class="col-md-4">
-                <label for="category_id" class="form-label">Category:</label>
-                <select id="category_id" name="category_id" class="form-select" required>
-                  <option value="">Select Category</option>
-                  <% categories.forEach(category => { %>
-                  <option value="<%= category.id %>" <%= (category.id === product.category_id) ? 'selected' : '' %>><%= category.category_name %></option>
-                  <% }) %>
-                </select>
-              </div>
-
-              <div class="col-md-4">
-                <label for="subcategory_id" class="form-label">Subcategory:</label>
-                <select id="subcategory_id" name="subcategory_id" class="form-select" required> 
-                  <% subcategories.forEach(subcategory => { %>
-                  <option value="<%= subcategory.id %>" <%= (subcategory.id === product.subcategory_id) ? 'selected' : '' %>><%= subcategory.sub_category_name %></option>
-                  <% }) %>
-                </select>
-              </div>
-
-              <div class="col-md-4">
-                <label for="wear_type_bottom_or_top" class="form-label">Wear Type:</label>
-                <select id="wear_type_bottom_or_top" name="wear_type_bottom_or_top" class="form-select" required>
-                  <option value="top" <%= (product.wear_type_bottom_or_top === 'top') ? 'selected' : '' %>>Top</option>
-                  <option value="bottom" <%= (product.wear_type_bottom_or_top === 'bottom') ? 'selected' : '' %>>Bottom</option>
-                </select>
-              </div>
-              
-              <div class="col-12">
-                <button type="submit" class="btn" style="color: aliceblue; background-color: rgb(15, 13, 13);">Update Product</button>
-              </div>
-              
-            </form>
-          </div>
         </div>
       </div>
-    </div>
   </div>
 
   <script>
@@ -96,14 +106,14 @@
     function populateSubcategories() {
       const selectedCategoryId = document.getElementById('category_id').value;
       const subcategorySelect = document.getElementById('subcategory_id');
-  
+
       // Clear existing options
       subcategorySelect.innerHTML = '<option value="">Select Subcategory</option>';
-  
+
       if (selectedCategoryId) {
         // Enable subcategory select
         subcategorySelect.disabled = false;
-  
+
         // Filter and add subcategory options
         <% subcategories.forEach(subcategory => { %>
           if ('<%= subcategory.category_id %>' === selectedCategoryId) {
@@ -118,15 +128,16 @@
         subcategorySelect.disabled = true;
       }
     }
-  
+
     // Trigger the event listener after the page content is loaded
     window.addEventListener('DOMContentLoaded', populateSubcategories);
-  
+
     // Add event listener to category dropdown to update subcategories
     document.getElementById('category_id').addEventListener('change', populateSubcategories);
   </script>
-  
-  
+
+
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

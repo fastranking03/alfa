@@ -13,7 +13,7 @@
                             <div class="dropdown-menu-wrapper">
                                 <ul>
                                     <% categories.filter(category=> !category.isAccessories).forEach(category => { %>
-                                        <li><a href="/category/<%= category.category_name %>" class="menu-item">
+                                        <li><a href="/category/<%= category.category_name.toLowerCase() %>" class="menu-item">
                                                 <%= category.category_name %>
                                             </a></li>
                                         <% }); %>
@@ -27,7 +27,7 @@
                             <div class="dropdown-menu-wrapper">
                                 <ul>
                                     <% categories.filter(category=> category.isAccessories).forEach(category => { %>
-                                        <li><a href="/accessory/<%= category.category_name %>" class="menu-item">
+                                        <li><a href="/accessories/<%= category.category_name.toLowerCase() %>" class="menu-item">
                                                 <%= category.category_name %>
                                             </a></li>
                                         <% }); %>

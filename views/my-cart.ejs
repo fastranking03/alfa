@@ -72,7 +72,7 @@
                                     <ul id="sizeList-<%= item.cart_id %>" class="size-list">
                                       <% if (item.sizes && Object.keys(item.sizes).length> 0) { %>
                                         <% for (const [size, stock] of Object.entries(item.sizes)) { %>
-                                          <% if (item.wear_type_bottom_or_top==='bottom' ) { %>
+                                          <% if (item.wear_type_bottom_or_top==='bottom' || item.wear_type_bottom_or_top==='suit' ) { %>
                                             <% const numericSize=size.replace('size_', '' ); %>
                                               <% if (numericSize.length> 0) { %>
                                                 <li class="cart-li">
@@ -193,8 +193,7 @@
                                   <span class="mrp-price cart-mrp">£<%=item.product_price %></span>
                                   <span class="final-prices cart-final">£<%= (item.product_price * (1 -
                                       (item.discount_on_product / 100))).toFixed(2) %></span>
-                                  <span class="discount-text cart-discount">(<%=item.discount_on_product %>% OFF
-                                      )</span>
+                                 
                                 </h5>
                                 <div class="move-to-wishlist">
                                   <a href="/move-to-wishlist/<%= item.cart_id %>">Move To Wishlist</a>
@@ -328,14 +327,14 @@
                           <% } %>
 
 
-                            <li>
+                            <!-- <li>
                               <div class="alfa-text">VAT</div>
                               <div class="alfa-price">
                                 £ <span id="GST-ajax">
                                   <%= GST %>
                                 </span>
                               </div>
-                            </li>
+                            </li> -->
                             <li>
                               <div class="alfa-text">Delivery Fee</div>
                               <div class="alfa-price">

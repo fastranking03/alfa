@@ -20,11 +20,11 @@
 
           <li><a href="/admin/banner"><span><i class="fa-solid fa-image"></i></span> Banner</a></li>
           <li><a href="/admin/category"><span><i class="fa-solid fa-folder"></i></span> Category</a></li>
-          <li><a href="/admin/subcategory"><span><i class="fa-solid fa-folder"></i></span> Sub Category</a></li>
+          <!-- <li><a href="/admin/subcategory"><span><i class="fa-solid fa-folder"></i></span> Sub Category</a></li> -->
           <li class="menu-item-has-children">
             <a href="javascript:void(0)" style="cursor: pointer;">
               <div class="admin-submenu">
-                <div><span> <i class="fa-solid fa-table"></i></span> Products </div>
+                <div><span> <i class="fa-solid fa-table"></i></span> Upload New Product </div>
                 <span><i class="fa-solid fa-angle-down"></i></span>
               </div>
             </a>
@@ -67,6 +67,26 @@
               <li><a href="/admin/inventory/bottom-wear">Bottom Wear Inventory</a></li>
             </ul>
 
+          </li>
+
+          <li class="menu-item-has-children">
+            <a href="javascript:void(0)" style="cursor: pointer;">
+              <div class="admin-submenu">
+                <div><span> <i class="fa-solid fa-table"></i></span> Full Inventory System </div>
+                <span><i class="fa-solid fa-angle-down"></i></span>
+              </div>
+            </a>
+
+            <ul class="sub-menu alfa-sub-menu">
+              <% categories.forEach(category=> { %>
+                <li>
+                  <a href="/admin/inventory/<%= category.category_name.toLowerCase() %>">
+
+                    <%= category.category_name %>
+                  </a>
+                </li>
+                <% }); %>
+            </ul>
           </li>
 
           <li><a href="/admin/orders"> <span><i class="fa-solid fa-folder"></i></span> Order List</a></li>

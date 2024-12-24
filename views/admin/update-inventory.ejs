@@ -1,7 +1,7 @@
 <html lang="en">
 
 <head>
-  <base href="http://localhost:8081" />
+  <base href="https://alfa-menswear.com/" />
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Alfa Admin | Edit Product</title>
@@ -193,9 +193,141 @@
                         </button>
                       </div>
                     </form>
-                    <% } else { %>
-                      <h3>No inventory item found</h3>
-                      <% } %>
+                    <% } else if (type==='shoes' ) { %>
+                      <form action="/admin/update-inventory" method="POST" class="row g-3">
+                        <!-- Hidden fields for product ID and type -->
+                        <input type="hidden" name="type" value="shoes" />
+                        <input type="hidden" name="productId" value="<%= productId %>" />
+
+                        <input type="hidden" name="product_name" value="<%=product.product_name%>">
+
+                        <!-- Size fields -->
+                        <!-- Size XS -->
+                        <div class="col-md-2">
+                          <label for="size_xs" class="form-label">Size 6:</label>
+                          <input type="text" class="form-control" id="size_6" name="size_6"
+                            value="<%= item && item.size_6 !== undefined ? item.size_6 : '' %>" />
+                        </div>
+
+                        <!-- Size S -->
+                        <div class="col-md-2">
+                          <label for="size_s" class="form-label">Size 7:</label>
+                          <input type="text" class="form-control" id="size_7" name="size_7"
+                            value="<%= item && item.size_7 !== undefined ? item.size_7 : '' %>" />
+                        </div>
+
+                        <!-- Size M -->
+                        <div class="col-md-2">
+                          <label for="size_m" class="form-label">Size 8:</label>
+                          <input type="text" class="form-control" id="size_8" name="size_8"
+                            value="<%= item && item.size_8 !== undefined ? item.size_8 : '' %>" />
+                        </div>
+
+                        <!-- Size L -->
+                        <div class="col-md-2">
+                          <label for="size_l" class="form-label">Size 9:</label>
+                          <input type="text" class="form-control" id="size_9" name="size_9"
+                            value="<%= item && item.size_9 !== undefined ? item.size_9 : '' %>" />
+                        </div>
+
+                        <!-- Size XL -->
+                        <div class="col-md-2">
+                          <label for="size_xl" class="form-label">Size 10:</label>
+                          <input type="text" class="form-control" id="size_10" name="size_10"
+                            value="<%= item && item.size_10 !== undefined ? item.size_10 : '' %>" />
+                        </div>
+
+                        <!-- Size XXL -->
+                        <div class="col-md-2">
+                          <label for="size_xxl" class="form-label">Size 11:</label>
+                          <input type="text" class="form-control" id="size_11" name="size_11"
+                            value="<%= item && item.size_11 !== undefined ? item.size_11 : '' %>" />
+                        </div>
+
+                        <!-- Size XXXL -->
+                        <div class="col-md-2">
+                          <label for="size_xxxl" class="form-label">Size 12:</label>
+                          <input type="text" class="form-control" id="size_12" name="size_12"
+                            value="<%= item && item.size_12 !== undefined ? item.size_12 : '' %>" />
+                        </div>
+
+                        <!-- Size XXXXL -->
+                        <div class="col-md-2">
+                          <label for="size_xxxxl" class="form-label">Size 13:</label>
+                          <input type="text" class="form-control" id="size_13" name="size_13"
+                            value="<%= item && item.size_13 !== undefined ? item.size_13 : '' %>" />
+                        </div>
+
+                        <div class="col-12">
+                          <button type="submit" class="btn" style="color: aliceblue; background-color: rgb(15, 13, 13)">
+                            Update Inventory
+                          </button>
+                        </div>
+                      </form>
+                      <% } else if (type==='belt' ) { %>
+                        <form action="/admin/update-inventory" method="POST" class="row g-3">
+                          <!-- Hidden fields for product ID and type -->
+                          <input type="hidden" name="type" value="belt" />
+                          <input type="hidden" name="productId" value="<%= productId %>" />
+
+                          <input type="hidden" name="product_name" value="<%=product.product_name%>">
+
+
+                          <!-- Size XS -->
+                          <div class="col-md-2">
+                            <label for="size_xs" class="form-label">S :</label>
+                            <input type="text" class="form-control" id="s" name="belt_size_s"
+                              value="<%= item && item.s !== undefined ? item.s : '' %>" />
+                          </div>
+
+                          <!-- Size S -->
+                          <div class="col-md-2">
+                            <label for="size_s" class="form-label">M :</label>
+                            <input type="text" class="form-control" id="m" name="belt_size_m"
+                              value="<%= item && item.m !== undefined ? item.m : '' %>" />
+                          </div>
+
+                          <!-- Size M -->
+                          <div class="col-md-2">
+                            <label for="size_m" class="form-label">L :</label>
+                            <input type="text" class="form-control" id="l" name="belt_size_l"
+                              value="<%= item && item.l !== undefined ? item.l : '' %>" />
+                          </div>
+
+                          <!-- Size L -->
+                          <div class="col-md-2">
+                            <label for="size_l" class="form-label">XL :</label>
+                            <input type="text" class="form-control" id="xl" name="belt_size_xl"
+                              value="<%= item && item.xl !== undefined ? item.xl : '' %>" />
+                          </div>
+
+                          <!-- Size 2XL -->
+                          <div class="col-md-2">
+                            <label for="size_2xl" class="form-label">2 XL :</label>
+                            <input type="text" class="form-control" id="2xl" name="belt_size_2xl"
+                              value="<%= item && item['2xl'] !== undefined ? item['2xl'] : '' %>" />
+                          </div>
+
+                          <!-- Size 3XL -->
+                          <div class="col-md-2">
+                            <label for="size_3xl" class="form-label">3 XL :</label>
+                            <input type="text" class="form-control" id="3xl" name="belt_size_3xl"
+                              value="<%= item && item['3xl'] !== undefined ? item['3xl'] : '' %>" />
+                          </div>
+
+
+
+
+                          <div class="col-12">
+                            <button type="submit" class="btn"
+                              style="color: aliceblue; background-color: rgb(15, 13, 13)">
+                              Update Inventory
+                            </button>
+                          </div>
+                        </form>
+                        <% } else { %>
+                          <h3>No inventory item found</h3>
+                          <% } %>
               </div>
             </div>
         </div>

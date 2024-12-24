@@ -1,0 +1,749 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alfa Meanswear | Home</title>
+  <meta name="robots" content="noindex">
+
+  <%- include('includes/head') %>
+
+</head>
+
+<body>
+  <!-- Loader -->
+  <div class="page-loader" id="loader">
+    <div class="spinner">
+      <div class="inner"></div>
+    </div>
+  </div>
+
+  <div class="alfa-main-wraper" id="web-content">
+    <%- include('includes/header') %>
+      <div class="mt-100 mt-700">
+        <!-- HERO SECTION -->
+        <section class="hero-section position-relative">
+          <div id="hero-carousel" class="owl-carousel comman-nav">
+            <div class="items hero-sec-items" style="background-color: #F9CF2D1A;">
+              <div class="container">
+                <div class="row position-relative" style="z-index: 999;">
+                  <div class="col-md-6">
+                    <div class="alfa-hero-left-wrapper">
+                      <div class="alfa-text">
+                        <h6><span> </span> mens wear </h6>
+                      </div>
+                      <div class="alfa-main-title">
+                        <h1>Alfa Menswear <br> Accessories</h1>
+                      </div>
+                      <div class="alfa-discover-btn">
+                        <a href="accessories" class="alfa-btn">Discover Now <img src="assets/images/arrow-right.png" alt=""></a>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-6 hero-image-center">
+                    <div class="alfa-banners">
+                      <div class="alfa-circle">
+                        <img src="assets/images/ellipse1.png" alt="">
+                      </div>
+                      <div class="alfa-main-image">
+                        <img src="assets/images/hero.png" alt="">
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+             </div>
+        </section>
+        <!-- END -->
+        <!-- FEATURES START -->
+        <div class="hero-meanswear d-none">
+          <h2>Menswear</h2>
+        </div>
+        </section>
+        <!-- END -->
+        <!-- FEATURES SECTION -->
+        <section class="feature-section mt-80">
+          <div class="custom-container">
+            <div class="features-row">
+              <div class="feature-box">
+                <div class="feature-icon">
+                  <img src="assets/images/shipping.png" alt="">
+                </div>
+                <div class="features-content">
+                  <h5>Free Shipping</h5>
+                  <p>From all orders over £100</p>
+                </div>
+              </div>
+              <div class="feature-box">
+                <div class="feature-icon">
+                  <img src="assets/images/quality.png" alt="">
+                </div>
+                <div class="features-content">
+                  <h5>Quality Support</h5>
+                  <p>24/7 online feedback</p>
+                </div>
+              </div>
+              <div class="feature-box">
+                <div class="feature-icon">
+                  <img src="assets/images/return.png" alt="">
+                </div>
+                <div class="features-content">
+                  <h5>Return &amp; Refund</h5>
+                  <p>Return money within 30 days</p>
+                </div>
+              </div>
+              <div class="feature-box">
+                <div class="feature-icon">
+                  <img src="assets/images/gift-voucher.png" alt="">
+                </div>
+                <div class="features-content">
+                  <h5>Gift Voucher</h5>
+                  <p>20% off when you shop online</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- END -->
+        <!-- SELLING SECTION -->
+        <section class="mt-80">
+          <div class="offer-wrapper">
+            <div class="offer-wrap">
+              <div class="offer-left-wrap">
+                <div class="offer-images">
+                  <div><img src="assets/images/offer-circle.png" class="offer-circle" alt=""></div>
+                  <div class="offer-combo">
+                    <img src="assets/images/offer.png" class="combo-img" alt="">
+                  </div>
+                </div>
+                <div class="offer-text-wrap position-relative">
+                  <div class="offer-content">
+                    <p>Alfa Menswear</p>
+                  </div>
+                  <div class="offer-item-name">
+                    <h2>Trouser</h2>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="offer-wrap-right">
+              <div>
+                <div class="offer-right-text">
+                  <a href=""> Sale up to</a>
+                </div>
+                <div class="offer-percentage">
+                  <h3>40%</h3>
+                  <p>Off everything</p>
+                </div>
+                <div class="offer-shop-now">
+                  <a href="/product">Shop Now <img src="assets/images/subs-arrow.png" alt=""></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- END -->
+        <!-- NEW ARRIVAL -->
+        <section class="mt-80">
+          <div class="custom-container">
+            <div class="alfa-new-arrival">
+              <div class="alfa-title">
+                <h2>New Arrivals</h2>
+                <p>Preorder nor to receive exclusive deals & gifts</p>
+              </div>
+              <div class="arrival-wrapper">
+                <% lastProducts.forEach(product=> { %>
+                  <div class="product-item product-item-2" data-color="<%= product.color %>">
+                    <div class="produt-wrap">
+                      <a href="/product-detail/<%= product.	product_title_slug %>/<%= product.id %>">
+                        <img src="../product_images/<%= product.product_main_image %>" class="pro-img" alt="">
+                      </a>
+                    </div>
+                    <div class="product-add-to-card-wrap">
+                      <button class="add-to-cart" data-product-id="<%= product.id %>">
+                        <span><i class="fa-solid fa-cart-shopping"></i></span>
+                        Add to Cart
+                      </button>
+                    </div>
+                    <div class="product-details shop-content">
+                      <div class="product-nameprice">
+                        <a href="/product-detail/<%= product.id %>">
+                          <h2>
+                            <%= product.product_name %>
+                          </h2>
+                          <p class="product-short-desc">
+                            <%= product.product_description.substring(0, 20) %>...
+                          </p>
+                        </a>
+                        <div class="product-price">
+                          <h5>
+                            <span class="final-price">£ <%= (product.product_price * (1 - product.discount_on_product / 100)).toFixed(2) %></span>
+                            <span class="mrp-price">£ <%= product.product_price %></span>
+                             
+                          </h5>
+                        </div>
+                      </div>
+                      <div class="product-btn">
+                        <div class="pro-whishlist">
+                          <a class="add-to-favorites" data-product-id="<%= product.id %>">
+                            <i class="fa-regular fa-heart"></i>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <% }) %>
+
+              </div>
+            </div>
+        </section>
+        <!-- END -->
+        <!-- BESTSELLER -->
+        <section class="mt-80">
+          <div class="custom-container">
+            <div class="alfa-bestsellerl">
+              <div class="alfa-title">
+                <h2>Best Seller</h2>
+                <p>Preorder nor to receive exclusive deals & gifts</p>
+              </div>
+              <div id="bestseller-carousel" class="bestseller-wrapper owl-carousel comman-nav">
+                <% bestSellers.forEach(product=> { %>
+                  <div class="product-item product-item-2">
+                    <div class="produt-wrap">
+
+                      <a href="/product-detail/<%= product.	product_title_slug %>/<%= product.id %>">
+                        <img src="../product_images/<%= product.product_main_image %>" class="pro-img" alt="">
+
+                      </a>
+
+                    </div>
+                    <div class="product-details">
+                      <div class="product-nameprice">
+                        <h6>
+                          <%= product.name %>
+                        </h6>
+                        <div class="product-price">
+                          <span class="final-price">£<%= (product.product_price * (1 - product.discount_on_product /
+                              100)).toFixed(2) %></span>
+                          <span class="mrp-price">£<%= product.product_price %></span>
+                          <span class="discount-text">(<%= product.discount_on_product %> OFF)</span>
+                        </div>
+                        <div class="product-rating">
+                          <ul>
+                            <li>
+                              <a href=""><img src="assets/images/star.png" class="star-icon" alt=""></a>
+                              <a href=""><img src="assets/images/star.png" class="star-icon" alt=""></a>
+                              <a href=""><img src="assets/images/star.png" class="star-icon" alt=""></a>
+                              <a href=""><img src="assets/images/star.png" class="star-icon" alt=""></a>
+                              <a href=""><img src="assets/images/star.png" class="star-icon" alt=""></a>
+                            </li>
+                          </ul>
+                        </div>
+                      </div>
+                      <div class="product-btn">
+                        <div class="pro-whishlist">
+                          <a class="add-to-favorites" data-product-id="<%= product.id %>">
+                            <i class="fa-regular fa-heart"></i>
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <% }) %>
+              </div>
+
+            </div>
+          </div>
+        </section>
+        <!-- END -->
+        <!-- TESTIMONIAL -->
+        <section class="mt-80">
+          <div class="container">
+            <div id="testimonial-carousel" class="alfa-testimonila owl-carousel comman-nav">
+
+              <!-- Testmonial 1 -->
+              <div class="testimonial-warpper">
+                <div class="test-quotes">
+                  <img src="assets/images/quotes.png" class="quotes-img" alt="" />
+                </div>
+                <div class="testimonial-content">
+                  <p>
+                    Fabulous menswear shop on Westover Road in Bournemouth that has been trading for over 40 years and now under new Management since September 2023. I have met the new owner Jeremy who is so enthusiastic and their clothes ranges are worth seeing, from smart suits, waistcoats to vibrant colour shirts, shoes and more. Well worth a visit to see the quality of the clothing they produce and sell.
+                  </p>
+                  <div class="testimonial-details">
+                    <div class="test-image">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="3em" height="3em" viewBox="0 0 20 20">
+                        <path fill="#005d67" d="M18 0H2a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2m-4 4a1.5 1.5 0 1 1-1.5 1.5A1.5 1.5 0 0 1 14 4M6 4a1.5 1.5 0 1 1-1.5 1.5A1.5 1.5 0 0 1 6 4m4 8c-2.61 0-4.83-.67-5.65-3h11.3c-.82 2.33-3.04 3-5.65 3" />
+                      </svg>
+                    </div>
+                    <div class="test-d-wrap">
+                      <div class="test-name">
+                        <h5 class="name">steve mac</h5>
+                        <h6 class="designation">Happy Customer</h6>
+                      </div>
+                      <ul class="testimonial-rating">
+                        <li>
+                          <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
+                          <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
+                          <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
+                          <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
+                          <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Testmonial 2 -->
+              <div class="testimonial-warpper">
+                <div class="test-quotes">
+                  <img src="assets/images/quotes.png" class="quotes-img" alt="" />
+                </div>
+                <div class="testimonial-content">
+                  <p>
+                    If I could give more than 5 stars I would. Jeremy and the team have been absolutely fantastic sorting suits out for me and my groomsmen. They were always so friendly, knowledgeable and it's such a lovely shop to be in. Would highly recommend.
+                  </p>
+                  <div class="testimonial-details">
+                    <div class="test-image">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="3em" height="3em" viewBox="0 0 20 20">
+                        <path fill="#005d67" d="M18 0H2a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2m-4 4a1.5 1.5 0 1 1-1.5 1.5A1.5 1.5 0 0 1 14 4M6 4a1.5 1.5 0 1 1-1.5 1.5A1.5 1.5 0 0 1 6 4m4 8c-2.61 0-4.83-.67-5.65-3h11.3c-.82 2.33-3.04 3-5.65 3" />
+                      </svg>
+                    </div>
+                    <div class="test-d-wrap">
+                      <div class="test-name">
+                        <h5 class="name">Ben Tricksey</h5>
+                        <h6 class="designation">Happy Customer</h6>
+                      </div>
+                      <ul class="testimonial-rating">
+                        <li>
+                          <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
+                          <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
+                          <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
+                          <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
+                          <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Testmonial 3 -->
+              <div class="testimonial-warpper">
+                <div class="test-quotes">
+                  <img src="assets/images/quotes.png" class="quotes-img" alt="" />
+                </div>
+                <div class="testimonial-content">
+                  <p>
+                    I recently bought two suits from Alfa Menswear for work and I would very much recommend the quality and style to anyone. Jess served me and was very helpful - I’ll be back again soon for sure 
+                  </p>
+                  <div class="testimonial-details">
+                    <div class="test-image">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="3em" height="3em" viewBox="0 0 20 20">
+                        <path fill="#005d67" d="M18 0H2a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2m-4 4a1.5 1.5 0 1 1-1.5 1.5A1.5 1.5 0 0 1 14 4M6 4a1.5 1.5 0 1 1-1.5 1.5A1.5 1.5 0 0 1 6 4m4 8c-2.61 0-4.83-.67-5.65-3h11.3c-.82 2.33-3.04 3-5.65 3" />
+                      </svg>
+                    </div>
+                    <div class="test-d-wrap">
+                      <div class="test-name">
+                        <h5 class="name">Tom Woodley</h5>
+                        <h6 class="designation">Happy Customer</h6>
+                      </div>
+                      <ul class="testimonial-rating">
+                        <li>
+                          <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
+                          <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
+                          <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
+                          <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
+                          <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Testmonial 4 -->
+              <div class="testimonial-warpper">
+                <div class="test-quotes">
+                  <img src="assets/images/quotes.png" class="quotes-img" alt="" />
+                </div>
+                <div class="testimonial-content">
+                  <p>
+                    Jeremy and the team were very helpful and approachable while helping pick out a gift for my husband. Great quality shirts!
+                  </p>
+                  <div class="testimonial-details">
+                    <div class="test-image">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="3em" height="3em" viewBox="0 0 20 20">
+                        <path fill="#005d67" d="M18 0H2a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2m-4 4a1.5 1.5 0 1 1-1.5 1.5A1.5 1.5 0 0 1 14 4M6 4a1.5 1.5 0 1 1-1.5 1.5A1.5 1.5 0 0 1 6 4m4 8c-2.61 0-4.83-.67-5.65-3h11.3c-.82 2.33-3.04 3-5.65 3" />
+                      </svg>
+                    </div>
+                    <div class="test-d-wrap">
+                      <div class="test-name">
+                        <h5 class="name">Lisa Reid</h5>
+                        <h6 class="designation">Happy Customer</h6>
+                      </div>
+                      <ul class="testimonial-rating">
+                        <li>
+                          <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
+                          <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
+                          <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
+                          <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
+                          <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Testmonial 5 -->
+              <div class="testimonial-warpper">
+                <div class="test-quotes">
+                  <img src="assets/images/quotes.png" class="quotes-img" alt="" />
+                </div>
+                <div class="testimonial-content">
+                  <p>
+                    My shopping experience at Alfa Menswear was made exceptional, all thanks to Jeremy. I had visited Moss Bro before and was let down by their service but at Alfa I felt like they actually care. 5 Star!
+                    Highly recommend and will be back for sure!
+                    Cheers,
+                    Marcus
+                  </p>
+                  <div class="testimonial-details">
+                    <div class="test-image">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="3em" height="3em" viewBox="0 0 20 20">
+                        <path fill="#005d67" d="M18 0H2a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2m-4 4a1.5 1.5 0 1 1-1.5 1.5A1.5 1.5 0 0 1 14 4M6 4a1.5 1.5 0 1 1-1.5 1.5A1.5 1.5 0 0 1 6 4m4 8c-2.61 0-4.83-.67-5.65-3h11.3c-.82 2.33-3.04 3-5.65 3" />
+                      </svg>
+                    </div>
+                    <div class="test-d-wrap">
+                      <div class="test-name">
+                        <h5 class="name">Marcus Adam Hook (HLS Film Productions)</h5>
+                        <h6 class="designation">Happy Customer</h6>
+                      </div>
+                      <ul class="testimonial-rating">
+                        <li>
+                          <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
+                          <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
+                          <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
+                          <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
+                          <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Testmonial 6 -->
+              <div class="testimonial-warpper">
+                <div class="test-quotes">
+                  <img src="assets/images/quotes.png" class="quotes-img" alt="" />
+                </div>
+                <div class="testimonial-content">
+                  <p>
+                    Went in today to buy a dress shirt, great customer service, great price too, unlike the service from moss bros  next door in Bournemouth. Highly recommended 👌
+                  </p>
+                  <div class="testimonial-details">
+                    <div class="test-image">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="3em" height="3em" viewBox="0 0 20 20">
+                        <path fill="#005d67" d="M18 0H2a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2m-4 4a1.5 1.5 0 1 1-1.5 1.5A1.5 1.5 0 0 1 14 4M6 4a1.5 1.5 0 1 1-1.5 1.5A1.5 1.5 0 0 1 6 4m4 8c-2.61 0-4.83-.67-5.65-3h11.3c-.82 2.33-3.04 3-5.65 3" />
+                      </svg>
+                    </div>
+                    <div class="test-d-wrap">
+                      <div class="test-name">
+                        <h5 class="name">Steve Trott</h5>
+                        <h6 class="designation">Happy Customer</h6>
+                      </div>
+                      <ul class="testimonial-rating">
+                        <li>
+                          <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
+                          <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
+                          <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
+                          <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
+                          <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Testmonial 7 -->
+              <div class="testimonial-warpper">
+                <div class="test-quotes">
+                  <img src="assets/images/quotes.png" class="quotes-img" alt="" />
+                </div>
+                <div class="testimonial-content">
+                  <p>
+                    Lovely gentlemen, Beautiful suits,great prices and definitely knew what looks good. Knew what we wanted before we did!! 100 recommend
+                  </p>
+                  <div class="testimonial-details">
+                    <div class="test-image">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="3em" height="3em" viewBox="0 0 20 20">
+                        <path fill="#005d67" d="M18 0H2a2 2 0 0 0-2 2v18l4-4h14a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2m-4 4a1.5 1.5 0 1 1-1.5 1.5A1.5 1.5 0 0 1 14 4M6 4a1.5 1.5 0 1 1-1.5 1.5A1.5 1.5 0 0 1 6 4m4 8c-2.61 0-4.83-.67-5.65-3h11.3c-.82 2.33-3.04 3-5.65 3" />
+                      </svg>
+                    </div>
+                    <div class="test-d-wrap">
+                      <div class="test-name">
+                        <h5 class="name">Kerry Witherow</h5>
+                        <h6 class="designation">Happy Customer</h6>
+                      </div>
+                      <ul class="testimonial-rating">
+                        <li>
+                          <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
+                          <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
+                          <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
+                          <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
+                          <a href=""><img src="assets/images/star.png" class="star-icon" alt="" /></a>
+                        </li>
+                      </ul>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- END -->
+        <!-- PARTNER -->
+        <section class="mt-80">
+          <div class="partner-wrapper">
+            <div class="container">
+              <div id="partner-carousel" class="partner-wrap-grid owl-carousel comman-nav">
+                <div class="partner-item">
+                  <img src="assets/images/brand.png" class="partner-img" alt="">
+                </div>
+                <div class="partner-item">
+                  <img src="assets/images/brand02.png" class="partner-img" alt="">
+                </div>
+                <div class="partner-item">
+                  <img src="assets/images/brand03.png" class="partner-img" alt="">
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- END -->
+        <!-- FOOTER -->
+        <%- include('includes/footer') %>
+          <!-- END -->
+      </div>
+  </div>
+  <%- include('includes/foot') %>
+
+
+    <script>
+      $(document).ready(function () {
+        $("#hero-carousel").owlCarousel({
+          loop: true,
+          margin: 20,
+          nav: true,
+          autoplay: true,
+          navText: [
+            '<i class="fa-solid fa-angle-left"></i>',
+            '<i class="fa-solid fa-angle-right"></i>',
+          ],
+          responsive: {
+            0: {
+              items: 1,
+            },
+            600: {
+              items: 1,
+            },
+            1000: {
+              items: 1,
+            },
+          },
+        });
+      });
+      $(document).ready(function () {
+        $("#bestseller-carousel").owlCarousel({
+          loop: true,
+          margin: 20,
+          nav: true,
+          autoplay: true,
+          navText: [
+            '<i class="fa-solid fa-angle-left"></i>',
+            '<i class="fa-solid fa-angle-right"></i>',
+          ],
+          responsive: {
+            0: {
+              items: 1,
+            },
+            350: {
+              items: 2,
+            },
+            400: {
+              items: 2,
+            },
+            600: {
+              items: 3,
+            },
+            1000: {
+              items: 6,
+            },
+          },
+        });
+      });
+      $(document).ready(function () {
+        $("#testimonial-carousel").owlCarousel({
+          loop: true,
+          margin: 20,
+          nav: true,
+          autoplay: true,
+          navText: [
+            '<i class="fa-solid fa-angle-left"></i>',
+            '<i class="fa-solid fa-angle-right"></i>',
+          ],
+          responsive: {
+            0: {
+              items: 1,
+            },
+            600: {
+              items: 1,
+            },
+            1000: {
+              items: 1,
+            },
+          },
+        });
+      });
+      $(document).ready(function () {
+        $("#partner-carousel").owlCarousel({
+          loop: true,
+          margin: 20,
+          nav: true,
+          autoplay: true,
+          navText: [
+            '<i class="fa-solid fa-angle-left"></i>',
+            '<i class="fa-solid fa-angle-right"></i>',
+          ],
+          responsive: {
+            0: {
+              items: 3,
+            },
+            600: {
+              items: 4,
+            },
+            1000: {
+              items: 7,
+            },
+          },
+        });
+      });
+    </script>
+
+    </div>
+    <%- include('includes/foot') %>
+
+</body>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const addToFavoritesButtons = document.querySelectorAll(".add-to-favorites");
+
+    addToFavoritesButtons.forEach((button) => {
+      button.addEventListener("click", function () {
+        const productId = button.getAttribute("data-product-id");
+
+        // Send AJAX request to the server
+        fetch(`/favorites/add/${productId}`, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "same-origin", // include cookies
+        })
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error("Network response was not ok");
+            }
+            return response.json();
+          })
+          .then((data) => {
+            if (data.success) {
+              // Show popup alert
+              alert(data.message);
+
+              // Update wishlist count in the span
+              const wishlistLi = document.querySelector("#wishlist");
+              if (wishlistLi) {
+                const countTextSpan = wishlistLi.querySelector(".count-text");
+                if (countTextSpan) {
+                  countTextSpan.textContent = data.favoritesCount;
+                }
+              }
+            } else {
+              if (data.message === "Login First") {
+                window.location.href = "/login"; // Redirect to login page if not logged in
+              }
+            }
+          })
+          .catch((error) => {
+            console.error("There was a problem with the fetch operation:", error);
+            // Handle error
+            alert("An error occurred while adding the product to favorites");
+          });
+      });
+    });
+  });
+</script>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const addToCartButtons = document.querySelectorAll(".add-to-cart");
+
+    var cartMessage = document.getElementById("productAddedInCart");
+
+    addToCartButtons.forEach((button) => {
+      button.addEventListener("click", addToCart);
+    });
+
+    async function addToCart(event) {
+      const productId =
+        event.currentTarget.getAttribute("data-product-id");
+      try {
+        const response = await fetch(`/cart/add/${productId}`, {
+          method: "GET",
+        });
+        const result = await response.json();
+        if (result.success) {
+          cartMessage.textContent = result.message;
+          cartMessage.style.display = "block";
+          setTimeout(() => {
+            cartMessage.style.display = "none"
+          }, 4000)
+
+          // Update cart count in the span
+          const cartLi = document.querySelector("#cart");
+          if (cartLi) {
+            const countTextSpan = cartLi.querySelector(".product-count");
+            if (countTextSpan) {
+              // countTextSpan.textContent = data.favoritesCount;
+              countTextSpan.textContent = result.CartCount;
+            }
+          }
+        } else {
+
+          cartMessage.textContent = result.message;
+          cartMessage.style.display = "block";
+          setTimeout(() => {
+            cartMessage.style.display = "none"
+          }, 4000)
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        cartMessage.textContent = 'An error occurred while adding the product to cart';
+        cartMessage.style.display = "block";
+        setTimeout(() => {
+          cartMessage.style.display = "none"
+        }, 4000)
+
+      }
+    }
+  });
+</script>
+
+</html>

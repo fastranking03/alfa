@@ -2,10 +2,21 @@
 <html lang="en">
 
 <head>
-  <!-- <base href="https://s9wyglh.localto.net/"> -->
-  <base href="http://localhost:8081" />
+  <base href="https://www.alfa-menswear.com/" />
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <!-- Dynamic Meta Tags -->
+  <meta name="description" content="<%= product.product_description %>" />
+  <meta name="keywords" content="<%= product.product_keywords %>" /> <!-- Assuming you have a keywords field -->
+  <meta property="og:title" content="<%= product.product_title %>" />
+  <meta property="og:description" content="<%= product.product_description %>" />
+  <meta property="og:image" content="https://www.alfa-menswear.com/product_images/<%= product.product_main_image %>" />
+  <meta property="og:url"
+    content="https://www.alfa-menswear.com/product-detail/<%= product.product_title_slug %>/<%= product.id %>" />
+  <!-- <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="<%= product.product_title %>" />
+  <meta name="twitter:description" content="<%= product.product_description %>" />
+  <meta name="twitter:image" content="http://alfa-menswear.com/product_images/<%= product.product_main_image %>" /> -->
   <title>Alfa Meanswear | Product Details</title>
   <%- include('includes/head') %>
 </head>
@@ -163,7 +174,7 @@
                   <div class="col-md-10 paddingleft">
                     <div class="alfa-pro-detail-wrapper">
                       <div id="product-detail-carousel" class="p-detail-wrap owl-carousel comman-nav owl-nav-display">
-                        <% if (product_images.length> 0) { %>
+                        <% if (product_images.length > 0) { %>
                           <% product_images.forEach(function(image, index) { %>
                             <div class="d-item" data-index="<%= index %>">
                               <img src="../product_images/<%= image.image_path %>"
@@ -185,9 +196,9 @@
               <div class="col-md-6">
                 <div class="pro-detail--wrapper">
                   <div class="d-title">
-                    <h2>
+                    <h1>
                       <%=product.product_name %>
-                    </h2>
+                    </h1>
                     <p>
                       <%=product.product_description %> Setting the bar as one
                         of the loudest speakers in its class, the Kilburn is a
@@ -233,8 +244,7 @@
                         <span class="final-prices fn-price">£<%=(product.product_price * (1 -
                             (product.discount_on_product / 100))).toFixed(2) %> </span><span class="mrp-price prod-dd">
                           £<%=product.product_price %></span>
-                        <span class="discount-text prod-dd">
-                          (<%=product.discount_on_product %>% OFF )</span>
+                         
                       </h5>
                     </div>
                   </div>
@@ -247,13 +257,13 @@
                     </div>
                     <div class="pro--text">
                       <h6 class="size-selection">
-                        MORE COLORs
+                        Similar
                       </h6>
                     </div>
                     <ul class="detail-ul">
                       <% variantProducts.forEach(variantProduct=> { %>
                         <li>
-                          <a href="/product-detail/<%= variantProduct.id %>">
+                          <a href="/product-detail/<%= product.product_title_slug %>/<%= variantProduct.id %>">
                             <img class="variant-img" src="../product_images/<%=variantProduct.product_main_image %>"
                               alt="">
                           </a>
@@ -269,7 +279,7 @@
                       <ul id="sizeList" class="size-list pro-detail-size-ul">
                         <% if (sizes && Object.keys(sizes).length> 0) { %>
                           <% for (const [size, stock] of Object.entries(sizes)) { %>
-                            <% if (wearType==='bottom' ) { %>
+                            <% if (wearType==='bottom' || wearType==='suit' ) { %>
                               <% const numericSize=size.match(/\d+/); %>
                                 <% if (numericSize && numericSize.length> 0) { %>
                                   <li>
@@ -418,42 +428,39 @@
                       </p>
                     </div>
                   </div>
-                  <% 
-                
-                  const ratings = {
-                    5: reviewCountMap[5],
-                    4: reviewCountMap[4],
-                    3: reviewCountMap[3],
-                    2: reviewCountMap[2],
-                    1: reviewCountMap[1]
-                  };
-                
-                  const getPercentage = (count) => (count / totalReviews) * 100;
-                  const backgroundColors = {
+                  <% const ratings={ 5: reviewCountMap[5], 4: reviewCountMap[4], 3: reviewCountMap[3], 2:
+                    reviewCountMap[2], 1: reviewCountMap[1] }; const getPercentage=(count)=> (count / totalReviews) *
+                    100;
+                    const backgroundColors = {
                     5: '#14958f',
                     4: '#72bfbc',
                     3: '#fcb301',
                     2: '#f16565',
                     1: '#d9534f'
-                  };
-                %>
-                
-                <div class="review-rating-progress">
-                  <% Object.keys(ratings).reverse().forEach(rating => { %>
-                    <div class="rating-count-ravegrage">
-                      <div class="rate_and_start"><%= rating %> <span><i class="fa-solid fa-star pro-start"></i></span></div>
-                      <div class="rating-progress">
-                        <div class="rating-bar" style="width: <%= getPercentage(ratings[rating]) %>%; background: <%= backgroundColors[rating] %>;">
-                          <p class="rating-percent"></p>
+                    };
+                    %>
+
+                    <div class="review-rating-progress">
+                      <% Object.keys(ratings).reverse().forEach(rating=> { %>
+                        <div class="rating-count-ravegrage">
+                          <div class="rate_and_start">
+                            <%= rating %> <span><i class="fa-solid fa-star pro-start"></i></span>
+                          </div>
+                          <div class="rating-progress">
+                            <div class="rating-bar"
+                              style="width: <%= getPercentage(ratings[rating]) %>%; background: <%= backgroundColors[rating] %>;">
+                              <p class="rating-percent"></p>
+                            </div>
+                          </div>
+                          <div class="total-idivitual-review">
+                            <span>
+                              <%= ratings[rating] %>
+                            </span>
+                          </div>
                         </div>
-                      </div>
-                      <div class="total-idivitual-review">
-                        <span><%= ratings[rating] %></span>
-                      </div>
+                        <% }) %>
                     </div>
-                  <% }) %>
-                </div>
-                
+
                 </div>
                 <hr>
                 <div class="review-content-wrapper">
@@ -514,8 +521,11 @@
                 </div>
                 <div id="bestseller-carousel" class="bestseller-wrapper owl-carousel comman-nav">
                   <% relatedProducts.forEach(product=> { %>
+
                     <div class="product-item product-item-2">
+                      <a href="/product-detail/<%= product.product_title_slug %>/<%= product.id %>"> 
                       <div class="produt-wrap">
+                        
                         <img src="../product_images/<%= product.product_main_image %>" class="pro-img" alt="">
 
                       </div>
@@ -533,11 +543,11 @@
                           <div class="product-rating">
                             <ul>
                               <li>
-                                <a href=""><img src="assets/images/star.png" class="star-icon" alt=""></a>
-                                <a href=""><img src="assets/images/star.png" class="star-icon" alt=""></a>
-                                <a href=""><img src="assets/images/star.png" class="star-icon" alt=""></a>
-                                <a href=""><img src="assets/images/star.png" class="star-icon" alt=""></a>
-                                <a href=""><img src="assets/images/star.png" class="star-icon" alt=""></a>
+                                 <img src="assets/images/star.png" class="star-icon" alt=""> 
+                                 <img src="assets/images/star.png" class="star-icon" alt=""> 
+                                 <img src="assets/images/star.png" class="star-icon" alt=""> 
+                                 <img src="assets/images/star.png" class="star-icon" alt=""> 
+                                 <img src="assets/images/star.png" class="star-icon" alt=""> 
                               </li>
                             </ul>
                           </div>
@@ -549,7 +559,7 @@
                             </a>
                           </div>
                         </div>
-                      </div>
+                      </div></a>
                     </div>
                     <% }) %>
                 </div>

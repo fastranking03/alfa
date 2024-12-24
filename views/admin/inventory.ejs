@@ -1,179 +1,228 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Alfa Admin | Product Inventory</title>
-    <base href="http://localhost:8081" target="" />
-    <%- include('includes/head') %>
-  </head>
-  <body>
-    <div class="main-admin-warpper">
-      <%- include('includes/header') %>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alfa Admin | Product Inventory</title>
+  <base href="https://alfa-menswear.com/" />
+  <%- include('includes/head') %>
+</head>
+
+<body>
+  <div class="main-admin-warpper">
+    <%- include('includes/header') %>
       <div class="alfa-admin-wrapper">
         <div class="admin-side-nav">
-          <%- include('includes/sidebar') %> <% // for Top wear %> <% if
-          (inventory_type === "bottomwear") { %>
-          <div class="admin-main-layout">
-            <div class="admin-bradcrumb">
-              <div class="admin-brudcrumb-title">
-                  <h3>Bottom Wear Inventory</h3>
-              </div>
-              <div class="adminRightWrapper">
-                  <div class="search-wrapper position-relative">
-                      <span><i class="fa-solid fa-magnifying-glass"></i></span>
-                      <input type="search" name="search" class="table-search" placeholder="Search" id="search">
+          <%- include('includes/sidebar') %>
+            <% // for Top wear %>
+              <% if (inventory_type==="bottomwear" ) { %>
+                <div class="admin-main-layout">
+                  <div class="admin-bradcrumb">
+                    <div class="admin-brudcrumb-title">
+                      <h3>Bottom Wear Inventory</h3>
+                    </div>
+                    <div class="adminRightWrapper">
+                      <div class="search-wrapper position-relative">
+                        <span><i class="fa-solid fa-magnifying-glass"></i></span>
+                        <input type="search" name="search" class="table-search" placeholder="Search" id="search">
+                      </div>
+                      <div class="export-wrap">
+                        <a href="#" class="admin-btn" id="export-btn">Export</a>
+                      </div>
+                    </div>
                   </div>
-                  <div class="export-wrap">
-                      <a href="#" class="admin-btn" id="export-btn">Export</a>
-                  </div>
-              </div>
-            </div>
-            <div class="table-responsive">
-              <% if (inventory && inventory.length > 0) { %>
-              <table class="alfa-table">
-                <thead>
-                  <tr>
-                    <th>S NO .</th>
-                    <th>Product Name</th>
-                    <th>Product Image</th>
-                    <th>Size 28</th>
-                    <th>Size 30</th>
-                    <th>Size 32</th>
-                    <th>Size 34</th>
-                    <th>Size 36</th>
-                    <th>Size 38</th>
-                    <th>Size 40</th>
-                    <th>Size 42</th>
-                    <th>Size 44</th>
-                    <th>Size 46</th>
-                    <th>Stocks Updated At</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody id="order-tbody">
-                  <% inventory.forEach( (item , index) => { %>
-                  <tr>
-                    <td><%= index + 1 %></td>
-                    <td><%= item.productname %></td>
-                    <td>
-                      <img src="../../product_images/<%= item.product_image %>" alt="" style="width: 50px;height: 50px" />
-                    </td>
+                  <div class="table-responsive">
+                    <% if (inventory && inventory.length> 0) { %>
+                      <table class="alfa-table">
+                        <thead>
+                          <tr>
+                            <th>S NO .</th>
+                            <th>Product Name</th>
+                            <th>Product Image</th>
+                            <th>Size 28</th>
+                            <th>Size 30</th>
+                            <th>Size 32</th>
+                            <th>Size 34</th>
+                            <th>Size 36</th>
+                            <th>Size 38</th>
+                            <th>Size 40</th>
+                            <th>Size 42</th>
+                            <th>Size 44</th>
+                            <th>Size 46</th>
+                            <th>Stocks Updated At</th>
+                            <th>Action</th>
+                          </tr>
+                        </thead>
+                        <tbody id="order-tbody">
+                          <% inventory.forEach( (item , index)=> { %>
+                            <tr>
+                              <td>
+                                <%= index + 1 %>
+                              </td>
+                              <td>
+                                <%= item.productname %>
+                              </td>
+                              <td>
+                                <img src="../../product_images/<%= item.product_image %>" alt=""
+                                  style="width: 50px;height: 50px" />
+                              </td>
 
-                    <td><%= item.size_28 || 'N/A' %></td>
-                    <td><%= item.size_30 || 'N/A' %></td>
-                    <td><%= item.size_32 || 'N/A' %></td>
-                    <td><%= item.size_34 || 'N/A' %></td>
-                    <td><%= item.size_36 || 'N/A' %></td>
-                    <td><%= item.size_38 || 'N/A' %></td>
-                    <td><%= item.size_40 || 'N/A' %></td>
-                    <td><%= item.size_42 || 'N/A' %></td>
-                    <td><%= item.size_44 || 'N/A' %></td>
-                    <td><%= item.size_46 || 'N/A' %></td>
-                    <td>
-                      <%= item.created_at ? item.created_at.toLocaleString() :
-                      'N/A' %>
-                    </td>
-                    <td>
-                      <a href="admin/inventory/update/<%= item.productid%>?type=bottom"  class="btn-item btn-edit"><span><i class="fa-solid fa-pen-to-square"></i></span></a>
-                    </td>
-                  </tr>
-                  <% }); %>
-                </tbody>
-              </table>
-              <% } else { %>
-              <p>No inventory available.</p>
-              <% } %>
-            </div>
-            <div class="table-pagination-wrapper">
-              <div class="table-pagination" id="pagination">
-                  <a href="#" class="pagination-previous"><span><i class="fa-solid fa-angle-left"></i></span></a>
-                  <a href="#" class="page-items active">1</a>
-                  <a href="#" class="page-items">2</a>
-                  <a href="#" class="pagination-next" style="color: #005D67;"><span><i class="fa-solid fa-angle-right"></i></span></a>
-              </div>
-            </div>
-          </div>
-          <% } %> <% // for Top wear %> <% if (inventory_type === "topwear") {
-          %>
-          <div class="admin-main-layout">
-            <div class="admin-bradcrumb">
-              <div class="admin-brudcrumb-title">
-                  <h3>Top Wear Inventory</h3>
-              </div>
-              <div class="adminRightWrapper">
-                  <div class="search-wrapper position-relative">
-                      <span><i class="fa-solid fa-magnifying-glass"></i></span>
-                      <input type="search" name="search" class="table-search" placeholder="Search" id="search">
+                              <td>
+                                <%= item.size_28 || 'N/A' %>
+                              </td>
+                              <td>
+                                <%= item.size_30 || 'N/A' %>
+                              </td>
+                              <td>
+                                <%= item.size_32 || 'N/A' %>
+                              </td>
+                              <td>
+                                <%= item.size_34 || 'N/A' %>
+                              </td>
+                              <td>
+                                <%= item.size_36 || 'N/A' %>
+                              </td>
+                              <td>
+                                <%= item.size_38 || 'N/A' %>
+                              </td>
+                              <td>
+                                <%= item.size_40 || 'N/A' %>
+                              </td>
+                              <td>
+                                <%= item.size_42 || 'N/A' %>
+                              </td>
+                              <td>
+                                <%= item.size_44 || 'N/A' %>
+                              </td>
+                              <td>
+                                <%= item.size_46 || 'N/A' %>
+                              </td>
+                              <td>
+                                <%= item.created_at ? item.created_at.toLocaleString() : 'N/A' %>
+                              </td>
+                              <td>
+                                <a href="admin/inventory/update/<%= item.productid%>?type=bottom"
+                                  class="btn-item btn-edit"><span><i class="fa-solid fa-pen-to-square"></i></span></a>
+                              </td>
+                            </tr>
+                            <% }); %>
+                        </tbody>
+                      </table>
+                      <% } else { %>
+                        <p>No inventory available.</p>
+                        <% } %>
                   </div>
-                  <div class="export-wrap">
-                      <a href="#" class="admin-btn" id="export-btn">Export</a>
+                  <div class="table-pagination-wrapper">
+                    <div class="table-pagination" id="pagination">
+                      <a href="#" class="pagination-previous"><span><i class="fa-solid fa-angle-left"></i></span></a>
+                      <a href="#" class="page-items active">1</a>
+                      <a href="#" class="page-items">2</a>
+                      <a href="#" class="pagination-next" style="color: #005D67;"><span><i
+                            class="fa-solid fa-angle-right"></i></span></a>
+                    </div>
                   </div>
-              </div>
-            </div>
-            <div class="table-responsive">
-              <% if (inventory && inventory.length > 0) { %>
-              <table class="alfa-table">
-                <thead>
-                  <tr>
-                    <th>S NO.</th>
-                    <th>Product Name</th>
-                    <th>Product Image</th>
-                    <th>XS</th>
-                    <th>S</th>
-                    <th>M</th>
-                    <th>L</th>
-                    <th>XL</th>
-                    <!-- <th>XXL</th>
+                </div>
+                <% } %>
+                  <% // for Top wear %>
+                    <% if (inventory_type==="topwear" ) { %>
+                      <div class="admin-main-layout">
+                        <div class="admin-bradcrumb">
+                          <div class="admin-brudcrumb-title">
+                            <h3>Top Wear Inventory</h3>
+                          </div>
+                          <div class="adminRightWrapper">
+                            <div class="search-wrapper position-relative">
+                              <span><i class="fa-solid fa-magnifying-glass"></i></span>
+                              <input type="search" name="search" class="table-search" placeholder="Search" id="search">
+                            </div>
+                            <div class="export-wrap">
+                              <a href="#" class="admin-btn" id="export-btn">Export</a>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="table-responsive">
+                          <% if (inventory && inventory.length> 0) { %>
+                            <table class="alfa-table">
+                              <thead>
+                                <tr>
+                                  <th>S NO.</th>
+                                  <th>Product Name</th>
+                                  <th>Product Image</th>
+                                  <th>XS</th>
+                                  <th>S</th>
+                                  <th>M</th>
+                                  <th>L</th>
+                                  <th>XL</th>
+                                  <!-- <th>XXL</th>
                     <th>XXXL</th> -->
-                    <th>Created At</th>
-                    <th>Update</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <% inventory.forEach( (item , index)=> { %>
-                  <tr>
-                    <td><%= index + 1 %></td>
-                    <td><%= item.productname %></td>
-                    <td>
-                      <img src="../../product_images/<%= item.product_image %>" alt="" style="width:50px;height: 50px"/>
-                    </td>
-                    <td><%= item.xs || 'N/A' %></td>
-                    <td><%= item.m || 'N/A' %></td>
-                    <td><%= item.l || 'N/A' %></td>
-                    <td><%= item.xl || 'N/A' %></td>
-                    <td><%= item.xxl || 'N/A' %></td>
-                    <!-- <td><%= item.xxxl || 'N/A' %></td>
+                                  <th>Created At</th>
+                                  <th>Update</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <% inventory.forEach( (item , index)=> { %>
+                                  <tr>
+                                    <td>
+                                      <%= index + 1 %>
+                                    </td>
+                                    <td>
+                                      <%= item.productname %>
+                                    </td>
+                                    <td>
+                                      <img src="../../product_images/<%= item.product_image %>" alt=""
+                                        style="width:50px;height: 50px" />
+                                    </td>
+                                    <td>
+                                      <%= item.xs || 'N/A' %>
+                                    </td>
+                                    <td>
+                                      <%= item.m || 'N/A' %>
+                                    </td>
+                                    <td>
+                                      <%= item.l || 'N/A' %>
+                                    </td>
+                                    <td>
+                                      <%= item.xl || 'N/A' %>
+                                    </td>
+                                    <td>
+                                      <%= item.xxl || 'N/A' %>
+                                    </td>
+                                    <!-- <td><%= item.xxxl || 'N/A' %></td>
                     <td><%= item.xxxxl || 'N/A' %></td> -->
-                    <td>
-                      <%= item.created_at ? item.created_at.toLocaleString() :
-                      'N/A' %>
-                    </td>
-                     <td>
-                      <a  href="admin/inventory/update/<%= item.productid%>?type=top" class="btn-item btn-edit"><span><i class="fa-solid fa-pen-to-square"></i></span></a>
-                    </td>
-                  </tr>
-                  <% }); %>
-                </tbody>
-              </table>
-              <% } else { %>
-              <p>No inventory available.</p>
-              <% } %>
-            </div>
-            <div class="table-pagination-wrapper">
-              <div class="table-pagination" id="pagination">
-                  <a href="#" class="pagination-previous"><span><i class="fa-solid fa-angle-left"></i></span></a>
-                  <a href="#" class="page-items active">1</a>
-                  <a href="#" class="page-items">2</a>
-                  <a href="#" class="pagination-next" style="color: #005D67;"><span><i class="fa-solid fa-angle-right"></i></span></a>
-              </div>
-            </div>
-          </div>
-          <% } %>
+                                    <td>
+                                      <%= item.created_at ? item.created_at.toLocaleString() : 'N/A' %>
+                                    </td>
+                                    <td>
+                                      <a href="admin/inventory/update/<%= item.productid%>?type=top"
+                                        class="btn-item btn-edit"><span><i
+                                            class="fa-solid fa-pen-to-square"></i></span></a>
+                                    </td>
+                                  </tr>
+                                  <% }); %>
+                              </tbody>
+                            </table>
+                            <% } else { %>
+                              <p>No inventory available.</p>
+                              <% } %>
+                        </div>
+                        <div class="table-pagination-wrapper">
+                          <div class="table-pagination" id="pagination">
+                            <a href="#" class="pagination-previous"><span><i
+                                  class="fa-solid fa-angle-left"></i></span></a>
+                            <a href="#" class="page-items active">1</a>
+                            <a href="#" class="page-items">2</a>
+                            <a href="#" class="pagination-next" style="color: #005D67;"><span><i
+                                  class="fa-solid fa-angle-right"></i></span></a>
+                          </div>
+                        </div>
+                      </div>
+                      <% } %>
         </div>
       </div>
-    </div>
+  </div>
 
-    <%- include('includes/foot') %>
-  </body>
+  <%- include('includes/foot') %>
+</body>
+
 </html>

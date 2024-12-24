@@ -2,6 +2,9 @@ import express from "express";
 import connect from "../../db/connect.js";
 import { v4 as uuidv4 } from "uuid";
 import upload from '../../uploadConfig.js'; // Adjust path as per your file structure
+
+import slugify from "slugify";
+
 const router = express.Router();
 
 router.get("/add-product", async (req, res) => {
@@ -72,6 +75,7 @@ router.post("/addProducts", upload.fields([
   { name: 'image4', maxCount: 1 },
   { name: 'image5', maxCount: 1 }
 ]), async (req, res) => {
+
   const {
     productType,
     category_id,
@@ -88,7 +92,9 @@ router.post("/addProducts", upload.fields([
     product_colour,
     size_xs, size_s, size_m, size_l, size_xl, size_xxl, size_xxxl, size_xxxxl,
     size_28, size_30, size_32, size_34, size_36, size_38, size_40, size_42, size_44, size_46,
-    size_06_uk, size_07_uk, size_08_uk, size_09_uk, size_10_uk, size_11_uk, size_12_uk, size_13_uk
+    size_06_uk, size_07_uk, size_08_uk, size_09_uk, size_10_uk, size_11_uk, size_12_uk, size_13_uk,
+    suit_size_34, suit_size_36, suit_size_38, suit_size_40, suit_size_42, suit_size_44, suit_size_46,
+    suit_size_48, suit_size_50, suit_size_52, suit_size_54, suit_size_56,
   } = req.body;
 
 
@@ -121,16 +127,16 @@ router.post("/addProducts", upload.fields([
   };
 
 
-
+  const tile_slug = slugify(common_product_title, { lower: true, strict: true });
 
   const insertQuery = `
     INSERT INTO products (
       category_id, subcategory_id, product_name, product_price, 
-      discount_on_product, product_title, product_description, wear_type_bottom_or_top, 
+      discount_on_product, product_title , product_title_slug , product_description, wear_type_bottom_or_top,
       colour, unique_batch_id , product_information , shipping_information , return_policy,
       product_main_image 
     ) 
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ? );
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ? );
   `;
 
   const values = [
@@ -140,6 +146,7 @@ router.post("/addProducts", upload.fields([
     product_mrp,
     product_discount,
     common_product_title,
+    tile_slug,
     common_product_description,
     productType,
     product_colour,
@@ -150,15 +157,51 @@ router.post("/addProducts", upload.fields([
     product.product_main_image
   ];
 
-  try {
-    // Perform insertion of product
-    const [insertResult] = await connect.query(insertQuery, values);
+  // Perform insertion of product
+  const [insertResult] = await connect.query(insertQuery, values);
 
-    // Retrieve the last inserted ID
-    const lastInsertedId = insertResult.insertId;
+  // Retrieve the last inserted ID
+  const lastInsertedId = insertResult.insertId;
+
+  try {
 
     // Insert inventory data based on productType
-    if (productType === 'top') {
+    if (productType === 'suit') {
+      const insert_query = `
+        INSERT INTO suits_wear_inventory_with_sizes (
+          product_id, product_name, size_34, size_36, size_38, size_40, 
+          size_42, size_44, size_46, size_48, size_50, size_52, size_54, size_56
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `;
+    
+      const suit_inventory_Values = [
+        lastInsertedId, 
+        common_product_name, 
+        suit_size_34, 
+        suit_size_36, 
+        suit_size_38, 
+        suit_size_40, 
+        suit_size_42, 
+        suit_size_44, 
+        suit_size_46, 
+        suit_size_48, 
+        suit_size_50, 
+        suit_size_52, 
+        suit_size_54, 
+        suit_size_56
+      ];
+    
+      // Log the values to check their correctness
+      console.log('Values being inserted:', suit_inventory_Values);
+    
+      try {
+        await connect.query(insert_query, suit_inventory_Values);
+        console.log('Insert successful');
+      } catch (error) {
+        console.error('Error inserting into inventory:', error);
+      }
+    }
+     else if (productType === 'top') {
       const topwearInventoryQuery = `
         INSERT INTO topwear_inventory_with_sizes (
           product_id, product_name, xs, s, m, l, xl, xxl, xxxl, xxxxl
@@ -181,9 +224,9 @@ router.post("/addProducts", upload.fields([
       await connect.query(topwearInventoryQuery, topwearInventoryValues);
     } else if (productType === 'bottom') {
       const bottomwearInventoryQuery = `
-        INSERT INTO bottomwear_inventory (
+        INSERT INTO bottom_wear_inventory_with_sizes (
           product_id, product_name, size_28, size_30, size_32, size_34, size_36, size_38, size_40, size_42, size_44, size_46
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? , ?)
       `;
 
       const bottomwearInventoryValues = [
@@ -206,8 +249,8 @@ router.post("/addProducts", upload.fields([
     else if (productType === 'shoes') {
       const shoes_inventory = `
     INSERT INTO shoes_inventory (
-      product_id, product_name, size_6, size_7, size_8, size_9, size_10, size_11, size_12, size_13, created_at , updaetd_at
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW() , NOW())
+      product_id, product_name, size_6, size_7, size_8, size_9, size_10, size_11, size_12, size_13 
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ? )
   `;
 
       const shoes_inventory_Values = [
@@ -221,8 +264,8 @@ router.post("/addProducts", upload.fields([
     else if (productType === 'belt') {
       const belts_inventory = `
     INSERT INTO belts_inventory (
-      product_id, product_name, size_28, size_30, size_32, size_34, size_36, size_38, size_40, created_at , updated_at
-    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, NOW() , NOW())
+      product_id, product_name, size_28, size_30, size_32, size_34, size_36, size_38, size_40 
+    ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ? )
   `;
 
       const belts_inventory_Values = [
@@ -242,8 +285,8 @@ router.post("/addProducts", upload.fields([
     else if (productType === 'wallet') {
       const belts_inventory = `
     INSERT INTO wallet_inventory (
-      product_id, product_name, s , m ,l , created_at , updated_at
-    ) VALUES ( ?, ?, ?, ?, ?, NOW() , NOW() )
+      product_id, product_name, s , m ,l  
+    ) VALUES ( ?, ?, ?, ?, ? )
   `;
 
       const belts_inventory_Values = [
@@ -258,11 +301,8 @@ router.post("/addProducts", upload.fields([
     }
 
 
-
     // Insert product images into the product_images table
-    const insertImagesQuery = `
-        INSERT INTO Product_Images (product_id, image_path) VALUES (?, ?)
-      `;
+    const insertImagesQuery = ` INSERT INTO Product_Images (product_id, image_path) VALUES (?, ?) `;
     for (const image of product.images) {
       await connect.query(insertImagesQuery, [lastInsertedId, image]);
     }
@@ -296,7 +336,7 @@ router.get('/product/:productId', async (req, res) => {
           const [topwearInventory] = await connect.query('SELECT * FROM topwear_inventory_with_sizes WHERE product_id = ?', [relatedProduct.id]);
           inventory = topwearInventory.length > 0 ? topwearInventory[0] : null;
         } else if (relatedProduct.wear_type_bottom_or_top === 'bottom') {
-          const [bottomwearInventory] = await connect.query('SELECT * FROM bottomwear_inventory WHERE product_id = ?', [relatedProduct.id]);
+          const [bottomwearInventory] = await connect.query('SELECT * FROM bottom_wear_inventory_with_sizes WHERE product_id = ?', [relatedProduct.id]);
           inventory = bottomwearInventory.length > 0 ? bottomwearInventory[0] : null;
         } else if (relatedProduct.wear_type_bottom_or_top === 'shoes') {
           const [shoesInventory] = await connect.query('SELECT * FROM shoes_inventory WHERE product_id = ?', [relatedProduct.id]);
