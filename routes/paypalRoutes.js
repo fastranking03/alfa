@@ -1,46 +1,25 @@
-import express from 'express';
-import { client } from '../paypalconfig.js';
-import pkg from '@paypal/checkout-server-sdk';
+import express from "express"
+import { completeOrder, createOrder ,cancelOrder ,returnOrder } from "../controller/payController.js";
 
-const { orders } = pkg;
 const router = express.Router();
 
-// Create PayPal transaction this is old code dont use this 
-// router.post('/create-paypal-transaction', async (req, res) => {
-//     const request = new orders.OrdersCreateRequest();
-//     request.prefer("return=representation");
-//     request.requestBody({
-//         intent: 'CAPTURE',
-//         purchase_units: [{
-//             amount: {
-//                 currency_code: 'USD',
-//                 value: req.body.amount  // Use dynamic amount from the request body
-//             }
-//         }]
-//     });
+router.post('/pay', createOrder)
 
-//     try {
-//         const order = await client.execute(request);
-//         res.json(order.result);
-//     } catch (err) {
-//         console.error(err);
-//         res.status(500).send('Something went wrong');
-//     }
-// });
+router.get('/pay',(req,res) =>{
+    res.render('payment')
+})
 
-// Capture PayPal transaction
-// router.post('/capture-paypal-transaction', async (req, res) => {
-//     const { orderID } = req.body;
-//     const request = new orders.OrdersCaptureRequest(orderID);
-//     request.requestBody({});
+router.get('/complete-order', completeOrder);
+router.get('/cancel-order', cancelOrder);
 
-//     try {
-//         const capture = await client.execute(request);
-//         res.json(capture.result);
-//     } catch (err) {
-//         console.error(err);
-//         res.status(500).send('Something went wrong');
-//     }
-// });
+router.get('/cancel-order', (req, res) => {
+    res.redirect('/')
+});
 
-export default router;
+router.post('/api/cancel-order', cancelOrder)
+// router.post('/api/order-return', returnOrder)
+
+router.post('/return-submit', returnOrder)
+
+
+export default router

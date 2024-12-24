@@ -4,6 +4,11 @@ import connect from "../db/connect.js";
 // import { userLogIn } from "../middleware/protected.js";
 import nodemailer from "nodemailer";
 import jwt from "jsonwebtoken";
+import ejs from "ejs";
+import path from "path";
+import { fileURLToPath } from 'url';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const router = express.Router();
 
@@ -300,6 +305,7 @@ router.post("/login", async (req, res) => {
   }
 });
 
+
 router.post("/forget-password", async (req, res) => {
   try {
     const { email } = req.body;
@@ -329,12 +335,16 @@ router.post("/forget-password", async (req, res) => {
       },
     });
 
+    const OptmailTemplate = await ejs.renderFile(path.join(__dirname, '..', 'views', 'email-template', 'password-template.ejs'), {
+      otp
+  });
+
     // Send email with OTP
     await transporter.sendMail({
       from: "fastranking08@gmail.com",
       to: email,
       subject: "Password Reset OTP",
-      text: `Your OTP for password reset is ${otp}`,
+      html: OptmailTemplate,
     });
 
     // Update OTP in the database
